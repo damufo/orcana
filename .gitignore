@@ -1,0 +1,9 @@
+.venv
+.vscode
+screenshots/
+doc/
+*.pyc
+*.jpg
+
+
+

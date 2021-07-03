@@ -1,0 +1,384 @@
+# Galician translations for PACKAGE package
+# Traducións en inglés do paquete PACKAGE.
+# Copyright (C) 2020 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# damufo <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-04 13:33+0200\n"
+"PO-Revision-Date: 2020-06-04 13:53+0200\n"
+"Last-Translator: damufo <EMAIL@ADDRESS>\n"
+"Language-Team: Galician\n"
+"Language: gl_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:23
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:131
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:32
+msgid "JPG options:"
+msgstr "Opcións para JPG:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:36
+msgid "Quality:"
+msgstr "Calidade:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:39
+msgid "Quality when save"
+msgstr "Calidade cando se garda"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:44
+msgid ""
+"The image quality, on a scale from 1 (worst) to 95 (best). The default is "
+"75. Values above 95 should be avoided; 100 disables portions of the JPEG "
+"compression algorithm, and results in large files with hardly any gain in "
+"image quality."
+msgstr ""
+"A calidade da imaxe, nunha escala do 1 (peor) ao 95 (mellor). O estándar é "
+"75. Débense evitar os valores superiores a 95. O valor 100 desactiva "
+"porcións do algoritmo de compresión JPEG e produce ficheiros grandes sen "
+"apenas ganancia na calidade de imaxe."
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:53
+msgid "Optimize:"
+msgstr "Optimizar:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:60
+msgid ""
+"If true, indicates that the encoder should make an extra pass over the image "
+"in order to select optimal encoder settings."
+msgstr ""
+"Se é certo, indica que o codificador debe facer un paso adicional sobre a "
+"imaxe para seleccionar a configuración óptima do codificador."
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:69
+msgid "Progressive:"
+msgstr "Progresivo:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:76
+msgid ""
+"If true, indicates that this image should be stored as a progressive JPEG "
+"file."
+msgstr ""
+"Se é certo, indica que esta imaxe debería almacenarse como un ficheiro JPEG "
+"progresivo."
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:86
+msgid "Auto-resize (px):"
+msgstr "Auto-redimensionar (px):"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:90
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:34
+msgid "Width:"
+msgstr "Largura:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:96
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:111
+msgid "When 0 is not set."
+msgstr "Cando é 0 non se ten en conta."
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:105
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:53
+msgid "Height:"
+msgstr "Altura:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:120
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:87
+msgid "Preserve aspect ratio:"
+msgstr "Conservar a proporción:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:134
+msgid "Save when auto-resize:"
+msgstr "Gardar cando se auto-redimensiona:"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:153
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:101
+msgid "&Cancel"
+msgstr "&Cancelar"
+
+#: /home/damufo/dev/encadra/src/modules/prefs/w_prefs.py:159
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:107
+msgid "&Acept"
+msgstr "&Aceptar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:23
+msgid "Encadra"
+msgstr "Encadra"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:80
+msgid "Open"
+msgstr "Abrir"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:83
+msgid "Save"
+msgstr "Gardar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:86
+#: /home/damufo/dev/encadra/src/classes/wxp/messages.py:126
+msgid "Save as..."
+msgstr "Gardar como..."
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:91
+msgid "Rename"
+msgstr "Renomear"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:94
+msgid "Delete"
+msgstr "Eliminar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:99
+msgid "Quit"
+msgstr "Saír"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:102
+msgid "&File"
+msgstr "&Ficheiro"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:105
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:23
+msgid "Resize"
+msgstr "Redimensionar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:108
+msgid "Auto-resize"
+msgstr "Auto-redimensionar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:111
+msgid "Crop"
+msgstr "Recortar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:114
+msgid "Rotate right"
+msgstr "Rotar á dereita"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:117
+msgid "Rotate left"
+msgstr "Rotar á esquerda"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:120
+msgid "Rotate custom"
+msgstr "Rotación personalizada"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:123
+msgid "Flip horizontally"
+msgstr "Volteo horizontal"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:126
+msgid "Flip vertically"
+msgstr "Volteo vertical"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:134
+msgid "&Edit"
+msgstr "&Editar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:137
+msgid "Fullscreen"
+msgstr "Pantalla completa"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:142
+msgid "Go next"
+msgstr "Ir á seguinte imaxe"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:145
+msgid "Go previous"
+msgstr "Ir  á anterior imaxe"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:148
+msgid "Go first"
+msgstr "Ir á primeira imaxe"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:151
+msgid "Go last"
+msgstr "Ir á última imaxe"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:156
+msgid "Zoom in"
+msgstr "Achegar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:159
+msgid "Zoom out"
+msgstr "Afastar"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:162
+msgid "Zoom 100%"
+msgstr "Axustar ao 100%"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:165
+msgid "Zoom fit"
+msgstr "Axustar á xanela"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:168
+msgid "&View"
+msgstr "&Ver"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:171
+msgid "Homepage"
+msgstr "Páxina do proxecto"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:174
+msgid "Report a bug"
+msgstr "Informa dun erro"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:177
+msgid "Source"
+msgstr "Código fonte"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:182
+msgid "About"
+msgstr "Sobre Encadra"
+
+#: /home/damufo/dev/encadra/src/modules/main/w_main.py:185
+msgid "&Help"
+msgstr "&Axuda"
+
+#: /home/damufo/dev/encadra/src/modules/main/v_main.py:41
+msgid "[{} of {}] {}{}  {}  {}  {}%"
+msgstr "[{} de {}] {}{}  {}  {}  {}%"
+
+#: /home/damufo/dev/encadra/src/modules/main/v_main.py:86
+msgid "{} website"
+msgstr "{} sitio web"
+
+#: /home/damufo/dev/encadra/src/modules/main/i_main.py:114
+msgid "The file has not been saved... continue closing?"
+msgstr ""
+"O ficheiro ten modificacións e non se gardou... quere continuar saíndo?"
+
+#: /home/damufo/dev/encadra/src/modules/main/p_main.py:51
+msgid "The {} suffix is not supported."
+msgstr "A extensión {} non se admite."
+
+#: /home/damufo/dev/encadra/src/modules/main/p_main.py:62
+msgid "Are you sure you want to delete the image?"
+msgstr "Ten a certeza de que quere borrar a imaxe?"
+
+#: /home/damufo/dev/encadra/src/modules/main/p_main.py:139
+msgid "Insert an angle:"
+msgstr "Insira un ángulo:"
+
+#: /home/damufo/dev/encadra/src/modules/main/p_main.py:140
+msgid "Angle"
+msgstr "Ángulo"
+
+#: /home/damufo/dev/encadra/src/modules/main/p_main.py:147
+msgid ""
+"The value is no valid. Please insert\n"
+"a number (integer or float)."
+msgstr ""
+"O valor non é válido. Insira\n"
+"un número (enteiro ou decimal)"
+
+#: /home/damufo/dev/encadra/src/modules/main/p_main.py:175
+msgid "Do you want to save the changes?"
+msgstr "Desexa gardar os cambios?"
+
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:72
+msgid "Units:"
+msgstr "Unidades:"
+
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:77
+msgid "pixels"
+msgstr "píxeles"
+
+#: /home/damufo/dev/encadra/src/modules/resize/w_resize.py:77
+msgid "percentages"
+msgstr "porcentaxes"
+
+#: /home/damufo/dev/encadra/src/modules/resize/p_resize.py:29
+msgid "Error in values, set more than 0."
+msgstr "Erro no valor, especifique un valor maior que 0."
+
+#: /home/damufo/dev/encadra/src/modules/resize/p_resize.py:31
+msgid "Same values as the current ones."
+msgstr "É o mesmo valor que o actual."
+
+#: /home/damufo/dev/encadra/src/specific_classes/config.py:25
+msgid "A simple image viewer."
+msgstr "Un visor de imaxes simple."
+
+#: /home/damufo/dev/encadra/src/specific_classes/config.py:30
+msgid ""
+"Copyright (C) 2020  Daniel Muñiz Fontoira\n"
+"\n"
+"This program is free software: you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Copyright (C) 2020  Daniel Muñiz Fontoira\n"
+"\n"
+"Este programa é software libre: vostede pode redistribuílo e/ou modificalo "
+"conforme os termos da licenza pública xeral de GNU publicada pola Fundación "
+"para o Software Libre, xa sexa a versión 3 desta licenza ou (á súa elección) "
+"calquera versión posterior.\n"
+"\n"
+"Este programa distribúese co desexo de que lle resulte útil, pero SEN "
+"GARANTÍAS DE NINGÚN TIPO; nin sequera coas garantías implícitas de VALOR "
+"COMERCIAL OU APTITUDE PARA UN PROPÓSITO DETERMINADO. Para máis información,\n"
+"consulte a licenza pública xeral de GNU.\n"
+"\n"
+"Xunto con este programa, debérase incluír unha copia da licenza pública "
+"xeral de GNU. De non ser así, vexa en <http://www.gnu.org/licenses/>."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:51
+msgid "The name must have some alphanumeric character."
+msgstr "O nome do ficheiro ten que ter algún carácter alfanumérico."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:54
+msgid ""
+"Please, set a valid file name.\n"
+"Example: picture.jpg."
+msgstr ""
+"Insira un nome de ficheiro válido.\n"
+"Exemplo: imaxe.jpg."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:58
+msgid ""
+"The {} suffix is not supported.\n"
+"Valid suffixes are: {}."
+msgstr ""
+"A extensión {} non se admite.\n"
+"As extensións válidas son: {}."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:64
+msgid "The new filename is same."
+msgstr "O novo nome do ficheiro é o mesmo que o anterior."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:67
+msgid ""
+"Already exists a file with this name.\n"
+"Please, set another file name."
+msgstr ""
+"Xa existe un ficheiro con ese nome.\n"
+"Indique un nome de ficheiro distinto."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:71
+msgid "Please, set a file name."
+msgstr "Insira un nome de ficheiro."
+
+#: /home/damufo/dev/encadra/src/specific_classes/picture.py:238
+msgid "Saved from Encadra Image Viewer."
+msgstr "Gardado polo visor de imaxes Encadra."
+
+#: /home/damufo/dev/encadra/src/classes/wxp/messages.py:114
+msgid "Browse..."
+msgstr "Explorar..."
+
+#~ msgid "Please confirm."
+#~ msgstr "Confirme."
