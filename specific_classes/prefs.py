@@ -7,6 +7,9 @@ import json
 
 DEFAULT_PREFS = {
             'general.lsc_font_size': '',
+            'general.fol_reports': '~',
+            'general.dbs_path': '',
+
             }
 
 
@@ -49,18 +52,18 @@ class Prefs(dict):
         file_settings.write(json.dumps(self, indent=4, sort_keys=True))
         file_settings.close()
 
-    def save_clean(self):
-        cleaned = {}
-        for key in DEFAULT_PREFS:
-            if key in self:
-               cleaned[key] = self[key]
-            else:
-               cleaned[key] = DEFAULT_PREFS[key]
-        self.clear()
-        self.update(cleaned)
-        file_settings = codecs.open(CONFIG_APP_FILE_PATH, 'w', 'utf-8')
-        file_settings.write(json.dumps(self, indent=4, sort_keys=True))
-        file_settings.close()
+    # def save_clean(self):
+    #     cleaned = {}
+    #     for key in DEFAULT_PREFS:
+    #         if key in self:
+    #            cleaned[key] = self[key]
+    #         else:
+    #            cleaned[key] = DEFAULT_PREFS[key]
+    #     self.clear()
+    #     self.update(cleaned)
+    #     file_settings = codecs.open(CONFIG_APP_FILE_PATH, 'w', 'utf-8')
+    #     file_settings.write(json.dumps(self, indent=4, sort_keys=True))
+    #     file_settings.close()
 
     def __str__(self):
         ans = ''

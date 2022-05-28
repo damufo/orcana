@@ -27,14 +27,24 @@ class ListCtrlPlus(object):
                         int(lsc_font_size), wx.DEFAULT, wx.NORMAL, wx.NORMAL))
 
     def load_custom_column_width(self):
+        count_field_values = len(self.values.list_fields)
         column_widths = self.prefs.get_value(
             '{}.{}.column_widths'.format(self.view.Name, self.lsc.Name))
         if column_widths:
             column_widths = column_widths.split("#")
-            # if len(column_widths) == self.lsc.GetColumnCount():
+            if len(column_widths) == count_field_values:
+                self.column_widths_custom = [int(i) for i in column_widths]
+            else:
+                self.column_widths_custom = None
+
+    def reload_custom_column_width(self):
+        column_widths = self.prefs.get_value(
+            '{}.{}.column_widths'.format(self.view.Name, self.lsc.Name))
+        if column_widths:
+            column_widths = column_widths.split("#")
             self.column_widths_custom = [int(i) for i in column_widths]
-                # for x, i in enumerate(self.column_widths_custom):
-                #     self.lsc.SetColumnWidth(x, i)
+            for x, i in enumerate(self.column_widths_custom):
+                self.lsc.SetColumnWidth(x, i)
 
     def save_custom_column_width(self):
         num_columns = self.lsc.GetColumnCount()
@@ -46,9 +56,10 @@ class ListCtrlPlus(object):
         self.prefs.save()
 
     def on_header_click(self, event):
+        self.save_custom_column_width()
         num_col = event.GetColumn()
         self.values.list_sort(num_col=num_col)
-        self.load(warning_much_items=False)
+        self.load(warning_much_items=False, custom_column_widths=True)
         event.Skip()
 
     def load_header(self, custom_column_widths=False):
@@ -92,11 +103,11 @@ class ListCtrlPlus(object):
                 wx_align = wx.LIST_FORMAT_CENTER
             elif j[ALIGN] == 'R':
                 wx_align = wx.LIST_FORMAT_RIGHT
-            try:
-            # if self.column_widths_custom:
+            # try:
+            if self.column_widths_custom:
                 width = self.column_widths_custom[i]
-            # else:
-            except:
+            else:
+            # except:
                 width = j[WIDTH]
             if i == 0:
                 lsc.InsertColumn(i, j[NAME], width=width)
@@ -208,6 +219,8 @@ class ListCtrlPlus(object):
 
         if self.lsc.GetItemCount() > 0 and self.lsc.GetItemCount() > pos:
             self.lsc.Select(pos)
+            self.lsc.Focus(pos)
+            print('focus: {}'.format(pos))
             self.lsc.EnsureVisible(pos)
         self.lsc.Thaw()
 

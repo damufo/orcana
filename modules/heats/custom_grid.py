@@ -1,0 +1,45 @@
+import wx
+import wx.grid
+import wx.lib.mixins.gridlabelrenderer as glr
+
+
+COL_H_ALIGNMENTS = {
+    0 : wx.ALIGN_LEFT,
+    1 : wx.ALIGN_CENTRE,
+    2 : wx.ALIGN_CENTRE,
+    3 : wx.ALIGN_RIGHT,
+    4 : wx.ALIGN_CENTRE,
+    5 : wx.ALIGN_CENTRE,
+    6 : wx.ALIGN_CENTRE,
+}
+
+class CustomGrid(wx.grid.Grid, glr.GridWithLabelRenderersMixin):
+    def __init__(self, parent):
+        wx.grid.Grid.__init__(self, parent)
+        glr.GridWithLabelRenderersMixin.__init__(self)
+
+
+class CustomGrid(wx.grid.Grid, glr.GridWithLabelRenderersMixin):
+    def __init__(self, parent):
+        wx.grid.Grid.__init__(self, parent)
+        glr.GridWithLabelRenderersMixin.__init__(self)
+
+
+class CustomColLabelRenderer(glr.GridLabelRenderer):
+    def __init__(self, color):
+        super(CustomColLabelRenderer, self).__init__()
+        self.color = color
+
+    def Draw(self, grid, dc, rect, col):
+        dc.SetPen(wx.Pen(wx.WHITE))
+        dc.SetBrush(wx.Brush(self.color))
+        dc.DrawRectangle(rect)
+        text = grid.GetColLabelValue(col)
+        # hAlign, vAlign = grid.GetColLabelAlignment()
+        if col in COL_H_ALIGNMENTS:
+            hAlign = COL_H_ALIGNMENTS[col]
+        else:
+            hAlign = wx.ALIGN_RIGHT
+
+        vAlign = wx.ALIGN_CENTRE
+        self.DrawText(grid, dc, rect, text, hAlign, vAlign)

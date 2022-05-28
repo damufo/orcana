@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 
-from specific_classes.champ.insc_members import InscMembers
+from specific_classes.champ.result_members import RelayMembers
 from specific_functions import times
 from specific_functions import conversion
 from specific_functions import normalize

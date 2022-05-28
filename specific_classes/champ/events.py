@@ -114,14 +114,13 @@ class Events(list):
         del self[:] #borra os elementos que haxa
         
         (EVENT_ID, POS, CODE, GENDER_ID, NAME, IND_REL,
-         INSC_MAX, CATEGORY_ID)  = range(8)
+         INSC_MAX)  = range(7)
         sql = '''
-select event_id, pos, code, gender_id, name, ind_rel, insc_max, category_id 
+select event_id, pos, event_code, gender_id, name, ind_rel, insc_max
 from events order by pos '''
         res = self.config.dbs.exec_sql(sql=sql)
         for i in res:
-                category = self.champ.categories.get_category(i[CATEGORY_ID])
-                self.append(Event(
+                event = Event(
                     events=self,
                     event_id=(i[EVENT_ID]),
                     pos=(i[POS]),
@@ -129,38 +128,40 @@ from events order by pos '''
                     gender_id=(i[GENDER_ID]),
                     name=i[NAME],
                     ind_rel=i[IND_REL],
-                    insc_max=i[INSC_MAX],
-                    category=category,
-                    ))
+                    insc_max=i[INSC_MAX]
+                    )
+                event.categories.load_items_from_dbs()
+                self.append(event)
 
-    def __load_items_from_server(self):
-        '''
-        Load items from server
-        '''
-        query = """
-   query($champId: Int!) {
-  events (champId: $champId) {
-    	id pos code category { id } name indRel inscMax
-        createdAt createdBy updatedAt updatedBy } } """
-        variables = {"champId": self.champ.id}
-        del self[:]  # borra o que haxa
-        result = self.config.com_api.execute(query, variables)
-        if result:
-            for i in result["data"]["events"]:
-                self.append(Event(
-                    events=self,
-                    id=(i["id"]),
-                    pos=(i["pos"]),
-                    code=(i["code"]),
-                    name=i["name"],
-                    ind_rel=i["indRel"],
-                    insc_max=i["inscMax"],
-                    created_at=i["createdAt"],
-                    created_by=i["createdBy"],
-                    updated_at=i["updatedAt"],
-                    updated_by=i["updatedBy"],
-                    category_id=int(i["category"]["id"]),
-                    save_action='U'))
+
+#     def __load_items_from_server(self):
+#         '''
+#         Load items from server
+#         '''
+#         query = """
+#    query($champId: Int!) {
+#   events (champId: $champId) {
+#     	id pos code category { id } name indRel inscMax
+#         createdAt createdBy updatedAt updatedBy } } """
+#         variables = {"champId": self.champ.id}
+#         del self[:]  # borra o que haxa
+#         result = self.config.com_api.execute(query, variables)
+#         if result:
+#             for i in result["data"]["events"]:
+#                 self.append(Event(
+#                     events=self,
+#                     id=(i["id"]),
+#                     pos=(i["pos"]),
+#                     code=(i["code"]),
+#                     name=i["name"],
+#                     ind_rel=i["indRel"],
+#                     insc_max=i["inscMax"],
+#                     created_at=i["createdAt"],
+#                     created_by=i["createdBy"],
+#                     updated_at=i["updatedAt"],
+#                     updated_by=i["updatedBy"],
+#                     category_id=int(i["category"]["id"]),
+#                     save_action='U'))
 
     # def load_items_from_dbs(self):
     #     del self[:] #borra os elementos que haxa

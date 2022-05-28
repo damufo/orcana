@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
-
+          
 # import codecs
 # from pathlib import Path
 # import json
 # from .prefs import Prefs
 from classes.sqlite_plus import SqlitePlus
+from specific_classes.core.genders import Genders
+from specific_classes.core.issues import Issues
 from specific_classes.core.choices import Choices
+
 
 class Config(object):
 
@@ -36,10 +39,9 @@ class Config(object):
         self.app_path_folder = app_path_folder
         self.arg1 = arg1
 
-
-
         self.dbs = SqlitePlus()
-        self.pool_lengths = Choices(choices=(
+
+        self.pool_length = Choices(choices=(
             (25, '25'),
             (50, '50'),
             (450, '450'),
@@ -50,8 +52,45 @@ class Config(object):
             (8, '8'),
             (10, '10'),
             ))            
-        self.chrono_types = Choices(choices=(
+        self.chrono_type = Choices(choices=(
             ('M', _('Manual')),
             ('E', _('Electronic')),
             ))
-        
+        self.estament = Choices(choices=(
+            ('DEPOR', _('Deportista')),
+            ('MASTE', _('Master')),
+            ))
+        self.gender = Choices(choices=(
+            ('F', _('Female')),
+            ('M', _('Male')),
+            ))
+        # self.category_type = Choices(choices=(
+        #     ('A', _('Absolute')),
+        #     ('C', _('Category')),
+        #     ))
+
+        self.issues = Issues(self)
+        self.issues.load_items_from_dbs()
+        self.genders = Genders(self)
+        self.genders.load_items_from_dbs()
+        self.views = {}
+
+    def get_gender_name(self, gender_id):
+        if gender_id == 'M':
+            gender_name = _('Male')
+        elif gender_id == 'F':
+            gender_name = _('Female')
+        elif gender_id == 'X':
+            gender_name = _('Mixed')
+        else:
+            gender_name = ''
+        return gender_name
+
+        # self.issues_id = Choices(choices=(
+        #     ('BAI', _('Baixa')),
+        #     ('RET', _('Retirado')),
+        #     ('NPR', _('Non presentado/a')),
+        #     ('DNI', _('Nado irregular')),
+        #     ('DVI', _('Viraxe irregular')),
+        #     ('DSA', _('Saída anticipada')),
+        #     ))

@@ -53,7 +53,10 @@ def validate(value):
     error = ''
     partes = []
     if value.isdigit():  # valida introdución formato numerico
-        digits = value
+        digits = ''
+        for i in range(len(value)):
+            if value[i] in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'):
+                digits += value[i]
         len_digits = len(digits)
         if len_digits == 4:
             partes = [digits[-2:], digits[-4:-2]]
@@ -63,7 +66,7 @@ def validate(value):
             partes = [digits[-2:], digits[-4:-2], digits[-6:-4], digits[-8:-6]]
         else:
             partes = []
-            error = 'Exceeded the maximum number of digits.'
+            error = 'Illegal number of digits.'
     else:  # valida formato con puntuación
         # busca a última puntuación e separa
         for pos in range((len(value)-1), -1, -1):
@@ -148,42 +151,50 @@ def validate(value):
 # for value in values:
 #     validate(value)
 
-def hun2mark(value, zero_fill=False, force_hours=False):
+def hun2mark(value, zero_fill=False, force=''):
     """
     Convert a hundredths (integer) to mark (text)
+    force [hours|minutes]
     """
     time_text = ''
 
-    if  isinstance(value, int):
+    if  isinstance(value, int) and value:
         adjust = 100
         hundreds = value % 100
         seconds = int(value / adjust) % 60
         minutes = int((value / (60 * adjust)) % 60)
         hours = int((value / (3600 * adjust)))
-        result = '0'
+        result = 0
 #            hours
         if hours:
             result = str(hours)
-        elif force_hours:
+        elif force == hours:
             result = "00"
 
 #            minutes
-        if result != '0':
+        if result:
             result = '%s:%s' % (result, str(minutes).zfill(2))
         else:
-            result = str(minutes)
+            if minutes:
+                result = str(minutes)
+            elif force == 'minutes':
+                result = "00"
 
-        if result != '0':  # seconds
+        if result:  # seconds
             result = '%s:%s' % (result, str(seconds).zfill(2))
         else:
             result = str(seconds)
 
-        if result != '0':
+        if result:
             result = '%s.%s' % (result, str(hundreds).zfill(2))
         else:
             result = str(hundreds)
         if result:
             time_text = result
+        else:
+            time_text = ''
+    else:
+        time_text = ''        
 
     return time_text
 

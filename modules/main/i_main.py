@@ -21,14 +21,18 @@ class Interactor(object):
         self.view = view
         view.parent.Bind(wx.EVT_CLOSE, self.on_quit)
         view.btn_close.Bind(wx.EVT_BUTTON, self.on_quit)
-        view.btn_open_db.Bind(wx.EVT_BUTTON, self.on_open_db)
         view.btn_about.Bind(wx.EVT_BUTTON, self.on_about)
+        view.btn_open_db.Bind(wx.EVT_BUTTON, self.on_open_db)
+        view.btn_export_results.Bind(wx.EVT_BUTTON, self.on_export_results)
 
         view.btn_properties.Bind(wx.EVT_BUTTON, self.show_properties)
+        view.btn_entities.Bind(wx.EVT_BUTTON, self.show_entities)
         view.btn_categories.Bind(wx.EVT_BUTTON, self.show_categories)
         view.btn_events.Bind(wx.EVT_BUTTON, self.show_events)
         view.btn_persons.Bind(wx.EVT_BUTTON, self.show_persons)
-        view.btn_per_inscriptions.Bind(wx.EVT_BUTTON, self.show_per_inscriptions)
+        view.btn_inscriptions.Bind(wx.EVT_BUTTON, self.show_inscriptions)
+        view.btn_heats.Bind(wx.EVT_BUTTON, self.show_heats)
+        view.btn_results.Bind(wx.EVT_BUTTON, self.show_results)
 
         
 
@@ -121,8 +125,14 @@ class Interactor(object):
     def on_open_db(self, event):
         self.presenter.open_db()
 
+    def on_export_results(self, event):
+        self.presenter.export_results()
+
     def show_properties(self, event):
         self.presenter.load_properties()
+
+    def show_entities(self, event):
+        self.presenter.load_entities()
 
     def show_categories(self, event):
         self.presenter.load_categories()
@@ -133,8 +143,14 @@ class Interactor(object):
     def show_persons(self, event):
         self.presenter.load_persons()
 
-    def show_per_inscriptions(self, event):
-        self.presenter.load_per_inscriptions()
+    def show_inscriptions(self, event):
+        self.presenter.load_inscriptions()
+
+    def show_heats(self, event):
+        self.presenter.load_heats()
+        
+    def show_results(self, event):
+        self.presenter.load_results()
 
     def on_scroll_down(self, event):
         self.on_scroll(desp='DOWN')

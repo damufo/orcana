@@ -1,39 +1,40 @@
 # -*- coding: utf-8 -*- 
 
+from specific_classes.champ.inscriptions_ind import InscriptionsInd
+from specific_classes.champ.inscriptions_rel import InscriptionsRel
+from specific_classes.champ.event_categories import EventCategories
+
 
 class Event(object):
 
     def __init__(self, **kwargs):
         self.events = kwargs['events']
         self.config = self.events.config
-        if 'event_id' in list(kwargs.keys()):
-            self.event_id = int(kwargs['event_id'])
-        else:
-            self.event_id = 0
-        if 'pos' in list(kwargs.keys()):
-            self.pos = int(kwargs['pos'])
-        else:
-            self.pos = 0        
-        if 'code' in list(kwargs.keys()):
-            self.code = kwargs['code']
-        else:
-            self.code = ''
-        if 'gender_id' in list(kwargs.keys()):
-            self.gender_id = kwargs['gender_id']
-        else:
-            self.gender_id = ''
-        if 'name' in list(kwargs.keys()):
-            self.name = kwargs['name']
-        else:
-            self.name = ''
-        if 'insc_max' in list(kwargs.keys()):  # by entity
-            self.insc_max = int(kwargs['insc_max'])
-        else:
-            self.insc_max = 99            
-        if 'category' in list(kwargs.keys()):
-            self.category = kwargs['category']
-        else:
-            self.category = None
+        self.event_id = int(kwargs['event_id'])
+        self.pos = int(kwargs['pos']) 
+        self.code = kwargs['code']
+        self.gender_id = kwargs['gender_id']
+        self.name = kwargs['name']
+        self.insc_max = int(kwargs['insc_max'])
+        if self.ind_rel == 'I':
+            self.inscriptions = InscriptionsInd(event=self)
+        elif self.ind_rel == 'R':
+            self.inscriptions = InscriptionsRel(event=self)
+        self.categories = EventCategories(event=self)
+
+    @property
+    def long_name(self):
+        return '{}. {}'.format(self.pos, self.name)
+
+    @property
+    def file_name(self):
+        if self.gender_id == 'M':
+            gender = 'mas'
+        elif self.gender_id == 'F':
+            gender = 'fem'
+        elif self.gender_id == 'X':
+            gender = 'mix'
+        return '{}_{}_{}'.format(str(self.pos).zfill(2), self.code.lower(), gender)
 
     @property
     def ind_rel(self):
@@ -49,6 +50,10 @@ class Event(object):
     @property
     def champ(self):
         return self.events.champ
+
+    # @property
+    # def champ_id(self):
+    #     return self.events.champ.id
 
     # @property
     # def category(self):
@@ -99,7 +104,7 @@ class Event(object):
         self.name = new_name
         self.save()
 
-    def exists_item_id(self):
+    def already_exists(self):
         """
         Code is event code, ex. 100L, 4X50S, 800L
         Category code: ex. ALEV, SENI
@@ -142,87 +147,79 @@ class Event(object):
             category = self.events.champ.categories.get_category(category_id)
             gender_id = category.gender_id
             category_code = category.code
-            if gender_id == 'M':
-                gender = _('Male')
-            elif gender_id == 'F':
-                gender = _('Female')
-            elif gender_id == 'X':
-                gender = _('Mixed')
-
+            gender_name = self.config.get_gender_name(gender_id)
             name = '%s m %s %s%s' % (
-                code_without_style.lower(), style_name, gender,
+                code_without_style.lower(), style_name, gender_name,
                 (show_category and " {}".format(category_code) or ''))
         return name
 
-    @property
-    def save_dict(self):
-        pos = len(self.events) + 1
-        for idx, item in enumerate(self.events):
-            if item == self:
-                pos = idx + 1
-                break
-        variables = {
-            "id": self.id,
-            "pos": pos,
-            "code": self.code,
-            "name": self.name,
-            "indRel": self.ind_rel,
-            "inscMax": self.insc_max,
-            "champId": self.champ.id,
-            "categoryId": self.category.id
-        }
-        return variables
+#     @property
+#     def save_dict(self):
+#         pos = len(self.events) + 1
+#         for idx, item in enumerate(self.events):
+#             if item == self:
+#                 pos = idx + 1
+#                 break
+#         variables = {
+#             "id": self.id,
+#             "pos": pos,
+#             "code": self.code,
+#             "name": self.name,
+#             "indRel": self.ind_rel,
+#             "inscMax": self.insc_max,
+#             "champId": self.champ.id,
+#             "categoryId": self.category.id
+#         }
+#         return variables
 
-    def save(self):
-        pos = len(self.events) + 1
-        for idx, item in enumerate(self.events):
-            if item == self:
-                pos = idx + 1
-                break
+#     def save(self):
+#         pos = len(self.events) + 1
+#         for idx, item in enumerate(self.events):
+#             if item == self:
+#                 pos = idx + 1
+#                 break
 
-        query = """
-mutation(
-    $id: Int!,
-    $pos: Int!,
-    $code: String!,
-    $name: String!,
-    $indRel: String!,
-    $inscMax: Int!,
-    $champId: Int!,
-    $categoryId: Int!
-    ) {
-  saveEvent(
-    id: $id,
-    pos: $pos,
-    code: $code,
-    name: $name,
-    indRel: $indRel,
-    inscMax: $inscMax,
-    champId: $champId,
-    categoryId: $categoryId
-  ) {
-    id
-    pos
-    code
-    name
-    indRel
-    inscMax
-    createdAt
-    createdBy
-    updatedAt
-    updatedBy
-    champId
-    categoryId
-  }
-}
-"""
-        variables = self.save_dict
-        result = self.config.com_api.execute(query, variables)
-        if result:
-            self.id = result["data"]["saveEvent"]["id"]
-            self.created_by = result["data"]["saveEvent"]["createdBy"]
-            self.save_action = "U"
+#         query = """
+# mutation(
+#     $id: Int!,
+#     $pos: Int!,
+#     $code: String!,
+#     $name: String!,
+#     $indRel: String!,
+#     $inscMax: Int!,
+#     $champId: Int!,
+#     $categoryId: Int!
+#     ) {
+#   saveEvent(
+#     id: $id,
+#     pos: $pos,
+#     code: $code,
+#     name: $name,
+#     indRel: $indRel,
+#     inscMax: $inscMax,
+#     champId: $champId,
+#     categoryId: $categoryId
+#   ) {
+#     id
+#     pos
+#     code
+#     name
+#     indRel
+#     inscMax
+#     createdAt
+#     createdBy
+#     updatedAt
+#     updatedBy
+#     champId
+#     categoryId
+#   }
+# }
+# """
+#         variables = self.save_dict
+#         result = self.config.com_api.execute(query, variables)
+#         if result:
+#             self.id = result["data"]["saveEvent"]["id"]
+#             self.created_by = result["data"]["saveEvent"]["createdBy"]
+#             self.save_action = "U"
     
-    @property
-    def champ_id(self):
-        return self.events.champ.id
+

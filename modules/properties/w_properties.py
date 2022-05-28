@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import gettext
-# _ = gettext.gettext
+import gettext
+_ = gettext.gettext
 
 ###########################################################################
 ## Class Properties
@@ -19,7 +19,7 @@ import wx.xrc
 
 class Properties ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 526,393 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 800,530 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
@@ -92,18 +92,79 @@ class Properties ( wx.Panel ):
 
 		bSizer8.Add( bSizer1011, 0, wx.EXPAND, 5 )
 
+		bSizer10111 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText3111 = wx.StaticText( self, wx.ID_ANY, _(u"Estament:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText3111.Wrap( -1 )
+
+		bSizer10111.Add( self.m_staticText3111, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		cho_estament_idChoices = []
+		self.cho_estament_id = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cho_estament_idChoices, 0 )
+		self.cho_estament_id.SetSelection( 0 )
+		bSizer10111.Add( self.cho_estament_id, 1, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer10111, 0, wx.EXPAND, 5 )
+
+		bSizer91 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText21 = wx.StaticText( self, wx.ID_ANY, _(u"Date age calculation:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText21.Wrap( -1 )
+
+		bSizer91.Add( self.m_staticText21, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.txt_date_age_calculation = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_date_age_calculation.SetMaxLength( 12 )
+		bSizer91.Add( self.txt_date_age_calculation, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer91, 0, wx.EXPAND, 5 )
+
+		bSizer911 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText211 = wx.StaticText( self, wx.ID_ANY, _(u"Venue:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText211.Wrap( -1 )
+
+		bSizer911.Add( self.m_staticText211, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.txt_venue = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_venue.SetMaxLength( 34 )
+		bSizer911.Add( self.txt_venue, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer911, 0, wx.EXPAND, 5 )
+
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )
+
+		bSizer103 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_generate_heats = wx.Button( self, wx.ID_ANY, _(u"&G. heats"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_generate_heats.SetToolTip( _(u"Generate heats automatic:\nsessions, phases, heats...") )
+
+		bSizer103.Add( self.btn_generate_heats, 1, wx.ALL, 5 )
+
+		self.btn_report_heats = wx.Button( self, wx.ID_ANY, _(u"&R. heats"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_heats.SetToolTip( _(u"Generate PDF report heats") )
+
+		bSizer103.Add( self.btn_report_heats, 1, wx.ALL, 5 )
+
+		self.btn_fiarna = wx.Button( self, wx.ID_ANY, _(u"&Fiarna"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_fiarna.SetToolTip( _(u"Fiarna") )
+
+		bSizer103.Add( self.btn_fiarna, 1, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer103, 0, 0, 5 )
 
 		self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer8.Add( self.m_staticline2, 0, wx.ALL|wx.EXPAND, 5 )
 
 		bSizer102 = wx.BoxSizer( wx.VERTICAL )
 
-		self.btn_close = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
-		self.btn_close.SetToolTip( _(u"Close") )
-
-		bSizer102.Add( self.btn_close, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+		self.btn_back = wx.Button( self, wx.ID_ANY, _(u"B&ack"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer102.Add( self.btn_back, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 
 		bSizer8.Add( bSizer102, 0, wx.EXPAND, 5 )

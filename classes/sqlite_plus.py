@@ -19,6 +19,7 @@ class SqlitePlus(object):
             self.connect(dbs_path=dbs_path)
         else:
             self.dbs_path = None
+        self.last_row_id = 0
 
     def connect(self, dbs_path):
         try:
@@ -98,6 +99,7 @@ class SqlitePlus(object):
                     print(("Erro ao executar: %s" % sql))
                     return "err"
             connection.commit()
+            self.last_row_id = cursor.lastrowid
         cursor.close()
 
     def normalize(self, value):

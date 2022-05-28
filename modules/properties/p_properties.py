@@ -26,11 +26,20 @@ class Presenter(object):
         self.view.set_values(champ=self.model.champ)
         # self.view.view_plus.start(modal=True)
 
-    # def acept(self):
-    #     self.view.get_values(prefs=self.model.prefs)
-    #     self.model.prefs.save()
-    #     self.view.view_plus.stop()
+    def gen_champ(self):
+        message = _('This action reset all results, delete relay members...'
+            'Only current inscriptions will be considered to redo all.')
+        self.view.msg.warning(message=message)
+        self.model.champ.auto_gen_heats()
+
+    def report_heats(self):
+        self.model.champ.report_start_list()
+
+    def fiarna(self):
+        from modules.fiarna import p_fiarna
+        p_fiarna.create(parent=self, config=self.model.champ.config)
 
     def go_back(self):
         self.view.get_values(champ=self.model.champ)
+        self.model.champ.save()
         self.parent.load_me()

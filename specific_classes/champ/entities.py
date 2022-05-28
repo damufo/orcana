@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+from operator import attrgetter
 from specific_classes.champ.entity import Entity
 
 
@@ -9,10 +10,23 @@ class Entities(list):
     def __init__(self, champ):     
         self.champ = champ
         self.config = self.champ.config
+        self.sort_reverse = False
+        self.sort_last_field = None
 
     @property
     def champ_id(self):
         return self.champ.champ_id
+
+    @property    
+    def item_blank(self):
+        return Entity(
+                entities=self,
+                entity_id=0,
+                entity_code='',
+                short_name='',
+                medium_name='',
+                long_name='',
+                )
 
     def choices(self, add_empty=False, federation_id=None):
         values = []
@@ -27,15 +41,17 @@ class Entities(list):
                                i.entity_id))
         return values
 
-    def delete_item(self, entity):
-        self.remove(entity)
+    def delete_items(self, idxs):
+        for idx in sorted(idxs, reverse=True):
+            self[idx].delete()
 
-    def get_entities_with_name(self, desc):
+    def get_entities_with_name(self, name):
         entities = []
         for i in self:
-            if desc.upper() in i.short_name.upper() \
-                            or desc.upper() in i.medium_name.upper() \
-                            or desc.upper() in i.long_name.upper():
+            if (name.upper() in i.short_name.upper()
+                    or name.upper() in i.medium_name.upper()
+                    or name.upper() in i.long_name.upper()
+                    or name.upper() in i.entity_code):
                 entities.append(i)
         return entities
 
@@ -64,13 +80,22 @@ class Entities(list):
                 break
         return entity
 
+    def get_entity_by_code(self, entity_code):
+        """ return entity from entity_id """
+        entity = None
+        for i in self:
+            if i.entity_code == entity_code:
+                entity = i
+                break
+        return entity
+
     def load_items_from_dbs(self):
         del self[:]  # Borra os elementos que haxa
         sql = '''
 select entity_id, entity_code, short_name, medium_name, long_name
-from entities where champ_id=? order by entity_id'''
+from entities order by entity_id'''
         (ENTITY_ID, ENTITY_CODE, SHORT_NAME, MEDIUM_NAME, LONG_NAME) = range(5)
-        res = self.config.dbs.exec_sql(sql=sql, values=((self.champ_id,),))
+        res = self.config.dbs.exec_sql(sql=sql)
         for i in res:
             current_entity = Entity(
                     entities=self,
@@ -81,19 +106,67 @@ from entities where champ_id=? order by entity_id'''
                     long_name=i[LONG_NAME])
             self.append(current_entity)
 
-    def update_entity(self, entity):
-        '''
-        entity: class entity
-        '''
-        for i in range(len(self)):
-            if self[i].entity_id == entity.entity_id:
-                self[i] = entity
-                break
+    # def update_entity(self, entity):
+    #     '''
+    #     entity: class entity
+    #     '''
+    #     for i in range(len(self)):
+    #         if self[i].entity_id == entity.entity_id:
+    #             self[i] = entity
+    #             break
 
     @property
     def list_fields(self):
-        pass
-
+        """
+        list fields for form show
+        (name as text, align[L:left, C:center, R:right] as text, 
+                width as integer)
+        """
+        return (
+            (_('Code'), 'L', 100),
+            (_('Short name'), 'L', 80), 
+            (_('Medium name'), 'L', 120),
+            (_('Long name'), 'L', 160),
+            )
     @property
     def list_values(self):
-        pass
+        """
+        list values for form show
+        """
+        values = []
+        for i in self:
+            values.append((
+                i.entity_code,
+                i.short_name,
+                i.medium_name,
+                i.long_name,
+                ))
+        return  tuple(values)
+
+    def list_sort(self, **kwargs):
+        '''
+        Sort results by column num or column name
+        '''
+        field = None
+        cols = (  # cols valid to order
+            'entity_code',
+            'short_name_normalized',
+            'medium_name_normalized',
+            'long_name_normalized',
+            )
+        order_cols = range(7)
+        if 'num_col' in list(kwargs.keys()):
+            if kwargs['num_col'] in order_cols:
+                field = cols[kwargs['num_col']]
+        if self.sort_last_field == field:
+            self.sort_reverse = not self.sort_reverse
+        else:
+            self.sort_reverse = False
+        if field:
+            self.sort_by_field(field=field, reverse=self.sort_reverse)
+            self.sort_last_field = field
+
+    def sort_by_field(self, field, reverse=False):
+        self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
+        del self[:]
+        self.extend(self_sort)

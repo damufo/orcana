@@ -33,7 +33,8 @@ class MainFrame(wx.Frame):
         self.view_plus = ViewPlus(self)
         self.msg = Messages(self)
         self.panel = None
-    
+        # self.panels = {}
+
     def load_panel(self, panel):
         if self.panel:
             self.panel.Destroy()
@@ -46,6 +47,36 @@ class MainFrame(wx.Frame):
         # self.Refresh()       
         self.Layout()
 
+
+    def load_panel_intento_recuperar_anterior(self, panel, retrieve_previous=False):
+        """
+        por se o intento novamente, dicir que habería que xestionar a creación 
+        das vistas para evitar crear unha nova e cargar a anterior
+        """
+        load_previous = False
+        if self.panel:
+            self.panels[self.panel.Name] = self.panel
+            self.panel.Visible(False)
+            if panel.Name:
+                if panel.Name in self.panels and retrieve_previous:
+                    panel = self.panels[panel.Name]
+                    panel.Visible(True)
+                    load_previous = True
+            else:
+                print("o panel parece non ter nome")
+            # self.panel.Destroy()
+        # if self.main_sizer:
+        #     self.main_sizer.Destroy()
+        self.main_sizer = wx.BoxSizer( wx.VERTICAL )
+        self.panel = panel
+        self.main_sizer.Add( self.panel, 1, wx.EXPAND |wx.ALL, 5 )
+        self.SetSizer(self.main_sizer)
+        # self.Refresh()       
+        self.Layout()
+        return load_previous
+    
+
+
     def get_lsc_plus(self, lsc, parent=None):
         if not parent:
             parent = self
@@ -56,9 +87,10 @@ class View(Main):
     def __init__(self, parent):
         Main.__init__(self, parent=parent)
         self.parent = parent
-        self.parent.load_panel(self)
+        self.SetName('main')
+        self.parent.load_panel(panel=self)
         self.parent.SetMinSize(wx.Size( 976,718))
-
+        self.msg = Messages(self.parent)
         # self.Centre( wx.BOTH )
 
         # self.menu = Menu()
@@ -75,7 +107,7 @@ class View(Main):
             # (self.btn_edit, 'edit.png'),
             # (self.btn_add, 'add.png'),
             # (self.btn_import, 'import.png'),
-            (self.btn_close, 'close.png'),
+            # (self.btn_close, 'close.png'),
             )
         self.parent.view_plus.set_button_image(button_image)
 
@@ -101,8 +133,7 @@ class View(Main):
             self.btn_events.Enable(True)
             self.btn_persons.Enable(True)
             self.btn_relais.Enable(True)
-            self.btn_per_inscriptions.Enable(True)
-            self.btn_rel_inscriptions.Enable(True)
+            self.btn_inscriptions.Enable(True)
             self.btn_heats.Enable(True)
             self.btn_results.Enable(True)
         else:
@@ -112,15 +143,38 @@ class View(Main):
             self.btn_events.Enable(False)
             self.btn_persons.Enable(False)
             self.btn_relais.Enable(False)
-            self.btn_per_inscriptions.Enable(False)
-            self.btn_rel_inscriptions.Enable(False)
+            self.btn_inscriptions.Enable(False)
             self.btn_heats.Enable(False)
             self.btn_results.Enable(False)
 
     def open_db(self, champ):
+        import os
+        msg = self.msg
+        config = champ.config
+        fol_reports = config.prefs.get_value('general.fol_reports')
+
+        if not fol_reports or not os.path.exists(fol_reports):
+            fol_reports = str(config.app_path_folder)
+            # fol_reports = os.path.join(config.app_path_folder.parts)
+
+        file_selected = msg.open_file(default_dir=fol_reports, suffixes=[".sqlite"])
+
+        if not file_selected:
+            msg.error(_("No file was selected."))
+        else:
+            file_path = file_selected
+            if os.path.isfile(file_path):
+                # try:
+                champ.load_dbs(file_selected)
+                config.prefs['last_path_dbs'] = str(file_selected)
+                config.prefs.save()
+                # config.prefs.set_value('last_path_dbs', file_selected)
+                # except:
+                    # msg.error(_("The file is not a valid orcana dbs."))
         # champ.config.dbs.connect()
         # if champ.config.dbs.connection:
-        champ.load_dbs(dbs_path='/home/damufo/escritorio/20210619_festival_galego_promesas_rias_do_sur.sqlite')
+        # champ.load_dbs(dbs_path='./dbs/20210619_festival_galego_promesas_rias_do_sur.sqlite')
+        # dbs_path='./dbs/2022-02-05_campionato_provincial_pontevedra_fase_ii_as_pozas.sqlite')
 
     def show_main(self):
         self.pn_properties.Hide()

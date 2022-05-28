@@ -1,134 +1,94 @@
 # -*- coding: utf-8 -*- 
 
 
+from specific_functions import utils
+
+
 class Category(object):
     
     def __init__(self, **kwargs):
         self.categories = kwargs['categories']
         self.config = self.categories.config          
-        if 'category_id' in list(kwargs.keys()):
+        if 'category_id' in kwargs.keys():
             self.category_id = int(kwargs['category_id'])
         else:
             self.category_id = 0
-        if 'pos' in list(kwargs.keys()):
-            self.pos = int(kwargs['pos'])
-        else:
-            self.pos = 0
-        if 'code' in list(kwargs.keys()):
+        if 'code' in kwargs.keys():
             self.code = kwargs['code']
         else:
             self.code = ''
-        if 'gender_id' in list(kwargs.keys()):
+        if 'gender_id' in kwargs.keys():
             self.gender_id = kwargs['gender_id']
         else:
             self.gender_id = ''
-        if 'name' in list(kwargs.keys()):
+        if 'name' in kwargs.keys():
             self.name = kwargs['name']
         else:
             self.name = ''
-        if 'type_id' in list(kwargs.keys()):
-            self.type_id = kwargs['type_id']
+        if 'from_age' in kwargs.keys():
+            self.from_age = int(kwargs['from_age'])
         else:
-            self.type_id = ''
-        if 'from_year' in list(kwargs.keys()):
-            self.from_year = int(kwargs['from_year'])
+            self.from_age = 0
+        if 'to_age' in kwargs.keys():
+            self.to_age = int(kwargs['to_age'])
         else:
-            self.from_year = 0
-        if 'to_year' in list(kwargs.keys()):
-            self.to_year = int(kwargs['to_year'])
-        else:
-            self.to_year = 0
-        if 'save_action' in list(kwargs.keys()):
-            self.save_action = kwargs['save_action']
-        else:
-            self.save_action = None
+            self.to_age = 0
 
     @property
     def champ(self):
         return self.categories.champ
 
     @property
-    def exists_item_id(self):
+    def pos(self):
+        return self.result_members.index(self) + 1
+
+    @property
+    def name_normalized(self):
+        return utils.normalize(self.name)
+
+    def already_exists(self, code, gender_id):
         exists = False
         for i in self.categories:
-            if self.code == i.code and self.gender_id == i.gender_id:
-                if i != self:
-                    exists = True
-                    break
+            if code == i.code and gender_id == i.gender_id and i != self:
+                exists = True
+                break
         return exists
 
-    @property
-    def save_dict(self):
-        pos = len(self.categories)
-        for idx, item in enumerate(self.categories):
-            if item == self:
-                pos = idx
-                break
-        variables = {
-            "id": self.id,
-            "pos": pos,
-            "code": self.code,
-            "genderId": self.gender_id,
-            "name": self.name,
-            "typeId": self.type_id,
-            "fromYear": self.from_year,
-            "toYear": self.to_year,
-            "champId": self.champ.id
-        }
-        return variables
-
     def save(self):
-        pos = len(self.categories)
-        for idx, item in enumerate(self.categories):
-            if item == self:
-                pos = idx
-                break
+        """
+        Save
+        """
+        if self.category_id:
+            sql = '''
+update categories set  category_code=?, gender_id=?, name=?, from_age=?, to_age=?
+where category_id=?'''
+            values = ((self.code, self.gender_id,
+            self.name, self.from_age, self.to_age, self.category_id),)
+            self.config.dbs.exec_sql(sql=sql, values=values)
+        else:
+            sql = '''
+INSERT INTO categories (category_code, gender_id, name, from_age, to_age)
+VALUES(?, ?, ?, ?, ?) '''
+            values = ((self.code, self.gender_id, self.name,
+            self.from_age, self.to_age),)
+            self.config.dbs.exec_sql(sql=sql, values=values)
+            self.category_id = self.config.dbs.last_row_id
+            self.champ.categories.append(self)
 
-        query = """
-mutation(
-    $id: Int!,
-    $pos: Int!,
-    $code: String!,
-    $genderId: String!,
-    $name: String!,
-    $typeId: String!,
-    $fromYear: Int!,
-    $toYear: Int!,
-    $champId: Int!) {
-  saveCategory(
-    id: $id,
-    pos: $pos,
-    code: $code,
-    genderId: $genderId,
-    name: $name,
-    typeId: $typeId,
-    fromYear: $fromYear,
-    toYear: $toYear,
-    champId: $champId
-  ) {
-    id
-    pos
-    code
-    genderId
-    name
-    typeId
-    fromYear
-    toYear
-    createdAt
-    createdBy
-    updatedAt
-    updatedBy
-    champId
-  }
-}
-"""
-        variables = self.save_dict
-        result = self.config.com_api.execute(query, variables)
-        if result:
-            self.id = result["data"]["saveCategory"]["id"]
-            self.created_by = result["data"]["saveCategory"]["createdBy"]
-            self.save_action = "U"
+    def delete(self):
+        if self.category_id:
+            sql =  ("delete from categories where category_id=?")
+            values = ((self.category_id, ), )
+            self.config.dbs.exec_sql(sql=sql, values=values)
+            self.category_id = 0
+            self.categories.remove(self)
 
     @property
-    def champ_id(self):
-        return self.categories.champ.id
+    def is_in_use(self):
+        uses = 0
+        sql = '''
+select category_id from events_categories where category_id=?; '''
+        res = self.config.dbs.exec_sql(sql=sql, values=((self.category_id, ), ))
+        if res:
+            uses = len(res)
+        return uses

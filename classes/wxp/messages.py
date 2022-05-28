@@ -55,7 +55,22 @@ class Messages:
             message=message,
             caption=caption,
             style=wx.ICON_WARNING | wx.OK)
-            
+
+    def choice(self, title, question, values):
+        """
+        choide dialog
+        """
+        dlg = wx.SingleChoiceDialog(self.view, question, self.view.GetTitle(),
+                                    values, wx.CHOICEDLG_STYLE)
+        if dlg.ShowModal() == wx.ID_OK:
+            value = (dlg.GetSelection(),  dlg.GetStringSelection())
+        else:
+            value = None
+        dlg.Destroy()
+        self.view.SetFocus()
+        print(self.view.GetName())
+        return value
+
     def question(self, message, caption=None):
         '''Show a question message dialog
         
