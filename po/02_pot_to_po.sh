@@ -1,5 +1,5 @@
 #!/bin/bash
 
-msginit -o gl.po -i messages.pot
+msginit -o orcana_limpo.po -i orcana.pot
 
 exit 0

@@ -75,8 +75,8 @@ from categories order by category_code, gender_id '''
             (_('Code'), 'C', 75),
             (_('Gender'), 'C', 65), 
             (_('Name'), 'L', 100),
-            (_('From year'), 'C', 80),
-            (_('To year'), 'C', 80),
+            (_('From age'), 'C', 80),
+            (_('To age'), 'C', 80),
             )
 
     @property

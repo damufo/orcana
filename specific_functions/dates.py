@@ -73,18 +73,18 @@ def format(value, mask):
     '''
     if mask == 'long_text':
         text_months = {
-            1: _('xaneiro'),
-            2: _('febreiro'),
-            3: _('marzo'),
-            4: _('abril'),
-            5: _('maio'),
-            6: _('xuño'),
-            7: _('xullo'),
-            8: _('agosto'),
-            9: _('setembro'),
-            10: _('outubro'),
-            11: _('novembro'),
-            12: _('decembro'),
+            1: _('january'),
+            2: _('february'),
+            3: _('march'),
+            4: _('april'),
+            5: _('may'),
+            6: _('june'),
+            7: _('july'),
+            8: _('august'),
+            9: _('september'),
+            10: _('october'),
+            11: _('november'),
+            12: _('december'),
             }
         value_date = datetime.strptime(
             value[:4] + value[5:7] + value[8:10], '%Y%m%d').date()

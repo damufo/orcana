@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-import gettext
-_ = gettext.gettext
+# import gettext
+# _ = gettext.gettext
 
 ###########################################################################
 ## Class PersonAddEdit
@@ -116,7 +116,7 @@ class PersonAddEdit ( wx.Dialog ):
 		bSizer111 = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.txt_entity_name = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.txt_entity_name.SetToolTip( _(u"Write club name") )
+		self.txt_entity_name.SetToolTip( _(u"Write entity name") )
 
 		bSizer111.Add( self.txt_entity_name, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 

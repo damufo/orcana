@@ -58,8 +58,8 @@ champ = Champ(config=config)
 if 'last_path_dbs' in config.prefs and config.prefs['last_path_dbs']:
     champ.load_dbs(dbs_path=config.prefs['last_path_dbs'])
 
-print(champ.name)
-#xerar series
-champ.auto_gen_heats()
+    print(champ.name)
+    #xerar series
+    champ.auto_gen_heats()
 
 print("Fin")

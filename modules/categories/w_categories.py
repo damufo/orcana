@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-import gettext
-_ = gettext.gettext
+# import gettext
+# _ = gettext.gettext
 
 ###########################################################################
 ## Class Categories
@@ -38,21 +38,6 @@ class Categories ( wx.Panel ):
 		bSizer7.Add( self.lsc, 1, wx.ALL|wx.EXPAND, 5 )
 
 		bSizer71 = wx.BoxSizer( wx.HORIZONTAL )
-
-		bSizer72 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.btn_move_up = wx.Button( self, wx.ID_ANY, _(u"&Up"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
-		self.btn_move_up.SetToolTip( _(u"Move up") )
-
-		bSizer72.Add( self.btn_move_up, 1, wx.ALL, 5 )
-
-		self.btn_move_down = wx.Button( self, wx.ID_ANY, _(u"D&own"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
-		self.btn_move_down.SetToolTip( _(u"Move down") )
-
-		bSizer72.Add( self.btn_move_down, 1, wx.ALL, 5 )
-
-
-		bSizer71.Add( bSizer72, 0, wx.RIGHT|wx.LEFT, 5 )
 
 
 		bSizer71.Add( ( 0, 0), 1, 0, 5 )

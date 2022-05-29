@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-import gettext
-_ = gettext.gettext
+# import gettext
+# _ = gettext.gettext
 
 ###########################################################################
 ## Class Main
@@ -126,8 +126,8 @@ class Fiarna ( wx.Dialog ):
 
 		bSizer13.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		self.btn_gen_referee_tokens = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Generate re&feree's tokens "), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_gen_referee_tokens.SetToolTip( _(u"Generate referee tokens") )
+		self.btn_gen_referee_tokens = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Generate re&feree's tokens"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_gen_referee_tokens.SetToolTip( _(u"Generate re&feree's tokens") )
 
 		bSizer13.Add( self.btn_gen_referee_tokens, 0, wx.ALL, 5 )
 

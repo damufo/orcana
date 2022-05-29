@@ -326,18 +326,18 @@ def __format_str(value, output_format='YYYY/MM/DD'):
         result = date2str(str2date(value), output_format)
     elif output_format == 'long_text':
         text_months = {
-            1: 'xaneiro',
-            2: 'febreiro',
-            3: 'marzo',
-            4: 'abril',
-            5: 'maio',
-            6: 'xuño',
-            7: 'xullo',
-            8: 'agosto',
-            9: 'setembro',
-            10: 'outubro',
-            11: 'novembro',
-            12: 'decembro',
+            1: _('january'),
+            2: _('february'),
+            3: _('march'),
+            4: _('april'),
+            5: _('may'),
+            6: _('june'),
+            7: _('july'),
+            8: _('august'),
+            9: _('september'),
+            10: _('october'),
+            11: _('november'),
+            12: _('december'),
             }
         value_date = str2date(value)
         result = '{} de {} de {}'.format(

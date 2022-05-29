@@ -56,8 +56,8 @@ class Application(wx.App):
         prefs.load()
 
         prefs["app.language"] = 'gl'
-        self.localization(prefs=prefs)
-        # self.translate(app_path_folder=app_path_folder)
+        # self.localization(prefs=prefs)
+        self.translate(app_path_folder=app_path_folder)
 
         config = Config(prefs=prefs,
             app_name=APP_NAME,
@@ -91,19 +91,18 @@ class Application(wx.App):
             trans = gettext.NullTranslations()
         trans.install()
 
-    # def translate(self, app_path_folder):
-    #     has_translations = False
-    #     app_path_folder_locale = app_path_folder / 'locale'
-    #     localedirs = (app_path_folder_locale, '~/.local/share/locale', None)
-    #     for i in localedirs:
-    #         if gettext.find(APP_NAME.lower(), i):
-    #             has_translations = True
-    #             gettext.install(domain=APP_NAME.lower(), localedir=i)
-    #             break
-    #     if not has_translations:
-    #         trans = gettext.NullTranslations()
-    #         trans.install()
-
+    def translate(self, app_path_folder):
+        has_translations = False
+        app_path_folder_locale = app_path_folder / 'locale'
+        localedirs = (app_path_folder_locale, '~/.local/share/locale')
+        for i in localedirs:
+            if gettext.find('orcana', i):
+                has_translations = True
+                gettext.install(domain='orcana', localedir=i)
+                break
+        if not has_translations:
+            trans = gettext.NullTranslations()
+            trans.install()
 try:
     app = Application()
     app.MainLoop()

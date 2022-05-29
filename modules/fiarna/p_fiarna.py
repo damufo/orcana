@@ -55,21 +55,18 @@ class Presenter(object):
     def generate(self):
         from_event, to_event, phase, sort_order = self.view.get_values()
         self.set_path()
-        app_path_folder = self.model.referee_tokens.config.app_path_folder
-        # dbs_path = self.view.msg.sel_bd_championchip(
-        #         default_path=app_path_folder)
-        # if dbs_path:
         report_path = self.view.msg.save_file(
                 suffixes=[".pdf"],
                 default_file=_("referee_tokens")
                 )
-        self.model.referee_tokens.sort_order = sort_order     
-        self.model.referee_tokens.report(
-            report_path=report_path.as_posix(),
-            from_event=from_event,
-            to_event=to_event,
-            phase=phase)
-        self.view.msg.information(_("The operation was successful!"))
+        if report_path:
+            self.model.referee_tokens.sort_order = sort_order     
+            self.model.referee_tokens.report(
+                report_path=str(report_path),
+                from_event=from_event,
+                to_event=to_event,
+                phase=phase)
+            self.view.msg.information(_("The operation was successful!"))
 
     def close(self):
         self.view.close()

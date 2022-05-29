@@ -4,6 +4,7 @@ screenshots/
 doc/
 *.pyc
 *.jpg
-
-
-
+*.pdf
+*.csv
+*.sqlite
+scripts/

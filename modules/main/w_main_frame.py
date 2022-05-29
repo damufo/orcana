@@ -10,6 +10,9 @@
 import wx
 import wx.xrc
 
+# import gettext
+# _ = gettext.gettext
+
 ###########################################################################
 ## Class MainFrame
 ###########################################################################
@@ -25,13 +28,13 @@ class MainFrame ( wx.Frame ):
 
 		buttons = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_properties = wx.Button( self, wx.ID_ANY, u"Properties", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_properties = wx.Button( self, wx.ID_ANY, _(u"Properties"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		buttons.Add( self.btn_properties, 0, wx.ALL, 5 )
 
-		self.btn_events = wx.Button( self, wx.ID_ANY, u"Events", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_events = wx.Button( self, wx.ID_ANY, _(u"Events"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		buttons.Add( self.btn_events, 0, wx.ALL, 5 )
 
-		self.btn_persons = wx.Button( self, wx.ID_ANY, u"Persons", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_persons = wx.Button( self, wx.ID_ANY, _(u"Persons"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		buttons.Add( self.btn_persons, 0, wx.ALL, 5 )
 
 

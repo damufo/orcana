@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-import gettext
-_ = gettext.gettext
+# import gettext
+# _ = gettext.gettext
 
 ###########################################################################
 ## Class ResRelAddEdit
@@ -20,7 +20,7 @@ _ = gettext.gettext
 class ResRelAddEdit ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Result Relai Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 708,419 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Result Relay Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 708,419 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 

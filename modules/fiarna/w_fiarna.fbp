@@ -900,7 +900,7 @@
                                             <property name="gripper">0</property>
                                             <property name="hidden">0</property>
                                             <property name="id">wxID_ANY</property>
-                                            <property name="label">Generate re&amp;feree&apos;s tokens </property>
+                                            <property name="label">Generate re&amp;feree&apos;s tokens</property>
                                             <property name="margins"></property>
                                             <property name="markup">0</property>
                                             <property name="max_size"></property>
@@ -925,7 +925,7 @@
                                             <property name="style"></property>
                                             <property name="subclass"></property>
                                             <property name="toolbar_pane">0</property>
-                                            <property name="tooltip">Generate referee tokens</property>
+                                            <property name="tooltip">Generate re&amp;feree&apos;s tokens</property>
                                             <property name="validator_data_type"></property>
                                             <property name="validator_style">wxFILTER_NONE</property>
                                             <property name="validator_type">wxDefaultValidator</property>
