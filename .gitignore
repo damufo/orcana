@@ -10,3 +10,5 @@ doc/
 scripts/
 non_git/*
 
+build_win/
+dist_win/
