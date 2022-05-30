@@ -33,8 +33,10 @@ from specific_classes.config import Config
 from specific_classes.champ.champ import Champ
 from modules.main.p_main import Presenter
 
+
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
+
 
 class Application(wx.App):
 
@@ -56,8 +58,8 @@ class Application(wx.App):
         prefs.load()
 
         prefs["app.language"] = 'gl'
-        # self.localization(prefs=prefs)
-        self.translate(app_path_folder=app_path_folder)
+        self.localization(prefs=prefs)
+        #self.translate(app_path_folder=app_path_folder)
 
         config = Config(prefs=prefs,
             app_name=APP_NAME,
@@ -84,25 +86,27 @@ class Application(wx.App):
         '''prepare l10n'''
         if not "app.language" in prefs:
             prefs["app.language"] = 'en'
-        filename = "locale/messages_{}.mo".format(prefs["app.language"])
+        filename = "locale/{}/LC_MESSAGES/orcana.mo".format(prefs["app.language"])
         try:
             trans = gettext.GNUTranslations(open(filename, "rb"))
         except IOError:
             trans = gettext.NullTranslations()
         trans.install()
 
-    def translate(self, app_path_folder):
-        has_translations = False
-        app_path_folder_locale = app_path_folder / 'locale'
-        localedirs = (app_path_folder_locale, '~/.local/share/locale')
-        for i in localedirs:
-            if gettext.find('orcana', i):
-                has_translations = True
-                gettext.install(domain='orcana', localedir=i)
-                break
-        if not has_translations:
-            trans = gettext.NullTranslations()
-            trans.install()
+    # def translate(self, app_path_folder):
+    #     has_translations = False
+    #     app_path_folder_locale = app_path_folder / 'locale'
+    #     app_path_folder_locale2 = app_path_folder / 'locale' / 'gl' / 'LC_MESSAGES'
+    #     localedirs = (str(app_path_folder_locale), '~/.local/share/locale', app_path_folder_locale2)
+    #     for i in localedirs:
+    #         if gettext.find('orcana', localedir=i, languages=['gl']):
+    #             has_translations = True
+    #             gettext.install(domain='orcana', localedir=i)
+    #             break
+    #     if not has_translations:
+    #         trans = gettext.NullTranslations()
+    #         trans.install()
+
 try:
     app = Application()
     app.MainLoop()
