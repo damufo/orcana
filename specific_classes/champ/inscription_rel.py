@@ -33,7 +33,7 @@ class InscriptionRel(Inscription):
         if self.inscription_id:
             sql = ('update inscriptions set pool_length=?, chrono_type=?, '
                     'mark_hundredth=?, equated_hundredth=?, date=?, venue=?, '
-                    'event_id=?, person_id=Null, relay_id=? where inscription_id=? ')
+                    'event_id=?, person_id=0, relay_id=? where inscription_id=? ')
             values = ((self.pool_length, self.chrono_type, self.mark_hundredth, 
                     self.equated_hundredth, self.date, 
                     self.venue, self.event.event_id, self.relay.relay_id,
@@ -49,3 +49,5 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?) '''
                     self.venue, self.event.event_id, self.relay.relay_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.inscription_id = self.config.dbs.last_row_id
+            self.champ.inscriptions.append(self)
+        self.champ.inscriptions.sort_default()

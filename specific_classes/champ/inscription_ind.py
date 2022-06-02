@@ -13,6 +13,10 @@ class InscriptionInd(Inscription):
         self.person = kwargs['person']
 
     @property
+    def year(self):
+        return self.birth_date[:4]
+
+    @property
     def equated_hundredth(self):
         champ_pool_length = self.champ.pool_length
         champ_chrono_type = self.champ.chrono_type
@@ -38,7 +42,7 @@ class InscriptionInd(Inscription):
         if self.inscription_id:        
             sql = ('update inscriptions set pool_length=?, chrono_type=?, '
                     'mark_hundredth=?, equated_hundredth=?, date=?, venue=?, '
-                    'event_id=?, person_id=?, relay_id=Null where inscription_id=? ')
+                    'event_id=?, person_id=?, relay_id=0 where inscription_id=? ')
             values = ((self.pool_length, self.chrono_type, self.mark_hundredth, 
                     self.equated_hundredth, self.date, 
                     self.venue, self.event.event_id, self.person.person_id,
@@ -54,5 +58,5 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?) '''
                     self.venue, self.event.event_id, self.person.person_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.inscription_id = self.config.dbs.last_row_id
-
-
+            self.champ.inscriptions.append(self)
+        self.champ.inscriptions.sort_default()

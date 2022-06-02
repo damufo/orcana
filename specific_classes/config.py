@@ -18,8 +18,8 @@ class Config(object):
         self.app_name = app_name
         self.app_title = app_title
         self.app_version = "0.0.1"
-        self.app_version_date = "2021-08-24"
-        self.app_description = _("A simple championships manager.")
+        self.app_version_date = "2022-06-2"
+        self.app_description = _("A championships manager.")
         self.app_copyright = "(C) 2020 Daniel Muñiz Fontoira"
         self.app_web_site = "https://gitlab.com/damufo/{}".format(app_name)
         self.app_developer = "Daniel Muñiz Fontoira"
@@ -44,7 +44,6 @@ class Config(object):
         self.pool_length = Choices(choices=(
             (25, '25'),
             (50, '50'),
-            (450, '450'),
             ))
         self.pool_lanes = Choices(choices=(
             (5, '5'),
@@ -57,8 +56,8 @@ class Config(object):
             ('E', _('Electronic')),
             ))
         self.estament = Choices(choices=(
-            ('DEPOR', _('Deportista')),
-            ('MASTE', _('Master')),
+            ('DEPOR', 'Deportista'),
+            ('MASTE', 'Master'),
             ))
         self.gender = Choices(choices=(
             ('F', _('Female')),

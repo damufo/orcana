@@ -13,7 +13,6 @@ from .custom_grid import CustomColLabelRenderer
 from operator import itemgetter, attrgetter
 
 
-
 class View(Heats):
     def __init__(self, parent):
         Heats.__init__(self, parent=parent)
@@ -79,22 +78,22 @@ class View(Heats):
         else:
             pool_lane_adjust = 0
         # Header
-        self.grd_results.SetColLabelValue(0, 'Full name')
+        self.grd_results.SetColLabelValue(0, _('Full name'))
         self.grd_results.SetColSize(0, 400)
-        self.grd_results.SetColLabelValue(1, 'Entity')
+        self.grd_results.SetColLabelValue(1, _('Entity'))
         self.grd_results.SetColSize(1, 200)
-        self.grd_results.SetColLabelValue(2, 'Category')
+        self.grd_results.SetColLabelValue(2, _('Category'))
         self.grd_results.SetColSize(2, 100)
         if heat.ind_rel == 'R':
-            self.grd_results.SetColLabelValue(col_members, 'Members')
+            self.grd_results.SetColLabelValue(col_members, _('Members'))
             self.grd_results.SetColSize(col_members, 100)
-        self.grd_results.SetColLabelValue(col_arrival_mark, 'Mark')
+        self.grd_results.SetColLabelValue(col_arrival_mark, _('Mark'))
         self.grd_results.SetColSize(col_arrival_mark, 100)
-        self.grd_results.SetColLabelValue(col_arrival_pos, 'Pos.')
+        self.grd_results.SetColLabelValue(col_arrival_pos, _('Pos.'))
         self.grd_results.SetColSize(col_arrival_pos, 80)
-        self.grd_results.SetColLabelValue(col_issue_id, 'Issue')
+        self.grd_results.SetColLabelValue(col_issue_id, _('Issue'))
         self.grd_results.SetColSize(col_issue_id, 150)
-        self.grd_results.SetColLabelValue(col_issue_split, 'I. S.') # Issue split
+        self.grd_results.SetColLabelValue(col_issue_split, _('I. S.')) # Issue split
         self.grd_results.SetColSize(col_issue_split, 80)
         results_dict = {}
         for i in results:
@@ -230,315 +229,6 @@ class View(Heats):
             # isto vai aquí porque colle o valor do último parcial para poñelo en arrival_time
             self.grd_results.SetCellValue(row, col_arrival_mark, split.mark_time)
 
-    # def load_heat_rel_grid____(self, heat):
-    #     # self.grd_results.SetLabelBackgroundColour(Colour(wx.WHITE))
-    #     self.grd_results.SetGridLineColour(Colour(wx.WHITE))
-    #     self.grd_results.SetGridLineColour(Colour(wx.LIGHT_GREY))
-    #     self.grd_results.SetSelectionMode(wx.grid.Grid.SelectRows)  # By line
-
-    #     # self.grd_results.colLabels = ['a', 'b', 'c', 'd', 'e']
-    #     # self.grd_results.rowLabels = ['a', 'b', 'c', 'd', 'e']
-    #     # self.grd_results.SetRowLabelSize(0)
-    #     # self.grd_results.SetColLabelSize(0)
-    #     # self.grd_results.SetMargins(0,0)
-    #     # self.grd_results.AutoSizeColumns(False)
-        
-    #     num_col_fixe = 6
-    #     self.grd_results.InsertCols(0, num_col_fixe)
-        
-    #     total_lanes = self.grd_results.GetNumberRows()
-    #     total_cols = self.grd_results.GetNumberCols()
-        
-    #     first_col_splits = num_col_fixe
-    #     if total_cols > first_col_splits:
-    #         self.grd_results.DeleteCols(first_col_splits, total_cols-first_col_splits)
-    #     # self.grd_results.DeleteRows(0, total_lanes - 1)
-        
-    #     results = heat.results
-    #     pool_lanes = 6
-    #     if total_lanes > pool_lanes:
-    #         self.grd_results.DeleteRows(0, total_lanes - pool_lanes)
-    #     elif total_lanes < pool_lanes:
-    #         self.grd_results.InsertRows(0, pool_lanes - total_lanes)
-        
-    #     # Load splits
-    #     # for i in results:
-    #     #     i.splits.load_items_from_dbs()
-    #     # header splits
-    #     count_splits = len(results[0].result_splits)
-    #     self.grd_results.InsertCols(0, count_splits)
-    #     for i, split in enumerate(results[0].result_splits):
-    #         col = first_col_splits + i
-    #         self.grd_results.SetColLabelValue(col, str(split.distance))
-    #         self.grd_results.SetColSize(col, 100)
-    #     self.grd_results.ClearGrid()
-    #     # return
-    #     # self.grd_results.EnableEditing(False)
-    #     if pool_lanes != 10:
-    #         pool_lane_adjust = 1
-    #     else:
-    #         pool_lane_adjust = 0
-    #     # Header
-    #     self.grd_results.SetColLabelValue(0, 'Full name')
-    #     self.grd_results.SetColLabelValue(1, 'Entity')
-    #     self.grd_results.SetColLabelValue(2, 'Category')
-    #     self.grd_results.SetColLabelValue(3, 'Mark')
-    #     self.grd_results.SetColLabelValue(4, 'Pos.')
-    #     self.grd_results.SetColLabelValue(5, 'Issue')
-    #     self.grd_results.SetColLabelValue(6, 'I. S.') # Issue split
-    #     self.grd_results.SetColSize(0, 400)
-    #     self.grd_results.SetColSize(1, 200)
-    #     self.grd_results.SetColSize(2, 100)
-    #     self.grd_results.SetColSize(3, 100)
-    #     self.grd_results.SetColSize(4, 80)
-    #     self.grd_results.SetColSize(5, 150)
-    #     self.grd_results.SetColSize(6, 80)
-    #     # self.grd_results.SetColLabelAlignment(wx.ALIGN_LEFT, wx.ALIGN_CENTRE)
-    #     # Colour(colour)
-    #     results_dict = {}
-    #     for i in results:
-    #         results_dict[i.lane] = i
-
-    #     for lane in range(0, pool_lanes):
-    #         lane_adjusted = (lane + pool_lane_adjust)
-    #         if lane_adjusted in results_dict:
-    #             result = results_dict[lane_adjusted]
-    #             # choices_list = ("", "BAI", "NPR", "RET", "DVI", "DNI", "DSA")
-    #             choices_list = heat.config.issues.choices()
-    #             # self.grd_results.SetCellValue(lane, 3, "")
-    #             choice_editor = wx.grid.GridCellChoiceEditor(choices_list, False) 
-
-
-    #             self.grd_results.SetCellEditor(lane, 5, choice_editor)
-
-
-    #             # tChoiceEditor = wx.grid.GridCellChoiceEditor([], allowOthers=True)
-    #             # self.grd_results.SetCellEditor(lane, 3, tChoiceEditor)
-    #             # self.grd_results.list = [('spam', 42), ('eggs', 69)]
-    #             # self.grd_results.SetCellValue(lane, 3, self.grd_results.list[0][0])
-
-    #             # self.grd_results.SetCellValue(1, 1, 'A')
-    #             # dict = {'A':'A    Description_of_A', 'B':'B    Description_of_B'}
-    #             # self.grd_results.SetCellEditor(1, 1, CustomCellChoiceEditor(dict, true))
-
-
-    #             if result.person:
-    #                 self.grd_results.SetCellValue(lane, 0, result.person.full_name)
-    #                 self.grd_results.SetCellValue(lane, 1, str(result.person.entity.short_name))
-    #             elif result.relay:
-    #                 self.grd_results.SetCellValue(lane, 0, result.relay.name)
-    #                 self.grd_results.SetCellValue(lane, 1, str(result.relay.entity.short_name))
-    #             self.grd_results.SetCellValue(lane, 2, str(result.category.name))
-    #             if result.arrival_pos:
-    #                 self.grd_results.SetCellValue(lane, 4, str(result.arrival_pos))
-    #             else:
-    #                 self.grd_results.SetCellValue(lane, 4, '')                    
-    #             self.grd_results.SetCellValue(lane, 5, str(result.issue_id))
-    #             if result.issue_id:
-    #                 self.grd_results.SetCellValue(lane, 6, str(result.issue_split))
-    #             else:
-    #                 self.grd_results.SetCellValue(lane, 6, '')
-    #             self.grd_results.SetCellAlignment(lane, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 2, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 3, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 4, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 5, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 6, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetReadOnly(lane, 0)  # Name
-    #             self.grd_results.SetReadOnly(lane, 1)  # Entity
-    #             for i in range(count_splits):
-    #                 split = result.result_splits[i]
-    #                 col = first_col_splits + i
-    #                 self.grd_results.SetReadOnly(lane, col, False)
-    #                 self.grd_results.SetCellAlignment(lane, col, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-    #                 # self.grd_results.SetCellBackgroundColour(lane, col, Colour(wx.WHITE))
-    #                 self.grd_results.SetCellValue(lane, col, split.mark_time)
-    #             # isto vai aquí porque colle o valor o último parcial para poñelo en arrival_time
-    #             self.grd_results.SetCellValue(lane, 3, split.mark_time)
-
-
-    #             # self.grd_results.SetCellValue(lane, 4, str(result.arrival_pos))
-    #         else:
-    #             for i in range(self.grd_results.GetNumberCols()):
-    #                 self.grd_results.SetReadOnly(lane, i, True)
-    #                 # self.grd_results.SetCellBackgroundColour(lane, i, wx.Colour(225, 225, 225 ))
-            
-
-
-    #     # self.grd_results.FreezeTo(2, 2)
-    #     # self.grd_results.FreezeTo(0, 3)
-    #     # self.grd_results.EnableEditing(True)
-    #     print("dd")
-    #     # gc_attr = wx.grid.GridCellAttr()
-    #     # gc_attr.SetAlignment(wx.ALIGN_RIGHT, wx.
-    #     # ALIGN_CENTRE)
-    #     # self.grd_results.SetColAttr(2, gc_attr)
-    #     bg = self.grd_results.GetLabelBackgroundColour()
-
-    #     # col_render = CustomColLabelRenderer(bg)
-    #     # self.grd_results.SetDefaultColLabelRenderer(col_render)
-
-    #     self.load_arrival_order(results=results)
-    #     # attr = wx.grid.GridCellAttr()
-    #     # attr.SetAlignment(wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-    #     # self.grd_results.SetColAttr(2, attr)
-    #     self.btn_members.Enable(False)
-
-    # def load_heat_ind_rel_grid(self, heat):
-    #     # self.grd_results.SetLabelBackgroundColour(Colour(wx.WHITE))
-    #     self.grd_results.SetGridLineColour(Colour(wx.WHITE))
-    #     self.grd_results.SetGridLineColour(Colour(wx.LIGHT_GREY))
-    #     self.grd_results.SetSelectionMode(wx.grid.Grid.SelectRows)  # By line
-
-    #     # self.grd_results.colLabels = ['a', 'b', 'c', 'd', 'e']
-    #     # self.grd_results.rowLabels = ['a', 'b', 'c', 'd', 'e']
-    #     # self.grd_results.SetRowLabelSize(0)
-    #     # self.grd_results.SetColLabelSize(0)
-    #     # self.grd_results.SetMargins(0,0)
-    #     # self.grd_results.AutoSizeColumns(False)
-        
-    #     num_col_fixe = 6
-    #     self.grd_results.InsertCols(0, num_col_fixe)
-        
-    #     total_lanes = self.grd_results.GetNumberRows()
-    #     total_cols = self.grd_results.GetNumberCols()
-        
-    #     first_col_splits = num_col_fixe
-    #     if total_cols > first_col_splits:
-    #         self.grd_results.DeleteCols(first_col_splits, total_cols-first_col_splits)
-    #     # self.grd_results.DeleteRows(0, total_lanes - 1)
-        
-    #     results = heat.results
-    #     pool_lanes = 6
-    #     if total_lanes > pool_lanes:
-    #         self.grd_results.DeleteRows(0, total_lanes - pool_lanes)
-    #     elif total_lanes < pool_lanes:
-    #         self.grd_results.InsertRows(0, pool_lanes - total_lanes)
-        
-    #     # Load splits
-    #     # for i in results:
-    #     #     i.splits.load_items_from_dbs()
-    #     # header splits
-    #     count_splits = len(results[0].result_splits)
-    #     self.grd_results.InsertCols(0, count_splits)
-    #     for i, split in enumerate(results[0].result_splits):
-    #         col = first_col_splits + i
-    #         self.grd_results.SetColLabelValue(col, str(split.distance))
-    #         self.grd_results.SetColSize(col, 100)
-    #     self.grd_results.ClearGrid()
-    #     # return
-    #     # self.grd_results.EnableEditing(False)
-    #     if pool_lanes != 10:
-    #         pool_lane_adjust = 1
-    #     else:
-    #         pool_lane_adjust = 0
-    #     # Header
-    #     self.grd_results.SetColLabelValue(0, 'Full name')
-    #     self.grd_results.SetColLabelValue(1, 'Entity')
-    #     self.grd_results.SetColLabelValue(2, 'Category')
-    #     self.grd_results.SetColLabelValue(3, 'Mark')
-    #     self.grd_results.SetColLabelValue(4, 'Pos.')
-    #     self.grd_results.SetColLabelValue(5, 'Issue')
-    #     self.grd_results.SetColLabelValue(6, 'I. S.') # Issue split
-    #     self.grd_results.SetColSize(0, 400)
-    #     self.grd_results.SetColSize(1, 200)
-    #     self.grd_results.SetColSize(2, 100)
-    #     self.grd_results.SetColSize(3, 100)
-    #     self.grd_results.SetColSize(4, 80)
-    #     self.grd_results.SetColSize(5, 150)
-    #     self.grd_results.SetColSize(6, 80)
-    #     # self.grd_results.SetColLabelAlignment(wx.ALIGN_LEFT, wx.ALIGN_CENTRE)
-    #     # Colour(colour)
-    #     results_dict = {}
-    #     for i in results:
-    #         results_dict[i.lane] = i
-
-    #     for lane in range(0, pool_lanes):
-    #         lane_adjusted = (lane + pool_lane_adjust)
-    #         if lane_adjusted in results_dict:
-    #             result = results_dict[lane_adjusted]
-    #             # choices_list = ("", "BAI", "NPR", "RET", "DVI", "DNI", "DSA")
-    #             choices_list = heat.config.issues.choices()
-    #             # self.grd_results.SetCellValue(lane, 3, "")
-    #             choice_editor = wx.grid.GridCellChoiceEditor(choices_list, False) 
-
-
-    #             self.grd_results.SetCellEditor(lane, 5, choice_editor)
-
-
-    #             # tChoiceEditor = wx.grid.GridCellChoiceEditor([], allowOthers=True)
-    #             # self.grd_results.SetCellEditor(lane, 3, tChoiceEditor)
-    #             # self.grd_results.list = [('spam', 42), ('eggs', 69)]
-    #             # self.grd_results.SetCellValue(lane, 3, self.grd_results.list[0][0])
-
-    #             # self.grd_results.SetCellValue(1, 1, 'A')
-    #             # dict = {'A':'A    Description_of_A', 'B':'B    Description_of_B'}
-    #             # self.grd_results.SetCellEditor(1, 1, CustomCellChoiceEditor(dict, true))
-
-
-    #             if result.person:
-    #                 self.grd_results.SetCellValue(lane, 0, result.person.full_name)
-    #                 self.grd_results.SetCellValue(lane, 1, str(result.person.entity.short_name))
-    #             elif result.relay:
-    #                 self.grd_results.SetCellValue(lane, 0, result.relay.name)
-    #                 self.grd_results.SetCellValue(lane, 1, str(result.relay.entity.short_name))
-    #             self.grd_results.SetCellValue(lane, 2, str(result.category.name))
-    #             if result.arrival_pos:
-    #                 self.grd_results.SetCellValue(lane, 4, str(result.arrival_pos))
-    #             else:
-    #                 self.grd_results.SetCellValue(lane, 4, '')                    
-    #             self.grd_results.SetCellValue(lane, 5, str(result.issue_id))
-    #             if result.issue_id:
-    #                 self.grd_results.SetCellValue(lane, 6, str(result.issue_split))
-    #             else:
-    #                 self.grd_results.SetCellValue(lane, 6, '')
-    #             self.grd_results.SetCellAlignment(lane, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 2, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 3, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 4, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 5, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetCellAlignment(lane, 6, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-    #             self.grd_results.SetReadOnly(lane, 0)  # Name
-    #             self.grd_results.SetReadOnly(lane, 1)  # Entity
-    #             for i in range(count_splits):
-    #                 split = result.result_splits[i]
-    #                 col = first_col_splits + i
-    #                 self.grd_results.SetReadOnly(lane, col, False)
-    #                 self.grd_results.SetCellAlignment(lane, col, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-    #                 # self.grd_results.SetCellBackgroundColour(lane, col, Colour(wx.WHITE))
-    #                 self.grd_results.SetCellValue(lane, col, split.mark_time)
-    #             # isto vai aquí porque colle o valor o último parcial para poñelo en arrival_time
-    #             self.grd_results.SetCellValue(lane, 3, split.mark_time)
-
-
-    #             # self.grd_results.SetCellValue(lane, 4, str(result.arrival_pos))
-    #         else:
-    #             for i in range(self.grd_results.GetNumberCols()):
-    #                 self.grd_results.SetReadOnly(lane, i, True)
-    #                 # self.grd_results.SetCellBackgroundColour(lane, i, wx.Colour(225, 225, 225 ))
-            
-
-
-    #     # self.grd_results.FreezeTo(2, 2)
-    #     # self.grd_results.FreezeTo(0, 3)
-    #     # self.grd_results.EnableEditing(True)
-    #     print("dd")
-    #     # gc_attr = wx.grid.GridCellAttr()
-    #     # gc_attr.SetAlignment(wx.ALIGN_RIGHT, wx.
-    #     # ALIGN_CENTRE)
-    #     # self.grd_results.SetColAttr(2, gc_attr)
-    #     bg = self.grd_results.GetLabelBackgroundColour()
-
-    #     # col_render = CustomColLabelRenderer(bg)
-    #     # self.grd_results.SetDefaultColLabelRenderer(col_render)
-
-    #     self.load_arrival_order(results=results)
-    #     # attr = wx.grid.GridCellAttr()
-    #     # attr.SetAlignment(wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-    #     # self.grd_results.SetColAttr(2, attr)
-    #     self.btn_members.Enable(False)
-
-
     def load_arrival_order(self, results):
         arrival_order = ''
         arrival_pos_sorted = sorted(results, key=attrgetter('arrival_pos'), reverse=False)
@@ -585,5 +275,4 @@ class View(Heats):
 
     def close(self):
         self.lsc_heats_plus.save_custom_column_width()
-        # self.lsc_results_plus.save_custom_column_width()
-        # self.lsc_splits_plus.save_custom_column_width()
+

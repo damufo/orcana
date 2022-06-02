@@ -66,7 +66,8 @@ class Presenter(object):
                 from_event=from_event,
                 to_event=to_event,
                 phase=phase)
-            self.view.msg.information(_("The operation was successful!"))
+            # self.view.msg.information(_("The operation was successful!"))
+            self.view.close()
 
     def close(self):
         self.view.close()

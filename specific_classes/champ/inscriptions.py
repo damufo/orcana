@@ -5,42 +5,26 @@ import os
 from operator import itemgetter, attrgetter
 # from specific_classes.report_base import ReportBase
 #from specific_classes.conversions import Conversions
-from specific_classes.champ.inscription import Inscription
+from specific_classes.champ.inscription_ind import InscriptionInd
+from specific_classes.champ.inscription_rel import InscriptionRel
 # from specific_functions import times
 # from specific_functions import files
 # from specific_functions.files import get_file_content
 # from specific_functions.marks import mark2hun
 
 
-class EventInscriptions(list):
+class Inscriptions(list):
 
     def __init__(self, **kwargs):
         '''
         Constructor
         '''
-        self.event = kwargs['event']
-        self.config = self.event.config
+        self.champ = kwargs['champ']
+        self.config = self.champ.config
 
-        # self.event = None
-
-        # This is for inscriptions form calculation
-        self.calc_pool_length = False
-        self.calc_licenses_renewed = False
-
-#         self.conversions = Conversions(config=self.config,
-#                                        equate_pool_length=self.pool_length,
-#                                        equate_chrono_type=self.chrono_type)
         self.sort_reverse = False
         self.sort_last_field = None
 
-        
-    @property
-    def champ(self):
-        return self.event.champ
-
-    @property
-    def champ_id(self):
-        return self.champ.id
 
     @property
     def activity_id(self):
@@ -62,355 +46,80 @@ class EventInscriptions(list):
     def chrono_type(self):
         return self.champ.chrono_type
 
-    @property
-    def results_from_date(self):
-        return self.champ.results_from_date
+    # def delete_items(self, idxs):
+    #     for idx in sorted(idxs, reverse=True):
+    #         self.delete_item(idx)
 
-    @property
-    def results_to_date(self):
-        return self.champ.results_to_date
-
-    @property
-    def item_blank(self):
-        return Inscription(
-            inscriptions=self,
-            id=0,
-            pool_length=0,
-            chrono_type='',
-            mark_hundredth=354000,
-            date_time='',
-            venue='',
-            event='',
-            person='',
-            relay=''
-            )
-
-    @property
-    def champs(self):
-        return self.champ.champs
-
-    def delete_items(self, idxs):
-        for idx in sorted(idxs, reverse=True):
-            self.delete_item(idx)
-
-    def delete_item(self, idx):
-        inscription = self[idx]
+    def delete_item(self, inscription):
         sql =  ("delete from inscriptions where inscription_id=?")
         values = ((inscription.inscription_id, ), )
         self.config.dbs.exec_sql(sql=sql, values=values)
         sql =  ("delete from inscriptions_members where inscription_id=?")
         values = ((inscription.inscription_id, ), )
         self.config.dbs.exec_sql(sql=sql, values=values)
-        self.pop(idx) #remove element from list
+        self.remove(inscription) #remove element from list
 
-    # def get_last_relay_club_id(self, event_id, club_id):
-    #     # Get last relay club id
-    #     person_id = ""
-    #     for i in self:
-    #         if i.club_id == club_id and i.event.id == event_id:
-    #             if i.person_id > person_id: 
-    #                 person_id = i.person_id
-    #     if person_id:
-    #         last_value = int(person_id[5:])
-    #     else:
-    #         last_value = 1
-    #     return last_value
+    def get_inscription(self, inscription_id):
+        inscription = None
+        for i in self:
+            if i.inscription_id == inscription_id:
+                inscription = i
+                break
+        return inscription
 
-#     def load_items_from_server(self, only_my=True, event_id=0):
-#         '''
-#         Load items from server
-#         '''
-#         query = """
-#    query($champId: Int!, $onlyMy: Boolean!, $eventId: Int!) {
-#   inscriptions (champId: $champId, onlyMy: $onlyMy, eventId: $eventId) {
-#     id personId surname name genderId birthDate clubId poolId chronoId
-#     markHundredth xdate venue typeId createdAt createdBy updatedAt updatedBy
-#     event { id }
-#     } } """
-#         variables = {
-#             "champId": self.champ.id,
-#             "onlyMy": only_my,
-#             "eventId": event_id,
-#         }
-#         del self[:]  # borra o que haxa
-#         result = self.config.com_api.execute(query, variables)
-#         if result:
-#             for i in result["data"]["inscriptions"]:
-#                 self.append(Inscription(
-#                     inscriptions=self,
-#                     id=(i["id"]),
-#                     person_id=(i["personId"]),
-#                     surname=(i["surname"]),
-#                     name=(i["name"]),
-#                     gender_id=i["genderId"],
-#                     birth_date=i["birthDate"],
-#                     club_id=i["clubId"],
-#                     pool_length=i["poolId"],
-#                     chrono_type=i["chronoId"],
-#                     mark_hundredth=i["markHundredth"],
-#                     xdate=i["xdate"],
-#                     venue=i["venue"],
-#                     type_id=i["typeId"],
-#                     created_at=i["createdAt"],
-#                     created_by=i["createdBy"],
-#                     updated_at=i["updatedAt"],
-#                     updated_by=i["updatedBy"],
-#                     event_id=i["event"]["id"],
-#                     save_action='U'))
-
-    def load_items_from_dbs(self, event_id):
+    def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
         sql = '''
 select inscription_id, pool_length, chrono_type, mark_hundredth,
-equated_hundredth, date_time, venue, event_id, person_id, relay_id
-from inscriptions where event_id={} order by equated_hundredth '''
-        sql = sql.format(event_id)
+equated_hundredth, date, venue, event_id, person_id, relay_id
+from inscriptions i order by (select pos from events e where e.event_id=i.event_id), equated_hundredth '''
 
         res = self.config.dbs.exec_sql(sql=sql)
         (INSCRIPTION_ID, POOL_LENGTH, CHRONO_TYPE, MARK_HUNDREDTH,
-EQUATED_HUNDREDTH, DATE_TIME, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
+EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
         for i in res:
             person = self.champ.persons.get_person(i[PERSON_ID])
             relay = self.champ.relays.get_relay(i[RELAY_ID])
             event = self.champ.events.get_event(i[EVENT_ID])
-            self.append(Inscription(
-                    inscriptions=self,
-                    inscription_id=i[INSCRIPTION_ID],
-                    pool_length=i[POOL_LENGTH],
-                    chrono_type=i[CHRONO_TYPE],
-                    mark_hundredth=i[MARK_HUNDREDTH],
-                    equated_hundredth=i[EQUATED_HUNDREDTH],
-                    date_time=i[DATE_TIME],
-                    venue=i[VENUE],
-                    event=event,
-                    person=person,
-                    relay=relay,
-                    ))
+            if person and relay:
+                AssertionError("Iston on pode ser.")
+            elif relay:
+                self.append(InscriptionRel(
+                        inscriptions=self,
+                        inscription_id=i[INSCRIPTION_ID],
+                        pool_length=i[POOL_LENGTH],
+                        chrono_type=i[CHRONO_TYPE],
+                        mark_hundredth=i[MARK_HUNDREDTH],
+                        equated_hundredth=i[EQUATED_HUNDREDTH],
+                        date=i[DATE],
+                        venue=i[VENUE],
+                        event=event,
+                        relay=relay,
+                        ))
+            elif person:
+                self.append(InscriptionInd(
+                        inscriptions=self,
+                        inscription_id=i[INSCRIPTION_ID],
+                        pool_length=i[POOL_LENGTH],
+                        chrono_type=i[CHRONO_TYPE],
+                        mark_hundredth=i[MARK_HUNDREDTH],
+                        equated_hundredth=i[EQUATED_HUNDREDTH],
+                        date=i[DATE],
+                        venue=i[VENUE],
+                        event=event,
+                        person=person,
+                        ))
 
-    # @property
-    # def list_fields(self):
-    #     """
-    #     list fields for form show
-    #     (name as text, align[L:left, C:center, R:right] as text,
-    #             width as integer)
-    #     """
-    #     return ((_('N.'), 'C', 35), (_('Event'), 'C', 70),
-    #             (_('Gender'), 'C', 60),
-    #             (_('Category'), 'C', 60), (_('Name'), 'L', 240),
-    #             (_('Ind/Rel'), 'C', 55),
-    #             (_('Inscribed'), 'C', 65))
+    def sort_default(self):
+        fields = ('equated_hundredth', 'event.pos')
+        for field in fields:
+            self.sort_by_field(field=field, reverse=self.sort_reverse)
+            self.sort_last_field = field
 
-    # @property
-    # def list_values(self):
-    #     """
-    #     list values for form show
-    #     """
-    #     values = []
-    #     for x, i in enumerate(self, 1):
-    #         values.append((
-    #                        x,
-    #                        i.event_id,
-    #                        i.gender_id,
-    #                        i.category_id,
-    #                        i.name,
-    #                        i.ind_rel,
-    #                        i.count_inscriptions))
-    #     return tuple(values)
-
-    # @property
-    # def list_fields(self):
-    #     """
-    #     list fields for form show
-    #     (name as text, align[L:left, C:center, R:right] as text,
-    #             width as integer)
-    #     """
-    #     return (
-    #             (_('License'), 'C', 80),
-    #             (_('Name'), 'L', 200),
-    #             (_('Gender'), 'C', 40),
-    #             (_('Year'), 'C', 80),
-    #             (_('Club'), 'L', 60),
-    #             (_('Mark'), 'R', 65),
-    #             (_('Pool'), 'C', 40),
-    #             (_('Chrono'), 'C', 40),
-    #             (_('Equated'), 'R', 65),
-    #             (_('Date'), 'C', 75),
-    #             (_('Venue'), 'L', 100),
-    #             )
-
-    # @property
-    # def list_values(self):
-    #     """
-    #     list values for form show
-    #     """
-    #     values = []
-    #     if self.event.ind_rel == 'I':
-    #         for i in self:
-    #             values.append((
-    #                 i.person.license,
-    #                 '{}, {}'.format(i.person.surname.upper(), i.person.name),
-    #                 i.person.gender_id,
-    #                 i.person.birth_date[:4],
-    #                 i.person.entity.short_name,
-    #                 i.mark_time,
-    #                 i.pool_length,
-    #                 i.chrono_type,
-    #                 i.equated_time,
-    #                 i.date_time,
-    #                 i.venue,
-    #                 ))
-    #     elif self.event.ind_rel == 'R':
-    #         for i in self:
-    #             values.append((
-    #                 # i.relay.license,
-    #                 # '{}, {}'.format(i.relay.surname.upper(), i.person.name),
-    #                 i.person.gender_id,
-    #                 i.person.birth_date[:4],
-    #                 i.person.entity.short_name,
-    #                 i.mark_time,
-    #                 i.pool_length,
-    #                 i.chrono_type,
-    #                 i.equated_time,
-    #                 i.date_time,
-    #                 i.venue,
-    #                 ))
-    #     return tuple(values)
-
-    # def list_sort(self, **kwargs):
-    #     '''
-    #     Sort results by column num or column name
-    #     '''
-    #     field = None
-    #     if self.event.ind_rel == 'I':
-    #         cols = (
-    #             'event.pos',
-    #             'person_id',
-    #             'surname',
-    #             'name',
-    #             'gender_id',
-    #             'birth_date',
-    #             'club_desc',
-    #             'mark_hundredth',
-    #             'pool_length',
-    #             'chrono_type',
-    #             'equated_hundredth',
-    #             'xdate',
-    #             'venue',
-    #             )
-    #         # cols valid to order
-    #         order_cols = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
-
-
-    #     if 'num_col' in list(kwargs.keys()):
-    #         if kwargs['num_col'] in order_cols:
-    #             field = cols[kwargs['num_col']]
-
-    #     if self.sort_last_field == field:
-    #         self.sort_reverse = not self.sort_reverse
-    #     else:
-    #         self.sort_reverse = False
-    #     if field:
-    #         self.sort_by_field(field=field, reverse=self.sort_reverse)
-    #         self.sort_last_field = field
-
-    # def sort_by_field(self, field, reverse=False):
-    #     self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
-    #     del self[:]
-    #     self.extend(self_sort)
-
-    # def import_insc_from_file(self, file_path):
-    #     print(file_path)
-    #     lines = get_file_content(file_path=file_path,
-    #                                         mode="csv",
-    #                                         compressed=False,
-    #                                         encoding='utf-8-sig')
-    #     if not lines:
-    #         print("O ficheiro está baleiro!!")
-    #         raise ValueError("O ficheiro está baleiro!!")
-            
-
-    #     start_line = 1
-    #     for pos, i in enumerate(lines):
-    #         if i[0]== 'RFEN ID':
-    #             start_line = pos + 1
-    #             break
-
-    #     (LICENSE, SURNAME, NAME, GENDER_ID, BIRTH_DATE, ENTITY_CODE,
-    #     ENTITY_NAME, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO) = range(11)
-    #     for i in lines[start_line:]:
-    #         license = i[LICENSE]
-    #         person = self.champ.persons.get_person_by_license(license=i[LICENSE])
-    #         if person:
-    #             print("This person {} already exists.".format(person.full_name))
-    #         else:
-    #             # add person
-    #             entity = self.champ.entities.get_entity_by_code(entity_code=i[ENTITY_CODE])
-    #             if entity:
-    #                 print("This entity {} already exists.".format(entity.code))
-    #             else:
-    #                 # add entity
-    #                 entity = self.champ.entities.item_blank
-    #                 entity.code = i[ENTITY_CODE]
-    #                 entity.short_name = i[ENTITY_NAME]
-    #                 entity.medium_name = i[ENTITY_NAME]
-    #                 entity.long_name = i[ENTITY_NAME]
-    #                 entity.save()
-    #             person = self.champ.persons.item_blank
-    #             person.license = i[LICENSE]
-    #             person.surname = i[SURNAME]
-    #             person.name = i[NAME]
-    #             person.gender_id = i[GENDER_ID]
-    #             person.birth_date = i[BIRTH_DATE]
-    #             person.entity = entity
-    #             person.save()
-    #         event = self.champ.events[int(i[EVENT_POS]) - 1]
-    #         if event.code != i[EVENT_CODE]:
-    #             print("This event {}.- {} not exists.".format(i[EVENT_POS], i[EVENT_CODE]))
-    #         else:
-    #             # if not self.check_exists(person=person, event=event):
-    #             exists_inscription = False
-    #             for j in self:
-    #                 if j.person == person and j.event == event:
-    #                     exists_inscription = True
-    #                     break
-    #             if exists_inscription:
-    #                 # add inscription
-    #                 print('Inscription already exists.')
-    #             else:
-    #                 print('add inscription')
-    #                 pool_length = int(i[POOLCHRONO][:2])
-    #                 chrono_type = i[POOLCHRONO][3]
-    #                 inscription = self.item_blank
-    #                 inscription.person = person
-    #                 inscription.mark_time = i[MARK_TIME]
-    #                 inscription.pool_length = pool_length
-    #                 inscription.chrono_type = chrono_type
-    #                 inscription.date = ''
-    #                 inscription.venue = ''
-    #                 self.model.inscription.save()
-                
-
-    #         print(i)
-
-#         sql = '''
-# Select rfen_id, birth_date, '' as document_type, dni, email, nationality, birth_place, birth_country,
-# zip_code, phone, name, surname, person_id, 
-# lev_id, fegan_id from persons where rfen_id=? and birth_date=?
-# '''
-#         sql_has_license = '''
-# Select license_id from licenses where person_id=? and season_id='{}'
-# and (validation is not null and validation!='') '''.format(CURRENT_SEASON_ID)
-#         sql_has_license = '''
-# Select license_id from licenses where person_id=? and season_id='{}'
-# '''.format(CURRENT_SEASON_ID)
-
-
-
-
-
-
-
-        return True
+    def sort_by_field(self, field, reverse=False):
+        self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
+        del self[:]
+        self.extend(self_sort)
 
     def report(self, file_path, only_my):
 

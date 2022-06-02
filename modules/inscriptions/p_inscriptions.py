@@ -103,7 +103,9 @@ class Presenter(object):
         if idxs:
             message = _("Are you sure that delete selected items?")
             if self.view.msg.question(message=message):
-                self.model.inscriptions.delete_items(idxs)
+                for idx in idxs:
+                    inscription = self.model.inscriptions[idx]
+                    self.model.inscriptions.champ.inscriptions.delete_item(inscription)
                 self.view.lsc_plus.delete_items(idxs)
         else:
             self.view.msg.warning(message=_("No item selected."))

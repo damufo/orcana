@@ -4,13 +4,21 @@
 import os
 from operator import itemgetter, attrgetter
 from specific_classes.champ.inscription_ind import  InscriptionInd
-from specific_classes.champ.event_inscriptions import EventInscriptions
 
 
-class EventInscriptionsInd(EventInscriptions):
+class EventInscriptionsInd(list):
 
     def __init__(self, **kwargs):
-        EventInscriptions.__init__(self, **kwargs)
+        self.event = kwargs['event']
+        self.config = self.event.config
+
+    @property
+    def champ(self):
+        return self.event.champ
+
+    @property
+    def ind_rel(self):
+        return 'I'
 
     @property    
     def item_blank(self):
@@ -27,36 +35,38 @@ class EventInscriptionsInd(EventInscriptions):
             person=None
         )
 
-    @property
-    def ind_rel(self):
-        return 'I'
-
     def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
-        sql = '''
-select inscription_id, pool_length, chrono_type, mark_hundredth,
-equated_hundredth, date, venue, event_id, person_id, relay_id
-from inscriptions where event_id={} order by equated_hundredth '''
-        sql = sql.format(self.event.event_id)
+        for i in self.champ.inscriptions:
+            if i.event == self.event:
+                self.append(i)
 
-        res = self.config.dbs.exec_sql(sql=sql)
-        (INSCRIPTION_ID, POOL_LENGTH, CHRONO_TYPE, MARK_HUNDREDTH,
-EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
-        for i in res:
-            event = self.champ.events.get_event(self.event.event_id)
-            person = self.champ.persons.get_person(i[PERSON_ID])
-            self.append( InscriptionInd(
-                    inscriptions=self,
-                    inscription_id=i[INSCRIPTION_ID],
-                    pool_length=i[POOL_LENGTH],
-                    chrono_type=i[CHRONO_TYPE],
-                    mark_hundredth=i[MARK_HUNDREDTH],
-                    equated_hundredth=i[EQUATED_HUNDREDTH],
-                    date=i[DATE],
-                    venue=i[VENUE],
-                    event=event,
-                    person=person
-                    ))
+#     def load_items_from_dbs(self):
+#         del self[:]  # borra os elementos que haxa
+#         sql = '''
+# select inscription_id, pool_length, chrono_type, mark_hundredth,
+# equated_hundredth, date, venue, event_id, person_id, relay_id
+# from inscriptions where event_id={} order by equated_hundredth '''
+#         sql = sql.format(self.event.event_id)
+
+#         res = self.config.dbs.exec_sql(sql=sql)
+#         (INSCRIPTION_ID, POOL_LENGTH, CHRONO_TYPE, MARK_HUNDREDTH,
+# EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
+#         for i in res:
+#             event = self.champ.events.get_event(self.event.event_id)
+#             person = self.champ.persons.get_person(i[PERSON_ID])
+#             self.append( InscriptionInd(
+#                     inscriptions=self,
+#                     inscription_id=i[INSCRIPTION_ID],
+#                     pool_length=i[POOL_LENGTH],
+#                     chrono_type=i[CHRONO_TYPE],
+#                     mark_hundredth=i[MARK_HUNDREDTH],
+#                     equated_hundredth=i[EQUATED_HUNDREDTH],
+#                     date=i[DATE],
+#                     venue=i[VENUE],
+#                     event=event,
+#                     person=person
+#                     ))
 
     @property
     def list_fields(self):

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*- 
 
 import bisect
-from unicodedata import category
+# from unicodedata import category
 from specific_functions import marks
-from specific_functions import conversion
-# from specific_functions import normalize
 from specific_classes.champ.result_splits import ResultSplits
 from specific_classes.champ.result_members import ResultMembers
 
@@ -22,8 +20,8 @@ class Result(object):
         self.arrival_pos = kwargs['arrival_pos']
         self.issue_id = kwargs['issue_id']
         self.issue_split = kwargs['issue_split']
-        self.equated_hundredth = kwargs['equated_hundredth'] # marca de inscricion 
-        self.inscription_id = kwargs['inscription_id']
+        self.equated_hundredth = kwargs['equated_hundredth'] # marca de ordenación, predeterminada é a de inscricion 
+        self.inscription = kwargs['inscription']
         # self.splits = Splits()
         self.result_splits = ResultSplits(result=self)
         if self.ind_rel == 'R':
@@ -174,12 +172,12 @@ class Result(object):
     def save(self):
         if self.result_id:  # Edit
             if self.ind_rel == 'I':
-                sql = ('update results set person_id=?, relay_id=Null, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
+                sql = ('update results set person_id=?, relay_id=0, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
                 values = ((self.person.person_id, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
             else:
                 self.relay.save()
-                sql = ('update results set person_id=Null, relay_id=?, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
+                sql = ('update results set person_id=0, relay_id=?, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
                 values = ((self.relay.relay_id, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
 

@@ -17,7 +17,7 @@
 # Copyright (C) 2017 Federacion Galega de Natación (FEGAN) http://www.fegan.org
 # Author: Daniel Muñiz Fontoira (2017) <dani@damufo.com>
 
-from unicodedata import category
+# from unicodedata import category
 from reportlab.lib.units import mm
 from specific_classes.fiarna.report_base_referee_tokens import ReportBaseRefereeTokens
 

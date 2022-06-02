@@ -11,6 +11,7 @@ from specific_classes.champ.sessions import Sessions
 from specific_classes.champ.events import Events
 from specific_classes.champ.persons import Persons
 from specific_classes.champ.relays import Relays
+from specific_classes.champ.inscriptions import Inscriptions
 from specific_classes.champ.phases import Phases
 from specific_classes.champ.heats import heats
 from specific_functions import files
@@ -79,8 +80,9 @@ class Champ(object):
                 self.persons.load_items_from_dbs()
                 self.relays = Relays(champ=self)
                 self.relays.load_items_from_dbs()
-                # self.inscriptions = Inscriptions(champ=self)
-                # self.inscriptions.load_items_from_dbs()
+                self.inscriptions = Inscriptions(champ=self)
+                self.inscriptions.load_items_from_dbs()
+                self.inscriptions.sort_default()
                 self.phases = Phases(champ=self)
                 self.phases.load_items_from_dbs()
                 self.heats = heats(champ=self)
@@ -270,8 +272,8 @@ values( ?, ?, ?, ?)'''
                         values = ((
                             heat_id,
                             lane,
-                            inscription[PERSON_ID],
-                            inscription[RELAY_ID],
+                            inscription[PERSON_ID] or 0,
+                            inscription[RELAY_ID] or 0,
                             inscription[EQUATED_HUNDREDTH],
                             inscription[INSCRIPTION_ID],
                             ),)
@@ -293,34 +295,9 @@ values( ?, ?, ?, ?)'''
                             break
                         elif len(inscriptions) == 0:
                             break
-#             sql_result = '''
-# insert into results (phase_id, heat,  lane, person_id, relay_id, mark_hundredth) 
-# values( ?, ?, ?, ?, ?, ?)'''
-
-#             for result in results:
-#                 self.config.dbs.exec_sql(sql=sql_result, values=(result, ))
-#                 result_id = self.config.dbs.last_row_id
-#                 # Create splits
-#                 splits_for_event = self.config.dbs.exec_sql(
-#                     sql=sql_splits_for_event, values=((result[0], ), ))
-#                 for event_split in splits_for_event:
-#                     self.config.dbs.exec_sql(
-#                         sql=sql_result_split,
-#                         values=((result_id, event_split[0], event_split[1]), ))
-                    
-#         sql = '''
-# insert into phases (pos, event_id,  pool_lanes, progression, session_id, champ_id) 
-# select pos, event_id,
-#     (select pool_lanes from champs c where c.champ_id=e.champ_id) as pool_lanes,
-#     'TIM', (select session_id from sessions s where s.champ_id=e.champ_id)
-#     as session_id, champ_id  from events e; '''
-#         # values = ((self.entity_code, self.long_name, self.medium_name, 
-#         #             self.short_name, self.champ_id),)
-#         # self.config.dbs.exec_sql(sql=sql, values=values)
-#         self.config.dbs.exec_sql(sql=sql)
-        print('Fin')
         self.phases.load_items_from_dbs()
         self.heats.load_items_from_dbs()
+        print('Fin')
 
     def export_results(self):
         self.gen_lev()
@@ -841,15 +818,12 @@ values( ?, ?, ?, ?)'''
                 # FIXME: poñer isto na clase resultados
                 # crear unha lista de inscricións con todas as inscricións
                 # e poñela en champ
-                inscription = None
                 for result in heat.results:
-                    if result.inscription_id:
-                        for insc in inscriptions:
-                            if insc.inscription_id == result.inscription_id:
-                                inscription = insc
-                                break
-                    if inscription:
-                        time_sart_list = '{} {}{}'.format(inscription.mark_time, inscription.pool_length, inscription.chrono_type)
+                    if result.inscription:
+                        time_sart_list = '{} {}{}'.format(
+                            result.inscription.mark_time,
+                            result.inscription.pool_length,
+                            result.inscription.chrono_type)
                         equated_time = result.equated_time
                     else:
                         time_sart_list = ''

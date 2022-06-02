@@ -51,7 +51,7 @@ class Presenter(object):
                 else:
                     inscription.person = person
                     inscription.mark_hundredth = values['mark_hundredth']
-                    inscription.pool_lenth = values['pool_length']
+                    inscription.pool_length = values['pool_length']
                     inscription.chrono_type = values['chrono_type']
                     inscription.date = values['date']
                     inscription.venue = values['venue']

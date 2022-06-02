@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-import os
-from operator import itemgetter, attrgetter
-# from specific_classes.report_base import ReportBase
-#from specific_classes.conversions import Conversions
-from specific_classes.champ.phases import Phases
+from operator import attrgetter
 from specific_classes.champ.result import Result
-# from specific_functions import times
-# from specific_functions import files
-from specific_classes.champ.event_inscriptions import EventInscriptions
+
 
 class Results(list):
 
@@ -18,7 +12,6 @@ class Results(list):
         self.config = heat.config
         self.sort_reverse = False
         self.sort_last_field = None
-
 
     @property
     def champ(self):
@@ -71,6 +64,7 @@ where heat_id={} order by lane '''
             person = self.champ.persons.get_person(i[PERSON_ID])
             relay = self.champ.relays.get_relay(i[RELAY_ID])
             # heat = self.champ.heats.get_heat(i[HEAT_ID])
+            inscription = self.champ.inscriptions.get_inscription(i[INSCRIPTION_ID])
             self.append(Result(
                     results=self,
                     result_id=i[RESULT_ID],
@@ -82,7 +76,7 @@ where heat_id={} order by lane '''
                     issue_id=i[ISSUE_ID],
                     issue_split=i[ISSUE_SPLIT],
                     equated_hundredth=i[EQUATED_HUNDREDTH],
-                    inscription_id=i[INSCRIPTION_ID]
+                    inscription=inscription,
                     ))
 
     def get_result(self, lane):
