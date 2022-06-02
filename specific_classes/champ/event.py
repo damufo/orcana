@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
-from specific_classes.champ.inscriptions_ind import InscriptionsInd
-from specific_classes.champ.inscriptions_rel import InscriptionsRel
+from specific_classes.champ.event_inscriptions_ind import EventInscriptionsInd
+from specific_classes.champ.event_inscriptions_rel import EventInscriptionsRel
 from specific_classes.champ.event_categories import EventCategories
 
 
@@ -17,9 +17,9 @@ class Event(object):
         self.name = kwargs['name']
         self.insc_max = int(kwargs['insc_max'])
         if self.ind_rel == 'I':
-            self.inscriptions = InscriptionsInd(event=self)
+            self.inscriptions = EventInscriptionsInd(event=self)
         elif self.ind_rel == 'R':
-            self.inscriptions = InscriptionsRel(event=self)
+            self.inscriptions = EventInscriptionsRel(event=self)
         self.categories = EventCategories(event=self)
 
     @property

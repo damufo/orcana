@@ -23,6 +23,7 @@ class Result(object):
         self.issue_id = kwargs['issue_id']
         self.issue_split = kwargs['issue_split']
         self.equated_hundredth = kwargs['equated_hundredth'] # marca de inscricion 
+        self.inscription_id = kwargs['inscription_id']
         # self.splits = Splits()
         self.result_splits = ResultSplits(result=self)
         if self.ind_rel == 'R':

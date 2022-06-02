@@ -3,22 +3,18 @@
 
 import os
 from operator import itemgetter, attrgetter
-# from specific_classes.report_base import ReportBase
-#from specific_classes.conversions import Conversions
-from specific_classes.champ.inscription_ind import InscriptionInd
-from specific_classes.champ.inscriptions import Inscriptions
-# from specific_functions import times
-# from specific_functions import files
+from specific_classes.champ.inscription_ind import  InscriptionInd
+from specific_classes.champ.event_inscriptions import EventInscriptions
 
 
-class InscriptionsInd(Inscriptions):
+class EventInscriptionsInd(EventInscriptions):
 
     def __init__(self, **kwargs):
-        Inscriptions.__init__(self, **kwargs)
+        EventInscriptions.__init__(self, **kwargs)
 
     @property    
     def item_blank(self):
-        return InscriptionInd(
+        return  InscriptionInd(
             inscriptions=self,
             inscription_id=0,
             pool_length=self.champ.pool_length,
@@ -49,7 +45,7 @@ EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
         for i in res:
             event = self.champ.events.get_event(self.event.event_id)
             person = self.champ.persons.get_person(i[PERSON_ID])
-            self.append(InscriptionInd(
+            self.append( InscriptionInd(
                     inscriptions=self,
                     inscription_id=i[INSCRIPTION_ID],
                     pool_length=i[POOL_LENGTH],
@@ -70,13 +66,14 @@ EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
                 width as integer)
         """
         return (
+                (_('N.'), 'C', 40),
                 (_('Name'), 'L', 200),
                 (_('Gender'), 'C', 40),
                 (_('Year'), 'C', 80),
                 (_('Club'), 'L', 60),
+                (_('Mark'), 'R', 65),
                 (_('Pool'), 'C', 40),
                 (_('Chrono'), 'C', 40),
-                (_('Mark'), 'R', 65),
                 (_('Equated'), 'R', 65),
                 (_('Date'), 'C', 75),
                 (_('Venue'), 'L', 100),
@@ -89,15 +86,16 @@ EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
         list values for form show
         """
         values = []
-        for i in self:
+        for pos, i in enumerate(self):
             values.append((
+                str(pos+1),
                 i.person.full_name,
                 i.person.gender_id,
                 i.person.birth_date[:4],
                 i.person.entity.short_name,
+                i.mark_time,
                 i.pool_length,
                 i.chrono_type,
-                i.mark_time,
                 i.equated_time,
                 i.date,
                 i.venue,
@@ -117,20 +115,20 @@ EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
             'person.birth_date',
             'person.entity.short_name',
             'pool_length',
+            'equated_hundredth',
             'chrono_type',
             'mark_hundredth',
-            'equated_hundredth',
             'date',
             'venue',
             'person.license',
             )
         # cols valid to order
-        order_cols = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        order_cols = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
 
 
         if 'num_col' in list(kwargs.keys()):
             if kwargs['num_col'] in order_cols:
-                field = cols[kwargs['num_col']]
+                field = cols[kwargs['num_col'] + 1]
 
         if self.sort_last_field == field:
             self.sort_reverse = not self.sort_reverse

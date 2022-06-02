@@ -6,6 +6,7 @@ from .v_inscriptions import View
 from .i_inscriptions import Interactor
 
 
+
 def create(parent, champ):
     '''
     parent is a presenter
@@ -42,6 +43,24 @@ class Presenter(object):
         self.view.lsc_plus.values = event.inscriptions
         self.view.lsc_plus.load(custom_column_widths=True)
         
+
+    def import_from_file(self):
+        msg = self.view.msg
+        champ = self.model.inscriptions.champ
+        file_path = self.view.msg.open_file(
+            suffixes=[".csv"],
+            )
+        if not file_path:
+            msg.error(_("No file was selected."))
+        else:
+            if not file_path.exists() or file_path.is_dir():
+                msg.error(_("The file not exists."))
+            else:
+                file_valid = champ.import_insc_from_file(file_path=file_path)
+                if not file_valid:
+                    msg.error(_("This file haven't a format correct."))
+                else:
+                    self.view_refresh()
 
     def add(self):
         inscriptions = self.model.inscriptions

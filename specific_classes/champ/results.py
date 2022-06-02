@@ -9,7 +9,7 @@ from specific_classes.champ.phases import Phases
 from specific_classes.champ.result import Result
 # from specific_functions import times
 # from specific_functions import files
-
+from specific_classes.champ.event_inscriptions import EventInscriptions
 
 class Results(list):
 
@@ -18,6 +18,7 @@ class Results(list):
         self.config = heat.config
         self.sort_reverse = False
         self.sort_last_field = None
+
 
     @property
     def champ(self):
@@ -43,6 +44,8 @@ class Results(list):
             arrival_pos=0,
             issue_id='',
             issue_split=0,
+            equated_hundredth=0,
+            inscription_id=0  #subtituir isto pola clase inscription, igual que person e relay
             )
 
     def delete_items(self, idxs):
@@ -55,14 +58,14 @@ class Results(list):
         del self[:]  # borra os elementos que haxa
         sql = '''
 select result_id, heat_id, lane, person_id, relay_id, arrival_pos, issue_id,
-issue_split, equated_hundredth
+issue_split, equated_hundredth, inscription_id
 from results r
 where heat_id={} order by lane '''
         sql = sql.format(self.heat.heat_id)
         res = self.config.dbs.exec_sql(sql=sql)
         (RESULT_ID, HEAT_ID, LANE, PERSON_ID, RELAY_ID, ARRIVAL_POS, 
-        ISSUE_ID, ISSUE_SPLIT, EQUATED_HUNDREDTH
-        ) = range(9)
+        ISSUE_ID, ISSUE_SPLIT, EQUATED_HUNDREDTH, INSCRIPTION_ID
+        ) = range(10)
         for i in res:
             # phase = self.champ.phases.get_phase(i[PHASE_ID])
             person = self.champ.persons.get_person(i[PERSON_ID])
@@ -79,6 +82,7 @@ where heat_id={} order by lane '''
                     issue_id=i[ISSUE_ID],
                     issue_split=i[ISSUE_SPLIT],
                     equated_hundredth=i[EQUATED_HUNDREDTH],
+                    inscription_id=i[INSCRIPTION_ID]
                     ))
 
     def get_result(self, lane):

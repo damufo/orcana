@@ -2,8 +2,6 @@
 
 
 from specific_functions import marks
-from specific_functions import conversion
-# from specific_functions import normalize
 
 
 class Inscription(object):
@@ -20,7 +18,6 @@ class Inscription(object):
             self.chrono_type = kwargs['chrono_type']
         else:
             self.chrono_type = ''
-        # self._mark_hundredth = 0
         self.mark_hundredth = int(kwargs['mark_hundredth'])
         if 'date' in list(kwargs.keys()):
             self.date = kwargs['date']

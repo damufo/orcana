@@ -5,141 +5,412 @@ import os
 from operator import itemgetter, attrgetter
 # from specific_classes.report_base import ReportBase
 #from specific_classes.conversions import Conversions
-from specific_classes.champ.inscription_rel import InscriptionRel
-from specific_classes.champ.inscriptions import Inscriptions
+from specific_classes.champ.inscription import Inscription
 # from specific_functions import times
 # from specific_functions import files
+# from specific_functions.files import get_file_content
+# from specific_functions.marks import mark2hun
 
 
-class InscriptionsRel(Inscriptions):
+class EventInscriptions(list):
 
     def __init__(self, **kwargs):
-        Inscriptions.__init__(self, **kwargs)
+        '''
+        Constructor
+        '''
+        self.event = kwargs['event']
+        self.config = self.event.config
 
-    @property    
-    def item_blank(self):
-        return InscriptionRel(
-            inscriptions=self,
-            inscription_id=0,
-            pool_length=0,
-            chrono_type='',
-            mark_hundredth=0,
-            equated_hundredth=0,
-            date='',
-            venue='',
-            event=self.event,
-            relay=self.champ.relays.item_blank
-        )
+        # self.event = None
+
+        # This is for inscriptions form calculation
+        self.calc_pool_length = False
+        self.calc_licenses_renewed = False
+
+#         self.conversions = Conversions(config=self.config,
+#                                        equate_pool_length=self.pool_length,
+#                                        equate_chrono_type=self.chrono_type)
+        self.sort_reverse = False
+        self.sort_last_field = None
+
+        
+    @property
+    def champ(self):
+        return self.event.champ
 
     @property
-    def ind_rel(self):
-        return 'R'
+    def champ_id(self):
+        return self.champ.id
 
-    def load_items_from_dbs(self):
+    @property
+    def activity_id(self):
+        return self.champ.activity_id
+
+    @property
+    def estament_id(self):
+        return self.champ.estament_id
+
+    @property
+    def scope_id(self):
+        return self.champ.scope_id
+
+    @property
+    def pool_length(self):
+        return self.champ.pool_length
+
+    @property
+    def chrono_type(self):
+        return self.champ.chrono_type
+
+    @property
+    def results_from_date(self):
+        return self.champ.results_from_date
+
+    @property
+    def results_to_date(self):
+        return self.champ.results_to_date
+
+    @property
+    def item_blank(self):
+        return Inscription(
+            inscriptions=self,
+            id=0,
+            pool_length=0,
+            chrono_type='',
+            mark_hundredth=354000,
+            date_time='',
+            venue='',
+            event='',
+            person='',
+            relay=''
+            )
+
+    @property
+    def champs(self):
+        return self.champ.champs
+
+    def delete_items(self, idxs):
+        for idx in sorted(idxs, reverse=True):
+            self.delete_item(idx)
+
+    def delete_item(self, idx):
+        inscription = self[idx]
+        sql =  ("delete from inscriptions where inscription_id=?")
+        values = ((inscription.inscription_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+        sql =  ("delete from inscriptions_members where inscription_id=?")
+        values = ((inscription.inscription_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+        self.pop(idx) #remove element from list
+
+    # def get_last_relay_club_id(self, event_id, club_id):
+    #     # Get last relay club id
+    #     person_id = ""
+    #     for i in self:
+    #         if i.club_id == club_id and i.event.id == event_id:
+    #             if i.person_id > person_id: 
+    #                 person_id = i.person_id
+    #     if person_id:
+    #         last_value = int(person_id[5:])
+    #     else:
+    #         last_value = 1
+    #     return last_value
+
+#     def load_items_from_server(self, only_my=True, event_id=0):
+#         '''
+#         Load items from server
+#         '''
+#         query = """
+#    query($champId: Int!, $onlyMy: Boolean!, $eventId: Int!) {
+#   inscriptions (champId: $champId, onlyMy: $onlyMy, eventId: $eventId) {
+#     id personId surname name genderId birthDate clubId poolId chronoId
+#     markHundredth xdate venue typeId createdAt createdBy updatedAt updatedBy
+#     event { id }
+#     } } """
+#         variables = {
+#             "champId": self.champ.id,
+#             "onlyMy": only_my,
+#             "eventId": event_id,
+#         }
+#         del self[:]  # borra o que haxa
+#         result = self.config.com_api.execute(query, variables)
+#         if result:
+#             for i in result["data"]["inscriptions"]:
+#                 self.append(Inscription(
+#                     inscriptions=self,
+#                     id=(i["id"]),
+#                     person_id=(i["personId"]),
+#                     surname=(i["surname"]),
+#                     name=(i["name"]),
+#                     gender_id=i["genderId"],
+#                     birth_date=i["birthDate"],
+#                     club_id=i["clubId"],
+#                     pool_length=i["poolId"],
+#                     chrono_type=i["chronoId"],
+#                     mark_hundredth=i["markHundredth"],
+#                     xdate=i["xdate"],
+#                     venue=i["venue"],
+#                     type_id=i["typeId"],
+#                     created_at=i["createdAt"],
+#                     created_by=i["createdBy"],
+#                     updated_at=i["updatedAt"],
+#                     updated_by=i["updatedBy"],
+#                     event_id=i["event"]["id"],
+#                     save_action='U'))
+
+    def load_items_from_dbs(self, event_id):
         del self[:]  # borra os elementos que haxa
         sql = '''
 select inscription_id, pool_length, chrono_type, mark_hundredth,
-equated_hundredth, date, venue, event_id, person_id, relay_id
+equated_hundredth, date_time, venue, event_id, person_id, relay_id
 from inscriptions where event_id={} order by equated_hundredth '''
-        sql = sql.format(self.event.event_id)
+        sql = sql.format(event_id)
+
         res = self.config.dbs.exec_sql(sql=sql)
         (INSCRIPTION_ID, POOL_LENGTH, CHRONO_TYPE, MARK_HUNDREDTH,
-EQUATED_HUNDREDTH, DATE, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
+EQUATED_HUNDREDTH, DATE_TIME, VENUE, EVENT_ID, PERSON_ID, RELAY_ID) = range(10)
         for i in res:
+            person = self.champ.persons.get_person(i[PERSON_ID])
             relay = self.champ.relays.get_relay(i[RELAY_ID])
             event = self.champ.events.get_event(i[EVENT_ID])
-            self.append(InscriptionRel(
+            self.append(Inscription(
                     inscriptions=self,
                     inscription_id=i[INSCRIPTION_ID],
                     pool_length=i[POOL_LENGTH],
                     chrono_type=i[CHRONO_TYPE],
                     mark_hundredth=i[MARK_HUNDREDTH],
                     equated_hundredth=i[EQUATED_HUNDREDTH],
-                    date=i[DATE],
+                    date_time=i[DATE_TIME],
                     venue=i[VENUE],
                     event=event,
+                    person=person,
                     relay=relay,
                     ))
 
-    @property
-    def list_fields(self):
-        """
-        list fields for form show
-        (name as text, align[L:left, C:center, R:right] as text,
-                width as integer)
-        """
-        return (
-                (_('Name'), 'L', 200),
-                (_('Gender'), 'C', 40),
-                (_('Category'), 'C', 40),
-                (_('Club'), 'L', 60),
-                (_('Pool'), 'C', 40),
-                (_('Chrono'), 'C', 40),
-                (_('Mark'), 'R', 65),
-                (_('Equated'), 'R', 65),
-                (_('Date'), 'C', 75),
-                (_('Venue'), 'L', 100),
-                )
+    # @property
+    # def list_fields(self):
+    #     """
+    #     list fields for form show
+    #     (name as text, align[L:left, C:center, R:right] as text,
+    #             width as integer)
+    #     """
+    #     return ((_('N.'), 'C', 35), (_('Event'), 'C', 70),
+    #             (_('Gender'), 'C', 60),
+    #             (_('Category'), 'C', 60), (_('Name'), 'L', 240),
+    #             (_('Ind/Rel'), 'C', 55),
+    #             (_('Inscribed'), 'C', 65))
 
-    @property
-    def list_values(self):
-        """
-        list values for form show
-        """
-        values = []
-        for i in self:
-            print(i.inscription_id)
-            values.append((
-                i.relay.name,
-                i.relay.gender_id,
-                i.relay.category.name,
-                i.relay.entity.short_name,
-                i.pool_length,
-                i.chrono_type,
-                i.mark_time,
-                i.equated_time,
-                i.date,
-                i.venue,
-                ))
-        return tuple(values)
+    # @property
+    # def list_values(self):
+    #     """
+    #     list values for form show
+    #     """
+    #     values = []
+    #     for x, i in enumerate(self, 1):
+    #         values.append((
+    #                        x,
+    #                        i.event_id,
+    #                        i.gender_id,
+    #                        i.category_id,
+    #                        i.name,
+    #                        i.ind_rel,
+    #                        i.count_inscriptions))
+    #     return tuple(values)
 
-    def list_sort(self, **kwargs):
-        '''
-        Sort results by column num or column name
-        '''
-        field = None
-        cols = (
-            'relay.name',
-            'relay.gender_id',
-            'relay.category.name',
-            'relay.entity.short_name',
-            'pool_length',
-            'chrono_type',
-            'mark_hundredth',
-            'equated_hundredth',
-            'date',
-            'venue',
-            )
-        # cols valid to order
-        order_cols = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+    # @property
+    # def list_fields(self):
+    #     """
+    #     list fields for form show
+    #     (name as text, align[L:left, C:center, R:right] as text,
+    #             width as integer)
+    #     """
+    #     return (
+    #             (_('License'), 'C', 80),
+    #             (_('Name'), 'L', 200),
+    #             (_('Gender'), 'C', 40),
+    #             (_('Year'), 'C', 80),
+    #             (_('Club'), 'L', 60),
+    #             (_('Mark'), 'R', 65),
+    #             (_('Pool'), 'C', 40),
+    #             (_('Chrono'), 'C', 40),
+    #             (_('Equated'), 'R', 65),
+    #             (_('Date'), 'C', 75),
+    #             (_('Venue'), 'L', 100),
+    #             )
+
+    # @property
+    # def list_values(self):
+    #     """
+    #     list values for form show
+    #     """
+    #     values = []
+    #     if self.event.ind_rel == 'I':
+    #         for i in self:
+    #             values.append((
+    #                 i.person.license,
+    #                 '{}, {}'.format(i.person.surname.upper(), i.person.name),
+    #                 i.person.gender_id,
+    #                 i.person.birth_date[:4],
+    #                 i.person.entity.short_name,
+    #                 i.mark_time,
+    #                 i.pool_length,
+    #                 i.chrono_type,
+    #                 i.equated_time,
+    #                 i.date_time,
+    #                 i.venue,
+    #                 ))
+    #     elif self.event.ind_rel == 'R':
+    #         for i in self:
+    #             values.append((
+    #                 # i.relay.license,
+    #                 # '{}, {}'.format(i.relay.surname.upper(), i.person.name),
+    #                 i.person.gender_id,
+    #                 i.person.birth_date[:4],
+    #                 i.person.entity.short_name,
+    #                 i.mark_time,
+    #                 i.pool_length,
+    #                 i.chrono_type,
+    #                 i.equated_time,
+    #                 i.date_time,
+    #                 i.venue,
+    #                 ))
+    #     return tuple(values)
+
+    # def list_sort(self, **kwargs):
+    #     '''
+    #     Sort results by column num or column name
+    #     '''
+    #     field = None
+    #     if self.event.ind_rel == 'I':
+    #         cols = (
+    #             'event.pos',
+    #             'person_id',
+    #             'surname',
+    #             'name',
+    #             'gender_id',
+    #             'birth_date',
+    #             'club_desc',
+    #             'mark_hundredth',
+    #             'pool_length',
+    #             'chrono_type',
+    #             'equated_hundredth',
+    #             'xdate',
+    #             'venue',
+    #             )
+    #         # cols valid to order
+    #         order_cols = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
 
-        if 'num_col' in list(kwargs.keys()):
-            if kwargs['num_col'] in order_cols:
-                field = cols[kwargs['num_col']]
+    #     if 'num_col' in list(kwargs.keys()):
+    #         if kwargs['num_col'] in order_cols:
+    #             field = cols[kwargs['num_col']]
 
-        if self.sort_last_field == field:
-            self.sort_reverse = not self.sort_reverse
-        else:
-            self.sort_reverse = False
-        if field:
-            self.sort_by_field(field=field, reverse=self.sort_reverse)
-            self.sort_last_field = field
+    #     if self.sort_last_field == field:
+    #         self.sort_reverse = not self.sort_reverse
+    #     else:
+    #         self.sort_reverse = False
+    #     if field:
+    #         self.sort_by_field(field=field, reverse=self.sort_reverse)
+    #         self.sort_last_field = field
 
-    def sort_by_field(self, field, reverse=False):
-        self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
-        del self[:]
-        self.extend(self_sort)
+    # def sort_by_field(self, field, reverse=False):
+    #     self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
+    #     del self[:]
+    #     self.extend(self_sort)
+
+    # def import_insc_from_file(self, file_path):
+    #     print(file_path)
+    #     lines = get_file_content(file_path=file_path,
+    #                                         mode="csv",
+    #                                         compressed=False,
+    #                                         encoding='utf-8-sig')
+    #     if not lines:
+    #         print("O ficheiro está baleiro!!")
+    #         raise ValueError("O ficheiro está baleiro!!")
+            
+
+    #     start_line = 1
+    #     for pos, i in enumerate(lines):
+    #         if i[0]== 'RFEN ID':
+    #             start_line = pos + 1
+    #             break
+
+    #     (LICENSE, SURNAME, NAME, GENDER_ID, BIRTH_DATE, ENTITY_CODE,
+    #     ENTITY_NAME, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO) = range(11)
+    #     for i in lines[start_line:]:
+    #         license = i[LICENSE]
+    #         person = self.champ.persons.get_person_by_license(license=i[LICENSE])
+    #         if person:
+    #             print("This person {} already exists.".format(person.full_name))
+    #         else:
+    #             # add person
+    #             entity = self.champ.entities.get_entity_by_code(entity_code=i[ENTITY_CODE])
+    #             if entity:
+    #                 print("This entity {} already exists.".format(entity.code))
+    #             else:
+    #                 # add entity
+    #                 entity = self.champ.entities.item_blank
+    #                 entity.code = i[ENTITY_CODE]
+    #                 entity.short_name = i[ENTITY_NAME]
+    #                 entity.medium_name = i[ENTITY_NAME]
+    #                 entity.long_name = i[ENTITY_NAME]
+    #                 entity.save()
+    #             person = self.champ.persons.item_blank
+    #             person.license = i[LICENSE]
+    #             person.surname = i[SURNAME]
+    #             person.name = i[NAME]
+    #             person.gender_id = i[GENDER_ID]
+    #             person.birth_date = i[BIRTH_DATE]
+    #             person.entity = entity
+    #             person.save()
+    #         event = self.champ.events[int(i[EVENT_POS]) - 1]
+    #         if event.code != i[EVENT_CODE]:
+    #             print("This event {}.- {} not exists.".format(i[EVENT_POS], i[EVENT_CODE]))
+    #         else:
+    #             # if not self.check_exists(person=person, event=event):
+    #             exists_inscription = False
+    #             for j in self:
+    #                 if j.person == person and j.event == event:
+    #                     exists_inscription = True
+    #                     break
+    #             if exists_inscription:
+    #                 # add inscription
+    #                 print('Inscription already exists.')
+    #             else:
+    #                 print('add inscription')
+    #                 pool_length = int(i[POOLCHRONO][:2])
+    #                 chrono_type = i[POOLCHRONO][3]
+    #                 inscription = self.item_blank
+    #                 inscription.person = person
+    #                 inscription.mark_time = i[MARK_TIME]
+    #                 inscription.pool_length = pool_length
+    #                 inscription.chrono_type = chrono_type
+    #                 inscription.date = ''
+    #                 inscription.venue = ''
+    #                 self.model.inscription.save()
+                
+
+    #         print(i)
+
+#         sql = '''
+# Select rfen_id, birth_date, '' as document_type, dni, email, nationality, birth_place, birth_country,
+# zip_code, phone, name, surname, person_id, 
+# lev_id, fegan_id from persons where rfen_id=? and birth_date=?
+# '''
+#         sql_has_license = '''
+# Select license_id from licenses where person_id=? and season_id='{}'
+# and (validation is not null and validation!='') '''.format(CURRENT_SEASON_ID)
+#         sql_has_license = '''
+# Select license_id from licenses where person_id=? and season_id='{}'
+# '''.format(CURRENT_SEASON_ID)
+
+
+
+
+
+
+
+        return True
 
     def report(self, file_path, only_my):
 
@@ -811,93 +1082,93 @@ order by ci.club_id, ci.event_id '''
             message=_('Clubs with excess inscriptions:\n{}').formatmessage
         return message
             
-    # def export_to_server(self):
-    #     """export inscriptions to_server"""
+    def export_to_server(self):
+        """export inscriptions to_server"""
 
-    #     # Generate file to publish
+        # Generate file to publish
 
-    #     entity = self.config.entity
+        entity = self.config.entity
 
-    #     prefs = self.config.prefs
-    #     local_file_path = os.path.join(prefs.fol_local_inscriptions,
-    #                                    "{}_{}.insc".format(self.champ_id,
-    #                                                       entity.entity_id))
-    #     remote_file_path = os.path.join(prefs.fol_remote_inscriptions,
-    #                                     "{}_{}.insc".format(self.champ_id,
-    #                                                         entity.entity_id))
+        prefs = self.config.prefs
+        local_file_path = os.path.join(prefs.fol_local_inscriptions,
+                                       "{}_{}.insc".format(self.champ_id,
+                                                          entity.entity_id))
+        remote_file_path = os.path.join(prefs.fol_remote_inscriptions,
+                                        "{}_{}.insc".format(self.champ_id,
+                                                            entity.entity_id))
 
-    #     tables = ('champ_inscriptions',)
-    #     if entity.is_federation:
-    #         where_sql = 'where champ_id=?'
-    #         where_values = (self.champ_id, )
-    #     else:
-    #         where_sql = 'where champ_id=? and club_id=? '
-    #         where_values = (self.champ_id, entity.entity_id)
-    #     files.export_table_to_file(dbs=self.config.dbs,
-    #                                tables=tables,
-    #                                file_path=local_file_path,
-    #                                where_sql=where_sql,
-    #                                where_values=where_values)
+        tables = ('champ_inscriptions',)
+        if entity.is_federation:
+            where_sql = 'where champ_id=?'
+            where_values = (self.champ_id, )
+        else:
+            where_sql = 'where champ_id=? and club_id=? '
+            where_values = (self.champ_id, entity.entity_id)
+        files.export_table_to_file(dbs=self.config.dbs,
+                                   tables=tables,
+                                   file_path=local_file_path,
+                                   where_sql=where_sql,
+                                   where_values=where_values)
 
-    #     com_server = self.config.com_server
-    #     com_server.send_file(local_file_path=local_file_path,
-    #                          remote_file_path=remote_file_path)
+        com_server = self.config.com_server
+        com_server.send_file(local_file_path=local_file_path,
+                             remote_file_path=remote_file_path)
 
-    # def import_from_server(self, import_own, entity_id, import_only_own=False):
-    #     """
-    #     import_own = [True|False], if True,  imported overwrite previous
-    #     entity_id = entity owner championship, who is importing
-    #     """
-    #     com_server = self.config.com_server
+    def import_from_server(self, import_own, entity_id, import_only_own=False):
+        """
+        import_own = [True|False], if True,  imported overwrite previous
+        entity_id = entity owner championship, who is importing
+        """
+        com_server = self.config.com_server
 
-    #     fol_local_inscriptions = self.config.prefs.fol_local_inscriptions
-    #     fol_remote_inscriptions = self.config.prefs.fol_remote_inscriptions
+        fol_local_inscriptions = self.config.prefs.fol_local_inscriptions
+        fol_remote_inscriptions = self.config.prefs.fol_remote_inscriptions
 
-    #     os.chdir(fol_local_inscriptions)
-    #     champ_local_insc = {}
-    #     for i in os.listdir(fol_local_inscriptions):
-    #         if i[:12] == self.champ_id:
-    #             champ_local_insc[i] = os.path.getmtime(i)
+        os.chdir(fol_local_inscriptions)
+        champ_local_insc = {}
+        for i in os.listdir(fol_local_inscriptions):
+            if i[:12] == self.champ_id:
+                champ_local_insc[i] = os.path.getmtime(i)
 
-    #     all_remote_insc = com_server.get_list(fol_remote_inscriptions)
-    #     for i in all_remote_insc:
-    #         if i.filename[:12] == self.champ_id:
-    #             insc_club_id = i.filename[13:18]
-    #             local_file_path = os.path.join(fol_local_inscriptions,
-    #                                            i.filename)
-    #             # second if line: compare with local and import if is more new
-    #             if (i.filename not in champ_local_insc or
-    #                     int(i.st_mtime) != int(champ_local_insc[i.filename])):
-    #                 com_server.get_file(
-    #                         remote_file_path=os.path.join(
-    #                             fol_remote_inscriptions,
-    #                             i.filename),
-    #                         local_file_path=local_file_path, optimize=False)
-    #             # as dúas liñas de arriba paseino ás dúas de abaixo para que
-    #             # importe sempre e deste xeito recargue a inscrición do servidor
-    #             if entity_id != insc_club_id and not import_only_own:
-    #                 self.import_club_inscriptions(local_file_path, insc_club_id)
-    #             elif import_own and entity_id == insc_club_id:
-    #                 self.import_club_inscriptions(local_file_path, insc_club_id)
+        all_remote_insc = com_server.get_list(fol_remote_inscriptions)
+        for i in all_remote_insc:
+            if i.filename[:12] == self.champ_id:
+                insc_club_id = i.filename[13:18]
+                local_file_path = os.path.join(fol_local_inscriptions,
+                                               i.filename)
+                # second if line: compare with local and import if is more new
+                if (i.filename not in champ_local_insc or
+                        int(i.st_mtime) != int(champ_local_insc[i.filename])):
+                    com_server.get_file(
+                            remote_file_path=os.path.join(
+                                fol_remote_inscriptions,
+                                i.filename),
+                            local_file_path=local_file_path, optimize=False)
+                # as dúas liñas de arriba paseino ás dúas de abaixo para que
+                # importe sempre e deste xeito recargue a inscrición do servidor
+                if entity_id != insc_club_id and not import_only_own:
+                    self.import_club_inscriptions(local_file_path, insc_club_id)
+                elif import_own and entity_id == insc_club_id:
+                    self.import_club_inscriptions(local_file_path, insc_club_id)
 
-#     def import_club_inscriptions(self, local_file_path, insc_club_id):
-#         champs = self.champs
-#         msg = ""
-#         content, main_table, champ_id = champs.get_file_import(
-#                                                     file_path=local_file_path)
-#         try:
-#             self.delete_club_inscriptions(champ_id, insc_club_id)
+    def import_club_inscriptions(self, local_file_path, insc_club_id):
+        champs = self.champs
+        msg = ""
+        content, main_table, champ_id = champs.get_file_import(
+                                                    file_path=local_file_path)
+        try:
+            self.delete_club_inscriptions(champ_id, insc_club_id)
 
-#             champs.import_from_file(content)
-#         except:
-#             print(RuntimeError, TypeError, NameError)
-#             msg = _('Error importing: %s\n') % local_file_path
-#         return msg
+            champs.import_from_file(content)
+        except:
+            print(RuntimeError, TypeError, NameError)
+            msg = _('Error importing: %s\n') % local_file_path
+        return msg
 
-#     def delete_club_inscriptions(self, champ_id, club_id):
-#         '''
-#         delete current inscriptios for champ_id and club_id
-#         '''
-#         sql = '''
-# delete from champ_inscriptions where champ_id=? and club_id=? '''  #and inscribed=0
-#         self.config.dbs.exec_sql(sql=sql, values=((champ_id, club_id),))
+    def delete_club_inscriptions(self, champ_id, club_id):
+        '''
+        delete current inscriptios for champ_id and club_id
+        '''
+        sql = '''
+delete from champ_inscriptions where champ_id=? and club_id=? '''  #and inscribed=0
+        self.config.dbs.exec_sql(sql=sql, values=((champ_id, club_id),))

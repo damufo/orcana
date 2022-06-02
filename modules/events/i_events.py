@@ -10,7 +10,7 @@ class Interactor(object):
         self.presenter = presenter
         self.view = view
         view.parent.Bind(wx.EVT_CLOSE, self.go_back)
-        view.btn_close.Bind(wx.EVT_BUTTON, self.go_back)
+        view.btn_back.Bind(wx.EVT_BUTTON, self.go_back)
 
     def go_back(self, event):
         self.presenter.go_back()

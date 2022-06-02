@@ -17,16 +17,16 @@ class View(Events):
         self.lsc_plus = self.parent.get_lsc_plus(lsc=self.lsc, parent=self)
         self.lsc.SetName('events')
 
-        button_image = (
-            (self.btn_move_down, 'move_down.png'),
-            (self.btn_move_up, 'move_up.png'),
-            (self.btn_delete, 'delete.png'),
-            (self.btn_edit, 'edit.png'),
-            (self.btn_add, 'add.png'),
-            # (self.btn_import, 'import.png'),
-            (self.btn_close, 'close.png'),
-            )
-        self.parent.view_plus.set_button_image(button_image)
+        # button_image = (
+        #     (self.btn_move_down, 'move_down.png'),
+        #     (self.btn_move_up, 'move_up.png'),
+        #     (self.btn_delete, 'delete.png'),
+        #     (self.btn_edit, 'edit.png'),
+        #     (self.btn_add, 'add.png'),
+        #     # (self.btn_import, 'import.png'),
+        #     (self.btn_close, 'close.png'),
+        #     )
+        # self.parent.view_plus.set_button_image(button_image)
 
 
 

@@ -212,6 +212,8 @@ def mark2hun(value, precision='hun'):
     result = 0
     adjust = 100
 
+    if not value:
+        return result
     value = value.strip().replace('.', ':').replace(',', ':')
     time_splits = value.split(":")
 

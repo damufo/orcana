@@ -14,6 +14,7 @@ from specific_classes.champ.relays import Relays
 from specific_classes.champ.phases import Phases
 from specific_classes.champ.heats import heats
 from specific_functions import files
+from specific_functions.files import get_file_content
 
 
 class Champ(object):
@@ -234,7 +235,7 @@ from phases order by pos; '''
             sql2 = '''
 select (select person_id from persons p where p.person_id=i.person_id) person_id,
 (select relay_id from relays r where r.relay_id=i.relay_id) relay_id,
-equated_hundredth
+equated_hundredth, inscription_id
 from inscriptions i where event_id={} order by equated_hundredth; '''
             sql2 = sql2.format(i[EVENT_ID])
             res2 = self.config.dbs.exec_sql(sql=sql2)
@@ -249,8 +250,8 @@ from inscriptions i where event_id={} order by equated_hundredth; '''
                 sql_heat = '''
 insert into heats (phase_id, pos) values(?, ?)'''
                 sql_result = '''
-insert into results (heat_id, lane, person_id, relay_id, equated_hundredth)
-values(?, ?, ?, ?, ?)'''
+insert into results (heat_id, lane, person_id, relay_id, equated_hundredth, inscription_id)
+values(?, ?, ?, ?, ?,?)'''
                 sql_splits_for_event = '''
 select distance, split_code, official from splits_for_event where 
 event_code=(select event_code from events where event_id=
@@ -265,13 +266,14 @@ values( ?, ?, ?, ?)'''
                     heat_id = self.config.dbs.last_row_id
                     for lane in lanes_sort:
                         inscription = inscriptions.pop(0)
-                        PERSON_ID, RELAY_ID, EQUATED_HUNDREDTH = range(3) 
+                        PERSON_ID, RELAY_ID, EQUATED_HUNDREDTH, INSCRIPTION_ID = range(4) 
                         values = ((
                             heat_id,
                             lane,
                             inscription[PERSON_ID],
                             inscription[RELAY_ID],
-                            inscription[EQUATED_HUNDREDTH]
+                            inscription[EQUATED_HUNDREDTH],
+                            inscription[INSCRIPTION_ID],
                             ),)
                         self.config.dbs.exec_sql(sql=sql_result, values=values)
                         result_id = self.config.dbs.last_row_id
@@ -317,6 +319,8 @@ values( ?, ?, ?, ?)'''
 #         # self.config.dbs.exec_sql(sql=sql, values=values)
 #         self.config.dbs.exec_sql(sql=sql)
         print('Fin')
+        self.phases.load_items_from_dbs()
+        self.heats.load_items_from_dbs()
 
     def export_results(self):
         self.gen_lev()
@@ -733,7 +737,7 @@ values( ?, ?, ?, ?)'''
         file_name = os.path.join(
             self.config.app_path_folder,
             _('start_list.pdf'))
-        subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
+        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
                 config= self.config,
@@ -828,29 +832,125 @@ values( ?, ?, ?, ?)'''
             add_phase_title([[phase_title], ])
             heats = [heat for heat in self.heats if heat.phase == phase]
             count_heats = len(heats)
+            inscriptions =  phase.event.inscriptions
+            inscriptions.load_items_from_dbs()
             for heat in heats:
-                heat_title = 'Heat {} of {}'.format(heat.pos, count_heats)
+                heat_title = _('Heat {} of {}').format(heat.pos, count_heats)
                 add_heat_title([[heat_title], ])
                 heat.results.load_items_from_dbs()
+                # FIXME: poñer isto na clase resultados
+                # crear unha lista de inscricións con todas as inscricións
+                # e poñela en champ
+                inscription = None
                 for result in heat.results:
+                    if result.inscription_id:
+                        for insc in inscriptions:
+                            if insc.inscription_id == result.inscription_id:
+                                inscription = insc
+                                break
+                    if inscription:
+                        time_sart_list = '{} {}{}'.format(inscription.mark_time, inscription.pool_length, inscription.chrono_type)
+                        equated_time = result.equated_time
+                    else:
+                        time_sart_list = ''
+                        equated_time = result.equated_time
+
                     line_result = [[
                             str(result.lane), 
                             'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
                             'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
                             'X' not in result.event.code.upper() and result.person.year[2:] or "", 
                             'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
-                            result.equated_time, ''],]
+                            time_sart_list, equated_time],]
                     add_result(line_result)
                     if result.ind_rel == 'R':
                         if not result.result_members:
                             result.result_members.load_items_from_dbs()
-                        members_full_name = ''
                         members = '; '.join([i.person.full_name for i in result.result_members])
                         print(members)
                         if members:
                             add_relay_members([[members], ])
 
-
-
         d.build_file()
         print('fin')
+
+    def import_insc_from_file(self, file_path):
+        print(file_path)
+        lines = get_file_content(file_path=file_path,
+                                            mode="csv",
+                                            compressed=False,
+                                            encoding='utf-8-sig')
+        if not lines:
+            print("O ficheiro está baleiro!!")
+            raise ValueError("O ficheiro está baleiro!!")
+            
+
+        start_line = 1
+        for pos, i in enumerate(lines):
+            if i[0]== 'RFEN ID':
+                start_line = pos + 1
+                break
+
+        (LICENSE, SURNAME, NAME, GENDER_ID, BIRTH_DATE, ENTITY_CODE,
+        ENTITY_NAME, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO) = range(11)
+        for i in lines[start_line:]:
+            license = i[LICENSE]
+            person = self.persons.get_person_by_license(license=i[LICENSE])
+            if person:
+                print("This person {} already exists.".format(person.full_name))
+            else:
+                # add person
+                entity = self.entities.get_entity_by_code(entity_code=i[ENTITY_CODE])
+                if entity:
+                    print("This entity {} already exists.".format(entity.code))
+                else:
+                    # add entity
+                    entity = self.entities.item_blank
+                    entity.entity_code = i[ENTITY_CODE]
+                    entity.short_name = i[ENTITY_NAME]
+                    entity.medium_name = i[ENTITY_NAME]
+                    entity.long_name = i[ENTITY_NAME]
+                    # FIXME: revisar que garde o código da entidade cando se importa de csv
+                    entity.save()
+                person = self.persons.item_blank
+                person.license = i[LICENSE]
+                person.surname = i[SURNAME]
+                person.name = i[NAME]
+                person.gender_id = i[GENDER_ID]
+                person.birth_date = i[BIRTH_DATE]
+                person.entity = entity
+                person.save()
+            event = self.events[int(i[EVENT_POS]) - 1]
+            if event.code != i[EVENT_CODE]:
+                print("This event {}.- {} not exists.".format(i[EVENT_POS], i[EVENT_CODE]))
+            else:
+                
+                inscriptions = event.inscriptions
+                inscriptions.load_items_from_dbs()
+                # if not self.check_exists(person=person, event=event):
+                exists_inscription = False
+                for j in inscriptions:
+                    if j.person == person and j.event == event:
+                        exists_inscription = True
+                        break
+                if exists_inscription:
+                    # add inscription
+                    print('Inscription already exists.')
+                else:
+                    print('add inscription')
+                    if len(i[POOLCHRONO]) == 3:
+                        pool_length = int(i[POOLCHRONO][:2])
+                        chrono_type = i[POOLCHRONO][2].upper()
+                    else:
+                        pool_length = 0
+                        chrono_type = ''
+                    inscription = inscriptions.item_blank
+                    inscription.person = person
+                    inscription.mark_time = i[MARK_TIME]
+                    inscription.pool_length = pool_length
+                    inscription.chrono_type = chrono_type
+                    inscription.date = ''
+                    inscription.venue = ''
+                    inscription.save()
+            print(i)
+        return True

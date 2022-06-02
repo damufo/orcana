@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import gettext
-# _ = gettext.gettext
+import gettext
+_ = gettext.gettext
 
 ###########################################################################
 ## Class Events
@@ -27,7 +27,7 @@ class Events ( wx.Panel ):
 		self.m_staticText3 = wx.StaticText( self, wx.ID_ANY, _(u"Events"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText3.Wrap( -1 )
 
-		bSizer2.Add( self.m_staticText3, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
+		bSizer2.Add( self.m_staticText3, 0, wx.ALL, 5 )
 
 		self.Events = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer2.Add( self.Events, 0, wx.EXPAND |wx.ALL, 5 )
@@ -36,58 +36,48 @@ class Events ( wx.Panel ):
 
 		bSizer11 = wx.BoxSizer( wx.VERTICAL )
 
-		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, _(u"Champ:"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText31.Wrap( -1 )
-
-		bSizer7.Add( self.m_staticText31, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
-
-		self.lbl_champ_name = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.lbl_champ_name.Wrap( -1 )
-
-		bSizer7.Add( self.lbl_champ_name, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL, 5 )
-
-
-		bSizer11.Add( bSizer7, 0, wx.EXPAND, 5 )
-
 		self.lsc = wx.ListCtrl( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
 		bSizer11.Add( self.lsc, 1, wx.ALL|wx.EXPAND, 5 )
 
 		bsz_events = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_move_down = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
+		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_move_down = wx.Button( self, wx.ID_ANY, _(u"D&own"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_move_down.SetToolTip( _(u"Move down") )
 
-		bsz_events.Add( self.btn_move_down, 0, wx.ALL, 5 )
+		bSizer7.Add( self.btn_move_down, 1, wx.ALL, 5 )
 
-		self.btn_move_up = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
+		self.btn_move_up = wx.Button( self, wx.ID_ANY, _(u"&Up"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_move_up.SetToolTip( _(u"Move up") )
 
-		bsz_events.Add( self.btn_move_up, 0, wx.ALL, 5 )
+		bSizer7.Add( self.btn_move_up, 1, wx.ALL, 5 )
 
-		self.btn_change_event = wx.Button( self, wx.ID_ANY, _(u"&Change event"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_change_event.Hide()
 
-		bsz_events.Add( self.btn_change_event, 0, wx.ALL, 5 )
+		bsz_events.Add( bSizer7, 0, 0, 5 )
 
 
 		bsz_events.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		self.btn_delete = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
+		bSizer8 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_delete = wx.Button( self, wx.ID_ANY, _(u"D&elete"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_delete.SetToolTip( _(u"Delete") )
 
-		bsz_events.Add( self.btn_delete, 0, wx.ALL, 5 )
+		bSizer8.Add( self.btn_delete, 1, wx.ALL, 5 )
 
-		self.btn_edit = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
+		self.btn_edit = wx.Button( self, wx.ID_ANY, _(u"Ed&it"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_edit.SetToolTip( _(u"Edit") )
 
-		bsz_events.Add( self.btn_edit, 0, wx.ALL, 5 )
+		bSizer8.Add( self.btn_edit, 1, wx.ALL, 5 )
 
-		self.btn_add = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
+		self.btn_add = wx.Button( self, wx.ID_ANY, _(u"A&dd"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_add.SetToolTip( _(u"Add") )
 
-		bsz_events.Add( self.btn_add, 0, wx.ALL, 5 )
+		bSizer8.Add( self.btn_add, 1, wx.ALL, 5 )
+
+
+		bsz_events.Add( bSizer8, 0, 0, 5 )
 
 
 		bSizer11.Add( bsz_events, 0, wx.EXPAND, 5 )
@@ -97,10 +87,10 @@ class Events ( wx.Panel ):
 
 		bSizer62 = wx.BoxSizer( wx.VERTICAL )
 
-		self.btn_close = wx.BitmapButton( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.DefaultSize, wx.BU_AUTODRAW|0 )
-		self.btn_close.SetToolTip( _(u"Close") )
+		self.btn_back = wx.Button( self, wx.ID_ANY, _(u"B&ack"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_back.SetToolTip( _(u"Back") )
 
-		bSizer62.Add( self.btn_close, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+		bSizer62.Add( self.btn_back, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
 
 		bSizer11.Add( bSizer62, 0, wx.EXPAND, 5 )

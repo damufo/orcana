@@ -56,6 +56,11 @@ class Inscriptions ( wx.Panel ):
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
+		self.btn_import = wx.Button( self, wx.ID_ANY, _(u"I&mport"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_import.SetToolTip( _(u"Import from file") )
+
+		bSizer6.Add( self.btn_import, 0, wx.ALL, 5 )
+
 		self.btn_members = wx.Button( self, wx.ID_ANY, _(u"&Members"), wx.DefaultPosition, wx.Size( -1,-1 ), wx.BU_EXACTFIT )
 		self.btn_members.Hide()
 		self.btn_members.SetToolTip( _(u"Add 1 year for all categories") )

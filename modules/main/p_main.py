@@ -64,8 +64,11 @@ class Presenter(object):
         p_inscriptions.create(parent=self, champ=self.model.champ)
 
     def load_heats(self):
-        from modules.heats import p_heats
-        p_heats.create(parent=self, heats=self.model.champ.heats)
+        if not self.model.champ.heats:
+            self.view.msg.warning(message=_('No heats in this championship.'))
+        else:
+            from modules.heats import p_heats
+            p_heats.create(parent=self, heats=self.model.champ.heats)
 
     def load_result_members(self, parent, result_members=None):
         if not result_members:

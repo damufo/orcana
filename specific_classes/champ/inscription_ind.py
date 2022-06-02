@@ -16,7 +16,6 @@ class InscriptionInd(Inscription):
     def equated_hundredth(self):
         champ_pool_length = self.champ.pool_length
         champ_chrono_type = self.champ.chrono_type
-
         equated_hundredth = conversion.conv_to_pool_chrono(
             mark_hundredth=self.mark_hundredth,
             event_id=self.event.code,

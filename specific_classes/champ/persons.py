@@ -109,6 +109,14 @@ from persons order by surname, name '''
                 break
         return person
 
+    def get_person_by_license(self, license):
+        person = None
+        for i in self:
+            if i.license == license:
+                person = i
+                break
+        return person
+
     @property    
     def item_blank(self):
         return Person(
