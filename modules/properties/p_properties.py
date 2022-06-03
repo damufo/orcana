@@ -26,11 +26,18 @@ class Presenter(object):
         self.view.set_values(champ=self.model.champ)
         # self.view.view_plus.start(modal=True)
 
-    def gen_champ(self):
+    def gen_champ_auto(self):
         message = _('This action reset all results, delete relay members...'
             'Only current inscriptions will be considered to redo all.')
         self.view.msg.warning(message=message)
         self.model.champ.auto_gen_heats()
+
+    def report_inscriptions(self):
+        self.model.champ.report_inscriptions_by_club()
+        self.model.champ.report_inscriptions_by_event()
+        self.model.champ.report_sumary_participants()
+
+
 
     def report_heats(self):
         self.model.champ.report_start_list()

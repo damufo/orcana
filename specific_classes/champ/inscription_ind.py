@@ -13,8 +13,24 @@ class InscriptionInd(Inscription):
         self.person = kwargs['person']
 
     @property
+    def ind_rel(self):
+        return 'I'
+
+    @property
     def year(self):
         return self.birth_date[:4]
+
+    @property
+    def category(self):
+        category = ''
+        if self.person:
+            person = self.person
+            for i in self.event.categories:
+                category = i.category
+                print('{} - {}'.format(category.from_age, category.to_age))
+                if person.age > category.from_age and person.age < category.to_age and person.gender_id == category.gender_id:
+                    category = category
+        return category
 
     @property
     def equated_hundredth(self):

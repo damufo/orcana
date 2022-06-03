@@ -13,6 +13,17 @@ class InscriptionRel(Inscription):
         self.relay = kwargs['relay']
 
     @property
+    def ind_rel(self):
+        return 'R'
+
+    @property
+    def category(self):
+        category = ''
+        if self.relay:
+            category = self.relay.category
+        return category
+
+    @property
     def equated_hundredth(self):
         champ_pool_length = self.champ.pool_length
         champ_chrono_type = self.champ.chrono_type

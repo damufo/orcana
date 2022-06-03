@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import gettext
-# _ = gettext.gettext
+# import getext
+# _ = gettext.gettetxt
 
 ###########################################################################
 ## Class Properties
@@ -19,7 +19,7 @@ import wx.xrc
 
 class Properties ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 800,530 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 848,570 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
@@ -138,25 +138,35 @@ class Properties ( wx.Panel ):
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		bSizer103 = wx.BoxSizer( wx.HORIZONTAL )
+		bSizer12 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_generate_heats = wx.Button( self, wx.ID_ANY, _(u"&G. heats"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_generate_heats.SetToolTip( _(u"Generate heats automatic:\nsessions, phases, heats...") )
+		self.btn_generate_champ = wx.Button( self, wx.ID_ANY, _(u"&Generate champ"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_generate_champ.SetToolTip( _(u"Generate champ automatic:\nsessions, phases, heats...") )
 
-		bSizer103.Add( self.btn_generate_heats, 1, wx.ALL, 5 )
-
-		self.btn_report_heats = wx.Button( self, wx.ID_ANY, _(u"&R. heats"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_report_heats.SetToolTip( _(u"Generate PDF report heats") )
-
-		bSizer103.Add( self.btn_report_heats, 1, wx.ALL, 5 )
+		bSizer12.Add( self.btn_generate_champ, 1, wx.ALL, 5 )
 
 		self.btn_fiarna = wx.Button( self, wx.ID_ANY, _(u"&Fiarna"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_fiarna.SetToolTip( _(u"Fiarna") )
 
-		bSizer103.Add( self.btn_fiarna, 1, wx.ALL, 5 )
+		bSizer12.Add( self.btn_fiarna, 1, wx.ALL, 5 )
 
 
-		bSizer8.Add( bSizer103, 0, 0, 5 )
+		bSizer8.Add( bSizer12, 0, wx.EXPAND, 5 )
+
+		bSizer103 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_report_inscriptions = wx.Button( self, wx.ID_ANY, _(u"Report ins&criptions"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_inscriptions.SetToolTip( _(u"Report inscriptions") )
+
+		bSizer103.Add( self.btn_report_inscriptions, 1, wx.ALL, 5 )
+
+		self.btn_report_heats = wx.Button( self, wx.ID_ANY, _(u"Report heat&s"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_heats.SetToolTip( _(u"Generate PDF report heats") )
+
+		bSizer103.Add( self.btn_report_heats, 1, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )
 
 		self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer8.Add( self.m_staticline2, 0, wx.ALL|wx.EXPAND, 5 )

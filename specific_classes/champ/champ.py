@@ -3,6 +3,7 @@
 
 import os
 import json
+from operator import attrgetter
 from reportlab.lib.units import cm
 from specific_classes.report_base import ReportBase
 from specific_classes.champ.entities import Entities
@@ -692,6 +693,573 @@ values( ?, ?, ?, ?)'''
                                encoding='utf-8-sig',
                                end_line="\n")
         print('Fin')
+
+    def report_inscriptions_by_club(self, entity=None):
+        if entity:
+            entities = [entity, ]
+            file_path = os.path.join(
+                self.config.app_path_folder,
+                _('inscriptions_by_club_{}.pdf').format(entity.entity_code),
+                )
+        else:
+            entities = self.entities
+            file_path = os.path.join(
+                self.config.app_path_folder,
+                _('inscriptions_by_club_full.pdf'),
+                )
+
+        def save_table(lines, inscription):
+            col_widths = ['7%', '22%', '10%', '10%', '8%', '7%', '10%', '11%', '15%']
+            style = [
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('GRID', (0, 0), (-1, -1), 0.5, d.colors.grey),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                ('ALIGN', (1, 0), (1, -1), 'LEFT'),
+                ('ALIGN', (8, 0), (8, -1), 'LEFT'),
+            ]
+
+            table = lines
+            d.insert_table(table=table, colWidths=col_widths, 
+                           style=style, pagebreak=False)
+
+
+        if self.chrono_type == 'M':
+            chrono_text = _('manual')
+        else:
+            chrono_text = _('electronic')
+        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
+            self.venue, self.pool_length, chrono_text)
+        d =  ReportBase(
+                config= self.config,
+                file_name = file_path, 
+                orientation='landscape',
+                title=self.name,
+                subtitle=subtitle)
+
+        d.insert_title_1(text=_("Inscriptions by entity"), alignment=1)
+
+        last_entity = None
+        entities = sorted(entities, key=attrgetter('entity_code'), reverse=False)
+        for entity in entities:
+            # check has inscriptions
+            has_inscriptions =  False
+            for i in self.inscriptions:
+                if i.ind_rel == 'I' and i.person.entity == entity:
+                    has_inscriptions = True
+                    break
+                elif i.ind_rel == 'R' and i.relay.entity == entity:
+                    has_inscriptions = True
+                    break
+            if not has_inscriptions:
+                continue
+            # end check has inscriptions
+            if last_entity:
+                d.insert_page_break()
+            d.insert_paragraph("")
+            last_entity = entity
+            style = [
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('BACKGROUND', (0, 0), (-1, 0), d.colors.lightgrey)
+            ]
+            col_widths = ['100%', ]
+
+            table = [["%s %s" % (
+                entity.entity_code, entity.long_name), ], ]
+            d.insert_table(
+                table=table, colWidths=col_widths,
+                style=style, pagebreak=False)
+
+            inscriptions_ind = [i for i in self.inscriptions if i.ind_rel == 'I']
+            inscriptions_ind = [i for i in inscriptions_ind if i.person.entity == entity]
+            inscriptions_ind = sorted(inscriptions_ind, key=attrgetter('event.pos'), reverse=False)
+            inscriptions_ind = sorted(inscriptions_ind, key=attrgetter('person.name'), reverse=False)
+            inscriptions_ind = sorted(inscriptions_ind, key=attrgetter('person.surname'), reverse=False)
+
+            lines = []
+            last_person = None
+            prev_row = None
+            for row in inscriptions_ind:
+                if row.person != last_person:
+                    if lines:
+                        save_table(lines=lines, inscription=prev_row)
+                        d.insert_paragraph("")
+                        lines = []
+                    style = [
+                        ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                        ('FONTSIZE', (0, 0), (-1, -1), 9),
+                    ]
+                    col_widths = ['100%', ]  
+                    table = [
+                        ["%s %s, %s (%s)" % (
+                            row.person.license, row.person.surname, 
+                            row.person.name, row.person.birth_date[:4]),],]
+                    d.insert_table(
+                        table=table, colWidths=col_widths,
+                        style=style, pagebreak=False)
+                    last_person = row.person
+
+                mark_time = row.mark_time
+                equated_time = row.equated_time
+                lines.append([
+                    row.event.pos, row.event.name, row.category.code,
+                    mark_time, '%sm' % row.pool_length, row.chrono_type,
+                    equated_time, row.date, row.venue],)
+                prev_row = row
+
+            else:
+                if lines:
+                    save_table(lines=lines, inscription=prev_row)
+                    print("rematou individual")
+                    lines = []
+
+            # #remudas
+            inscriptions_rel = [i for i in self.inscriptions if i.ind_rel == 'R']
+            inscriptions_rel= [i for i in inscriptions_rel if i.relay.entity == entity]
+            inscriptions_rel = sorted(inscriptions_rel, key=attrgetter('relay.name'), reverse=False)
+            inscriptions_rel = sorted(inscriptions_rel, key=attrgetter('event.pos'), reverse=False)
+
+            lines = []
+            prev_row = None
+            for row in inscriptions_rel:
+                if lines:
+                    save_table(lines=lines, inscription=prev_row)
+                    d.insert_paragraph("")
+                    lines = []
+                style = [
+                    ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                    ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ]
+                col_widths = ['100%', ]  
+                table = [
+                    ["{} {}".format(
+                        row.relay.entity.entity_code, row.relay.name),],]
+                d.insert_table(
+                    table=table, colWidths=col_widths,
+                    style=style, pagebreak=False)
+
+                mark_time = row.mark_time
+                equated_time = row.equated_time
+                lines.append([
+                    row.event.pos, row.event.name, row.category.code,
+                    mark_time, '%sm' % row.pool_length, row.chrono_type,
+                    equated_time, row.date, row.venue],)
+                prev_row = row
+
+            else:
+                if lines:
+                    save_table(lines=lines, inscription=prev_row)
+                    print("rematou bucle remudas")
+
+        d.build_file()
+        print("feito")
+
+    def report_inscriptions_by_event(self, phase=None):
+        if phase:
+            phases = [phase, ]
+            file_path = os.path.join(
+                self.config.app_path_folder,
+                _('inscriptions_by_event_{}.pdf').format(phase.file_name),
+                )
+        else:
+            phases = self.phases
+            file_path = os.path.join(
+                self.config.app_path_folder,
+                _('inscriptions_by_event_full.pdf'),
+                )
+
+        def save_lines_ind(lines):
+            col_widths = ['4%', '8%', '34%', '4%', '10%', '12%', '8%', '8%', '12%']
+            style = [
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                ('ALIGN', (2, 0), (2, -1), 'LEFT'),
+                ('ALIGN', (10, 0), (10, -1), 'LEFT'),
+            ]
+            table = lines
+            d.insert_table(table=table, colWidths=col_widths,
+                           style=style, pagebreak=False)
+
+        def save_lines_rel(lines):
+            col_widths = ['4%', '8%', '24%', '14%', '10%', '12%', '8%', '8%', '12%']
+            style = [
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                ('ALIGN', (2, 0), (2, -1), 'LEFT'),
+                ('ALIGN', (10, 0), (10, -1), 'LEFT'),
+            ]
+            table = lines
+            d.insert_table(table=table, colWidths=col_widths,
+                           style=style, pagebreak=False)
+
+        if self.chrono_type == 'M':
+            chrono_text = _('manual')
+        else:
+            chrono_text = _('electronic')
+        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
+            self.venue, self.pool_length, chrono_text)
+        d =  ReportBase(
+                config= self.config,
+                file_name = file_path, 
+                orientation='portrait',
+                title=self.name,
+                subtitle=subtitle)
+
+        d.insert_title_1(text=_("Inscriptions by event"), alignment=1)
+
+        last_event = None
+        for event in self.events:
+            if last_event:
+                d.insert_page_break()
+            d.insert_paragraph("")
+            last_event = event
+            style = [
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ]
+            col_widths = ['100%', ]
+
+            table = [["%s. %s" % (event.pos, event.name), ], ]
+            d.insert_table(table=table, colWidths=col_widths,
+                               style=style, pagebreak=False)
+    
+            inscriptions_ind = [i for i in self.inscriptions if i.event == event]
+            inscriptions_ind = sorted(inscriptions_ind, key=attrgetter('equated_hundredth'), reverse=False)
+            lines = []
+            for row in inscriptions_ind:
+                if row.ind_rel == 'I':
+                    license = row.person.license
+                    name = row.person.full_name
+                    birth_year = row.person.birth_date[2:4]
+                    entity_name = row.person.entity.short_name
+                elif row.ind_rel == 'R':
+                    license = row.relay.entity.entity_code
+                    name = row.relay.name
+                    birth_year = row.relay.category.name
+                    entity_name = row.relay.entity.short_name
+                else:
+                    print("Erro")
+                    AssertionError("produciuse un erro")
+
+                mark_time = '{} {}{}'.format(
+                    row.mark_time,
+                    row.pool_length,
+                    row.chrono_type)
+                    # pool_chrono = '{}{}'.format(
+                    #     self.pool_length,
+                    #     self.chrono_type)
+                equated_time = row.equated_time
+                lines.append([
+                    len(lines) + 1, license, name, birth_year,
+                    entity_name, mark_time, equated_time, row.date, row.venue])
+            else:
+                if lines:
+                    if event.ind_rel == 'I':
+                        save_lines_ind(lines=lines)
+                    else:
+                        save_lines_rel(lines=lines)
+                    print("rematou bucle")
+
+        d.build_file()
+        print("feito")
+
+    def report_sumary_participants(self, entity=None):
+        if entity:
+            entities = [entity, ]
+            file_path = os.path.join(
+                self.config.app_path_folder,
+                _('sumary_participants_{}.pdf').format(entity.entity_code),
+                )
+        else:
+            entities = self.entities
+            file_path = os.path.join(
+                self.config.app_path_folder,
+                _('sumary_participants_full.pdf'),
+                )
+
+        def save_lines(lines):
+            # col_widths = ['4%', '8%', '24%', '14%', '10%', '12%', '8%', '8%', '12%']
+            col_widths = ['40%', '6%', '6%', '8%', '6%', '6%', '8%', '6%', '6%', '6%', '6%']
+            style = [
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
+                ('ALIGN', (0, 0), (0, -1), 'LEFT'),
+                # ('ALIGN', (2, 0), (2, -1), 'LEFT'),
+                # ('ALIGN', (10, 0), (10, -1), 'LEFT'),
+                ('FONT', (0, 0), (0, -1), 'Open Sans Bold'),
+            ]
+            table = lines
+            d.insert_table(table=table, colWidths=col_widths,
+                           style=style, pagebreak=False)
+
+        if self.chrono_type == 'M':
+            chrono_text = _('manual')
+        else:
+            chrono_text = _('electronic')
+        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
+            self.venue, self.pool_length, chrono_text)
+        d =  ReportBase(
+                config= self.config,
+                file_name = file_path, 
+                orientation='portrait',
+                title=self.name,
+                subtitle=subtitle)
+
+        d.insert_title_1(text=_("Sumary participantes"), alignment=1)
+        d.insert_paragraph("")
+        d.insert_paragraph("")
+        # calculate
+        calculations = {}
+        for person in self.persons:
+            if person.entity.entity_code in calculations:
+                entity = calculations[person.entity.entity_code]
+            else:
+                entity = {
+                    'per_fem': 0,
+                    'per_mas': 0,
+                    'per_tot': 0,
+                    'ind_fem': 0,
+                    'ind_mas': 0,
+                    'ind_tot': 0,
+                    'rel_fem': 0,
+                    'rel_mas': 0,
+                    'rel_mix': 0,
+                    'rel_tot': 0,
+                    }
+                calculations[person.entity.entity_code] = entity
+            if person.gender_id == 'F':
+                entity['per_fem'] += 1
+            elif person.gender_id == 'M':
+                entity['per_mas'] += 1
+            entity['per_tot'] += 1
+
+        for inscription in self.inscriptions:
+            if inscription.ind_rel == 'I':
+                person = inscription.person
+                entity_code = inscription.person.entity.entity_code
+                if entity_code in calculations:
+                    entity = calculations[entity_code]
+                else:
+                    entity = {
+                        'per_fem': 0,
+                        'per_mas': 0,
+                        'per_tot': 0,
+                        'ind_fem': 0,
+                        'ind_mas': 0,
+                        'ind_tot': 0,
+                        'rel_fem': 0,
+                        'rel_mas': 0,
+                        'rel_mix': 0,
+                        'rel_tot': 0,
+                        }
+                    calculations[entity_code] = entity
+                if person.gender_id == 'F':
+                    entity['ind_fem'] += 1
+                elif person.gender_id == 'M':
+                    entity['ind_mas'] += 1
+                entity['ind_tot'] += 1
+            elif inscription.ind_rel == 'R':
+                relay = inscription.relay
+                entity_code = inscription.relay.entity.entity_code
+                if entity_code in calculations:
+                    entity = calculations[entity_code]
+                else:
+                    entity = {
+                        'per_fem': 0,
+                        'per_mas': 0,
+                        'per_tot': 0,
+                        'ind_fem': 0,
+                        'ind_mas': 0,
+                        'ind_tot': 0,
+                        'rel_fem': 0,
+                        'rel_mas': 0,
+                        'rel_mix': 0,
+                        'rel_tot': 0,
+                        }
+                    calculations[entity_code] = entity
+                if relay.gender_id == 'F':
+                    entity['rel_fem'] += 1
+                elif relay.gender_id == 'M':
+                    entity['rel_mas'] += 1
+                elif relay.gender_id == 'X':
+                    entity['rel_mix'] += 1
+                entity['rel_tot'] += 1
+
+        last_entity = None
+        entities = sorted(entities, key=attrgetter('entity_code'), reverse=False)
+        # col headers
+        style = [
+            ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('ALIGN', (0, 0), (0, -1), 'LEFT'),
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            ('BACKGROUND', (0, 0), (-1, 0), d.colors.lightgrey)
+        ]
+        # col_widths = ['100%', ]
+        col_widths = ['36%', '20%', '20%', '24%']
+        table = [[
+            _('Entity'),
+            _('Participants'),
+            _('Insc. individuals'),
+            _('Insc. relays'),
+             ], ]
+        d.insert_table(
+            table=table, colWidths=col_widths,
+            style=style, pagebreak=False)
+
+        style = [
+            ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            ('BACKGROUND', (0, 0), (-1, 0), d.colors.lightgrey)
+        ]
+        # col_widths = ['100%', ]
+        col_widths = ['40%', '6%', '6%', '8%', '6%', '6%', '8%', '6%', '6%', '6%', '6%']
+        table = [[
+            '',
+            _('Fem.'),
+            _('Mas.'),
+            _('Tot.'),
+            _('Fem.'),
+            _('Mas.'),
+            _('Tot.'),
+            _('Fem.'),
+            _('Mas.'),
+            _('Mix.'),
+            _('Tot.'),
+             ], ]
+        d.insert_table(
+            table=table, colWidths=col_widths,
+            style=style, pagebreak=False)
+
+        lines = []
+        totals = {
+                'per_fem': 0,
+                'per_mas': 0,
+                'per_tot': 0,
+                'ind_fem': 0,
+                'ind_mas': 0,
+                'ind_tot': 0,
+                'rel_fem': 0,
+                'rel_mas': 0,
+                'rel_mix': 0,
+                'rel_tot': 0,
+                }
+        for entity_code, values in calculations.items():
+
+            lines.append([
+                self.entities.get_entity_by_code(entity_code).long_name,
+                values['per_fem'],
+                values['per_mas'],
+                values['per_tot'],
+                values['ind_fem'],
+                values['ind_mas'],
+                values['ind_tot'],
+                values['rel_fem'],
+                values['rel_mas'],
+                values['rel_mix'],
+                values['rel_tot'],
+                ])
+                
+            totals['per_fem'] += values['per_fem']
+            totals['per_mas'] += values['per_mas']
+            totals['per_tot'] += values['per_tot']
+            totals['ind_fem'] += values['ind_fem']
+            totals['ind_mas'] += values['ind_mas']
+            totals['ind_tot'] += values['ind_tot']
+            totals['rel_fem'] += values['rel_fem']
+            totals['rel_mas'] += values['rel_mas']
+            totals['rel_mix'] += values['rel_mix']
+            totals['rel_tot'] += values['rel_tot']
+        else:
+            if lines:
+                save_lines(lines)
+                style = [
+                    ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                    ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
+                    ('FONTSIZE', (0, 0), (-1, -1), 9),
+                    ('BACKGROUND', (0, 0), (-1, 0), d.colors.lightgrey)
+                ]
+                # col_widths = ['100%', ]
+                col_widths = ['40%', '6%', '6%', '8%', '6%', '6%', '8%', '6%', '6%', '6%', '6%']
+                table = [[
+                    '',
+                    totals['per_fem'],
+                    totals['per_mas'],
+                    totals['per_tot'],
+                    totals['ind_fem'],
+                    totals['ind_mas'],
+                    totals['ind_tot'],
+                    totals['rel_fem'],
+                    totals['rel_mas'],
+                    totals['rel_mix'],
+                    totals['rel_tot'],
+                    ], ]
+                d.insert_table(
+                    table=table, colWidths=col_widths,
+                    style=style, pagebreak=False)
+
+            # if last_event:
+            #     d.insert_page_break()
+            # d.insert_paragraph("")
+            # last_event = event
+            # style = [
+            #     ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+            #     ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            #     ('FONTSIZE', (0, 0), (-1, -1), 9),
+            #     ]
+            # col_widths = ['100%', ]
+
+            # table = [["%s. %s" % (event.pos, event.name), ], ]
+            # d.insert_table(table=table, colWidths=col_widths,
+            #                    style=style, pagebreak=False)
+    
+            # inscriptions_ind = [i for i in self.inscriptions if i.event == event]
+            # inscriptions_ind = sorted(inscriptions_ind, key=attrgetter('equated_hundredth'), reverse=False)
+            # lines = []
+            # for row in inscriptions_ind:
+            #     if row.ind_rel == 'I':
+            #         license = row.person.license
+            #         name = row.person.full_name
+            #         birth_year = row.person.birth_date[2:4]
+            #         entity_name = row.person.entity.short_name
+            #     elif row.ind_rel == 'R':
+            #         license = row.relay.entity.entity_code
+            #         name = row.relay.name
+            #         birth_year = row.relay.category.name
+            #         entity_name = row.relay.entity.short_name
+            #     else:
+            #         print("Erro")
+            #         AssertionError("produciuse un erro")
+
+            #     mark_time = '{} {}{}'.format(
+            #         row.mark_time,
+            #         row.pool_length,
+            #         row.chrono_type)
+            #         # pool_chrono = '{}{}'.format(
+            #         #     self.pool_length,
+            #         #     self.chrono_type)
+            #     equated_time = row.equated_time
+            #     lines.append([
+            #         len(lines) + 1, license, name, birth_year,
+            #         entity_name, mark_time, equated_time, row.date, row.venue])
+            # else:
+            #     if lines:
+            #         if event.ind_rel == 'I':
+            #             save_lines_ind(lines=lines)
+            #         else:
+            #             save_lines_rel(lines=lines)
+            #         print("rematou bucle")
+
+        d.build_file()
+        print("feito")
 
     def report_start_list(self, phase=None):
         if phase:
