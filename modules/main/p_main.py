@@ -35,7 +35,10 @@ class Presenter(object):
     def open_db(self):
         self.view.open_db(champ=self.model.champ)
         self.view.set_buttons(has_champ=self.model.champ.champ_id)
-    
+
+    def report_results(self):
+        self.model.champ.report_results()
+
     def export_results(self):
         self.model.champ.export_results()
 

@@ -44,8 +44,7 @@ class Phase(object):
     def file_name(self):
         return '{}_{}'.format(self.event.file_name, self.progression.lower())
 
-    def gen_results_pdf(self):
-
+    def gen_results_pdf(self, d=False):
         # Obención de datos
         results = []
         results_issues = []
@@ -66,25 +65,29 @@ class Phase(object):
         import os
         from specific_classes.report_base import ReportBase
 
-        champ = self.phases.champ
-        if champ.chrono_type == 'M':
-            chrono_text = _('manual')
-        else:
-            chrono_text = _('electronic')
+        xerar = False
+        if not d:
+            champ = self.phases.champ
+            if champ.chrono_type == 'M':
+                chrono_text = _('manual')
+            else:
+                chrono_text = _('electronic')
 
-        long_name = '{}_{}.pdf'.format(
-            self.event.file_name, self.progression.lower())
-        file_name = os.path.join(
-            self.config.app_path_folder,
-            long_name)
-        subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
-            champ.venue, champ.pool_length, chrono_text)
-        d =  ReportBase(
-                config= self.config,
-                file_name = file_name, 
-                orientation='portrait',
-                title=champ.name,
-                subtitle=subtitle)
+            long_name = '{}_{}.pdf'.format(
+                self.event.file_name, self.progression.lower())
+            file_name = os.path.join(
+                self.config.app_path_folder,
+                long_name)
+            subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
+                champ.venue, champ.pool_length, chrono_text)
+            d =  ReportBase(
+                    config= self.config,
+                    file_name = file_name, 
+                    orientation='portrait',
+                    title=champ.name,
+                    subtitle=subtitle)
+            xerar = True
+
         style = [
             ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
             # ('FONTSIZE',(0,0),(-1,-1), 8),
@@ -183,10 +186,6 @@ class Phase(object):
                 pagebreak=False,
                 alignment='RIGHT')
             
-
-            
-            
-
         def add_result_split(table):
             style_result = [  # o que queremos mudar respecto do estilo base
                 ('FONTSIZE', (0, 0), (-1, -1), 7),
@@ -262,9 +261,11 @@ class Phase(object):
                     if not i.issue_split or num_split < i.issue_split:
                         line_splits.append('{} m:'.format(j.distance))
                         line_splits.append(j.mark_time)
-                        split_hundredth = j.mark_hundredth - last_split_hundredth
-                        last_split_hundredth = j.mark_hundredth
-                        split_time = marks.hun2mark(split_hundredth)
+                        if j.mark_hundredth:
+                            split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
+                            last_split_hundredth = j.mark_hundredth
+                        else:
+                            split_time = ''
                         line_splits.append(split_time)
                         result_split_pos +=1
                         if result_split_pos >= 2:
@@ -320,9 +321,11 @@ class Phase(object):
                     if not i.issue_split or (num_split < i.issue_split and i.ind_rel == 'R'):
                         line_splits.append('{} m:'.format(j.distance))
                         line_splits.append(j.mark_time)
-                        split_hundredth = j.mark_hundredth - last_split_hundredth
-                        last_split_hundredth = j.mark_hundredth
-                        split_time = marks.hun2mark(split_hundredth)
+                        if j.mark_hundredth:
+                            split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
+                            last_split_hundredth = j.mark_hundredth
+                        else:
+                            split_time = ''
                         line_splits.append(split_time)
                         result_split_pos +=1
                         if result_split_pos >= 4:
@@ -336,8 +339,9 @@ class Phase(object):
                 add_result_split(table=table_splits)
 
             position += 1
+        if xerar:
+            d.build_file()
 
-        d.build_file()
         print('fin')
 
 

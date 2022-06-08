@@ -92,6 +92,11 @@ class Main ( wx.Panel ):
 
 		bSizer7.Add( self.btn_open_db, 1, wx.ALL, 5 )
 
+		self.btn_report_results = wx.Button( self, wx.ID_ANY, _(u"Report res&ults"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_results.SetToolTip( _(u"Generate a PDF report with all results") )
+
+		bSizer7.Add( self.btn_report_results, 0, wx.ALL, 5 )
+
 		self.btn_export_results = wx.Button( self, wx.ID_ANY, _(u"E&x. results"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_export_results.SetToolTip( _(u"Export resulta to CSV") )
 

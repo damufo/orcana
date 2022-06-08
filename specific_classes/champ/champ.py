@@ -17,6 +17,7 @@ from specific_classes.champ.phases import Phases
 from specific_classes.champ.heats import heats
 from specific_functions import files
 from specific_functions.files import get_file_content
+from specific_functions import utils
 
 
 class Champ(object):
@@ -33,6 +34,16 @@ class Champ(object):
         self.venue = ''
         self.pool_lane_min = 0
         self.pool_lane_max = 9
+
+    @property
+    def file_name(self):
+        xdate = self.sessions[0].xdate.replace('-', '')
+        file_name = '{}_{}_{}'.format(
+            xdate,
+            self.name,
+            self.venue)
+        
+        return utils.get_valid_filename(file_name.lower())
 
     def load_dbs(self, dbs_path):
         self.config.dbs.connect(dbs_path=dbs_path)
@@ -300,6 +311,36 @@ values( ?, ?, ?, ?)'''
         self.heats.load_items_from_dbs()
         print('Fin')
 
+    def report_results(self):
+        if self.chrono_type == 'M':
+            chrono_text = _('manual')
+        else:
+            chrono_text = _('electronic')
+
+        file_name = '{}.pdf'.format(
+            self.file_name)
+        file_path = os.path.join(
+            self.config.app_path_folder,
+            file_name)
+        subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
+            self.venue, self.pool_length, chrono_text)
+        d =  ReportBase(
+                config= self.config,
+                file_name = file_path, 
+                orientation='portrait',
+                title=self.name,
+                subtitle=subtitle)
+        page_break = False
+        for phase in self.phases:
+            if phase.official:
+                if page_break:
+                    d.insert_page_break()
+                phase.gen_results_pdf(d=d)
+                page_break = True
+
+        d.build_file()
+
+
     def export_results(self):
         self.gen_lev()
 
@@ -382,7 +423,7 @@ values( ?, ?, ?, ?)'''
         cat_dic = {}
         for i in categorias:
             cat_dic[i[0].lower()] = i[1]
-
+        parent_blank = [''] * 39
         head = [
             "phaseresult.last_name",
             "phaseresult.first_name",
@@ -562,8 +603,7 @@ values( ?, ?, ?, ?)'''
                     line.append(members[7])  # phaseresult.participants_names.7
                     line.append(members_licenses_str)  # phaseresult.custom_fields.leveradeid
                     line.append(int(result.arrival_pos))  # phaseresult.position (in heat)        
-                    
-                    lines.append(line)
+                    lines.append(line + parent_blank)
                     line_parent = line
 
                     if result.ind_rel == 'I':
@@ -575,6 +615,7 @@ values( ?, ?, ?, ?)'''
                         line = []
                         members = {0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: ''}
                         members_licenses_str = ''
+                        split_distance = 0
                         if result.ind_rel == 'I':
                             line.append(result.person.surname)  # phaseresult.last_name
                             line.append(result.person.name)  # phaseresult.first_name
@@ -583,6 +624,7 @@ values( ?, ?, ?, ?)'''
                             line.append('license')  # phaseresult.resultable.@type
                             split_gender = genders[result.person.gender_id]
                             split_mark_hundredth = split.mark_hundredth
+                            split_distance = split.distance
                         else:
                             # FIXME: este cálculo seguro que se pode mellorar
                             if int(split.distance % distance_per_member) == 0:
@@ -595,7 +637,7 @@ values( ?, ?, ?, ?)'''
                                             break
                                 else:
                                     mark_hundredth_adjust = 0
-                            member_distance = split.distance - (num_member * distance_per_member)
+                            split_distance = split.distance - (num_member * distance_per_member)
                             if num_member < len(result.result_members):
                                 member = result.result_members[num_member]
                                 line.append(member.person.surname)  # phaseresult.last_name
@@ -612,7 +654,7 @@ values( ?, ?, ?, ?)'''
                             line.append('license')  # phaseresult.resultable.@type
                         line.append(style_names[split.style_id])  # phaseresult.style.code
                         line.append(split_mark_hundredth)  # phaseresult.value
-                        line.append(member_distance)  # phaseresult.goal
+                        line.append(split_distance)  # phaseresult.goal
                         line.append('{}:00'.format(result.heat.start_time or result.phase.date_time))  # phaseresult.date
                         #FIXME: points
                         line.append('0')  # phaseresult.custom_fields.result_point
@@ -648,8 +690,10 @@ values( ?, ?, ?, ?)'''
                         line.append(int(result.arrival_pos))  # phaseresult.position (in heat)
 
                         last_split_mark_hundredth = split.mark_hundredth  # to calculate relay member time
-
-                        lines.append(line + line_parent)
+                        if split.mark_hundredth:
+                            lines.append(line + line_parent)
+                        else:
+                            print("parcial sen tempo")
 
 
         lines.append(head)
@@ -685,9 +729,13 @@ values( ?, ?, ?, ?)'''
         datos = "\n".join(datos)
         datos += "\n"
         # datos = head_str_line + datos
-
+        file_name = '{}.csv'.format(
+            self.file_name)
+        file_path = os.path.join(
+            self.config.app_path_folder,
+            file_name)
         files.set_file_content(content=datos,
-                               file_path="res_lev.csv",
+                               file_path=file_path,
                                compress=False,
                                binary=False,
                                encoding='utf-8-sig',
