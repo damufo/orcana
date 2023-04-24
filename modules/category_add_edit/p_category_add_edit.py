@@ -52,11 +52,14 @@ class Presenter(object):
             self.view.msg.warning(msg)
         else:
             # category.pos = person
+            punctuation = category.champ.punctuations.get_punctuation(
+                punctuation_id=values['punctuation_id'])
             category.code = values['code']
             category.gender_id = values['gender_id']
             category.name = values['name']
             category.from_age = values['from_age']
             category.to_age = values['to_age']
+            category.punctuation = punctuation
             category.save()
             self.view.view_plus.stop()
 
