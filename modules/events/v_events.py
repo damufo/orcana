@@ -16,6 +16,7 @@ class View(Events):
         self.parent.load_panel(self)
         self.lsc_plus = self.parent.get_lsc_plus(lsc=self.lsc, parent=self)
         self.lsc.SetName('events')
+        self.msg = Messages(self.parent)
 
         # button_image = (
         #     (self.btn_move_down, 'move_down.png'),
