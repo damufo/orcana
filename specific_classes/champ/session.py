@@ -18,3 +18,7 @@ class Session(object):
             self.xtime = kwargs['xtime']
         else:
             self.xtime = ''
+
+    @property
+    def date_time(self):
+        return "{} {}".format(self.xdate, self.xtime)

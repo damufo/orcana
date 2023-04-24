@@ -11,7 +11,6 @@ class Event(object):
         self.events = kwargs['events']
         self.config = self.events.config
         self.event_id = int(kwargs['event_id'])
-        self.pos = int(kwargs['pos']) 
         self.code = kwargs['code']
         self.gender_id = kwargs['gender_id']
         self.name = kwargs['name']
@@ -20,7 +19,11 @@ class Event(object):
             self.inscriptions = EventInscriptionsInd(event=self)
         elif self.ind_rel == 'R':
             self.inscriptions = EventInscriptionsRel(event=self)
-        self.categories = EventCategories(event=self)
+        self.event_categories = EventCategories(event=self)
+
+    @property
+    def pos(self):
+        return self.events.index(self) + 1
 
     @property
     def long_name(self):
@@ -51,18 +54,11 @@ class Event(object):
     def champ(self):
         return self.events.champ
 
-    # @property
-    # def champ_id(self):
-    #     return self.events.champ.id
-
-    # @property
-    # def category(self):
-    #     return self.events.champ.categories.get_category(self.category_id)
-
     @property
     def distance(self):
         distance = self.code[:len(self.code)-1]
         if self.num_members != 1:
+            # FIXME: revisar que isto estea ben xa que a distancia que pasa é a do parcial
             distance = distance.upper().split('X')[1]
         return int(distance)
 
@@ -89,15 +85,9 @@ class Event(object):
     def style_id(self):
         return self.code[len(self.code)-1]
 
-    # @property
-    # def gender_id(self):
-    #     return self.category.gender_id
-
     def change_event_code(self, new_code):
         self.code = new_code
-        self.name = self.generate_name(code=self.code,
-                                       gender_id=self.gender_id,
-                                       category_code=self.category.code)
+        self.name = self.generate_name(code=self.code)
         self.save()
 
     def change_name(self, new_name):
@@ -107,119 +97,62 @@ class Event(object):
     def already_exists(self):
         """
         Code is event code, ex. 100L, 4X50S, 800L
-        Category code: ex. ALEV, SENI
         """
         code = self.code
-        category = self.category
-        gender_id = category.gender_id
-        category_code = category.code
+        gender_id = self.gender_id
         exists = False
         for i in self.events:
             if i is not self:
-                if self.ind_rel == 'R':
-                    if (code == i.code and gender_id == i.category.gender_id and
-                            category_code == i.category.code):
-                        exists = True
-                        break
-                elif self.ind_rel == 'I':
-                    # Non se permite unha proba individual e tamén mixta á vez
-                    if (code == i.code and
-                            ((gender_id == i.category.gender_id or i.category.gender_id == 'X') or
-                            (gender_id == 'X' and i.category.gender_id in ('F', 'M'))) and
-                            category_code == i.category.code):
-                        exists = True
-                        break
+                if (code == i.code and gender_id == i.gender_id):
+                    exists = True
+                    break
         return exists
 
-    def generate_name(self, code, category_id, show_category=True):
+    def generate_name(self, code, gender_id):
         '''
         return generated name
         '''
         name = ""
-        if code and category_id:
+        if code and gender_id:
             code_without_style = code[:len(code)-1]
             style_id = code[-1]
             style = self.config.styles.get_style(style_id=style_id)
             if style:
-                style_name = style.long_desc
+                style_name = style.long_name
             else:
                 style_name = ''
-            category = self.events.champ.categories.get_category(category_id)
-            gender_id = category.gender_id
-            category_code = category.code
-            gender_name = self.config.get_gender_name(gender_id)
-            name = '%s m %s %s%s' % (
-                code_without_style.lower(), style_name, gender_name,
-                (show_category and " {}".format(category_code) or ''))
+            gender_name = self.config.genders.get_long_name(gender_id)
+            name = '{} m {} {}'.format(
+                code_without_style.lower(),
+                style_name,
+                gender_name)
         return name
 
-#     @property
-#     def save_dict(self):
-#         pos = len(self.events) + 1
-#         for idx, item in enumerate(self.events):
-#             if item == self:
-#                 pos = idx + 1
-#                 break
-#         variables = {
-#             "id": self.id,
-#             "pos": pos,
-#             "code": self.code,
-#             "name": self.name,
-#             "indRel": self.ind_rel,
-#             "inscMax": self.insc_max,
-#             "champId": self.champ.id,
-#             "categoryId": self.category.id
-#         }
-#         return variables
+    def save(self):
+        """
+        Save event
+        """
+        if self.event_id:
+            sql = '''
+update events set pos=?, event_code=?, gender_id=?, name=?, ind_rel=?, insc_max=? 
+where event_id=?'''
+            values = ((self.pos, self.code, self.gender_id, self.name,
+            self.ind_rel, self.insc_max, self.event_id),)
+            self.config.dbs.exec_sql(sql=sql, values=values)
+        else:
+            sql = '''
+INSERT INTO events (pos, event_code, gender_id, name, ind_rel, insc_max)
+VALUES(?, ?, ?, ?, ?, ?) '''
+            values = ((self.pos, self.code, self.gender_id,
+            self.name, self.ind_rel, self.insc_max),)
+            self.config.dbs.exec_sql(sql=sql, values=values)
+            self.event_id = self.config.dbs.last_row_id
 
-#     def save(self):
-#         pos = len(self.events) + 1
-#         for idx, item in enumerate(self.events):
-#             if item == self:
-#                 pos = idx + 1
-#                 break
+    def delete(self):
 
-#         query = """
-# mutation(
-#     $id: Int!,
-#     $pos: Int!,
-#     $code: String!,
-#     $name: String!,
-#     $indRel: String!,
-#     $inscMax: Int!,
-#     $champId: Int!,
-#     $categoryId: Int!
-#     ) {
-#   saveEvent(
-#     id: $id,
-#     pos: $pos,
-#     code: $code,
-#     name: $name,
-#     indRel: $indRel,
-#     inscMax: $inscMax,
-#     champId: $champId,
-#     categoryId: $categoryId
-#   ) {
-#     id
-#     pos
-#     code
-#     name
-#     indRel
-#     inscMax
-#     createdAt
-#     createdBy
-#     updatedAt
-#     updatedBy
-#     champId
-#     categoryId
-#   }
-# }
-# """
-#         variables = self.save_dict
-#         result = self.config.com_api.execute(query, variables)
-#         if result:
-#             self.id = result["data"]["saveEvent"]["id"]
-#             self.created_by = result["data"]["saveEvent"]["createdBy"]
-#             self.save_action = "U"
-    
+        # Estas event_categoríes veñen do xesde, non hai acceso desde orcana
+        self.event_categories.delete_all_items()
 
+        sql = ''' delete from events where event_id={}'''
+        sql = sql.format(self.event_id)
+        self.config.dbs.exec_sql(sql=sql)

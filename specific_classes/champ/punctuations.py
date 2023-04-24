@@ -2,10 +2,10 @@
 
 
 from operator import attrgetter
-from .category import Category
+from .punctuation import Punctuation
 
 
-class Categories(list):
+class Punctuations(list):
 
     def __init__(self, **kwargs):    
         self.champ = kwargs['champ']
@@ -19,51 +19,48 @@ class Categories(list):
 
     def load_items_from_dbs(self):
         del self[:] #borra os elementos que haxa
-        (CATEGORY_ID, CODE, GENDER_ID, NAME,
-         FROM_AGE, TO_AGE, PUNCTUATION_ID)  = range(7)
+        (PUNCTUATION_ID, NAME, POINTS_IND, POINTS_REL,
+         ENTITY_TO_POINT_IND, ENTITY_TO_POINT_REL)  = range(6)
         sql = '''
-select category_id, category_code, gender_id, name, from_age, to_age, punctuation_id 
-from categories order by category_code, gender_id '''
+select punctuation_id, name, points_ind, points_rel, entity_to_point_ind,
+entity_to_point_rel from punctuations order by name '''
         res = self.config.dbs.exec_sql(sql=sql)
         for i in res:
-            punctuation = self.champ.punctuations.get_punctuation(punctuation_id=i[PUNCTUATION_ID])
-            self.append(Category(
-                    categories=self,
-                    category_id=i[CATEGORY_ID],
-                    code=i[CODE],
-                    gender_id=i[GENDER_ID],
-                    name=i[NAME],
-                    from_age=i[FROM_AGE],
-                    to_age=i[TO_AGE],
-                    punctuation=punctuation,
+            self.append(Punctuation(
+                    punctuations = self,
+                    punctuation_id = i[PUNCTUATION_ID],
+                    name = i[NAME],
+                    points_ind = i[POINTS_IND],
+                    points_rel = i[POINTS_REL],
+                    entity_to_point_ind = i[ENTITY_TO_POINT_IND],
+                    entity_to_point_rel = i[ENTITY_TO_POINT_REL],
                     ))
 
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):
             self[idx].delete()       
 
-    def get_category(self, category_id):
-        category = None
+    def get_punctuation(self, punctuation_id):
+        punctuation = None
         for i in self:
-            if i.category_id == category_id:
-                category = i
+            if i.punctuation_id == punctuation_id:
+                punctuation = i
                 break
-        return category
+        return punctuation
 
     @property    
     def item_blank(self):
         '''
         add item on last and return last position.
         '''
-        return Category(
-            categories=self,
-            category_id=0,
-            code='',
-            gender_id='',
+        return Punctuation(
+            punctuations=self,
+            punctuation_id=0,
             name='',
-            from_age=0,
-            to_age=0,
-            punctuation=None,
+            points_ind='',
+            points_rel='',
+            entity_to_point_ind='',
+            entity_to_point_rel='',
             )
 
     @property
@@ -75,12 +72,10 @@ from categories order by category_code, gender_id '''
         """
 
         return (
-            (_('Code'), 'C', 75),
-            (_('Gender'), 'C', 65), 
-            (_('Name'), 'L', 100),
-            (_('From age'), 'C', 80),
-            (_('To age'), 'C', 80),
-            (_('Punctuation'), 'L', 90),
+            (_('Name'), 'L', 75),
+            (_('P. Ind.'), 'L', 150), 
+            (_('P. Rel.'), 'L', 150),
+
             )
 
     @property
@@ -91,12 +86,9 @@ from categories order by category_code, gender_id '''
         values = []
         for i in self:
             values.append((
-                i.code,
-                i.gender_id,
                 i.name,
-                str(i.from_age),
-                str(i.to_age), 
-                i.punctuation_name, 
+                i.points_ind,
+                i.points_rel,
                 ))
         return  tuple(values)
 
@@ -106,14 +98,11 @@ from categories order by category_code, gender_id '''
         '''
         field = None
         cols = (  # cols valid to order
-            'code',
-            'gender_id',
-            'name_normalized',
-            'from_age',
-            'to_age',
-            'punctuation_name',
+            'name',
+            'points_ind',
+            'points_rel',
             )
-        order_cols = range(6)
+        order_cols = range(3)
         if 'num_col' in list(kwargs.keys()):
             if kwargs['num_col'] in order_cols:
                 field = cols[kwargs['num_col']]
@@ -160,5 +149,5 @@ from categories order by category_code, gender_id '''
         if not self:
             self.load_items_from_dbs()
         for i in self:
-            values.append((i.name, i.category_id))
+            values.append((i.name, i.punctuation_id))
         return values

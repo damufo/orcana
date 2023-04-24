@@ -88,3 +88,12 @@ class Heat(object):
         sql = ('update heats set official=?, start_time=? where heat_id=? ')
         values = ((self.official, self.start_time, self.heat_id),)
         self.config.dbs.exec_sql(sql=sql, values=values)
+
+    def delete(self):
+        # asume que se borraron antes todos os results_phases_categories
+        print("ATENCIÓN!! Asume que se está a borrar unha fase.")
+        # delete all results
+        self.results.delete_all_items()
+        sql = ''' delete from heats where heat_id={}'''
+        sql = sql.format(self.heat_id)
+        self.config.dbs.exec_sql(sql=sql)

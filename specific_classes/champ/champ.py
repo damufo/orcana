@@ -7,6 +7,7 @@ from operator import attrgetter
 from reportlab.lib.units import cm
 from specific_classes.report_base import ReportBase
 from specific_classes.champ.entities import Entities
+from specific_classes.champ.punctuations import Punctuations
 from specific_classes.champ.categories import Categories
 from specific_classes.champ.sessions import Sessions
 from specific_classes.champ.events import Events
@@ -14,7 +15,7 @@ from specific_classes.champ.persons import Persons
 from specific_classes.champ.relays import Relays
 from specific_classes.champ.inscriptions import Inscriptions
 from specific_classes.champ.phases import Phases
-from specific_classes.champ.heats import heats
+from specific_classes.champ.heats import Heats
 from specific_functions import files
 from specific_functions.files import get_file_content
 from specific_functions import utils
@@ -27,7 +28,7 @@ class Champ(object):
         self.champ_id = 0
         self.name = ''
         self.pool_length = 0
-        self.pool_lanes = 0
+        self.pool_lanes = ''
         self.chrono_type = ''
         self.estament_id = ''
         self.date_age_calculation = ''
@@ -42,48 +43,49 @@ class Champ(object):
             xdate,
             self.name,
             self.venue)
-        
         return utils.get_valid_filename(file_name.lower())
+
+    @property
+    def clear_champ(self):
+        self.champ_id = 0
+        self.name = ''
+        self.pool_length = 0
+        self.pool_lanes = []
+        self.chrono_type = ''
+        self.estament_id = ''
+        self.date_age_calculation = ''
+        self.venue = ''
+        self.config.prefs['last_path_dbs'] = ''
+        self.config.dbs.dbs_path = None
 
     def load_dbs(self, dbs_path):
         self.config.dbs.connect(dbs_path=dbs_path)
+        # Comproba que sexa unha base de datos correcta
         if self.config.dbs.connection:
             sql = '''
     select champ_id, name, pool_length, pool_lanes, chrono_type, estament_id, 
-    date_age_calculation, venue, pool_lane_min, pool_lane_max from champs '''
+    date_age_calculation, venue from champs '''
             (CHAMP_ID, NAME, POOL_LENGTH, POOL_LANES, CHRONO_TYPE, ESTAMENT_ID, 
-             DATE_AGE_CALCULATION, VENUE, POOL_LANE_MIN, POOL_LANE_MAX) = range(10)
+             DATE_AGE_CALCULATION, VENUE) = range(8)
             res = self.config.dbs.exec_sql(sql=sql, n=1)
             if res == 'err' or not res:
-                self.champ_id = 0
-                self.name = ''
-                self.pool_length = 0
-                self.pool_lanes = 0
-                self.chrono_type = ''
-                self.estament_id = ''
-                self.date_age_calculation = ''
-                self.venue = ''
-                self.pool_lane_min = 0
-                self.pool_lane_max = 9
-                self.config.prefs['last_path_dbs'] = ''
-                self.config.prefs.save()
+                self.clear_champ
             else:
                 values = res[0]
                 self.champ_id = values[CHAMP_ID]
                 self.name = values[NAME]
                 self.pool_length = values[POOL_LENGTH]
-                self.pool_lanes = values[POOL_LANES]
+                self.pool_lanes_text = values[POOL_LANES]
                 self.chrono_type = values[CHRONO_TYPE]
                 self.estament_id = values[ESTAMENT_ID]
                 self.date_age_calculation = values[DATE_AGE_CALCULATION]
                 self.venue = values[VENUE]
-                self.pool_lane_min = values[POOL_LANE_MIN]
-                self.pool_lane_max = values[POOL_LANE_MAX]
-
                 self.entities = Entities(champ=self)
                 self.entities.load_items_from_dbs()
                 self.sessions = Sessions(champ=self)
                 self.sessions.load_items_from_dbs()
+                self.punctuations = Punctuations(champ=self)
+                self.punctuations.load_items_from_dbs()
                 self.categories = Categories(champ=self)
                 self.categories.load_items_from_dbs()
                 self.events = Events(champ=self)
@@ -97,18 +99,22 @@ class Champ(object):
                 self.inscriptions.sort_default()
                 self.phases = Phases(champ=self)
                 self.phases.load_items_from_dbs()
-                self.heats = heats(champ=self)
+                self.heats = Heats(champ=self)
                 self.heats.load_items_from_dbs()
+                self.config.prefs['last_path_dbs'] = str(dbs_path)
+        else:  # Non foi quen de conectar
+            self.clear_champ
+            print("Isto non debería pasar nunca. Erro:1134987239847105")
+        self.config.prefs.save()
 
     def save(self):
         sql = '''
 update champs set name=?, pool_length=?, pool_lanes=?, chrono_type=?, 
-estament_id=?, date_age_calculation=?, venue=?, pool_lane_min=?, pool_lane_max=?
+estament_id=?, date_age_calculation=?, venue=?
 where champ_id=?'''
-        values = ((self.name, self.pool_length, self.pool_lanes, 
+        values = ((self.name, self.pool_length, self.pool_lanes_text, 
                 self.chrono_type, self.estament_id, 
-                self.date_age_calculation, self.venue, self.pool_lane_min,
-                self.pool_lane_max, self.champ_id),)
+                self.date_age_calculation, self.venue, self.champ_id),)
         res = self.config.dbs.exec_sql(sql=sql, values=values)
 
 
@@ -143,10 +149,33 @@ where champ_id=?'''
                 self.league_id, str(self.league_pos).zfill(2))
         return value
 
-    # @property
-    # def venue(self):
-    #     return self.config.venues.get_name(self.venue_id)
+    def _set_pool_lanes_text(self, string_value):
+        if string_value:
+            string_value = string_value.replace(' ', '')
+            self.pool_lanes = [int(i) for i in string_value.split('-')
+                                   if i.isdigit()]
+        else:
+            self.pool_lanes = []
 
+    def _get_pool_lanes_text(self):
+        if self.pool_lanes:
+            value = '-'.join(["%s" % i for i in self.pool_lanes])
+        return value
+
+    pool_lanes_text = property(fget=_get_pool_lanes_text,
+                               fset=_set_pool_lanes_text)
+
+    @property
+    def pool_lanes_count(self):
+        return len(self.pool_lanes)
+
+    @property
+    def pool_lanes_min(self):
+        return min(self.pool_lanes)
+
+    @property
+    def pool_lanes_max(self):
+        return max(self.pool_lanes)
 
     def _set_points_ind_text(self, string_value):
         if string_value:
@@ -210,6 +239,148 @@ where champ_id=?'''
         return values
 
     def auto_gen_heats(self):
+        '''
+        Xera as fases como TIM
+        Xera as series
+        Xera as liñas de resultados (aquí é onde vai a serie e a pista)
+        '''
+        print("Auto generate series")
+        # clear
+        tables = (
+            'phases', 'results', 'results_members', 'results_splits',
+            'heats', 'phases_categories')
+        for table in tables:
+            sql = ''' Delete from {} where 1; '''.format(table)
+            self.config.dbs.exec_sql(sql=sql)
+
+        # Phases
+        sql = '''
+insert into phases (pos, event_id,  pool_lanes, progression, session_id) 
+select pos, event_id, (select pool_lanes from champs c) as pool_lanes,
+    'TIM', (select session_id from sessions s) as session_id from events e; '''
+        self.config.dbs.exec_sql(sql=sql)
+
+        # PhasesCategories
+        sql = '''
+insert into phases_categories (pos, action, phase_id,  category_id)
+    select 
+        1 as pos,
+        '' as action,   
+        (select phase_id from phases p where p.event_id=ec.event_id) as phase_id,
+        ec.category_id
+    from events_categories ec 
+    order by (select pos from phases where event_id=ec.event_id); '''
+        self.config.dbs.exec_sql(sql=sql)
+
+        # heats and results
+        # Get inscriptions, sorted by time asc
+        sql = '''
+select phase_id, pos, event_id,  pool_lanes, progression, session_id
+from phases order by pos; '''
+        res = self.config.dbs.exec_sql(sql=sql)
+        (PHASE_ID, POS, EVENT_ID,  POOL_LANES, PROGRESSION, SESSION_ID
+        ) = range(6)
+        for i in res:
+            print(i)
+            if i[POOL_LANES] == 5:
+                lanes_sort = (3, 4, 2, 5, 1)
+            if i[POOL_LANES] == 6:
+                lanes_sort = (3, 4, 2, 5, 1, 6)
+            elif i[POOL_LANES] == 8:
+                lanes_sort = (4, 5, 3, 6, 2, 7, 1, 8)
+
+            sql2 = '''
+select (select person_id from persons p where p.person_id=i.person_id) person_id,
+(select relay_id from relays r where r.relay_id=i.relay_id) relay_id,
+equated_hundredth, inscription_id
+from inscriptions i where event_id={} order by equated_hundredth; '''
+            sql2 = sql2.format(i[EVENT_ID])
+            res2 = self.config.dbs.exec_sql(sql=sql2)
+            count_inscriptions = len(res2)
+            inscriptions = list(res2)
+            results = []
+            heats = []
+            if count_inscriptions:
+                tot_heats, first_heat = divmod(count_inscriptions, i[POOL_LANES])
+                if first_heat != 0:
+                    tot_heats += 1
+                sql_heat = '''
+insert into heats (phase_id, pos) values(?, ?)'''
+                sql_result = '''
+insert into results (heat_id, lane, person_id, relay_id, equated_hundredth, inscription_id)
+values(?, ?, ?, ?, ?,?)'''
+                sql_splits_for_event = '''
+select distance, split_code, official from splits_for_event where 
+event_code=(select event_code from events where event_id=
+(select event_id from phases where phase_id=?))
+order by distance; '''
+                sql_result_split = '''
+insert into results_splits (result_id, distance, result_split_code, official) 
+values( ?, ?, ?, ?)'''
+                for heat_pos in range(tot_heats, 0, -1):
+                    values = ((i[PHASE_ID], heat_pos), )
+                    self.config.dbs.exec_sql(sql=sql_heat, values=values)
+                    heat_id = self.config.dbs.last_row_id
+                    for lane in lanes_sort:
+                        inscription = inscriptions.pop(0)
+                        PERSON_ID, RELAY_ID, EQUATED_HUNDREDTH, INSCRIPTION_ID = range(4) 
+                        values = ((
+                            heat_id,
+                            lane,
+                            inscription[PERSON_ID] or 0,
+                            inscription[RELAY_ID] or 0,
+                            inscription[EQUATED_HUNDREDTH],
+                            inscription[INSCRIPTION_ID],
+                            ),)
+                        self.config.dbs.exec_sql(sql=sql_result, values=values)
+                        result_id = self.config.dbs.last_row_id
+                        # Create splits
+                        splits_for_event = self.config.dbs.exec_sql(
+                            sql=sql_splits_for_event, values=((i[PHASE_ID], ), ))
+                        DISTANCE, RESULT_SPLIT_CODE, OFFICIAL = range(3)
+                        if splits_for_event:
+                            for event_split in splits_for_event:
+                                self.config.dbs.exec_sql(
+                                    sql=sql_result_split,
+                                    values=((
+                                        result_id,
+                                        event_split[DISTANCE],
+                                        event_split[RESULT_SPLIT_CODE],
+                                        event_split[OFFICIAL]), ))
+                        else:
+                            # add one final split
+                            print("dd")
+                            # get event_code
+                            sql_event_code = """
+select event_code from events where event_id =
+    (select event_id from inscriptions where inscription_id=?); """
+                            res_event_code = self.config.dbs.exec_sql(
+                                sql=sql_event_code,
+                                values=((inscription[INSCRIPTION_ID], ), ))
+                            res_event_code = res_event_code[0][0].upper()
+                            if 'X' in res_event_code:
+                                members = int(res_event_code.split('X')[0])
+                                distance_per_member = res_event_code.split('X')[1][:-1]
+                                distance = int(members) * int(distance_per_member)
+                            else:
+                                distance = res_event_code[:len(res_event_code)-1]
+                            self.config.dbs.exec_sql(
+                                    sql=sql_result_split,
+                                    values=((
+                                        result_id,
+                                        distance,
+                                        res_event_code,
+                                        1), ))
+                        if heat_pos == 2 and len(inscriptions) == 3:
+                            print("Recoloca para gantir 3")
+                            break
+                        elif len(inscriptions) == 0:
+                            break
+        self.phases.load_items_from_dbs()
+        self.heats.load_items_from_dbs()
+        print('Fin')
+
+    def auto_gen_heats_event_category(self):
         '''
         Xera as fases como TIM
         Xera as series
@@ -320,13 +491,15 @@ values( ?, ?, ?, ?)'''
         file_name = '{}.pdf'.format(
             self.file_name)
         file_path = os.path.join(
-            self.config.app_path_folder,
+            self.config.work_folder_path,
             file_name)
         subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
-                config= self.config,
-                file_name = file_path, 
+                # config= self.config,
+                app_path_folder= self.config.app_path_folder,
+                app_version = self.config.app_version,
+                file_path = file_path,
                 orientation='portrait',
                 title=self.name,
                 subtitle=subtitle)
@@ -732,7 +905,7 @@ values( ?, ?, ?, ?)'''
         file_name = '{}.csv'.format(
             self.file_name)
         file_path = os.path.join(
-            self.config.app_path_folder,
+            self.config.work_folder_path,
             file_name)
         files.set_file_content(content=datos,
                                file_path=file_path,
@@ -746,13 +919,13 @@ values( ?, ?, ?, ?)'''
         if entity:
             entities = [entity, ]
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('inscriptions_by_club_{}.pdf').format(entity.entity_code),
                 )
         else:
             entities = self.entities
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('inscriptions_by_club_full.pdf'),
                 )
 
@@ -779,8 +952,9 @@ values( ?, ?, ?, ?)'''
         subtitle = _("{}. Pool course {} m. Timing system {}.").format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
-                config= self.config,
-                file_name = file_path, 
+                app_path_folder=self.config.app_path_folder,
+                app_version=self.config.app_version,
+                file_path=file_path, 
                 orientation='landscape',
                 title=self.name,
                 subtitle=subtitle)
@@ -910,13 +1084,13 @@ values( ?, ?, ?, ?)'''
         if phase:
             phases = [phase, ]
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('inscriptions_by_event_{}.pdf').format(phase.file_name),
                 )
         else:
             phases = self.phases
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('inscriptions_by_event_full.pdf'),
                 )
 
@@ -953,8 +1127,9 @@ values( ?, ?, ?, ?)'''
         subtitle = _("{}. Pool course {} m. Timing system {}.").format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
-                config= self.config,
-                file_name = file_path, 
+                app_path_folder=self.config.app_path_folder,
+                app_version=self.config.app_version,
+                file_path=file_path, 
                 orientation='portrait',
                 title=self.name,
                 subtitle=subtitle)
@@ -1022,13 +1197,13 @@ values( ?, ?, ?, ?)'''
         if entity:
             entities = [entity, ]
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('sumary_participants_{}.pdf').format(entity.entity_code),
                 )
         else:
             entities = self.entities
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('sumary_participants_full.pdf'),
                 )
 
@@ -1054,8 +1229,9 @@ values( ?, ?, ?, ?)'''
         subtitle = _("{}. Pool course {} m. Timing system {}.").format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
-                config= self.config,
-                file_name = file_path, 
+                app_path_folder=self.config.app_path_folder,
+                app_version=self.config.app_version,
+                file_path=file_path, 
                 orientation='portrait',
                 title=self.name,
                 subtitle=subtitle)
@@ -1313,13 +1489,13 @@ values( ?, ?, ?, ?)'''
         if phase:
             phases = [phase, ]
             file_name = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('start_list_{}.pdf').format(phase.file_name),
                 )
         else:
             phases = self.phases
             file_name = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 _('start_list_full.pdf'),
                 )
         if self.chrono_type == 'M':
@@ -1327,14 +1503,15 @@ values( ?, ?, ?, ?)'''
         else:
             chrono_text = _('electronic')
 
-        file_name = os.path.join(
-            self.config.app_path_folder,
+        file_path = os.path.join(
+            self.config.work_folder_path,
             _('start_list.pdf'))
         subtitle = _("{}. Pool course {} m. Timing system {}.").format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
-                config= self.config,
-                file_name = file_name, 
+                app_path_folder=self.config.app_path_folder,
+                app_version=self.config.app_version,
+                file_path=file_path, 
                 orientation='portrait',
                 title=self.name,
                 subtitle=subtitle)

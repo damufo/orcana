@@ -47,6 +47,12 @@ class Results(list):
             result.delete_item()
             self.remove(result)  # remove element from list
 
+    def delete_all_items(self):
+        sql = '''delete from results where heat_id={}'''
+        sql = sql.format(self.heat.heat_id)
+        self.config.dbs.exec_sql(sql=sql)
+        del self[:]
+
     def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
         sql = '''

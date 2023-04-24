@@ -98,16 +98,12 @@ class Events(list):
         '''
         return Event(
             events=self,
+            event_id=0,
             pos=0,
             code='',
             gender_id='',
-            category_id=0,
             name='',
             insc_max=0,
-            created_at="",
-            created_by="",
-            updated_at="",
-            updated_by="",
             save_action='I')
 
     def load_items_from_dbs(self):
@@ -130,58 +126,8 @@ from events order by pos '''
                     ind_rel=i[IND_REL],
                     insc_max=i[INSC_MAX]
                     )
-                event.categories.load_items_from_dbs()
+                event.event_categories.load_items_from_dbs()
                 self.append(event)
-
-
-#     def __load_items_from_server(self):
-#         '''
-#         Load items from server
-#         '''
-#         query = """
-#    query($champId: Int!) {
-#   events (champId: $champId) {
-#     	id pos code category { id } name indRel inscMax
-#         createdAt createdBy updatedAt updatedBy } } """
-#         variables = {"champId": self.champ.id}
-#         del self[:]  # borra o que haxa
-#         result = self.config.com_api.execute(query, variables)
-#         if result:
-#             for i in result["data"]["events"]:
-#                 self.append(Event(
-#                     events=self,
-#                     id=(i["id"]),
-#                     pos=(i["pos"]),
-#                     code=(i["code"]),
-#                     name=i["name"],
-#                     ind_rel=i["indRel"],
-#                     insc_max=i["inscMax"],
-#                     created_at=i["createdAt"],
-#                     created_by=i["createdBy"],
-#                     updated_at=i["updatedAt"],
-#                     updated_by=i["updatedBy"],
-#                     category_id=int(i["category"]["id"]),
-#                     save_action='U'))
-
-    # def load_items_from_dbs(self):
-    #     del self[:] #borra os elementos que haxa
-    #     champ_id = self.championship.id
-    #     if champ_id:
-    #         sql = ("select event_id, gender_id, category_id, name, "
-    #                "pos, insc_max from champ_events where champ_id=? order by pos ")
-    #         values = ((champ_id,),)
-    #         res = self.config.dbs.exec_sql(sql=sql, values=values)
-    #         EVENT_ID, GENDER_ID, CATEGORY_ID, NAME, POS, INSC_MAX = list(range(6))
-    #         for i in res:
-    #             self.append(Event(
-    #                     champ_events = self,
-    #                     event_id = i[EVENT_ID],
-    #                     gender_id = i[GENDER_ID],
-    #                     category_id = i[CATEGORY_ID],
-    #                     name = i[NAME],
-    #                     pos = i[POS],
-    #                     insc_max = i[INSC_MAX],
-    #                     save_action = 'U'))
 
     @property
     def list_fields(self):
@@ -190,10 +136,14 @@ from events order by pos '''
         (name as text, align[L:left, C:center, R:right] as text,
                 width as integer)
         """
-        return ((_('N.'), 'C', 35), (_('Event'), 'C', 70),
-                (_('Gender'), 'C', 60), 
-                (_('Name'), 'L', 240), (_('Ind/Rel'), 'C', 55),
-                (_('I. Max'), 'C', 65))
+        return (
+            (_('N.'), 'C', 35),
+            (_('Event'), 'C', 70),
+            (_('Gender'), 'C', 60), 
+            (_('Name'), 'L', 240),
+            (_('Ind/Rel'), 'C', 55),
+            (_('I. Max'), 'C', 65),
+            (_('Categorías'), 'L', 120),)
 
     @property
     def list_values(self):
@@ -209,7 +159,8 @@ from events order by pos '''
                         #    i.category.code,
                            i.name,
                            i.ind_rel,
-                           i.insc_max))
+                           i.insc_max,
+                           i.event_categories.list_text))
         return tuple(values)
 
     def move_down(self, pos):

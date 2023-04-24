@@ -73,3 +73,14 @@ from sessions order by xdate, xtime '''
         for x, i in enumerate(self, 1):
             values.append((x, i.xdate, i.xtime))
         return tuple(values)
+
+    def choices(self, add_empty=False):
+        '''
+        return values for wxchoice with ClientData
+        '''
+        values = []
+        if add_empty:
+            values.append(('', '')) 
+        for i in self:
+            values.append((i.date_time, i.session_id))
+        return values

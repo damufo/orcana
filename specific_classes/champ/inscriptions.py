@@ -3,14 +3,8 @@
 
 import os
 from operator import itemgetter, attrgetter
-# from specific_classes.report_base import ReportBase
-#from specific_classes.conversions import Conversions
 from specific_classes.champ.inscription_ind import InscriptionInd
 from specific_classes.champ.inscription_rel import InscriptionRel
-# from specific_functions import times
-# from specific_functions import files
-# from specific_functions.files import get_file_content
-# from specific_functions.marks import mark2hun
 
 
 class Inscriptions(list):

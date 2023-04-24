@@ -25,7 +25,7 @@ class InscriptionInd(Inscription):
         category = ''
         if self.person:
             person = self.person
-            for i in self.event.categories:
+            for i in self.event.event_categories:
                 category = i.category
                 print('{} - {}'.format(category.from_age, category.to_age))
                 if person.age > category.from_age and person.age < category.to_age and person.gender_id == category.gender_id:

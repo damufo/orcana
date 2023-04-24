@@ -49,6 +49,15 @@ class Result(object):
     def phase(self):
         return self.results.phase
 
+    @property
+    def entity(self):
+        entity = None
+        if self.person:
+            entity = self.person.entity
+        elif self.relay:
+            entity = self.relay.entity
+        return entity
+
     # def set_type_id(self, type_id):
     #     self.type_id = type_id
     #     if self.type_id == 'S':
@@ -81,15 +90,29 @@ class Result(object):
         category = ''
         if self.person:
             person = self.person
-            for i in self.heat.phase.event.categories:
+            for i in self.heat.phase.phase_categories:
                 category = i.category
                 print('{} - {}'.format(category.from_age, category.to_age))
                 if person.age > category.from_age and person.age < category.to_age and person.gender_id == category.gender_id:
                     category = category
-        if self.relay:
+        elif self.relay:
             category = self.relay.category
 
         return category
+
+    @property
+    def categories(self):
+        categories = []
+        if self.person:
+            person = self.person
+            for i in self.heat.phase.phase_categories:
+                category = i.category
+                print('{} {} - {}'.format(category.name, category.from_age, category.to_age))
+                if person.age >= category.from_age and person.age <= category.to_age and person.gender_id == category.gender_id:
+                    categories.append(category.category_id)
+        elif self.relay:
+            categories.append(self.relay.category.category_id)
+        return categories
 
     @property
     def category_name(self):

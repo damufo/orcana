@@ -33,6 +33,10 @@ class Category(object):
             self.to_age = int(kwargs['to_age'])
         else:
             self.to_age = 0
+        if 'punctuation' in kwargs.keys():
+            self.punctuation = kwargs['punctuation']
+        else:
+            self.punctuation = None
 
     @property
     def champ(self):
@@ -41,6 +45,20 @@ class Category(object):
     @property
     def pos(self):
         return self.result_members.index(self) + 1
+
+    @property
+    def punctuation_name(self):
+        name = ''
+        if self.punctuation:
+            name = self.punctuation.name
+        return name
+
+    @property
+    def punctuation_id(self):
+        punctuation_id = 0
+        if self.punctuation:
+            punctuation_id = self.punctuation.punctuation_id
+        return punctuation_id
 
     @property
     def name_normalized(self):
@@ -60,17 +78,17 @@ class Category(object):
         """
         if self.category_id:
             sql = '''
-update categories set  category_code=?, gender_id=?, name=?, from_age=?, to_age=?
-where category_id=?'''
-            values = ((self.code, self.gender_id,
-            self.name, self.from_age, self.to_age, self.category_id),)
+update categories set  category_code=?, gender_id=?, name=?, from_age=?,
+to_age=?, punctuation_id=? where category_id=?'''
+            values = ((self.code, self.gender_id, self.name, self.from_age,
+                self.to_age, self.punctuation_id,self.category_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
         else:
             sql = '''
-INSERT INTO categories (category_code, gender_id, name, from_age, to_age)
-VALUES(?, ?, ?, ?, ?) '''
+INSERT INTO categories (category_code, gender_id, name, from_age, to_age,
+punctuation_id) VALUES(?, ?, ?, ?, ?, ?) '''
             values = ((self.code, self.gender_id, self.name,
-            self.from_age, self.to_age),)
+            self.from_age, self.to_age, self.punctuation_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.category_id = self.config.dbs.last_row_id
             self.champ.categories.append(self)

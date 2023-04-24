@@ -5,13 +5,13 @@ import os
 from operator import attrgetter
 # from specific_classes.report_base import ReportBase
 #from specific_classes.conversions import Conversions
-from specific_classes.champ.phases import Phases
+# from specific_classes.champ.phases import Phases
 from specific_classes.champ.heat import Heat
 # from specific_functions import times
 # from specific_functions import files
 
 
-class heats(list):
+class Heats(list):
 
     def __init__(self, champ):
         self.champ = champ
@@ -64,8 +64,8 @@ order by
      pos '''
         res = self.config.dbs.exec_sql(sql=sql)
         (HEAT_ID, PHASE_ID, POS, OFFICIAL, START_TIME) = range(5)
-        for i in self.champ.phases:
-            i.heats = []
+        # for i in self.champ.phases:
+        #     i.heats = []
         for i in res:
             phase = self.champ.phases.get_phase(i[PHASE_ID])
             heat = Heat(
@@ -76,11 +76,11 @@ order by
                     official=i[OFFICIAL],
                     start_time=i[START_TIME],
                     )
-            phase.heats.append(heat)
-            print('append heat {}'.format(heat.heat_id))
-            print('{} - {}'.format(phase.phase_id, heat.heat_id))
+            # phase.heats.append(heat)
+            # print('append heat {}'.format(heat.heat_id))
+            # print('{} - {}'.format(phase.phase_id, heat.heat_id))
             self.append(heat)
-            print('{} - {}'.format(phase.phase_id, heat.heat_id))
+            # print('{} - {}'.format(phase.phase_id, heat.heat_id))
 
     # @property
     # def list_fields(self):
@@ -122,8 +122,8 @@ order by
         return (
                 (_('N.'), 'C', 40),
                 (_('Event'), 'L', 120),
-                (_('Heat'), 'C', 40),
                 (_('Progression'), 'C', 90),
+                (_('Heat'), 'C', 40),
                 (_('Official'), 'C', 80),
                 (_('Start time'), 'C', 90),
                 )
@@ -138,8 +138,8 @@ order by
             values.append((
                 str(pos),
                 heat.phase.event.name,
-                str(heat.pos),
                 heat.phase.progression,
+                str(heat.pos),
                 heat.official and '√' or '',
                 heat.start_time and heat.start_time or heat.phase.session.xtime,
                 ))

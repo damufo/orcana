@@ -174,7 +174,7 @@ from persons where {} order by surname, name '''
         if add_empty:
             values.append(('', ''))
         if not self:
-            self.load_items_from_server()
+            self.load_items_from_dbs()
         for i in self:
             values.append((i.name, i.id))
         return values
