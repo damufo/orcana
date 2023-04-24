@@ -27,18 +27,18 @@ class View(InscRelAddEdit):
             self.lbl_entity_code.SetLabel(inscription.relay.entity.entity_code)
             self.txt_relay_name.SetValue(inscription.relay.name)
             self.view_plus.cho_load(choice=self.cho_category_id,
-                                values=inscription.event.categories.choices(),
+                                values=inscription.event.event_categories.choices(),
                                 default=inscription.relay.category.category_id)
         else:
             self.txt_entity_name.SetValue('')
             self.lbl_entity_code.SetLabel('')
             self.txt_relay_name.SetLabel('')
-            category_choices = inscription.event.categories.choices()
+            category_choices = inscription.event.event_categories.choices()
             category_default = None
             if len(category_choices) == 1:
                 category_default = category_choices[0][1]
             self.view_plus.cho_load(choice=self.cho_category_id,
-                                values=inscription.event.categories.choices(),
+                                values=inscription.event.event_categories.choices(),
                                 default=category_default)
         if inscription.mark_hundredth:
             self.txt_mark.SetValue(inscription.mark_time)
