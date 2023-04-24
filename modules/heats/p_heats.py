@@ -238,7 +238,7 @@ class Presenter(object):
             print(value)
             if col == col_arrival_mark or col >= num_col_fixe:  # Is split mark time
                 count_splits = len(result.result_splits)
-                col_last_split = num_col_fixe + count_splits
+                col_last_split = num_col_fixe + count_splits -1
                 if col == col_arrival_mark or col == col_last_split:  # final mark time
                     # distance = count_splits * 50  
                     split = result.result_splits[-1]
