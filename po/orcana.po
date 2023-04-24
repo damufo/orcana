@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-22 16:51+0200\n"
-"PO-Revision-Date: 2023-04-22 16:56+0200\n"
+"POT-Creation-Date: 2023-04-24 11:48+0200\n"
+"PO-Revision-Date: 2023-04-24 11:52+0200\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
@@ -354,7 +354,7 @@ msgstr "Pos."
 
 #: /home/damufo/dev/orcana/modules/heats/v_heats.py:107
 msgid "Issue"
-msgstr "Incorporación"
+msgstr "Incidencia"
 
 #: /home/damufo/dev/orcana/modules/heats/v_heats.py:109
 msgid "I. S."
@@ -2014,36 +2014,72 @@ msgid "Butterfly-Backstroke-Breastroke"
 msgstr "Bolboreta-Costas-Braza"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:23
+msgid "DSQ"
+msgstr "DES"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:23
 msgid "Disqualified"
 msgstr "Descualificado/a"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:24
+msgid "DNF"
+msgstr "RET"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:24
 msgid "Did Not Finish"
 msgstr "Retirado/a"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:25
+msgid "DWD"
+msgstr "BAI"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:25
 msgid "Withdraw"
 msgstr "Baixa"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:26
+msgid "DNS"
+msgstr "NPR"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:26
 msgid "Did Not Start"
 msgstr "Non presentado/a"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:27
+msgid "WSK"
+msgstr "DNI"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:27
 msgid "Wrong Stroke"
 msgstr "Nado irregular"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:28
+msgid "WTR"
+msgstr "DVI"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:28
 msgid "Wrong Turn"
 msgstr "Viraxe irregular"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:29
+msgid "WST"
+msgstr "DSI"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:29
 msgid "Wrong Start"
 msgstr "Saída irregular"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:30
+msgid "WFN"
+msgstr "DCI"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:30
 msgid "Wrong Finish"
 msgstr "Chegada irregular"
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:31
+msgid "DFS"
+msgstr "DSA"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:31
 msgid "False Start"
