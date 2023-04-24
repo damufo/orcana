@@ -20,15 +20,28 @@ class Issues(list):
     def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
         ISSUES = (
-            ('RET', 1, _('Retirado')),
-            ('BAI', 2, _('Baixa')),
-            ('NPR', 3, _('Non presentado/a')),
-            ('DNI', 4, _('Nado irregular')),
-            ('DVI', 5, _('Viraxe irregular')),
-            ('DSI', 6, _('Saída irregular')),
-            ('DCI', 7, _('Chegada irregular')),
-            ('DSA', 8, _('Saída anticipada')),
+            ('DSQ', 1, _('Disqualified')),
+            ('DNF', 2, _('Did Not Finish')),
+            ('DWD', 3, _('Withdraw')),
+            ('DNS', 4, _('Did Not Start')),
+            ('WSK', 5, _('Wrong Stroke')),
+            ('WTR', 6, _('Wrong Turn')),
+            ('WST', 7, _('Wrong Start')),
+            ('WFN', 8, _('Wrong Finish')),
+            ('DFS', 9, _('False Start')),
+            # ('DES', 1, _('Descualificado/a')),
+            # ('RET', 2, _('Retirado/a')),
+            # ('BAI', 3, _('Baixa')),
+            # ('NPR', 4, _('Non presentado/a')),
+            # ('DNI', 5, _('Nado irregular')),
+            # ('DVI', 6, _('Viraxe irregular')),
+            # ('DSI', 7, _('Saída irregular')),
+            # ('DCI', 8, _('Chegada irregular')),
+            # ('DSA', 9, _('Saída anticipada')),
             )
+
+
+
         (ISSUE_ID, POS, NAME) = range(3) 
         for i in ISSUES:
             self.append(Issue(
