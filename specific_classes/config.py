@@ -7,24 +7,28 @@
 # from .prefs import Prefs
 from classes.sqlite_plus import SqlitePlus
 from specific_classes.core.genders import Genders
+from specific_classes.core.styles import Styles
 from specific_classes.core.issues import Issues
+from specific_classes.core.progressions import Progressions
 from specific_classes.core.choices import Choices
-
+from specific_functions import files
 
 class Config(object):
 
-    def __init__(self, prefs, app_name, app_title, app_path_folder, arg1):
+    def __init__(
+        self, prefs, app_name, app_title, app_version, 
+        app_version_date, app_path_folder, arg1):
         self.prefs = prefs
         self.app_name = app_name
         self.app_title = app_title
-        self.app_version = "0.0.1"
-        self.app_version_date = "2022-06-2"
+        self.app_version = app_version
+        self.app_version_date = app_version_date
         self.app_description = _("A championships manager.")
         self.app_copyright = "(C) 2020 Daniel Muñiz Fontoira"
         self.app_web_site = "https://gitlab.com/damufo/{}".format(app_name)
         self.app_developer = "Daniel Muñiz Fontoira"
         self.app_license = _(
-"Copyright (C) 2020  Daniel Muñiz Fontoira\n\n"
+"Copyright (C) 2023  Daniel Muñiz Fontoira\n\n"
 "This program is free software: you can redistribute it and/or modify "
 "it under the terms of the GNU General Public License as published by "
 "the Free Software Foundation, either version 3 of the License, or "
@@ -44,13 +48,7 @@ class Config(object):
         self.pool_length = Choices(choices=(
             (25, '25'),
             (50, '50'),
-            ))
-        self.pool_lanes = Choices(choices=(
-            (5, '5'),
-            (6, '6'),
-            (8, '8'),
-            (10, '10'),
-            ))            
+            ))           
         self.chrono_type = Choices(choices=(
             ('M', _('Manual')),
             ('E', _('Electronic')),
@@ -62,6 +60,35 @@ class Config(object):
         self.gender = Choices(choices=(
             ('F', _('Female')),
             ('M', _('Male')),
+            ('X', _('Mixed')),
+            ))
+        self.event_code = Choices(choices=(
+            ('25L', _('25 m Free')),
+            ('50L', _('50 m Free')),
+            ('100L', _('100 m Free')),
+            ('200L', _('200 m Free')),
+            ('400L', _('400 m Free')),
+            ('800L', _('800 m Free')),
+            ('1500L', _('1500 m Free')),
+            ('50M', _('50 m Butterfly')),
+            ('100M', _('100 m Butterfly')),
+            ('200M', _('200 m Butterfly')),
+            ('50E', _('50 m Backstroke')),
+            ('100E', _('100 m Backstroke')),
+            ('200E', _('200 m Backstroke')),
+            ('50B', _('50 m Breaststroke')),
+            ('100B', _('100 m Breaststroke')),
+            ('200B', _('200 m Breaststroke')),
+            ('100S', _('100 m Medley')),
+            ('200S', _('200 m Medley')),
+            ('400S', _('400 m Medley')),
+            ('4X25L', _('4x25 m Free')),
+            ('4X50L', _('4x50 m Free')),
+            ('4X100L', _('4x100 m Free')),
+            ('4X200L', _('4x200 m Free')),
+            ('4X25S', _('4x25 m Medley')),
+            ('4X50S', _('4x50 m Medley')),
+            ('4X100S', _('4x100 m Medley')),
             ))
         # self.category_type = Choices(choices=(
         #     ('A', _('Absolute')),
@@ -72,24 +99,15 @@ class Config(object):
         self.issues.load_items_from_dbs()
         self.genders = Genders(self)
         self.genders.load_items_from_dbs()
+        self.styles = Styles(self)
+        self.styles.load_items_from_dbs()
+        self.progressions = Progressions(self)
+        self.progressions.load_items_from_dbs()
         self.views = {}
 
-    def get_gender_name(self, gender_id):
-        if gender_id == 'M':
-            gender_name = _('Male')
-        elif gender_id == 'F':
-            gender_name = _('Female')
-        elif gender_id == 'X':
-            gender_name = _('Mixed')
-        else:
-            gender_name = ''
-        return gender_name
-
-        # self.issues_id = Choices(choices=(
-        #     ('BAI', _('Baixa')),
-        #     ('RET', _('Retirado')),
-        #     ('NPR', _('Non presentado/a')),
-        #     ('DNI', _('Nado irregular')),
-        #     ('DVI', _('Viraxe irregular')),
-        #     ('DSA', _('Saída anticipada')),
-        #     ))
+    @property
+    def work_folder_path(self):
+        work_folder_path = '' 
+        if self.prefs['last_path_dbs']:
+            work_folder_path = files.get_folder_path(file_path=self.prefs['last_path_dbs'])
+        return work_folder_path

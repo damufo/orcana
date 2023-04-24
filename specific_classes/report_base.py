@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# version 20220614
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.platypus import Table
@@ -16,21 +17,20 @@ from reportlab.lib import colors
 from PIL import Image
 import os
 import copy
-
-from specific_functions import datetimes
+from datetime import datetime
 
 
 class ReportBase(object):
 
-    def __init__(self, config, file_name, orientation='portrait', title='',
+    def __init__(self, app_path_folder, app_version, file_path, orientation='portrait', title='',
                  subtitle=''):
         '''
         Constructor
         orientation= [portrait|landscape] (vertical|horizontal)
         '''
-        self.config = config
-
+        self.timestamp = datetime.now().strftime("%Y%m%d%H%M%S") 
         self.colors = colors
+        self.orientation = orientation
         if orientation == 'portrait': #vertical
             self.page_height = 29.7*cm
             self.page_width = 21*cm
@@ -39,18 +39,16 @@ class ReportBase(object):
             self.page_height = 21*cm
             self.page_width = 29.7*cm
             pagesize = landscape(A4)
-        self.app_path_folder = config.app_path_folder
+        self.app_path_folder = app_path_folder
         images_path = '%s%s%s%s' % (self.app_path_folder, os.sep, 
                                     'images', os.sep)
+        self.app_version = app_version
         self.title = title
         self.subtitle = subtitle
-        self.logo = Image.open('%s%s' % (images_path, 'logo_left.png'))
+        self.logo_left = Image.open('%s%s' % (images_path, 'logo_left.png'))
+        self.logo_right = Image.open('%s%s' % (images_path, 'logo_right.png'))
+        self.logo_foot = Image.open('%s%s' % (images_path, 'logo_foot.png'))
 
-        l1 = (1*cm, self.page_height-2.3*cm, self.page_width-1.5*cm, self.page_height-2.3*cm)
-        l2 = (1*cm, 1.5*cm, self.page_width-1.5*cm, 1.5*cm)
-#        self.lineas = [l1,l2]
-#        self.lineas = [l2] #só liña de embaixo
-        self.lineas = []  # ningunha
         self.estiloencabezado = ParagraphStyle('',
                                       fontName='Open Sans Bold',
                                       fontSize=8,
@@ -176,11 +174,12 @@ class ReportBase(object):
                            italic='Open Sans Italic', 
                            boldItalic='Open Sans Bold Italic')
 
-        self.doc = SimpleDocTemplate(file_name, pagesize=pagesize,
+        self.doc = SimpleDocTemplate(file_path, pagesize=pagesize,
                         rightMargin=30, leftMargin=30,
-                        topMargin=72, bottomMargin=52)
+                        topMargin=72, bottomMargin=3.2*cm)
+
 #        Este outro casca co informe historico de records ¿?
-#        self.doc = SimpleDocTemplate(file_name, pagesize=pagesize,
+#        self.doc = SimpleDocTemplate(file_path, pagesize=pagesize,
 #                        rightMargin=1.5*cm,leftMargin=1.5*cm,
 #                        topMargin=2.5*cm,bottomMargin=1.8*cm)
         self.story = []
@@ -288,24 +287,34 @@ class ReportBase(object):
         canvas.setTitle('')
         
         canvas.saveState()
+        start_y_foot = 3.5*cm
+        # start_y_foot = 1.5*cm
     ##    linhas
         canvas.setStrokeColor('Grey')
         canvas.setLineWidth(0.01)
+
+        l1 = (1*cm, self.page_height-2.3*cm, self.page_width-1.5*cm, self.page_height-2.3*cm)
+        l2 = (1*cm, start_y_foot, self.page_width-1*cm, start_y_foot)
+#        self.lineas = [l1,l2]
+        self.lineas = [l2] #só liña de embaixo
+        # self.lineas = []  # ningunha
         canvas.lines(self.lineas)
     ##    Textos
         canvas.setFont('Open Sans Regular',7)
     ##    cabeceira
+        canvas.drawInlineImage(self.logo_left, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
+        canvas.drawInlineImage(self.logo_right, self.page_width-(4*cm), self.page_height-(2.2*cm), width = 75, height = 47)
 
-
-        canvas.drawInlineImage(self.logo, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
-
-##        titulo da cabeceira
-#        canvas.setFont('Copperplate Light', 10)
-#        canvas.setFillColorRGB(0,0.176,0.447) #azul escuro
-#        string_with_total = canvas.stringWidth(self.title)
-#        canvas.drawString((self.page_width/2)-(string_with_total/2)-(1.5*cm), 
-#                          self.page_height-(1.8*cm), self.title)
-
+        # Centra o pe
+        foot_x_pos = ((self.page_width)/2)-(269.291338583)
+        # canvas.drawInlineImage(self.logo_foot, 1*cm, start_y_foot-(2.7*cm), width = 1072*0.5, height = 120*0.5)
+        if self.orientation == 'landscape':
+            print(self.page_width)
+            print('landscape')
+        else:
+            print(self.page_width)
+            print('portrait')
+        canvas.drawInlineImage(self.logo_foot, foot_x_pos, start_y_foot-(2.7*cm), width = 1072*0.5, height = 120*0.5)
 
 #        titulo da cabeceira
         canvas.setFont('Open Sans Regular', 10)
@@ -321,60 +330,36 @@ class ReportBase(object):
         canvas.drawString((self.page_width/2)-(string_with_total/2), 
                           self.page_height-(1.9*cm), self.subtitle)
  
-# #       cabeceira dereita
-# #       todo este hari é para simular a letra versaleta
-# #       por iso vai intercalando o tamaño da letra
-#         canvas.setFont('Open Sans Bold', 8)
-#         canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-#         string_with_total = canvas.stringWidth('Federación Galega De Natación')
-#         string_with = canvas.stringWidth('F')
-#         canvas.drawRightString(self.page_width-(1.25*cm) - string_with_total + string_with, self.page_height-(0.9*cm), 'F')
-# 
-#         canvas.setFont('Open Sans Bold', 6)
-#         canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-#         string_with += canvas.stringWidth('ederación ')
-#         canvas.drawRightString(self.page_width-(1.25*cm) - string_with_total + string_with, self.page_height-(0.9*cm), 'EDERACIÓN ')
-# 
-#         canvas.setFont('Open Sans Bold', 8)
-#         canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-#         string_with += canvas.stringWidth('G')
-#         canvas.drawRightString(self.page_width-(1.25*cm) - string_with_total + string_with, self.page_height-(0.9*cm), 'G')
-# 
-#         canvas.setFont('Open Sans Bold', 6)
-#         canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-#         string_with += canvas.stringWidth('alega de ')
-#         canvas.drawRightString(self.page_width-(1.25*cm) - string_with_total + string_with, self.page_height-(0.9*cm), 'ALEGA DE ')
-# 
-#         canvas.setFont('Open Sans Bold', 8)
-#         canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-#         string_with += canvas.stringWidth('N')
-#         canvas.drawRightString(self.page_width-(1.25*cm) - string_with_total + string_with, self.page_height-(0.9*cm), 'N')
-# 
-#         canvas.setFont('Open Sans Bold', 6)
-#         canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-#         string_with += canvas.stringWidth('atación')
-#         canvas.drawRightString(self.page_width-(1.25*cm) - string_with_total + string_with, self.page_height-(0.9*cm), 'ATACIÓN')        
-# #       fin da simulación da versaleta
+        # DEREITA CABECEIRA
+        # canvas.setFont('Open Sans Regular', 8)
+        # canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
+        # canvas.setFillColorRGB(0.075, 0.137, 0.357)  # azul escuro
+        # canvas.drawRightString(self.page_width - (1.25 * cm),
+        #                        self.page_height - (0.9 * cm),
+        #                        'Federación Galega de Natación')
+        # string_with_total = canvas.stringWidth('Federación Galega de Natación')
+        # canvas.setFont('Open Sans Regular', 6)
+        # canvas.setFillColorRGB(0, 0, 0)  # black
+        # string_width = (string_with_total/2) - (canvas.stringWidth('Avenida de Glasgow, 13')/2)
+        # canvas.drawRightString((self.page_width-(1.25*cm)-string_width), self.page_height-1.3*cm, 'Avenida de Glasgow, 13')
+        # string_width = (string_with_total/2) - (canvas.stringWidth('CP 15008 - A Coruña')/2)
+        # canvas.drawRightString((self.page_width-(1.25*cm)-string_width), (self.page_height-1.6*cm), 'CP 15008 - A Coruña')
+        # string_width = (string_with_total/2) - (canvas.stringWidth('www.fegan.org - info@fegan.org')/2)
+        # canvas.drawRightString((self.page_width-(1.25*cm)-string_width), self.page_height-1.9*cm, 'www.fegan.org - info@fegan.org')
 
-        canvas.setFont('Open Sans Regular', 8)
-        canvas.setFillColorRGB(0, 0.176, 0.447)  # azul escuro
-        canvas.setFillColorRGB(0.075, 0.137, 0.357)  # azul escuro
-        canvas.drawRightString(self.page_width - (1.25 * cm),
-                               self.page_height - (0.9 * cm),
-                               'Federación Galega de Natación')
-
-        string_with_total = canvas.stringWidth('Federación Galega de Natación')
-        canvas.setFont('Open Sans Regular', 6)
-        canvas.setFillColorRGB(0, 0, 0)  # black
-        string_width = (string_with_total/2) - (canvas.stringWidth('Avenida de Glasgow, 13')/2)
-        canvas.drawRightString((self.page_width-(1.25*cm)-string_width), self.page_height-1.3*cm, 'Avenida de Glasgow, 13')
-        string_width = (string_with_total/2) - (canvas.stringWidth('CP 15008 - A Coruña')/2)
-        canvas.drawRightString((self.page_width-(1.25*cm)-string_width), (self.page_height-1.6*cm), 'CP 15008 - A Coruña')
-        string_width = (string_with_total/2) - (canvas.stringWidth('www.fegan.org - info@fegan.org')/2)
-        canvas.drawRightString((self.page_width-(1.25*cm)-string_width), self.page_height-1.9*cm, 'www.fegan.org - info@fegan.org')
     ##    pe
-        canvas.drawRightString(self.page_width - 1.7 * cm, 1.0 * cm, _('Page %d') % doc.page)
-        canvas.drawString(1.7 * cm, 1.0 * cm, _('Timestamp: %s') % datetimes.get_numbers())
+        # pos_y_foot = 0.6 * cm
+        pos_y_text_foot = start_y_foot - 0.35 * cm
+        canvas.setFont('Open Sans Regular', 8)
+        # Pe esquerda
+        canvas.drawString(1 * cm, pos_y_text_foot, _('Orcana v.{}').format(self.app_version))
+        # Pe centro
+        pe_centro_texto = _('Timestamp: {}').format(self.timestamp)
+        string_with_total = canvas.stringWidth(pe_centro_texto)
+        canvas.drawString((self.page_width/2)-(string_with_total/2), 
+                          pos_y_text_foot, pe_centro_texto)
+        # pe dereita
+        canvas.drawRightString(self.page_width - 1 * cm, pos_y_text_foot, _('Page %d') % doc.page)
         
         canvas.restoreState()
         
