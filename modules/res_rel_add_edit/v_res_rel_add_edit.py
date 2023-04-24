@@ -25,17 +25,17 @@ class View(ResRelAddEdit):
             self.lbl_entity_code.SetLabel(result.relay.entity.entity_code)
             self.txt_relay_name.SetValue(result.relay.name)
             self.view_plus.cho_load(choice=self.cho_category_id,
-                                values=result.event.categories.choices(),
+                                values=result.event.event_categories.choices(),
                                 default=result.relay.category.category_id)
         else:
             self.txt_entity_name.SetValue('')
             self.lbl_entity_code.SetLabel('')
-            category_choices = result.event.categories.choices()
+            category_choices = result.event.event_categories.choices()
             category_default = None
             if len(category_choices) == 1:
                 category_default = category_choices[0][1]
             self.view_plus.cho_load(choice=self.cho_category_id,
-                                values=result.event.categories.choices(),
+                                values=result.event.event_categories.choices(),
                                 default=category_default)
             self.txt_relay_name.SetLabel('')
         self.txt_entity_name.SetFocus()
