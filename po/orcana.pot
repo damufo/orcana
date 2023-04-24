@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-02 11:09+0200\n"
+"POT-Creation-Date: 2023-04-22 16:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,11 +114,13 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:70
 #: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:73
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:74
 msgid "Name:"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:83
 #: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:58
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:59
 msgid "Gender:"
 msgstr ""
 
@@ -137,10 +139,14 @@ msgid "Write entity name"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:123
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:41
 #: /home/damufo/dev/orcana/modules/res_rel_add_edit/w_res_rel_add_edit.py:101
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:41
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:71
 #: /home/damufo/dev/orcana/modules/res_ind_add_edit/w_res_ind_add_edit.py:101
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:71
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:41
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:41
 msgid "+"
 msgstr ""
 
@@ -152,42 +158,60 @@ msgid "Entity code:"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:152
-#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:121
+#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:136
 #: /home/damufo/dev/orcana/modules/res_rel_add_edit/w_res_rel_add_edit.py:161
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:109
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:65
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:192
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:94
 #: /home/damufo/dev/orcana/modules/res_ind_add_edit/w_res_ind_add_edit.py:153
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:200
 #: /home/damufo/dev/orcana/modules/entity_add_edit/w_entity_add_edit.py:106
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:80
 msgid "&Cancel"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:153
-#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:122
+#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:137
 #: /home/damufo/dev/orcana/modules/res_rel_add_edit/w_res_rel_add_edit.py:162
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:110
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:66
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:193
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:95
 #: /home/damufo/dev/orcana/modules/res_ind_add_edit/w_res_ind_add_edit.py:154
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:201
 #: /home/damufo/dev/orcana/modules/entity_add_edit/w_entity_add_edit.py:107
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:81
 msgid "Cancel"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:160
-#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:129
+#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:144
 #: /home/damufo/dev/orcana/modules/res_rel_add_edit/w_res_rel_add_edit.py:169
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:117
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:73
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:200
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:102
 #: /home/damufo/dev/orcana/modules/res_ind_add_edit/w_res_ind_add_edit.py:161
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:208
 #: /home/damufo/dev/orcana/modules/entity_add_edit/w_entity_add_edit.py:114
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:88
 msgid "&Acept"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/w_person_add_edit.py:161
-#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:130
+#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:145
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:97
 #: /home/damufo/dev/orcana/modules/res_rel_add_edit/w_res_rel_add_edit.py:170
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:118
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:74
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:201
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:103
 #: /home/damufo/dev/orcana/modules/res_ind_add_edit/w_res_ind_add_edit.py:162
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:209
 #: /home/damufo/dev/orcana/modules/entity_add_edit/w_entity_add_edit.py:115
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:89
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:97
 msgid "Acept"
 msgstr ""
 
@@ -210,11 +234,12 @@ msgstr ""
 msgid "Heats must be in official status."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/p_heats.py:203
+#: /home/damufo/dev/orcana/modules/heats/p_heats.py:204
 msgid "There are results pending completion."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:28
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:93
 msgid "Heats"
 msgstr ""
 
@@ -250,83 +275,105 @@ msgstr ""
 msgid "Generate results report"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/w_heats.py:92
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:87
+msgid "Go to first when heat change:"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:89
+msgid "Go to first lane when heat change."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:98
 msgid "Me&mbers"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/w_heats.py:95
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:101
 msgid "Chan&ge"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/w_heats.py:96
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:102
 msgid "Edit participant"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/w_heats.py:111
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:117
 #: /home/damufo/dev/orcana/modules/relays/w_relays.py:83
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:96
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:81
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:73
-#: /home/damufo/dev/orcana/modules/events/w_events.py:90
+#: /home/damufo/dev/orcana/modules/events/w_events.py:93
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:98
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:83
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:166
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:189
 #: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:132
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:96
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:108
 msgid "B&ack"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/w_heats.py:112
+#: /home/damufo/dev/orcana/modules/heats/w_heats.py:118
 #: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:133
 msgid "Go back"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:81
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:94
 msgid "Full name"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:83
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:96
 #: /home/damufo/dev/orcana/modules/entity_add_edit/w_entity_add_edit.py:34
-#: /home/damufo/dev/orcana/specific_classes/champ/results.py:131
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1332
+#: /home/damufo/dev/orcana/specific_classes/champ/results.py:137
 msgid "Entity"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:85
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:98
 #: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:34
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_rel.py:82
 #: /home/damufo/dev/orcana/specific_classes/champ/relays.py:83
 msgid "Category"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:88
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:101
 msgid "Members"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:90
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:103
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_rel.py:84
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_ind.py:84
-#: /home/damufo/dev/orcana/specific_classes/champ/results.py:132
+#: /home/damufo/dev/orcana/specific_classes/champ/results.py:138
 #: /home/damufo/dev/orcana/specific_classes/champ/result_splits.py:86
 msgid "Mark"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:92
-#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:79
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:105
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_categories.py:128
+#: /home/damufo/dev/orcana/specific_classes/champ/event_categories.py:105
 msgid "Pos."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:94
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:107
 msgid "Issue"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/heats/v_heats.py:96
+#: /home/damufo/dev/orcana/modules/heats/v_heats.py:109
 msgid "I. S."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/p_relays.py:53
 #: /home/damufo/dev/orcana/modules/relays/p_relays.py:82
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:43
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:59
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:75
 #: /home/damufo/dev/orcana/modules/entities/p_entities.py:54
 #: /home/damufo/dev/orcana/modules/entities/p_entities.py:82
 #: /home/damufo/dev/orcana/modules/categories/p_categories.py:47
 #: /home/damufo/dev/orcana/modules/categories/p_categories.py:77
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/p_event_categories_categories_add.py:57
+#: /home/damufo/dev/orcana/modules/events/p_events.py:45
+#: /home/damufo/dev/orcana/modules/events/p_events.py:60
+#: /home/damufo/dev/orcana/modules/events/p_events.py:76
+#: /home/damufo/dev/orcana/modules/events/p_events.py:102
+#: /home/damufo/dev/orcana/modules/events/p_events.py:131
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:86
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:111
 #: /home/damufo/dev/orcana/modules/persons/p_persons.py:54
@@ -334,22 +381,48 @@ msgstr ""
 #: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:122
 #: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:137
 #: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:171
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/p_phase_categories_categories_add.py:61
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:52
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:68
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:84
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:33
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:50
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:66
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:82
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:94
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:140
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:169
 msgid "No item selected."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/p_relays.py:55
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:61
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:77
 #: /home/damufo/dev/orcana/modules/entities/p_entities.py:56
 #: /home/damufo/dev/orcana/modules/categories/p_categories.py:49
+#: /home/damufo/dev/orcana/modules/events/p_events.py:47
+#: /home/damufo/dev/orcana/modules/events/p_events.py:62
+#: /home/damufo/dev/orcana/modules/events/p_events.py:78
+#: /home/damufo/dev/orcana/modules/events/p_events.py:104
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:88
 #: /home/damufo/dev/orcana/modules/persons/p_persons.py:56
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:70
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:86
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:35
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:52
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:68
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:84
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:142
 msgid "Only one item can be selected."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/p_relays.py:68
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:36
 #: /home/damufo/dev/orcana/modules/entities/p_entities.py:68
 #: /home/damufo/dev/orcana/modules/categories/p_categories.py:62
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:104
 #: /home/damufo/dev/orcana/modules/persons/p_persons.py:70
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:36
 msgid "Are you sure that delete selected items?"
 msgstr ""
 
@@ -381,11 +454,14 @@ msgid "Import"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/w_relays.py:57
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:71
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:55
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:47
-#: /home/damufo/dev/orcana/modules/events/w_events.py:64
+#: /home/damufo/dev/orcana/modules/events/w_events.py:67
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:78
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:57
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:71
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:82
 msgid "D&elete"
 msgstr ""
 
@@ -393,17 +469,19 @@ msgstr ""
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:56
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:48
 #: /home/damufo/dev/orcana/modules/results/w_results.py:96
-#: /home/damufo/dev/orcana/modules/events/w_events.py:65
+#: /home/damufo/dev/orcana/modules/events/w_events.py:68
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:58
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:83
 msgid "Delete"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/w_relays.py:62
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:60
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:52
-#: /home/damufo/dev/orcana/modules/events/w_events.py:69
+#: /home/damufo/dev/orcana/modules/events/w_events.py:72
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:81
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:62
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:87
 msgid "Ed&it"
 msgstr ""
 
@@ -411,17 +489,21 @@ msgstr ""
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:61
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:53
 #: /home/damufo/dev/orcana/modules/results/w_results.py:101
-#: /home/damufo/dev/orcana/modules/events/w_events.py:70
+#: /home/damufo/dev/orcana/modules/events/w_events.py:73
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:63
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:88
 msgid "Edit"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/w_relays.py:67
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:74
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:65
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:57
-#: /home/damufo/dev/orcana/modules/events/w_events.py:74
+#: /home/damufo/dev/orcana/modules/events/w_events.py:77
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:84
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:67
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:74
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:92
 msgid "A&dd"
 msgstr ""
 
@@ -429,15 +511,17 @@ msgstr ""
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:66
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:58
 #: /home/damufo/dev/orcana/modules/results/w_results.py:106
-#: /home/damufo/dev/orcana/modules/events/w_events.py:75
+#: /home/damufo/dev/orcana/modules/events/w_events.py:78
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:68
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:93
 msgid "Add"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/relays/w_relays.py:84
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:82
-#: /home/damufo/dev/orcana/modules/events/w_events.py:91
+#: /home/damufo/dev/orcana/modules/events/w_events.py:94
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:84
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:109
 msgid "Back"
 msgstr ""
 
@@ -455,6 +539,52 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:101
 msgid "To age:"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/category_add_edit/w_category_add_edit.py:115
+msgid "Punctuation:"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:23
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:36
+msgid "Event categories"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:42
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:42
+msgid "Add new category."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:62
+#: /home/damufo/dev/orcana/modules/events/w_events.py:46
+#: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:101
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:62
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:46
+msgid "D&own"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories/w_event_categories.py:65
+#: /home/damufo/dev/orcana/modules/events/w_events.py:51
+#: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:106
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:65
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:51
+msgid "&Up"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:65
+#: /home/damufo/dev/orcana/modules/events/p_events.py:66
+#: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:112
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:74
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:56
+msgid "This is already the last element."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories/p_event_categories.py:81
+#: /home/damufo/dev/orcana/modules/events/p_events.py:82
+#: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:128
+#: /home/damufo/dev/orcana/modules/phase_categories/p_phase_categories.py:90
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:72
+msgid "This is already the first element."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/entities/w_entities.py:27
@@ -475,7 +605,9 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/modules/res_rel_add_edit/w_res_rel_add_edit.py:44
 #: /home/damufo/dev/orcana/modules/results/w_results.py:39
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:44
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:44
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:44
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:39
 #: /home/damufo/dev/orcana/modules/res_ind_add_edit/w_res_ind_add_edit.py:44
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:44
@@ -510,6 +642,7 @@ msgid "Category:"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/categories/w_categories.py:27
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:91
 msgid "Categories"
 msgstr ""
 
@@ -530,50 +663,62 @@ msgid "&Events"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/main/w_main.py:48
-msgid "&Persons"
+msgid "Ph&ases"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/main/w_main.py:51
+msgid "&Persons"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/main/w_main.py:54
 msgid "&Relays"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:56
+#: /home/damufo/dev/orcana/modules/main/w_main.py:59
 msgid "Ins&criptions"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:59
+#: /home/damufo/dev/orcana/modules/main/w_main.py:62
 msgid "Heat&s"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:62
+#: /home/damufo/dev/orcana/modules/main/w_main.py:65
 msgid "Resul&ts"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:85
+#: /home/damufo/dev/orcana/modules/main/w_main.py:88
 msgid "A&bout"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:86
+#: /home/damufo/dev/orcana/modules/main/w_main.py:89
 msgid "About"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:90
+#: /home/damufo/dev/orcana/modules/main/w_main.py:93
 msgid "Open &DB"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:91
+#: /home/damufo/dev/orcana/modules/main/w_main.py:94
 msgid "Open DB"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:95
+#: /home/damufo/dev/orcana/modules/main/w_main.py:98
+msgid "Report res&ults"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/main/w_main.py:99
+msgid "Generate a PDF report with all results"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/main/w_main.py:103
 msgid "E&x. results"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:96
+#: /home/damufo/dev/orcana/modules/main/w_main.py:104
 msgid "Export resulta to CSV"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/w_main.py:106
+#: /home/damufo/dev/orcana/modules/main/w_main.py:114
 msgid "Ex&it"
 msgstr ""
 
@@ -581,16 +726,26 @@ msgstr ""
 msgid "Orcana - (Organizador de campionatos de Natación)"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/v_main.py:163
+#: /home/damufo/dev/orcana/modules/main/v_main.py:165
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:54
 msgid "No file was selected."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/v_main.py:206
+#: /home/damufo/dev/orcana/modules/main/v_main.py:171
+msgid "The file is not a valid orcana dbs."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/main/v_main.py:203
 msgid "{} website"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/main/p_main.py:68
+#: /home/damufo/dev/orcana/modules/main/p_main.py:19
+msgid ""
+"Error to open last database.\n"
+"The file is not a valid orcana database."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/main/p_main.py:78
 msgid "No heats in this championship."
 msgstr ""
 
@@ -628,12 +783,14 @@ msgstr ""
 #: /home/damufo/dev/orcana/modules/results/w_results.py:78
 #: /home/damufo/dev/orcana/modules/events/w_events.py:47
 #: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:102
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:47
 msgid "Move down"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/results/w_results.py:83
 #: /home/damufo/dev/orcana/modules/events/w_events.py:52
 #: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:107
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:52
 msgid "Move up"
 msgstr ""
 
@@ -645,9 +802,30 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:23
+msgid "Phase Add Edit"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:34
+msgid "Phase"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:59
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:67
+msgid "Pool lanes:"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:73
+msgid "Progression:"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_add_edit/w_phase_add_edit.py:88
+msgid "Session:"
+msgstr ""
+
 #: /home/damufo/dev/orcana/modules/fiarna/w_fiarna.py:23
 #: /home/damufo/dev/orcana/modules/fiarna/w_fiarna.py:41
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:154
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:162
 msgid "Fiarna"
 msgstr ""
 
@@ -684,11 +862,11 @@ msgid "Sort:"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/fiarna/w_fiarna.py:110
-msgid "Por pista"
+msgid "By lane"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/fiarna/w_fiarna.py:110
-msgid "Por proba"
+msgid "By event"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/fiarna/w_fiarna.py:123
@@ -709,8 +887,22 @@ msgstr ""
 msgid "First close window %s."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/fiarna/p_fiarna.py:60
-msgid "referee_tokens"
+#: /home/damufo/dev/orcana/modules/fiarna/p_fiarna.py:64
+msgid "referee_tokens_by_lane.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/fiarna/p_fiarna.py:66
+msgid "referee_tokens_by_event.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:23
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:36
+msgid "Event categories categories add"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_categories_categories_add/w_event_categories_categories_add.py:50
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:50
+msgid "Add categories in selection order."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:23
@@ -757,14 +949,27 @@ msgstr ""
 msgid "Venue:"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/events/w_events.py:46
-#: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:101
-msgid "D&own"
+#: /home/damufo/dev/orcana/modules/events/p_events.py:123
+msgid ""
+"Are you sure that delete selected items? \n"
+"All event phases, event categories, event heats and \n"
+"event results are deleted."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/events/w_events.py:51
-#: /home/damufo/dev/orcana/modules/result_members/w_result_members.py:106
-msgid "&Up"
+#: /home/damufo/dev/orcana/modules/events/w_events.py:64
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:75
+msgid "&Categories"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:23
+msgid "Event Add Edit"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/event_add_edit/w_event_add_edit.py:34
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:141
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:87
+#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:124
+msgid "Event"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:59
@@ -819,24 +1024,8 @@ msgstr ""
 msgid "50"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:67
-msgid "Pool lanes:"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:72
-msgid "5"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:72
-msgid "6"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:72
-msgid "8"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:72
-msgid "10"
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:73
+msgid "Pool lane from best to worst separated by hyphen."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:82
@@ -844,12 +1033,12 @@ msgid "Chrono type:"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:87
-#: /home/damufo/dev/orcana/specific_classes/config.py:55
+#: /home/damufo/dev/orcana/specific_classes/config.py:53
 msgid "Manual"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:87
-#: /home/damufo/dev/orcana/specific_classes/config.py:56
+#: /home/damufo/dev/orcana/specific_classes/config.py:54
 msgid "Electronic"
 msgstr ""
 
@@ -861,26 +1050,38 @@ msgstr ""
 msgid "Date age calculation:"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:143
-msgid "&G. heats"
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:140
+msgid "Database path:"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:144
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:156
+msgid "&Generate champ"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:157
 msgid ""
-"Generate heats automatic:\n"
+"Generate champ automatic:\n"
 "sessions, phases, heats..."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:148
-msgid "&R. heats"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:149
-msgid "Generate PDF report heats"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/properties/w_properties.py:153
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:161
 msgid "&Fiarna"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:171
+msgid "Report ins&criptions"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:172
+msgid "Report inscriptions"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:176
+msgid "Report heat&s"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/properties/w_properties.py:177
+msgid "Generate PDF report heats"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/p_properties.py:30
@@ -929,14 +1130,6 @@ msgstr ""
 msgid "Remove person from members"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:112
-msgid "This is already the last element."
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/result_members/p_result_members.py:128
-msgid "This is already the first element."
-msgstr ""
-
 #: /home/damufo/dev/orcana/modules/entity_add_edit/w_entity_add_edit.py:23
 msgid "Entity Add Edit"
 msgstr ""
@@ -953,22 +1146,91 @@ msgstr ""
 msgid "Long name:"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/report_base.py:376
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:23
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:36
+msgid "Phase categories categories add"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/w_phase_categories_categories_add.py:65
+msgid "Action:"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/v_phase_categories_categories_add.py:33
+msgid "Punctuate"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_categories_categories_add/v_phase_categories_categories_add.py:34
+msgid "Clasificate"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:23
+#: /home/damufo/dev/orcana/modules/phase_categories/w_phase_categories.py:36
+msgid "Phase categories"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:40
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:106
+msgid "Selection invalid, the phase {} {} is official."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:99
+msgid "Phase categories clipboard is void."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:149
+msgid "Is not possible edit phase when is official."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/p_phases.py:161
+msgid ""
+"Are you sure that delete selected items? \n"
+"All phase categories, phase heats and \n"
+"phase results are deleted."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:27
+msgid "Phases"
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:59
+msgid "Copy cat."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:60
+msgid "Copy phase categories."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:64
+msgid "Paste cat."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:65
+msgid "Replace phase categories by coped categories."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/phases/w_phases.py:76
+msgid "Set categories for selected phases."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/report_base.py:355
+msgid "Orcana v.{}"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/report_base.py:357
+msgid "Timestamp: {}"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/report_base.py:362
 #, python-format
 msgid "Page %d"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/report_base.py:377
-#, python-format
-msgid "Timestamp: %s"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/report_base.py:407
+#: /home/damufo/dev/orcana/specific_classes/report_base.py:392
 #, python-format
 msgid "page %d"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/events.py:193
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:140
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_rel.py:79
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_ind.py:79
 #: /home/damufo/dev/orcana/specific_classes/champ/heats.py:123
@@ -976,41 +1238,58 @@ msgstr ""
 msgid "N."
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/events.py:193
-#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:80
-#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:124
-msgid "Event"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/events.py:194
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:142
 #: /home/damufo/dev/orcana/specific_classes/champ/result_members.py:130
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_rel.py:81
 #: /home/damufo/dev/orcana/specific_classes/champ/result_members_candidates.py:111
+#: /home/damufo/dev/orcana/specific_classes/champ/event_categories.py:107
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_ind.py:81
-#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:76
+#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:79
 #: /home/damufo/dev/orcana/specific_classes/champ/persons.py:143
 #: /home/damufo/dev/orcana/specific_classes/champ/relays.py:82
 msgid "Gender"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/events.py:195
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:143
 #: /home/damufo/dev/orcana/specific_classes/champ/result_members.py:129
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_rel.py:80
 #: /home/damufo/dev/orcana/specific_classes/champ/result_members_candidates.py:110
+#: /home/damufo/dev/orcana/specific_classes/champ/event_categories.py:108
 #: /home/damufo/dev/orcana/specific_classes/champ/event_inscriptions_ind.py:80
-#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:77
+#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:80
 #: /home/damufo/dev/orcana/specific_classes/champ/persons.py:142
-#: /home/damufo/dev/orcana/specific_classes/champ/results.py:130
+#: /home/damufo/dev/orcana/specific_classes/champ/results.py:136
 #: /home/damufo/dev/orcana/specific_classes/champ/relays.py:81
+#: /home/damufo/dev/orcana/specific_classes/champ/punctuations.py:75
 msgid "Name"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/events.py:195
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:144
 msgid "Ind/Rel"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/events.py:196
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:145
 msgid "I. Max"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/events.py:146
+msgid "Categorías"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_categories.py:129
+msgid "C. code"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_categories.py:130
+msgid "C. gender"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_categories.py:131
+msgid "C. name"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_categories.py:132
+msgid "Action"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/result_members.py:128
@@ -1078,7 +1357,8 @@ msgid "Venue"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/entities.py:126
-#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:75
+#: /home/damufo/dev/orcana/specific_classes/champ/event_categories.py:106
+#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:78
 msgid "Code"
 msgstr ""
 
@@ -1094,139 +1374,140 @@ msgstr ""
 msgid "Long name"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:81
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:88
 msgid "Pool Lanes"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:82
-#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:126
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:89
+#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:125
 msgid "Progression"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:83
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:90
 msgid "Session"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:129
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:428
-msgid "INSCRIPTIONS REPORT"
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:92
+#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:127
+msgid "Official"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:131
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:430
-msgid "By club"
+#: /home/damufo/dev/orcana/specific_classes/champ/phases.py:110
+msgid "S"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:135
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:282
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:371
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:434
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:621
-msgid "Champ. name: {}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:136
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:283
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:372
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:435
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:622
-msgid "Champ. ID: {}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:137
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:284
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:373
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:436
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:623
-msgid "Timestamp: {}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:138
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:287
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:376
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:437
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:626
-msgid "Entity: {} {}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:140
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:289
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:378
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:439
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:627
-msgid "Chronometer: {}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:141
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:290
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:379
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:440
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:628
-msgid "Pool length: {}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:191
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:533
-msgid "Members:"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:277
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:616
-msgid "By event"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:366
-msgid "Reserves and only relay"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:754
-msgid ""
-"People with excess events:\n"
-"{}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:788
-msgid "{} {} {} {} Insc.: {} Max.: {}\n"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:791
-msgid ""
-"Clubs with excess inscriptions:\n"
-"{}"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:874
-#, python-format
-msgid "Error importing: %s\n"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:701
-msgid "start_list_{}.pdf"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:707
-msgid "start_list_full.pdf"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:710
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:71
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:487
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:949
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1124
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1226
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1502
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:117
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:679
 msgid "manual"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:712
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:73
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:489
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:951
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1126
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1228
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1504
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:119
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:681
 msgid "electronic"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:716
-msgid "start_list.pdf"
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:923
+msgid "inscriptions_by_club_{}.pdf"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:717
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:929
+msgid "inscriptions_by_club_full.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:952
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1127
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1229
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1509
 msgid "{}. Pool course {} m. Timing system {}."
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:815
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:962
+msgid "Inscriptions by entity"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1088
+msgid "inscriptions_by_event_{}.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1094
+msgid "inscriptions_by_event_full.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1137
+msgid "Inscriptions by event"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1201
+msgid "sumary_participants_{}.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1207
+msgid "sumary_participants_full.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1239
+msgid "Sumary participantes"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1333
+msgid "Participants"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1334
+msgid "Insc. individuals"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1335
+msgid "Insc. relays"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1351
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1354
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1357
+#: /home/damufo/dev/orcana/specific_classes/core/genders.py:18
+msgid "Fem."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1352
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1355
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1358
+msgid "Mas."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1353
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1356
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1360
+msgid "Tot."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1359
+#: /home/damufo/dev/orcana/specific_classes/core/genders.py:20
+msgid "Mix."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1493
+msgid "start_list_{}.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1499
+msgid "start_list_full.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1508
+msgid "start_list.pdf"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1608
 msgid "Heat {} of {}"
 msgstr ""
 
@@ -1234,15 +1515,19 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:78
+#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:81
 msgid "From age"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:79
+#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:82
 msgid "To age"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/results.py:129
+#: /home/damufo/dev/orcana/specific_classes/champ/categories.py:83
+msgid "Punctuation"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/results.py:135
 msgid "Lane"
 msgstr ""
 
@@ -1254,29 +1539,33 @@ msgstr ""
 msgid "Event code"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:125
+#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:126
 msgid "Heat"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/heats.py:127
-msgid "Official"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/heats.py:128
 msgid "Start time"
 msgstr ""
 
+#: /home/damufo/dev/orcana/specific_classes/champ/punctuations.py:76
+msgid "P. Ind."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/punctuations.py:77
+msgid "P. Rel."
+msgstr ""
+
 #: /home/damufo/dev/orcana/specific_classes/champ/sessions.py:65
 msgid "Time"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/config.py:22
+#: /home/damufo/dev/orcana/specific_classes/config.py:26
 msgid "A championships manager."
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/config.py:27
+#: /home/damufo/dev/orcana/specific_classes/config.py:31
 msgid ""
-"Copyright (C) 2020  Daniel Muñiz Fontoira\n"
+"Copyright (C) 2023  Daniel Muñiz Fontoira\n"
 "\n"
 "This program is free software: you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1292,21 +1581,123 @@ msgid ""
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/config.py:63
-#: /home/damufo/dev/orcana/specific_classes/config.py:81
-#: /home/damufo/dev/orcana/specific_classes/core/genders.py:17
+#: /home/damufo/dev/orcana/specific_classes/config.py:61
+#: /home/damufo/dev/orcana/specific_classes/core/genders.py:18
 msgid "Female"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/config.py:64
-#: /home/damufo/dev/orcana/specific_classes/config.py:79
-#: /home/damufo/dev/orcana/specific_classes/core/genders.py:17
+#: /home/damufo/dev/orcana/specific_classes/config.py:62
+#: /home/damufo/dev/orcana/specific_classes/core/genders.py:19
 msgid "Male"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/config.py:83
-#: /home/damufo/dev/orcana/specific_classes/core/genders.py:17
+#: /home/damufo/dev/orcana/specific_classes/config.py:63
+#: /home/damufo/dev/orcana/specific_classes/core/genders.py:20
 msgid "Mixed"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:66
+msgid "25 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:67
+msgid "50 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:68
+msgid "100 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:69
+msgid "200 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:70
+msgid "400 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:71
+msgid "800 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:72
+msgid "1500 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:73
+msgid "50 m Butterfly"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:74
+msgid "100 m Butterfly"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:75
+msgid "200 m Butterfly"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:76
+msgid "50 m Backstroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:77
+msgid "100 m Backstroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:78
+msgid "200 m Backstroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:79
+msgid "50 m Breaststroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:80
+msgid "100 m Breaststroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:81
+msgid "200 m Breaststroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:82
+msgid "100 m Medley"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:83
+msgid "200 m Medley"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:84
+msgid "400 m Medley"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:85
+msgid "4x25 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:86
+msgid "4x50 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:87
+msgid "4x100 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:88
+msgid "4x200 m Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:89
+msgid "4x25 m Medley"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:90
+msgid "4x50 m Medley"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/config.py:91
+msgid "4x100 m Medley"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:84
@@ -1451,36 +1842,184 @@ msgstr ""
 msgid "Sinature secretary desk"
 msgstr ""
 
+#: /home/damufo/dev/orcana/specific_classes/core/progressions.py:17
+msgid "TIM"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/progressions.py:17
+msgid "FIN"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/progressions.py:17
+msgid "PRE"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/genders.py:19
+msgid "Mal."
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:18
+msgid "Fr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:18
+msgid "Free"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:19
+msgid "Bu"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:19
+msgid "Butterfly"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:20
+msgid "Ba"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:20
+msgid "Backstroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:21
+msgid "Br"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:21
+msgid "Breastroque"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:22
+msgid "Me"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:22
+msgid "Medley"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:23
+msgid "BaBr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:23
+msgid "Backstroke-Breastroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:24
+msgid "BuBa"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:24
+msgid "Butterfly-Backstroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:25
+msgid "BaBrCr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:25
+msgid "Back-Brea-Crol"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:26
+msgid "FeCrAr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:26
+msgid "Feet crol arrow"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:27
+msgid "FeBuAr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:27
+msgid "Feet butterfly arrow"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:28
+msgid "FeBrAr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:28
+msgid "Feet breastroke arrow"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:29
+msgid "FeBaAr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:29
+msgid "Feet backstroke arrow"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:30
+msgid "BrCr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:30
+msgid "Breastroke-Crol"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:31
+msgid "CrBa"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:31
+msgid "Crol-Backstroke"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:32
+msgid "BrBu"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:32
+msgid "Breastroke-Butterfly"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:33
+msgid "BuBaBr"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:33
+msgid "Butterfly-Backstroke-Breastroke"
+msgstr ""
+
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:23
-msgid "Retirado"
+msgid "Disqualified"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:24
-msgid "Baixa"
+msgid "Did Not Finish"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:25
-msgid "Non presentado/a"
+msgid "Withdraw"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:26
-msgid "Nado irregular"
+msgid "Did Not Start"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:27
-msgid "Viraxe irregular"
+msgid "Wrong Stroke"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:28
-msgid "Saída irregular"
+msgid "Wrong Turn"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:29
-msgid "Chegada irregular"
+msgid "Wrong Start"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:30
-msgid "Saída anticipada"
+msgid "Wrong Finish"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/core/issues.py:31
+msgid "False Start"
 msgstr ""
 
 #: /home/damufo/dev/orcana/classes/wxp/list_ctrl_plus.py:130
