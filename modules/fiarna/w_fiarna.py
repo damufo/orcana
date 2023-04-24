@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -107,7 +107,7 @@ class Fiarna ( wx.Dialog ):
 
 		bSizer101.Add( self.m_staticText72, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		cho_sortChoices = [ _(u"Por pista"), _(u"Por proba") ]
+		cho_sortChoices = [ _(u"By lane"), _(u"By event") ]
 		self.cho_sort = wx.Choice( self.m_panel2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cho_sortChoices, 0 )
 		self.cho_sort.SetSelection( 0 )
 		bSizer101.Add( self.cho_sort, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )

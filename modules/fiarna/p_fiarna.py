@@ -54,15 +54,21 @@ class Presenter(object):
 
     def generate(self):
         from_event, to_event, phase, sort_order = self.view.get_values()
-        self.set_path()
-        report_path = self.view.msg.save_file(
-                suffixes=[".pdf"],
-                default_file=_("referee_tokens")
-                )
-        if report_path:
+        # self.set_path()
+        # report_path = self.view.msg.save_file(
+        #         suffixes=[".pdf"],
+        #         default_file=_("referee_tokens")
+        #         )
+        config = self.model.referee_tokens.config
+        if sort_order == 0:
+            file_name = _("referee_tokens_by_lane.pdf")
+        else:
+            file_name = _("referee_tokens_by_event.pdf")
+        file_path = os.path.join(config.work_folder_path, file_name)
+        if file_path:
             self.model.referee_tokens.sort_order = sort_order     
             self.model.referee_tokens.report(
-                report_path=str(report_path),
+                report_path=str(file_path),
                 from_event=from_event,
                 to_event=to_event,
                 phase=phase)
