@@ -296,8 +296,8 @@ lane from (((results r inner join heats h on r.heat_id=h.heat_id) inner join pha
                     values_filtered.append(i)
         values = values_filtered
 
-        d = ReportBaseRefereeTokens(config=self.config,
-                                    file_name=report_path,
+        d = ReportBaseRefereeTokens(app_path_folder=self.config.app_path_folder,
+                                    file_path=report_path,
                                     orientation='portrait',
                                     title=_("Referee's tokens"))
 
