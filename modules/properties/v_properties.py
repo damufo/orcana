@@ -24,9 +24,8 @@ class View(Properties):
         self.view_plus.cho_load(choice=self.cho_pool_length,
                                 values=champ.config.pool_length.choices(),
                                 default=champ.pool_length)
-        self.view_plus.cho_load(choice=self.cho_pool_lanes,
-                                values=champ.config.pool_lanes.choices(),
-                                default=champ.pool_lanes)
+
+        self.txt_pool_lanes.SetValue(champ.pool_lanes_text)
         self.view_plus.cho_load(choice=self.cho_chrono_type,
                                 values=champ.config.chrono_type.choices(),
                                 default=champ.chrono_type)                
@@ -35,11 +34,12 @@ class View(Properties):
                                 default=champ.estament_id) 
         self.txt_date_age_calculation_plus.SetValue(champ.date_age_calculation)
         self.txt_venue.SetValue(champ.venue)
+        self.txt_dbs_path.SetValue(champ.config.prefs['last_path_dbs'] or '')
     
     def get_values(self, champ):
         champ.name = self.txt_champ_name.GetValue().strip()
         champ.pool_length = self.view_plus.cho_get(choice=self.cho_pool_length)
-        champ.pool_lanes = self.view_plus.cho_get(choice=self.cho_pool_lanes)
+        champ.pool_lanes_text = self.txt_pool_lanes.GetValue().strip()
         champ.chrono_type = self.view_plus.cho_get(choice=self.cho_chrono_type)
         champ.estament_id = self.view_plus.cho_get(choice=self.cho_estament_id)
         champ.date_age_calculation = self.txt_date_age_calculation_plus.GetValue()

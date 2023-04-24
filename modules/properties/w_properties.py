@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import getext
-# _ = gettext.gettetxt
+# import gettext
+# _ = gettext.gettext
 
 ###########################################################################
 ## Class Properties
@@ -69,10 +69,10 @@ class Properties ( wx.Panel ):
 
 		bSizer101.Add( self.m_staticText31, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		cho_pool_lanesChoices = [ _(u"5"), _(u"6"), _(u"8"), _(u"10") ]
-		self.cho_pool_lanes = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cho_pool_lanesChoices, 0 )
-		self.cho_pool_lanes.SetSelection( 1 )
-		bSizer101.Add( self.cho_pool_lanes, 1, wx.ALL, 5 )
+		self.txt_pool_lanes = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_pool_lanes.SetToolTip( _(u"Pool lane from best to worst separated by hyphen.") )
+
+		bSizer101.Add( self.txt_pool_lanes, 1, wx.ALL, 5 )
 
 
 		bSizer8.Add( bSizer101, 0, wx.EXPAND, 5 )
@@ -134,6 +134,19 @@ class Properties ( wx.Panel ):
 
 
 		bSizer8.Add( bSizer911, 0, wx.EXPAND, 5 )
+
+		bSizer13 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.lbl_dbs_path = wx.StaticText( self, wx.ID_ANY, _(u"Database path:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_dbs_path.Wrap( -1 )
+
+		bSizer13.Add( self.lbl_dbs_path, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.txt_dbs_path = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_READONLY )
+		bSizer13.Add( self.txt_dbs_path, 1, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer13, 0, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )
