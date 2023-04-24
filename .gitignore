@@ -15,5 +15,6 @@ dist_win/
 dist_lin/
 build_lin/
 po/orcana_version*
+requirements.txt
 *.ods
 *.ods#
