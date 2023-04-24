@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -44,6 +44,9 @@ class Main ( wx.Panel ):
 
 		self.btn_events = wx.Button( self, wx.ID_ANY, _(u"&Events"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.btn_events, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.btn_phases = wx.Button( self, wx.ID_ANY, _(u"Ph&ases"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer5.Add( self.btn_phases, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.btn_persons = wx.Button( self, wx.ID_ANY, _(u"&Persons"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.btn_persons, 0, wx.ALL|wx.EXPAND, 5 )

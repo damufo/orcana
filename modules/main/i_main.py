@@ -30,10 +30,15 @@ class Interactor(object):
         view.btn_entities.Bind(wx.EVT_BUTTON, self.show_entities)
         view.btn_categories.Bind(wx.EVT_BUTTON, self.show_categories)
         view.btn_events.Bind(wx.EVT_BUTTON, self.show_events)
+        view.btn_phases.Bind(wx.EVT_BUTTON, self.show_phases)
         view.btn_persons.Bind(wx.EVT_BUTTON, self.show_persons)
         view.btn_inscriptions.Bind(wx.EVT_BUTTON, self.show_inscriptions)
         view.btn_heats.Bind(wx.EVT_BUTTON, self.show_heats)
         view.btn_results.Bind(wx.EVT_BUTTON, self.show_results)
+        
+     
+
+
 
         
 
@@ -120,6 +125,8 @@ class Interactor(object):
         #     (wx.ACCEL_CTRL,  wx.WXK_RIGHT, on_scroll_right_id),
         #     ])
         # view.SetAcceleratorTable(accel)
+
+
     def on_about(self, event):
         self.presenter.about()
 
@@ -143,6 +150,9 @@ class Interactor(object):
 
     def show_events(self, event):
         self.presenter.load_events()
+
+    def show_phases(self, event):
+        self.presenter.load_phases()
 
     def show_persons(self, event):
         self.presenter.load_persons()

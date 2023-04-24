@@ -11,14 +11,14 @@ class Presenter(object):
     def __init__(self, champ):
         self.model = Model(champ)
         self.main_frame = MainFrame()
-        # self.view.config = config
+        config = champ.config
+        error = None
+        if 'last_path_dbs' in config.prefs and config.prefs['last_path_dbs']:
+            champ.load_dbs(dbs_path=config.prefs['last_path_dbs'])
+            if not config.prefs['last_path_dbs']:
+                print(_("Error to open last database.\nThe file is not a valid orcana database."))
+        print(config.dbs.dbs_path)
         self.main_frame.SetTitle(self.model.champ.name or 'Orcana')
-        # self.main_frame.SetTitle('Orcana')
-        # self.model.champ.entities.load_items_from_dbs()
-        # interactor = Interactor()
-        # interactor.install(self, self.view)
-        # self.model.pictures.set_paths(config.arg1)
-        # self.model.pictures.load_pictures()
         self.load_me()
         self.view.parent.view_plus.start()
 
@@ -30,11 +30,14 @@ class Presenter(object):
         self.view.set_buttons(has_champ=self.model.champ.champ_id)
 
     def about(self):
+        self.view.parent.msg.error("test")
         self.view.about(config=self.model.config)
 
     def open_db(self):
         self.view.open_db(champ=self.model.champ)
         self.view.set_buttons(has_champ=self.model.champ.champ_id)
+        self.main_frame.SetTitle(self.model.champ.name or 'Orcana')
+        # self.main_frame.SetTitle(self.model.champ.config.prefs['last_path_dbs'] or 'Orcana')
 
     def report_results(self):
         self.model.champ.report_results()
@@ -57,6 +60,10 @@ class Presenter(object):
     def load_events(self):
         from modules.events import p_events
         p_events.create(parent=self, events=self.model.champ.events)
+
+    def load_phases(self):
+        from modules.phases import p_phases
+        p_phases.create(parent=self, phases=self.model.champ.phases)
 
     def load_persons(self):
         from modules.persons import p_persons

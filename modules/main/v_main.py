@@ -131,6 +131,7 @@ class View(Main):
             self.btn_entities.Enable(True)
             self.btn_categories.Enable(True)
             self.btn_events.Enable(True)
+            self.btn_phases.Enable(True)
             self.btn_persons.Enable(True)
             self.btn_relais.Enable(True)
             self.btn_inscriptions.Enable(True)
@@ -141,6 +142,7 @@ class View(Main):
             self.btn_entities.Enable(False)
             self.btn_categories.Enable(False)
             self.btn_events.Enable(False)
+            self.btn_phases.Enable(False)
             self.btn_persons.Enable(False)
             self.btn_relais.Enable(False)
             self.btn_inscriptions.Enable(False)
@@ -157,24 +159,19 @@ class View(Main):
             fol_reports = str(config.app_path_folder)
             # fol_reports = os.path.join(config.app_path_folder.parts)
 
-        file_selected = msg.open_file(default_dir=fol_reports, suffixes=[".sqlite"])
+        file_path = msg.open_file(default_dir=fol_reports, suffixes=[".sqlite"])
 
-        if not file_selected:
+        if not file_path:
             msg.error(_("No file was selected."))
         else:
-            file_path = file_selected
             if os.path.isfile(file_path):
                 # try:
-                champ.load_dbs(file_selected)
-                config.prefs['last_path_dbs'] = str(file_selected)
-                config.prefs.save()
-                # config.prefs.set_value('last_path_dbs', file_selected)
+                champ.load_dbs(file_path)
+                if not config.prefs['last_path_dbs']:
+                    msg.error(_("The file is not a valid orcana dbs."))
                 # except:
                     # msg.error(_("The file is not a valid orcana dbs."))
-        # champ.config.dbs.connect()
-        # if champ.config.dbs.connection:
-        # champ.load_dbs(dbs_path='./dbs/20210619_festival_galego_promesas_rias_do_sur.sqlite')
-        # dbs_path='./dbs/2022-02-05_campionato_provincial_pontevedra_fase_ii_as_pozas.sqlite')
+                
 
     def show_main(self):
         self.pn_properties.Hide()
