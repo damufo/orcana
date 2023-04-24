@@ -1,5 +1,5 @@
 .venv
-.vscode
+.vscode/
 screenshots/
 doc/
 *.pyc
@@ -12,5 +12,8 @@ non_git/*
 
 build_win/
 dist_win/
+dist_lin/
+build_lin/
+po/orcana_version*
 *.ods
 *.ods#
