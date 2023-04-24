@@ -25,24 +25,37 @@ class View(Heats):
         self.view_plus = ViewPlus(self)
         self.msg = Messages(self.parent)
         self.first_split_col = 7
+        # set cols
+        self.cols = {}
+        self.cols["ind_num_col_fixe"] = 7
+        self.cols["ind_col_arrival_mark"] = 3
+        self.cols["ind_col_arrival_pos"] = 4
+        self.cols["ind_col_issue_id"] = 5
+        self.cols["ind_col_issue_split"] = 6
+        self.cols["rel_num_col_fixe"] = 8
+        self.cols["rel_col_members"] = 3
+        self.cols["rel_col_arrival_mark"] = 4
+        self.cols["rel_col_arrival_pos"] = 5
+        self.cols["rel_col_issue_id"] = 6
+        self.cols["rel_col_issue_split"] = 7 
 
     def load_heat_grid(self, heat):
 
         if heat.ind_rel == 'I':
             print('Individual heat')
-            num_col_fixe = 7
-            col_arrival_mark = 3
-            col_arrival_pos = 4
-            col_issue_id = 5
-            col_issue_split = 6
+            num_col_fixe = self.cols["ind_num_col_fixe"]
+            col_arrival_mark = self.cols["ind_col_arrival_mark"]
+            col_arrival_pos = self.cols["ind_col_arrival_pos"]
+            col_issue_id = self.cols["ind_col_issue_id"]
+            col_issue_split = self.cols["ind_col_issue_split"]
         elif heat.ind_rel == 'R':
             print('Relay heat')
-            num_col_fixe = 8
-            col_members = 3
-            col_arrival_mark = 4
-            col_arrival_pos = 5
-            col_issue_id = 6
-            col_issue_split = 7        
+            num_col_fixe = self.cols["rel_num_col_fixe"]
+            col_members = self.cols["rel_col_members"]
+            col_arrival_mark = self.cols["rel_col_arrival_mark"]
+            col_arrival_pos = self.cols["rel_col_arrival_pos"]
+            col_issue_id = self.cols["rel_col_issue_id"]
+            col_issue_split = self.cols["rel_col_issue_split"]        
         
         self.first_split_col = num_col_fixe
 
@@ -118,7 +131,7 @@ class View(Heats):
                     self.grd_results.SetCellValue(lane, col_members, has_set_members)
                     self.grd_results.SetCellAlignment(lane, col_members, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 self.grd_results.SetCellAlignment(lane, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-                self.grd_results.SetCellValue(lane, 2, str(result.category.name))
+                self.grd_results.SetCellValue(lane, 2, str(result.category_name))
                 self.grd_results.SetCellAlignment(lane, 2, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 if result.arrival_pos:
                     self.grd_results.SetCellValue(lane, col_arrival_pos, str(result.arrival_pos))
@@ -151,6 +164,10 @@ class View(Heats):
                 for i in range(self.grd_results.GetNumberCols()):
                     self.grd_results.SetReadOnly(lane, i, True)
         self.load_arrival_order(results=results)
+        if self.chb_go_to_first.GetValue():
+            row = self.grd_results.GetGridCursorRow()
+            col = self.grd_results.GetGridCursorCol()
+            self.grd_results.SetGridCursor(results[0].lane - pool_lane_adjust, col)
 
     def update_result_lane(self, row, result):
         # row = self.grd_results.GetGridCursorRow()
@@ -165,19 +182,19 @@ class View(Heats):
             heat = result.heat
             if heat.ind_rel == 'I':
                 print('Individual heat')
-                num_col_fixe = 7
-                col_arrival_mark = 3
-                col_arrival_pos = 4
-                col_issue_id = 5
-                col_issue_split = 6
+                num_col_fixe = self.cols["ind_num_col_fixe"]
+                col_arrival_mark = self.cols["ind_col_arrival_mark"]
+                col_arrival_pos = self.cols["ind_col_arrival_pos"]
+                col_issue_id = self.cols["ind_col_issue_id"]
+                col_issue_split = self.cols["ind_col_issue_split"]
             elif heat.ind_rel == 'R':
                 print('Relay heat')
-                num_col_fixe = 8
-                col_members = 3
-                col_arrival_mark = 4
-                col_arrival_pos = 5
-                col_issue_id = 6
-                col_issue_split = 7
+                num_col_fixe = self.cols["rel_num_col_fixe"]
+                col_members = self.cols["rel_col_members"]
+                col_arrival_mark = self.cols["rel_col_arrival_mark"]
+                col_arrival_pos = self.cols["rel_col_arrival_pos"]
+                col_issue_id = self.cols["rel_col_issue_id"]
+                col_issue_split = self.cols["rel_col_issue_split"] 
             self.first_split_col = num_col_fixe
             count_splits = len(result.result_splits)
             
@@ -238,6 +255,22 @@ class View(Heats):
         self.lbl_arrival_order.SetLabel(arrival_order)
 
     def update_arrival_pos(self, results):
+        heat = results.heat
+        if heat.ind_rel == 'I':
+            print('Individual heat')
+            num_col_fixe = self.cols["ind_num_col_fixe"]
+            col_arrival_mark = self.cols["ind_col_arrival_mark"]
+            col_arrival_pos = self.cols["ind_col_arrival_pos"]
+            col_issue_id = self.cols["ind_col_issue_id"]
+            col_issue_split = self.cols["ind_col_issue_split"]
+        elif heat.ind_rel == 'R':
+            print('Relay heat')
+            num_col_fixe = self.cols["rel_num_col_fixe"]
+            col_members = self.cols["rel_col_members"]
+            col_arrival_mark = self.cols["rel_col_arrival_mark"]
+            col_arrival_pos = self.cols["rel_col_arrival_pos"]
+            col_issue_id = self.cols["rel_col_issue_id"]
+            col_issue_split = self.cols["rel_col_issue_split"] 
         arrival_order = ''
         results_dict = {}
         for i in results:
@@ -252,7 +285,7 @@ class View(Heats):
             save_result =  False
             if not i.arrival_hundredth or i.issue_id:
                 results_dict[i.lane].arrival_pos = 0
-                self.grd_results.SetCellValue(i.lane-1, 4, '')
+                self.grd_results.SetCellValue(i.lane-1, col_arrival_pos, '')
             else:
                 if i.arrival_hundredth != last_arrival_hundredth:
                     pos += 1 + equated
@@ -267,7 +300,7 @@ class View(Heats):
                     results_dict[i.lane].arrival_pos = pos
                     equated += 1
                 arrival_order += ' {}'.format(i.lane) 
-                self.grd_results.SetCellValue(i.lane-1, 4, str(pos))
+                self.grd_results.SetCellValue(i.lane-1, col_arrival_pos, str(pos))
             if save_result:
                 results_dict[i.lane].save()
         self.lbl_arrival_order.SetLabel(arrival_order)

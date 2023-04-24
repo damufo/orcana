@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -83,6 +83,12 @@ class Heats ( wx.Panel ):
 		bSizer7.Add( self.grd_results, 1, wx.ALL|wx.EXPAND, 5 )
 
 		bSizer9 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.chb_go_to_first = wx.CheckBox( self, wx.ID_ANY, _(u"Go to first when heat change:"), wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		self.chb_go_to_first.SetValue(True)
+		self.chb_go_to_first.SetToolTip( _(u"Go to first lane when heat change.") )
+
+		bSizer9.Add( self.chb_go_to_first, 0, wx.ALL, 5 )
 
 
 		bSizer9.Add( ( 0, 0), 1, wx.EXPAND, 5 )

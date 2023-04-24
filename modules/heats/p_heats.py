@@ -192,6 +192,7 @@ class Presenter(object):
                 # self.view.grd_results.SelectRow(row)
                 # self.toggle_members_button(row=row)
                 self.select_lane(row=row)
+                heat.phase.delete_results_phase_categories()
             else:
                 results = heat.results
                 pending_results = False
@@ -209,6 +210,8 @@ class Presenter(object):
                     self.view.grd_results.EnableEditing(False)
                     self.view.btn_members.Enable(False)
                     self.view.btn_change_participant.Enable(False)
+                    if heat.phase.official:
+                        heat.phase.calculate_results()
 
     def update_result(self, col, row):
         heat = self.get_heat()
@@ -218,33 +221,38 @@ class Presenter(object):
             # self.model.result = result
             if result.ind_rel == 'I':
                 print('Individual result')
-                num_col_fixe = 6
-                col_arrival_mark = 3
-                col_arrival_pos = 4
-                col_issue_id = 5
-                col_issue_split = 6
+                num_col_fixe = self.view.cols["ind_num_col_fixe"]
+                col_arrival_mark = self.view.cols["ind_col_arrival_mark"]
+                col_arrival_pos = self.view.cols["ind_col_arrival_pos"]
+                col_issue_id = self.view.cols["ind_col_issue_id"]
+                col_issue_split = self.view.cols["ind_col_issue_split"]
             elif result.ind_rel == 'R':
                 print('Relay result')
-                num_col_fixe = 7
-                col_arrival_mark = 4
-                col_arrival_pos = 5
-                col_issue_id = 6
-                col_issue_split = 7
+                num_col_fixe = self.view.cols["rel_num_col_fixe"]
+                # rel_col_members = self.view.cols["rel_col_members"]
+                col_arrival_mark = self.view.cols["rel_col_arrival_mark"]
+                col_arrival_pos = self.view.cols["rel_col_arrival_pos"]
+                col_issue_id = self.view.cols["rel_col_issue_id"]
+                col_issue_split = self.view.cols["rel_col_issue_split"]
             value = self.view.grd_results.GetCellValue(row, col)
             print(value)
-            if col == col_arrival_mark or col > num_col_fixe:  # Is split mark time
+            if col == col_arrival_mark or col >= num_col_fixe:  # Is split mark time
                 count_splits = len(result.result_splits)
                 col_last_split = num_col_fixe + count_splits
                 if col == col_arrival_mark or col == col_last_split:  # final mark time
-                    distance = count_splits * 50    
-                    split = result.result_splits.set_value(value=value, distance=distance)
+                    # distance = count_splits * 50  
+                    split = result.result_splits[-1]
+                    split.mark_time = value  
                     self.view.grd_results.SetCellValue(row, col_arrival_mark, split.mark_time)
                     self.view.grd_results.SetCellValue(row, col_last_split , split.mark_time)
                     self.view.update_arrival_pos(result.results)
                     # result.save()
                 else:
-                    distance = (col - num_col_fixe) * 50    
-                    split = result.result_splits.set_value(value=value, distance=distance)
+                    # distance = (col - num_col_fixe) * 50
+                    split = result.result_splits[(col - num_col_fixe)]
+                    split.mark_time = value
+                    # split = result.result_splits.set_value(value=value, distance=distance)
+                    # distance = split.distance
                     self.view.grd_results.SetCellValue(row, col, split.mark_time)
                 split.save()
             elif col == col_arrival_pos:  # Set arrive_pos
