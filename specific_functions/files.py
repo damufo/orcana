@@ -138,3 +138,6 @@ def export_table_to_file(dbs, tables, file_path, where_sql='', where_values=()):
     content = content
 
     set_file_content(content=content, file_path=file_path, compress=True)
+
+def get_folder_path(file_path):
+    return os.path.dirname(file_path)
