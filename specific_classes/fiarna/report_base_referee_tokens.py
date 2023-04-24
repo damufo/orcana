@@ -44,13 +44,12 @@ class ReportBaseRefereeTokens(object):
     classdocs
     '''
 
-    def __init__(self, config, file_name,
+    def __init__(self, app_path_folder, file_path,
                  orientation='portrait', title='', subtitle=''):
         '''
         Constructor
         orientation= [portrait|landscape] (vertical|horizontal)
         '''
-        self.config = config
 
         self.colors = colors
         if orientation == 'portrait':  # vertical
@@ -61,7 +60,7 @@ class ReportBaseRefereeTokens(object):
             self.page_height = 21*cm
             self.page_width = 29.7*cm
             pagesize = landscape(A4)
-        self.app_path_folder = config.app_path_folder
+        self.app_path_folder = app_path_folder
         self.title = title
         self.subtitle = subtitle
         self.lineas = []
@@ -82,7 +81,7 @@ class ReportBaseRefereeTokens(object):
                                      os.sep,
                                      "OpenSans-Regular.ttf")))
 
-        self.doc = SimpleDocTemplate(file_name, pagesize=pagesize,
+        self.doc = SimpleDocTemplate(file_path, pagesize=pagesize,
                                      rightMargin=5*mm, leftMargin=5*mm,
                                      topMargin=5*mm, bottomMargin=5*mm)
         self.story = []
