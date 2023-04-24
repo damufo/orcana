@@ -234,8 +234,8 @@ class Presenter(object):
                 col_arrival_pos = self.view.cols["rel_col_arrival_pos"]
                 col_issue_id = self.view.cols["rel_col_issue_id"]
                 col_issue_split = self.view.cols["rel_col_issue_split"]
-            value = self.view.grd_results.GetCellValue(row, col)
-            print(value)
+            value = self.view.grd_results.GetCellValue(row, col).strip()
+            print("value: {}".format(value))
             if col == col_arrival_mark or col >= num_col_fixe:  # Is split mark time
                 count_splits = len(result.result_splits)
                 col_last_split = num_col_fixe + count_splits -1
@@ -256,7 +256,10 @@ class Presenter(object):
                     self.view.grd_results.SetCellValue(row, col, split.mark_time)
                 split.save()
             elif col == col_arrival_pos:  # Set arrive_pos
-                result.arrival_pos = int(value)
+                if value.isdigit():
+                    result.arrival_pos = int(value)
+                else:
+                    result.arrival_pos = 0
                 if not result.arrival_pos:
                     self.view.grd_results.SetCellValue(row, col_arrival_pos , "")
                 else:
