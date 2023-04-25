@@ -1095,13 +1095,15 @@ values( ?, ?, ?, ?)'''
                 )
 
         def save_lines_ind(lines):
-            col_widths = ['4%', '8%', '34%', '4%', '10%', '12%', '8%', '8%', '12%']
+            col_widths = ['4%', '8%', '30%', '4%', '10%', '12%', '8%', '8%', '16%']
             style = [
                 ('FONTSIZE', (0, 0), (-1, -1), 9),
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
                 ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                ('ALIGN', (5, 0), (5, -1), 'RIGHT'),
+                ('ALIGN', (6, 0), (6, -1), 'RIGHT'),
                 ('ALIGN', (2, 0), (2, -1), 'LEFT'),
-                ('ALIGN', (10, 0), (10, -1), 'LEFT'),
+                ('ALIGN', (8, 0), (8, -1), 'LEFT'),
             ]
             table = lines
             d.insert_table(table=table, colWidths=col_widths,
@@ -1113,8 +1115,10 @@ values( ?, ?, ?, ?)'''
                 ('FONTSIZE', (0, 0), (-1, -1), 9),
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
                 ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                ('ALIGN', (5, 0), (5, -1), 'RIGHT'),
+                ('ALIGN', (6, 0), (6, -1), 'RIGHT'),
                 ('ALIGN', (2, 0), (2, -1), 'LEFT'),
-                ('ALIGN', (10, 0), (10, -1), 'LEFT'),
+                ('ALIGN', (8, 0), (8, -1), 'LEFT'),
             ]
             table = lines
             d.insert_table(table=table, colWidths=col_widths,
