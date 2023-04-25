@@ -133,7 +133,7 @@ VALUES(?, ?, ?, ?, ?) '''
         file_name = '{}_{}.pdf'.format(
             self.event.file_name, self.progression.lower())
         file_path = os.path.join(
-            self.config.app_path_folder,
+            self.config.work_folder_path,
             file_name)
         d = self.start_report(file_path=file_path)
         categories_results = {}
@@ -683,7 +683,7 @@ VALUES(?, ?, ?, ?, ?) '''
             long_name = '{}_{}.pdf'.format(
                 self.event.file_name, self.progression.lower())
             file_path = os.path.join(
-                self.config.app_path_folder,
+                self.config.work_folder_path,
                 long_name)
             subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
                 champ.venue, champ.pool_length, chrono_text)
