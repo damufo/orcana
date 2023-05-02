@@ -298,11 +298,14 @@ class Presenter(object):
         heat = self.get_heat()
         lane = int(self.view.grd_results.GetRowLabelValue(row))
         result = heat.results.get_result(lane=lane)
+        result_index = -1           
         if not result:
             result = heat.results.item_blank
             result.lane = lane
             if result.ind_rel == 'R':
                 result.relay = result.champ.relays.item_blank
+        else:
+            result_index = heat.results.index(result)
         if self.model.heat.ind_rel == 'I':
             from modules.res_ind_add_edit import p_res_ind_add_edit
             p_res_ind_add_edit.create(parent=self, result=result)
@@ -313,5 +316,8 @@ class Presenter(object):
             p_res_rel_add_edit.create(parent=self, result=result)
             self.view.update_result_lane(row=row, result=result)
             self.view.update_arrival_pos(heat.results)
+        # Isto é porque o obxexto result cambia o id ó ir ó formulario res_rel_add_edit
+        if result.result_id and result_index != -1 and result != heat.results[result_index]:
+            heat.results[result_index] = result
         self.select_lane(row=row)
 

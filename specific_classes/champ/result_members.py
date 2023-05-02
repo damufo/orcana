@@ -117,6 +117,12 @@ where result_id=? order by pos'''
         for result_member in self:
             result_member.save()  
 
+    def delete_all_items(self):
+        sql = ''' delete from results_members where result_id=? '''
+        values = ((self.result.result_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+        del self[:]
+
     @property
     def list_fields(self):
         """

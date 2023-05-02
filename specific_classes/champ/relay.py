@@ -36,7 +36,7 @@ class Relay(object):
 
     @property
     def long_name(self):
-        gender_name = self.config.get_gender_name(self.gender_id)
+        gender_name = self.config.genders.get_long_name(self.gender_id)
         return '{} ({}) - {} - {}'.format(
             self.name.upper(),
             self.entity.short_name.upper(),

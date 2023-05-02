@@ -41,6 +41,17 @@ class Phase(object):
         return heats
 
     @property
+    def results(self):
+        # get all results for this phase
+        results = []
+        for heat in self.heats:
+            heat.results.load_items_from_dbs()
+            for result in heat.results:
+                result.result_splits.load_items_from_dbs()
+                results.append(result)
+        return results
+
+    @property
     def official(self):
         official = False
         if self.heats:

@@ -30,9 +30,9 @@ class Presenter(object):
 
     def acept(self):
         result = self.model.result
-        relay = self.model.relay
-        entity = self.model.entity
-        if self.model.entity:
+        
+        entity_selected = self.model.entity_selected
+        if entity_selected:
             msg = None
             values = self.view.get_values()
             if not values["relay_name"]:
@@ -44,17 +44,18 @@ class Presenter(object):
             if msg:
                 self.view.msg.warning(msg)
             else:
-                if entity != result.relay.entity and result.result_members:
+                # Has entity change
+                if self.model.entity_change and result.result_members:
                     message = "Members will be deleted, do you want to continue?"
                     if self.view.msg.question(message):
-                        result.result_members.delete_items(range(len(result.result_members)))
+                        result.result_members.delete_all_items()
                     else:
                         return
                 category = result.champ.categories.get_category(category_id=values['category_id'])
-                relay.name = values["relay_name"]
-                relay.gender_id = category.gender_id
-                relay.category = category
-                result.relay.entity = entity
+                result.relay.name = values["relay_name"]
+                result.relay.gender_id = category.gender_id
+                result.relay.category = category
+                result.relay.entity = entity_selected
                 result.save()
                 self.view.view_plus.stop()
         else:
@@ -71,19 +72,19 @@ class Presenter(object):
     def entity_name(self):
         entity_name = self.view.txt_entity_name.GetValue()
         if self.model.entity_name_change:
-            if self.model.entity:
-                old_entity_id = self.model.entity.entity_id
+            if self.model.entity_selected:
+                old_entity_id = self.model.entity_selected.entity_id
             else:
                 old_entity_id = None
-            self.model.entity = None
+            # self.model.entity = None
             if entity_name:
-                if ((self.model.entity and (entity_name != 
-                self.model.entity.short_name)) or not self.model.entity):
+                if ((self.model.entity_selected and (entity_name != 
+                self.model.entity_selected.short_name)) or not self.model.entity_selected):
                     entities = self.model.result.champ.entities
                     entities_match = entities.get_entities_with_name(
                         name=entity_name)
                     if len(entities_match) == 1:
-                        self.model.entity = entities_match[0]
+                        self.model.entity_selected = entities_match[0]
                     elif len(entities_match) > 1:
                         choices = []
                         for i in entities_match:
@@ -94,22 +95,29 @@ class Presenter(object):
                             choices
                             )
                         if choice is not None:
-                            self.model.entity = entities_match[choice[0]]
-            if self.model.entity and self.model.entity.entity_id != old_entity_id:
-                self.set_relay_name()
+                            self.model.entity_selected = entities_match[choice[0]]
+                if (self.model.entity_selected and
+                    (self.model.entity_selected.entity_id != old_entity_id or 
+                        not self.view.txt_relay_name.GetValue())):
+                    self.set_relay_name()
+                elif not self.model.entity_selected:
+                    self.view.txt_relay_name.SetValue('')
             else:
+                self.model.entity_selected = None
                 self.view.txt_relay_name.SetValue('')
-            self.view.set_entity_values(self.model.entity)
+            self.view.set_entity_values(entity=self.model.entity_selected)
             self.model.entity_name_change = False
             print('change off')
         # FIXME recuperar foco cando hai varias opcións
 
     def set_relay_name(self):
+        # Conta as remudas que hai desa entidade e propón o total +1 como nome
         count = 1
-        for i in self.model.result.results:
-            if i.relay.entity.entity_code == self.model.entity.entity_code:
+        for i in self.model.result.heat.phase.results:
+            if (i.relay.entity.entity_code == self.model.entity_selected.entity_code
+                and i.relay != self.model.result.relay):
                 count += 1
-        self.view.txt_relay_name.SetValue('{} {}'.format(self.model.entity.short_name, str(count).zfill(2)))
+        self.view.txt_relay_name.SetValue('{} {}'.format(self.model.entity_selected.short_name, str(count).zfill(2)))
         self.view.txt_relay_name.SetFocus()
 
     def add_entity(self):

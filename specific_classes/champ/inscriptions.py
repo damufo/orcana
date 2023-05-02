@@ -40,6 +40,34 @@ class Inscriptions(list):
     def chrono_type(self):
         return self.champ.chrono_type
 
+    def item_blank_ind(self, event):
+        return InscriptionInd(
+            inscriptions=self,
+            inscription_id=0,
+            pool_length=self.champ.pool_length,
+            chrono_type=self.champ.chrono_type,
+            mark_hundredth=0,
+            equated_hundredth=0,
+            date='',
+            venue='',
+            event=event,
+            person=None
+        )
+
+    def item_blank_rel(self, event):
+        return InscriptionRel(
+            inscriptions=self,
+            inscription_id=0,
+            pool_length=0,
+            chrono_type='',
+            mark_hundredth=0,
+            equated_hundredth=0,
+            date='',
+            venue='',
+            event=event,
+            relay=self.champ.relays.item_blank
+        )
+
     # def delete_items(self, idxs):
     #     for idx in sorted(idxs, reverse=True):
     #         self.delete_item(idx)

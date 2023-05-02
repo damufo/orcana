@@ -27,6 +27,11 @@ class Results(list):
 
     @property
     def item_blank(self):
+        if self.event.ind_rel == 'I':
+            inscription = self.champ.inscriptions.item_blank_ind(event=self.event)
+        elif self.event.ind_rel == 'R':
+            inscription = self.champ.inscriptions.item_blank_rel(event=self.event)
+
         return Result(
             results=self,
             result_id=0,
@@ -38,7 +43,8 @@ class Results(list):
             issue_id='',
             issue_split=0,
             equated_hundredth=0,
-            inscription_id=0  #subtituir isto pola clase inscription, igual que person e relay
+            # inscription_id=0  #subtituir isto pola clase inscription, igual que person e relay
+            inscription=inscription
             )
 
     def delete_items(self, idxs):
@@ -92,6 +98,7 @@ where heat_id={} order by lane '''
                 result = i
                 break
         return result
+
     # @property
     # def list_fields(self):
     #     """

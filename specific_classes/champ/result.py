@@ -230,7 +230,7 @@ class Result(object):
     def delete(self):
         if self.result_id:
             if self.ind_rel == 'R':  # borra tamén a remuda
-                if not self.relay.is_in_use():
+                if not self.relay.is_in_use:
                     self.relay.delete()
             sql =  ("delete from results_members where result_id=?")
             values = ((self.result_id, ), )
