@@ -901,7 +901,7 @@ VALUES(?, ?, ?, ?, ?) '''
                         member = i.result_members[current_member].person
                         member_line = [
                             member.license, 
-                            member.long_name, 
+                            member.full_name, 
                             member.year[2:]]
 
                         if table_splits:
