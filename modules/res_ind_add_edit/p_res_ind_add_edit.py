@@ -14,7 +14,7 @@ def create(parent, result):
     return Presenter(
             parent=parent,
             model=Model(result=result),
-            view=View(parent.main_frame),
+            view=View(parent.view),  # main_frame casca
             interactor=Interactor())
 
 class Presenter(object):
@@ -43,7 +43,7 @@ class Presenter(object):
                 message = "Are you sure you want to delete this person and results?"
                 if self.view.msg.question(message):
                     print('delete person and results')
-                    result.delete_item()
+                    result.delete()
                     self.view.view_plus.stop()
             else:
                 self.view.msg.warning("No person selected.")
