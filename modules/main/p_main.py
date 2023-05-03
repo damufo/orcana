@@ -30,7 +30,6 @@ class Presenter(object):
         self.view.set_buttons(has_champ=self.model.champ.champ_id)
 
     def about(self):
-        self.view.parent.msg.error("test")
         self.view.about(config=self.model.config)
 
     def open_db(self):
