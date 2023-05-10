@@ -17,6 +17,7 @@ class Interactor(object):
         view.lsc_candidates.Bind(wx.EVT_LIST_COL_END_DRAG, self.save_col_sizes)
         view.lsc_candidates.Bind(wx.EVT_LIST_ITEM_SELECTED, self.select_candidates)
         view.lsc_candidates.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.select_candidates)
+        view.lsc_candidates.Bind(wx.EVT_LEFT_DCLICK, self.save_candidates)
         view.btn_move_down.Bind(wx.EVT_BUTTON, self.move_down)
         view.btn_move_up.Bind(wx.EVT_BUTTON, self.move_up)
 
