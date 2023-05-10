@@ -168,6 +168,16 @@ class View(Heats):
             row = self.grd_results.GetGridCursorRow()
             col = self.grd_results.GetGridCursorCol()
             self.grd_results.SetGridCursor(results[0].lane - pool_lane_adjust, col)
+        
+        print("ALIÑADO PERSONALIZADO PARA COLUMNA")
+        print("ADAPTAR INDIVIDUAL/REMUDA AGORA SÓ VAI BEN CON INDIVIDUAL")
+        # gc_attr = wx.grid.GridCellAttr()
+        # gc_attr.SetAlignment(wx.ALIGN_RIGHT, wx.
+        # ALIGN_CENTRE)
+        # self.grd_results.SetColAttr(2, gc_attr)
+        bg = self.grd_results.GetLabelBackgroundColour()
+        col_render = CustomColLabelRenderer(color=bg, ind_rel=heat.ind_rel)
+        self.grd_results.SetDefaultColLabelRenderer(col_render)
 
     def update_result_lane(self, row, result):
         # row = self.grd_results.GetGridCursorRow()
