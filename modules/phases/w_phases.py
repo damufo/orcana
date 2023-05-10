@@ -56,26 +56,32 @@ class Phases ( wx.Panel ):
 		self.m_staticline3 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		bSizer7.Add( self.m_staticline3, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.btn_copy_cat = wx.Button( self, wx.ID_ANY, _(u"Copy cat."), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_copy_cat = wx.Button( self, wx.ID_ANY, _(u"Cop&y cat."), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_copy_cat.SetToolTip( _(u"Copy phase categories.") )
 
 		bSizer7.Add( self.btn_copy_cat, 0, wx.ALL, 5 )
 
-		self.btn_paste_cat = wx.Button( self, wx.ID_ANY, _(u"Paste cat."), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_paste_cat = wx.Button( self, wx.ID_ANY, _(u"&Paste cat."), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_paste_cat.SetToolTip( _(u"Replace phase categories by coped categories.") )
 
 		bSizer7.Add( self.btn_paste_cat, 0, wx.ALL, 5 )
 
+		self.m_staticline31 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		bSizer7.Add( self.m_staticline31, 0, wx.EXPAND |wx.ALL, 5 )
+
 
 		bsz_events.Add( bSizer7, 0, 0, 5 )
 
-
-		bsz_events.Add( ( 0, 0), 1, wx.EXPAND, 5 )
+		self.btn_sort = wx.Button( self, wx.ID_ANY, _(u"&Sort"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bsz_events.Add( self.btn_sort, 0, wx.ALL, 5 )
 
 		self.btn_categories = wx.Button( self, wx.ID_ANY, _(u"&Categories"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_categories.SetToolTip( _(u"Set categories for selected phases.") )
 
 		bsz_events.Add( self.btn_categories, 0, wx.ALL, 5 )
+
+
+		bsz_events.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
 		bSizer8 = wx.BoxSizer( wx.HORIZONTAL )
 

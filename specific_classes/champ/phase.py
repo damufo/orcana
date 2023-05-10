@@ -65,7 +65,15 @@ class Phase(object):
 
     @property
     def date_time(self):
-        return '{} {}'.format(self.session.xdate, self.session.xtime)
+        # FIXME xtime debería ter sempre un valor válido e correcto de 8 díxitos
+        # tamén podería ser un valor de 5 díxitos ó que sempre se lle engadirían os segundos
+        if len(self.session.xtime) == 8:
+            xtime = self.session.xtime
+        elif len(self.session.xtime) == 5:
+            xtime = "{}:00".format(self.session.xtime)
+        elif len(self.session.xtime) < 5:
+            xtime = "00:00:00"
+        return '{} {}'.format(self.session.xdate, xtime)
 
     @property
     def file_name(self):
@@ -121,6 +129,120 @@ VALUES(?, ?, ?, ?, ?) '''
     def delete_results_phase_categories(self):
         for phase_category in self.phase_categories:
             phase_category.results_phase_category.delete_all_items()
+
+    def delete_all_heats(self):
+        for i in self.heats:
+            i.delete()
+
+    def gen_heats(self):
+        '''
+        Xera as series da fase como TIM
+        Xera as series
+        Xera as liñas de resultados (aquí é onde vai a serie e a pista)
+        '''
+        print("Generate sphase eries")
+        
+        # clear previous phase heats
+        self.delete_all_heats()
+
+        if self.pool_lanes == 5:
+            lanes_sort = (3, 4, 2, 5, 1)
+        if self.pool_lanes == 6:
+            lanes_sort = (3, 4, 2, 5, 1, 6)
+        elif self.pool_lanes == 8:
+            lanes_sort = (4, 5, 3, 6, 2, 7, 1, 8)
+        # heats and results
+        # Get inscriptions, sorted by time asc
+        sql2 = '''
+select (select person_id from persons p where p.person_id=i.person_id) person_id,
+(select relay_id from relays r where r.relay_id=i.relay_id) relay_id,
+equated_hundredth, inscription_id
+from inscriptions i where event_id={} order by equated_hundredth; '''
+        sql2 = sql2.format(self.event.event_id)
+        res2 = self.config.dbs.exec_sql(sql=sql2)
+        count_inscriptions = len(res2)
+        inscriptions = list(res2)
+        results = []
+        heats = []
+        if count_inscriptions:
+            tot_heats, first_heat = divmod(count_inscriptions, self.pool_lanes)
+            if first_heat != 0:
+                tot_heats += 1
+            sql_heat = '''
+insert into heats (phase_id, pos) values(?, ?)'''
+            sql_result = '''
+insert into results (heat_id, lane, person_id, relay_id, equated_hundredth, inscription_id)
+values(?, ?, ?, ?, ?,?)'''
+            sql_splits_for_event = '''
+select distance, split_code, official from splits_for_event where 
+event_code=(select event_code from events where event_id=
+(select event_id from phases where phase_id=?))
+order by distance; '''
+            sql_result_split = '''
+insert into results_splits (result_id, distance, result_split_code, official) 
+values( ?, ?, ?, ?)'''
+            for heat_pos in range(tot_heats, 0, -1):
+                values = ((self.phase_id, heat_pos), )
+                self.config.dbs.exec_sql(sql=sql_heat, values=values)
+                heat_id = self.config.dbs.last_row_id
+                for lane in lanes_sort:
+                    inscription = inscriptions.pop(0)
+                    PERSON_ID, RELAY_ID, EQUATED_HUNDREDTH, INSCRIPTION_ID = range(4) 
+                    values = ((
+                        heat_id,
+                        lane,
+                        inscription[PERSON_ID] or 0,
+                        inscription[RELAY_ID] or 0,
+                        inscription[EQUATED_HUNDREDTH],
+                        inscription[INSCRIPTION_ID],
+                        ),)
+                    self.config.dbs.exec_sql(sql=sql_result, values=values)
+                    result_id = self.config.dbs.last_row_id
+                    # Create splits
+                    splits_for_event = self.config.dbs.exec_sql(
+                        sql=sql_splits_for_event, values=((self.phase_id, ), ))
+                    DISTANCE, RESULT_SPLIT_CODE, OFFICIAL = range(3)
+                    if splits_for_event:
+                        for event_split in splits_for_event:
+                            self.config.dbs.exec_sql(
+                                sql=sql_result_split,
+                                values=((
+                                    result_id,
+                                    event_split[DISTANCE],
+                                    event_split[RESULT_SPLIT_CODE],
+                                    event_split[OFFICIAL]), ))
+                    else:
+                        # add one final split
+                        # get event_code
+                        sql_event_code = """
+select event_code from events where event_id =
+(select event_id from inscriptions where inscription_id=?); """
+                        res_event_code = self.config.dbs.exec_sql(
+                            sql=sql_event_code,
+                            values=((inscription[INSCRIPTION_ID], ), ))
+                        res_event_code = res_event_code[0][0].upper()
+                        if 'X' in res_event_code:
+                            members = int(res_event_code.split('X')[0])
+                            distance_per_member = res_event_code.split('X')[1][:-1]
+                            distance = int(members) * int(distance_per_member)
+                        else:
+                            distance = res_event_code[:len(res_event_code)-1]
+                        self.config.dbs.exec_sql(
+                                sql=sql_result_split,
+                                values=((
+                                    result_id,
+                                    distance,
+                                    res_event_code,
+                                    1), ))
+                    if heat_pos == 2 and len(inscriptions) == 3:
+                        print("Recoloca para gantir 3")
+                        break
+                    elif len(inscriptions) == 0:
+                        break
+        # self.phases.load_items_from_dbs()
+        self.champ.heats.load_items_from_dbs()
+        print("load heats for this phase")
+        print('Fin')
 
     def start_report(self, file_path):
         champ = self.phases.champ

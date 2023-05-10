@@ -349,7 +349,6 @@ values( ?, ?, ?, ?)'''
                                         event_split[OFFICIAL]), ))
                         else:
                             # add one final split
-                            print("dd")
                             # get event_code
                             sql_event_code = """
 select event_code from events where event_id =
@@ -736,14 +735,14 @@ values( ?, ?, ?, ?)'''
                             members[pos] = member.person.full_name
                             members_licenses.append(member.person.license)
                         if members_licenses:
-                            members_licenses_str = json.dumps(members_licenses)
+                            members_licenses_str = members_licenses
                         distance_per_member = int(result.distance / result.result_members.num_members)
                         num_member = result.result_members.num_members  # for splits calculations
 
                     line.append(style_names[result.style_id])  # phaseresult.style.code
                     line.append(result.mark_hundredth)  # phaseresult.value
                     line.append(result.distance)  # phaseresult.goal
-                    line.append('{}:00'.format(result.heat.start_time or result.phase.date_time))  # phaseresult.date
+                    line.append('{}'.format(result.heat.start_time or result.phase.date_time))  # phaseresult.date
                     #FIXME: points
                     line.append('0')  # phaseresult.custom_fields.result_point
                     line.append(str(result.lane))  # phaseresult.custom_fields.result_lane
@@ -835,7 +834,7 @@ values( ?, ?, ?, ?)'''
                         line.append(str(result.heat.pos))  # phaseresult.custom_fields.result_heat
                         line.append(int(result.category.to_age))  # phaseresult.category.maximum_age
                         line.append(int(result.category.from_age))  # phaseresult.category.minimum_age
-                        line.append(result.category.name)  # phaseresult.category.name
+                        line.append(result.category.code)  # phaseresult.category.name
                         line.append('38')  # phaseresult.category.@where:categorydisciplines.discipline.id
                         line.append(self.name)  # phaseresult.competition
                         line.append(self.venue)  # phaseresult.location
@@ -879,22 +878,16 @@ values( ?, ?, ?, ?)'''
         for i in lines:
             row = ""
             for col, j in enumerate(i):
+                json.dumps(j)
                 if isinstance(j, str):
                     value = '"{}"'.format(j)
                 elif isinstance(j, int):
                     value = '{}'.format(j)
+                elif isinstance(j, list):
+                    value = json.dumps(j)
                 else:
                     print('Isto non debería pasar.')
-
-                # if not j:
-                #     value = '""'
-                # else:
-                #     value = j
-                #     if col in int_cols:
-                #         value = '{}'.format(j)
-                #     else:
-                #         value = '"{}"'.format(j)
-                row += ';{}'.format(str(value))
+                row += ';{}'.format(value)
 
             datos.append(row[1:])
 
