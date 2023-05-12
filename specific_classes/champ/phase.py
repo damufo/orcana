@@ -935,7 +935,7 @@ select event_code from events where event_id =
             champ = self.phases.champ
             file_name = '{}_{}.pdf'.format(
                 self.event.file_name, self.progression.lower())
-            self.init_report(file_name=file_name)
+            d = self.init_report(file_name=file_name)
             xerar = True
 
         style = [
