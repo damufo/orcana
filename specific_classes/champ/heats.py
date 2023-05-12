@@ -137,7 +137,7 @@ order by
         for pos, heat in enumerate(self, 1):
             values.append((
                 str(pos),
-                heat.phase.event.name,
+                heat.phase.event.long_name,
                 heat.phase.progression,
                 str(heat.pos),
                 heat.official and '√' or '',
