@@ -827,7 +827,7 @@ values( ?, ?, ?, ?)'''
                         line.append(style_names[split.style_id])  # phaseresult.style.code
                         line.append(split_mark_hundredth)  # phaseresult.value
                         line.append(split_distance)  # phaseresult.goal
-                        line.append('{}:00'.format(result.heat.start_time or result.phase.date_time))  # phaseresult.date
+                        line.append('{}'.format(result.heat.start_time or result.phase.date_time))  # phaseresult.date
                         #FIXME: points
                         line.append('0')  # phaseresult.custom_fields.result_point
                         line.append(str(result.lane))  # phaseresult.custom_fields.result_lane
@@ -867,7 +867,6 @@ values( ?, ?, ?, ?)'''
                         else:
                             print("parcial sen tempo")
 
-
         lines.append(head)
         lines.reverse()
         for i in lines:
@@ -890,7 +889,6 @@ values( ?, ?, ?, ?)'''
                 row += ';{}'.format(value)
 
             datos.append(row[1:])
-
 
         datos = "\n".join(datos)
         datos += "\n"
@@ -1482,7 +1480,136 @@ values( ?, ?, ?, ?)'''
         d.build_file()
         print("feito")
 
-    def report_start_list(self, phase=None):
+    def report_start_list_html(self, phase=None):
+        if phase:
+            phases = [phase, ]
+            file_name = os.path.join(
+                self.config.work_folder_path,
+                _('start_list_{}.html').format(phase.file_name),
+                )
+        else:
+            phases = self.phases
+            file_name = os.path.join(
+                self.config.work_folder_path,
+                _('start_list_full.html'),
+                )
+        if self.chrono_type == 'M':
+            chrono_text = _('manual')
+        else:
+            chrono_text = _('electronic')
+
+        file_path = os.path.join(
+            self.config.work_folder_path,
+            file_name)
+        
+        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
+            self.venue, self.pool_length, chrono_text)
+        
+        md = """<!DOCTYPE html>
+<html>
+<head>
+<STYLE><!--
+body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9pt;}
+#f7 {font-family: Arial, helvetica; font-style:normal; font-size: 7pt;}
+#f8 {font-family: Arial, helvetica; font-style:normal; font-size: 8pt;}
+#f9 {font-family: Arial, helvetica; font-style:normal; font-size: 9pt;}
+#f10 {font-family: Arial, helvetica; font-style:normal; font-size: 10t;}
+#f11 {font-family: Arial, helvetica; font-style:normal; font-size: 11pt;}
+#f12 {font-family: Arial, helvetica; font-style:normal; font-size: 12pt;}
+#f13 {font-family: Arial, helvetica; font-style:normal; font-size: 13pt;}
+#f14 {font-family: Arial, helvetica; font-style:normal; font-size: 14pt;}
+--></STYLE>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title></title>
+</head>
+<body>
+<h1 align=center>%s</h1>\n<p align=center>%s</p>\n""" % (self.name, subtitle)
+        
+        def add_phase_title(lines):
+            nonlocal md
+            md +="""<h2>{}</h2>\n""".format(lines[0][0])
+
+        def add_heat_title(lines):
+            nonlocal md
+            md +="""\n<h3>{}</h3>\n""".format(lines[0][0])
+
+        def add_result(lines):
+            nonlocal md
+            rows = ""
+            for i in lines:
+                rows += """
+        <tr>
+            <td align=right width=3%>{}</td>
+            <td align=center width=8%>{}</td>
+            <td align=left width=37%><b>{}</b></td>
+            <td align=center width=4%>{}</td>
+            <td align=left width=16%>{}</td>
+            <td align=right width=8%>{}</td>
+            <td align=right width=4%>{}</td>
+            <td align=right width=10%>{}</td>
+        </tr>
+        """.format(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
+            md +="""
+<table width="100%">
+{}
+</table>
+""".format(rows)
+
+        def add_relay_members(lines):
+            print(lines)
+            print(lines)
+
+        for phase in phases:
+            phase_title = '{}.- {} ({})'.format(phase.event.pos, phase.event.name, phase.progression)
+            add_phase_title([[phase_title], ])
+            heats = [heat for heat in self.heats if heat.phase == phase]
+            count_heats = len(heats)
+            inscriptions =  phase.event.inscriptions
+            inscriptions.load_items_from_dbs()
+            for heat in heats:
+                heat_title = _('Heat {} of {}').format(heat.pos, count_heats)
+                add_heat_title([[heat_title], ])
+                heat.results.load_items_from_dbs()
+                # FIXME: poñer isto na clase resultados
+                # crear unha lista de inscricións con todas as inscricións
+                # e poñela en champ
+                for result in heat.results:
+                    if result.inscription:
+                        time_sart_list = result.inscription.mark_time
+                        insc_properties = '{}{}'.format(
+                            result.inscription.pool_length,
+                            result.inscription.chrono_type)
+                        equated_time = result.equated_time
+                    else:
+                        time_sart_list = ''
+                        insc_properties = ''
+                        equated_time = result.equated_time
+
+                    line_result = [[
+                            str(result.lane), 
+                            'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
+                            'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
+                            'X' not in result.event.code.upper() and result.person.year[2:] or "", 
+                            'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
+                            time_sart_list, insc_properties, equated_time],]
+                    add_result(line_result)
+                    if result.ind_rel == 'R':
+                        if not result.result_members:
+                            result.result_members.load_items_from_dbs()
+                        members = '; '.join([i.person.full_name for i in result.result_members])
+                        print(members)
+                        if members:
+                            add_relay_members([[members], ])
+        md += """</body>\n</html>"""
+        files.set_file_content(content=md,
+                               file_path=file_path,
+                               compress=False,
+                               binary=False,
+                               encoding='utf-8-sig',
+                               end_line="\n")
+        print('fin')
+
+    def report_start_list_pdf(self, phase=None):
         if phase:
             phases = [phase, ]
             file_name = os.path.join(
@@ -1502,7 +1629,7 @@ values( ?, ?, ?, ?)'''
 
         file_path = os.path.join(
             self.config.work_folder_path,
-            _('start_list.pdf'))
+            file_name)
         subtitle = _("{}. Pool course {} m. Timing system {}.").format(
             self.venue, self.pool_length, chrono_text)
         d =  ReportBase(
@@ -1566,7 +1693,6 @@ values( ?, ?, ?, ?)'''
                 # ('FONT', (6,0),(6,-1), 'Open Sans Bold'),
                 ]
             style_result = style + style_result
-
             col_widths = ['4%', '10%', '40%', '6%', '20%', '10%', '10%']
             row_heights = (1.5*cm, 2.5*cm)
             row_heights = [.8*cm] * len(lines)

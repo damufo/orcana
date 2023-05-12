@@ -19,7 +19,7 @@ import wx.xrc
 
 class Properties ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 848,570 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 920,570 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
@@ -173,10 +173,18 @@ class Properties ( wx.Panel ):
 
 		bSizer103.Add( self.btn_report_inscriptions, 1, wx.ALL, 5 )
 
-		self.btn_report_heats = wx.Button( self, wx.ID_ANY, _(u"Report heat&s"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_report_heats.SetToolTip( _(u"Generate PDF report heats") )
+		bSizer14 = wx.BoxSizer( wx.HORIZONTAL )
 
-		bSizer103.Add( self.btn_report_heats, 1, wx.ALL, 5 )
+		self.btn_report_heats_pdf = wx.Button( self, wx.ID_ANY, _(u"Report heats &PDF"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_heats_pdf.SetToolTip( _(u"Generate PDF report heats") )
+
+		bSizer14.Add( self.btn_report_heats_pdf, 1, wx.ALL, 5 )
+
+		self.btn_report_heats_html = wx.Button( self, wx.ID_ANY, _(u"Report heats &HTML"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer14.Add( self.btn_report_heats_html, 1, wx.ALL, 5 )
+
+
+		bSizer103.Add( bSizer14, 1, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )

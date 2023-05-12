@@ -37,10 +37,11 @@ class Presenter(object):
         self.model.champ.report_inscriptions_by_event()
         self.model.champ.report_sumary_participants()
 
+    def report_heats_pdf(self):
+        self.model.champ.report_start_list_pdf()
 
-
-    def report_heats(self):
-        self.model.champ.report_start_list()
+    def report_heats_html(self):
+        self.model.champ.report_start_list_html()
 
     def fiarna(self):
         from modules.fiarna import p_fiarna
