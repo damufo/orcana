@@ -481,27 +481,28 @@ values( ?, ?, ?, ?)'''
         self.heats.load_items_from_dbs()
         print('Fin')
 
-    def report_results(self):
-        if self.chrono_type == 'M':
-            chrono_text = _('manual')
-        else:
-            chrono_text = _('electronic')
-
-        file_name = '{}.pdf'.format(
-            self.file_name)
+    def init_report(self, file_name):
         file_path = os.path.join(
             self.config.work_folder_path,
             file_name)
+        champ = self.phases.champ
+        if champ.chrono_type == 'M':
+            chrono_text = _('manual')
+        else:
+            chrono_text = _('electronic')
         subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
-            self.venue, self.pool_length, chrono_text)
+            champ.venue, champ.pool_length, chrono_text)
         d =  ReportBase(
-                # config= self.config,
-                app_path_folder= self.config.app_path_folder,
-                app_version = self.config.app_version,
-                file_path = file_path,
+                app_path_folder=self.config.app_path_folder,
+                app_version=self.config.app_version,
+                file_path=file_path, 
                 orientation='portrait',
-                title=self.name,
+                title=champ.name,
                 subtitle=subtitle)
+        return d
+
+    def report_results(self):
+        d =  self.init_report(file_name=_("results_full.pdf"))
         page_break = False
         for phase in self.phases:
             if phase.official:
@@ -909,16 +910,11 @@ values( ?, ?, ?, ?)'''
     def report_inscriptions_by_club(self, entity=None):
         if entity:
             entities = [entity, ]
-            file_path = os.path.join(
-                self.config.work_folder_path,
-                _('inscriptions_by_club_{}.pdf').format(entity.entity_code),
-                )
+            file_name = _('inscriptions_by_club_{}.pdf').format(entity.entity_code)
         else:
             entities = self.entities
-            file_path = os.path.join(
-                self.config.work_folder_path,
-                _('inscriptions_by_club_full.pdf'),
-                )
+            file_name = _('inscriptions_by_club_full.pdf')
+        d =  self.init_report(file_name=file_name)
 
         def save_table(lines, inscription):
             col_widths = ['7%', '22%', '10%', '10%', '8%', '7%', '10%', '11%', '15%']
@@ -934,21 +930,6 @@ values( ?, ?, ?, ?)'''
             table = lines
             d.insert_table(table=table, colWidths=col_widths, 
                            style=style, pagebreak=False)
-
-
-        if self.chrono_type == 'M':
-            chrono_text = _('manual')
-        else:
-            chrono_text = _('electronic')
-        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
-            self.venue, self.pool_length, chrono_text)
-        d =  ReportBase(
-                app_path_folder=self.config.app_path_folder,
-                app_version=self.config.app_version,
-                file_path=file_path, 
-                orientation='landscape',
-                title=self.name,
-                subtitle=subtitle)
 
         d.insert_title_1(text=_("Inscriptions by entity"), alignment=1)
 
@@ -1080,11 +1061,8 @@ values( ?, ?, ?, ?)'''
                 )
         else:
             phases = self.phases
-            file_path = os.path.join(
-                self.config.work_folder_path,
-                _('inscriptions_by_event_full.pdf'),
-                )
-
+            file_name = _('inscriptions_by_event_full.pdf')
+        d = self.init_report(file_name=file_name)
         def save_lines_ind(lines):
             col_widths = ['4%', '8%', '30%', '4%', '10%', '12%', '8%', '8%', '16%']
             style = [
@@ -1114,20 +1092,6 @@ values( ?, ?, ?, ?)'''
             table = lines
             d.insert_table(table=table, colWidths=col_widths,
                            style=style, pagebreak=False)
-
-        if self.chrono_type == 'M':
-            chrono_text = _('manual')
-        else:
-            chrono_text = _('electronic')
-        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
-            self.venue, self.pool_length, chrono_text)
-        d =  ReportBase(
-                app_path_folder=self.config.app_path_folder,
-                app_version=self.config.app_version,
-                file_path=file_path, 
-                orientation='portrait',
-                title=self.name,
-                subtitle=subtitle)
 
         d.insert_title_1(text=_("Inscriptions by event"), alignment=1)
 
@@ -1191,16 +1155,11 @@ values( ?, ?, ?, ?)'''
     def report_sumary_participants(self, entity=None):
         if entity:
             entities = [entity, ]
-            file_path = os.path.join(
-                self.config.work_folder_path,
-                _('sumary_participants_{}.pdf').format(entity.entity_code),
-                )
+            file_name =_('sumary_participants_{}.pdf').format(entity.entity_code)
         else:
             entities = self.entities
-            file_path = os.path.join(
-                self.config.work_folder_path,
-                _('sumary_participants_full.pdf'),
-                )
+            file_name = _('sumary_participants_full.pdf')
+        d = self.init_report(file_name=file_name)
 
         def save_lines(lines):
             # col_widths = ['4%', '8%', '24%', '14%', '10%', '12%', '8%', '8%', '12%']
@@ -1216,20 +1175,6 @@ values( ?, ?, ?, ?)'''
             table = lines
             d.insert_table(table=table, colWidths=col_widths,
                            style=style, pagebreak=False)
-
-        if self.chrono_type == 'M':
-            chrono_text = _('manual')
-        else:
-            chrono_text = _('electronic')
-        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
-            self.venue, self.pool_length, chrono_text)
-        d =  ReportBase(
-                app_path_folder=self.config.app_path_folder,
-                app_version=self.config.app_version,
-                file_path=file_path, 
-                orientation='portrait',
-                title=self.name,
-                subtitle=subtitle)
 
         d.insert_title_1(text=_("Sumary participantes"), alignment=1)
         d.insert_paragraph("")
@@ -1612,155 +1557,14 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
     def report_start_list_pdf(self, phase=None):
         if phase:
             phases = [phase, ]
-            file_name = os.path.join(
-                self.config.work_folder_path,
-                _('start_list_{}.pdf').format(phase.file_name),
-                )
+            file_name = _('start_list_{}.pdf').format(phase.file_name)
         else:
             phases = self.phases
-            file_name = os.path.join(
-                self.config.work_folder_path,
-                _('start_list_full.pdf'),
-                )
-        if self.chrono_type == 'M':
-            chrono_text = _('manual')
-        else:
-            chrono_text = _('electronic')
-
-        file_path = os.path.join(
-            self.config.work_folder_path,
-            file_name)
-        subtitle = _("{}. Pool course {} m. Timing system {}.").format(
-            self.venue, self.pool_length, chrono_text)
-        d =  ReportBase(
-                app_path_folder=self.config.app_path_folder,
-                app_version=self.config.app_version,
-                file_path=file_path, 
-                orientation='portrait',
-                title=self.name,
-                subtitle=subtitle)
-        style = [
-            ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
-            # ('FONTSIZE',(0,0),(-1,-1), 8),
-            ('ALIGN',(0,0),(-1,-1), 'CENTER'),
-            ('VALIGN', (0,0), (-1,-1), 'BOTTOM'), 
-            # ('TOPPADDING', (0,0), (-1,-1), 0),
-            ('LEFTPADDING', (0,0), (-1,-1), 3),
-            ('RIGHTPADDING', (0,0), (-1,-1), 3),
-            # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
-            # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
-            ]
-        def add_phase_title(lines):
-            style_title = [
-                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
-                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
-                ]
-            style_title = style + style_title
-            col_widths = ['100%']
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.8*cm,
-                style=style_title,
-                pagebreak=False)
-
-        def add_heat_title(lines):
-            style_title = [
-                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
-                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 9),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
-                ]
-            style_title = style + style_title
-            col_widths = ['100%']
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.8*cm,
-                style=style_title,
-                pagebreak=False)
-
-        def add_result(lines):
-            style_result = [
-                ('FONTSIZE',(0,0),(-1,-1), 8),
-                ('ALIGN',(2,0),(2,-1), 'LEFT'),
-                ('ALIGN',(5,0),(5,-1), 'RIGHT'),  #mark
-                ('ALIGN',(6,0),(6,-1), 'RIGHT'),  #points
-                ('FONT', (2,0),(2,-1), 'Open Sans Bold'),
-                # ('FONT', (5,0),(5,-1), 'Open Sans Bold'),
-                # ('FONT', (6,0),(6,-1), 'Open Sans Bold'),
-                ]
-            style_result = style + style_result
-            col_widths = ['4%', '10%', '40%', '6%', '20%', '10%', '10%']
-            row_heights = (1.5*cm, 2.5*cm)
-            row_heights = [.8*cm] * len(lines)
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.4*cm,
-                style=style_result,
-                pagebreak=False)
-
-        def add_relay_members(lines):
-            style_title = [
-                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
-                # ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 7),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
-                ]
-            style_title = style + style_title
-            col_widths = ['86%']
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.4*cm,
-                style=style_title,
-                pagebreak=False,
-                alignment='RIGHT')
+            file_name = _('start_list_full.pdf')
+        d = self.init_report(file_name=file_name)
 
         for phase in phases:
-            phase_title = '{}.- {} ({})'.format(phase.event.pos, phase.event.name, phase.progression)
-            add_phase_title([[phase_title], ])
-            heats = [heat for heat in self.heats if heat.phase == phase]
-            count_heats = len(heats)
-            inscriptions =  phase.event.inscriptions
-            inscriptions.load_items_from_dbs()
-            for heat in heats:
-                heat_title = _('Heat {} of {}').format(heat.pos, count_heats)
-                add_heat_title([[heat_title], ])
-                heat.results.load_items_from_dbs()
-                # FIXME: poñer isto na clase resultados
-                # crear unha lista de inscricións con todas as inscricións
-                # e poñela en champ
-                for result in heat.results:
-                    if result.inscription:
-                        time_sart_list = '{} {}{}'.format(
-                            result.inscription.mark_time,
-                            result.inscription.pool_length,
-                            result.inscription.chrono_type)
-                        equated_time = result.equated_time
-                    else:
-                        time_sart_list = ''
-                        equated_time = result.equated_time
-
-                    line_result = [[
-                            str(result.lane), 
-                            'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
-                            'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
-                            'X' not in result.event.code.upper() and result.person.year[2:] or "", 
-                            'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
-                            time_sart_list, equated_time],]
-                    add_result(line_result)
-                    if result.ind_rel == 'R':
-                        if not result.result_members:
-                            result.result_members.load_items_from_dbs()
-                        members = '; '.join([i.person.full_name for i in result.result_members])
-                        print(members)
-                        if members:
-                            add_relay_members([[members], ])
-
+            phase.report_start_list_pdf(d=d)
         d.build_file()
         print('fin')
 

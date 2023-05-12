@@ -17,6 +17,7 @@ class Interactor(object):
         view.btn_copy_cat.Bind(wx.EVT_BUTTON, self.copy_phase_categories)
         view.btn_paste_cat.Bind(wx.EVT_BUTTON, self.paste_phase_categories)
         view.btn_sort.Bind(wx.EVT_BUTTON, self.sort)
+        view.btn_start_list.Bind(wx.EVT_BUTTON, self.start_list)
         view.btn_add.Bind(wx.EVT_BUTTON, self.add)
         view.btn_edit.Bind(wx.EVT_BUTTON, self.edit)
         view.btn_delete.Bind(wx.EVT_BUTTON, self.delete)
@@ -41,6 +42,9 @@ class Interactor(object):
 
     def sort(self, event):
         self.presenter.sort()
+
+    def start_list(self, event):
+        self.presenter.start_list()
 
     def add(self, event):
         self.presenter.add()

@@ -80,6 +80,11 @@ class Phases ( wx.Panel ):
 
 		bsz_events.Add( self.btn_categories, 0, wx.ALL, 5 )
 
+		self.btn_start_list = wx.Button( self, wx.ID_ANY, _(u"Start list"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_start_list.SetToolTip( _(u"Print start list") )
+
+		bsz_events.Add( self.btn_start_list, 0, wx.ALL, 5 )
+
 
 		bsz_events.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 

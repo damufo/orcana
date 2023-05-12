@@ -133,18 +133,21 @@ class Presenter(object):
         else:
             idx = idxs[0]
             phase = self.model.phases[idx]
-            phase.lock = []
-            # phase.lock = ['code']
             if phase.official:
                 message=_("Is not possible sort phase when is official.")
                 self.view.msg.warning(message=message)
             else:
                 phase.gen_heats()
-                # if len(phase.heats):
-                #     phase.lock = ['event_id']
-                # from modules.phase_add_edit import p_phase_add_edit
-                # p_phase_add_edit.create(parent=self, phase=phase)
-                # self.view.lsc_plus.update_item(idx)
+                self.view.lsc_plus.update_item(idx)
+
+    def start_list(self):
+        idxs = self.view.lsc_plus.get_sel_pos_items()
+        if len(idxs) < 1:
+            self.view.msg.warning(message=_("No item selected."))
+        else:
+            for idx in idxs:
+                phase = self.model.phases[idx]
+                phase.report_start_list_pdf()
 
     def add(self):
         phases = self.model.phases

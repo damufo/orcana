@@ -244,31 +244,163 @@ select event_code from events where event_id =
         print("load heats for this phase")
         print('Fin')
 
-    def start_report(self, file_path):
+    def init_report(self, file_name):
+        file_path = os.path.join(
+            self.config.work_folder_path,
+            file_name)
         champ = self.phases.champ
         if champ.chrono_type == 'M':
             chrono_text = _('manual')
         else:
             chrono_text = _('electronic')
-
         subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
             champ.venue, champ.pool_length, chrono_text)
         d =  ReportBase(
-                app_path_folder= self.config.app_path_folder,
-                app_version= self.config.app_version,
-                file_path = file_path, 
+                app_path_folder=self.config.app_path_folder,
+                app_version=self.config.app_version,
+                file_path=file_path, 
                 orientation='portrait',
                 title=champ.name,
                 subtitle=subtitle)
         return d
 
+    def report_start_list_pdf(self, d=False):
+        xerar = False
+        if not d:
+            file_name = _("start_list_{}_{}.pdf").format(
+                self.event.file_name, self.progression.lower())
+            d =  self.init_report(file_name=file_name)
+            xerar = True
+
+        style = [
+            ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
+            # ('FONTSIZE',(0,0),(-1,-1), 8),
+            ('ALIGN',(0,0),(-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'BOTTOM'), 
+            # ('TOPPADDING', (0,0), (-1,-1), 0),
+            ('LEFTPADDING', (0,0), (-1,-1), 3),
+            ('RIGHTPADDING', (0,0), (-1,-1), 3),
+            # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
+            # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
+            ]
+        def add_phase_title(lines):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['100%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.8*cm,
+                style=style_title,
+                pagebreak=False)
+
+        def add_heat_title(lines):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['100%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.8*cm,
+                style=style_title,
+                pagebreak=False)
+
+        def add_result(lines):
+            style_result = [
+                ('FONTSIZE',(0,0),(-1,-1), 8),
+                ('ALIGN',(2,0),(2,-1), 'LEFT'),
+                ('ALIGN',(5,0),(5,-1), 'RIGHT'),  #mark
+                ('ALIGN',(6,0),(6,-1), 'RIGHT'),  #points
+                ('FONT', (2,0),(2,-1), 'Open Sans Bold'),
+                # ('FONT', (5,0),(5,-1), 'Open Sans Bold'),
+                # ('FONT', (6,0),(6,-1), 'Open Sans Bold'),
+                ]
+            style_result = style + style_result
+            col_widths = ['4%', '10%', '40%', '6%', '20%', '10%', '10%']
+            row_heights = (1.5*cm, 2.5*cm)
+            row_heights = [.8*cm] * len(lines)
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.4*cm,
+                style=style_result,
+                pagebreak=False)
+
+        def add_relay_members(lines):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                # ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 7),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['86%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.4*cm,
+                style=style_title,
+                pagebreak=False,
+                alignment='RIGHT')
+
+        phase = self
+        phase_title = '{}.- {} ({})'.format(phase.event.pos, phase.event.name, phase.progression)
+        add_phase_title([[phase_title], ])
+        heats = [heat for heat in self.heats if heat.phase == phase]
+        count_heats = len(heats)
+        inscriptions =  phase.event.inscriptions
+        inscriptions.load_items_from_dbs()
+        for heat in heats:
+            heat_title = _('Heat {} of {}').format(heat.pos, count_heats)
+            add_heat_title([[heat_title], ])
+            heat.results.load_items_from_dbs()
+            # FIXME: poñer isto na clase resultados
+            # crear unha lista de inscricións con todas as inscricións
+            # e poñela en champ
+            for result in heat.results:
+                if result.inscription:
+                    time_sart_list = '{} {}{}'.format(
+                        result.inscription.mark_time,
+                        result.inscription.pool_length,
+                        result.inscription.chrono_type)
+                    equated_time = result.equated_time
+                else:
+                    time_sart_list = ''
+                    equated_time = result.equated_time
+
+                line_result = [[
+                        str(result.lane), 
+                        'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
+                        'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
+                        'X' not in result.event.code.upper() and result.person.year[2:] or "", 
+                        'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
+                        time_sart_list, equated_time],]
+                add_result(line_result)
+                if result.ind_rel == 'R':
+                    if not result.result_members:
+                        result.result_members.load_items_from_dbs()
+                    members = '; '.join([i.person.full_name for i in result.result_members])
+                    print(members)
+                    if members:
+                        add_relay_members([[members], ])
+
+
+        if xerar:
+            d.build_file()
+
+        print('fin')
+
     def calculate_results(self):
-        file_name = '{}_{}.pdf'.format(
-            self.event.file_name, self.progression.lower())
-        file_path = os.path.join(
-            self.config.work_folder_path,
-            file_name)
-        d = self.start_report(file_path=file_path)
         categories_results = {}
         for phase_category in self.phase_categories:
             category_results = []
@@ -303,7 +435,6 @@ select event_code from events where event_id =
                 print("aquí o código para puntuar os resultados da categoría")
 
                 # phase_category.results_phase_category.delete_all_items()
-
 
                 pos_cat = 0
                 pos_points = 1
@@ -397,8 +528,6 @@ select event_code from events where event_id =
                     last_pos = -1
                     for i in phase_category.results_phase_category:
                         puntos = 0
-                        
-        
                         # ten en conta cantos puntúan por entidade
                         puntua = False
                         if i.result.entity.entity_id in puntuados_club:
@@ -512,13 +641,9 @@ select event_code from events where event_id =
             if phase_category.results_phase_category:
                 phase_category.results_phase_category.save_all_items()
                 categories_results[phase_category.category.name] = phase_category.results_phase_category
-        if categories_results:
-                self.gen_phase_category_results_pdf(
-                    d=d,
-                    categories_results=categories_results
-                    )
 
     def gen_phase_category_results_pdf(self, d, categories_results):
+        """ Non sei quen usa esta función!! pode_borrarse??"""
         style = [
             ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
             # ('FONTSIZE',(0,0),(-1,-1), 8),
@@ -808,25 +933,9 @@ select event_code from events where event_id =
         xerar = False
         if not d:
             champ = self.phases.champ
-            if champ.chrono_type == 'M':
-                chrono_text = _('manual')
-            else:
-                chrono_text = _('electronic')
-
-            long_name = '{}_{}.pdf'.format(
+            file_name = '{}_{}.pdf'.format(
                 self.event.file_name, self.progression.lower())
-            file_path = os.path.join(
-                self.config.work_folder_path,
-                long_name)
-            subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
-                champ.venue, champ.pool_length, chrono_text)
-            d =  ReportBase(
-                    app_path_folder= self.config.app_path_folder,
-                    app_version=self.config.app_version,
-                    file_path = file_path, 
-                    orientation='portrait',
-                    title=champ.name,
-                    subtitle=subtitle)
+            self.init_report(file_name=file_name)
             xerar = True
 
         style = [
