@@ -1,10 +1,13 @@
 
+# Actualizado de pip
+```$ python -m pip install --upgrade pip
+```
 # Contorno virtual
 
 ```$ python -m venv .venv
 $ source .venv/bin/activate```
 
-## Requirements linux 2022-0529
+## Requirements linux 2022-05-29
 
 ```numpy==1.20.3
 Pillow==8.2.0
