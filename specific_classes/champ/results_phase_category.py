@@ -13,9 +13,9 @@ class ResultsPhaseCategory(list):
         self.sort_reverse = False
         self.sort_last_field = None
 
-    # @property
-    # def champ(self):
-    #     return self.result.champ
+    @property
+    def champ(self):
+        return self.phase_category.champ
 
     # @property
     # def event(self):
@@ -53,26 +53,28 @@ delete from results_phases_categories where phase_category_id={}'''
         for i in self:
             i.save()
 
-#     def load_items_from_dbs(self):
-#         del self[:]  # borra os elementos que haxa
-#         sql = '''
-# select result_phase_category_id, result_id, pos, points, clas
-# from results_phases_categories 
-# where phase_category_id=? '''
+    def load_items_from_dbs(self):
+        print("pendente")
+
+        del self[:]  # borra os elementos que haxa
+        sql = '''
+select result_phase_category_id, result_id, pos, points, clas
+from results_phases_categories 
+where phase_category_id=? '''
+        res = self.config.dbs.exec_sql(sql=sql, values=((self.phase_category.phase_category_id, ), ))
 #         # FIXME: pendente de rematar
-#         res = self.config.dbs.exec_sql(sql=sql, values=((self.result.result_id, ), ))
-#         (RESULT_PHASE_CATEGORY_ID, PHASE_CATEGORY_ID, POS, POINTS, CLAS
-#         ) = range(5)
-#         for i in res:
-#             result = self.champ.results.get_result(i[RESULT_ID])
-#             self.append(ResultPhaseCategory(
-#                     results_phase_category=self,
-#                     result_phase_category_id=i[RESULT_PHASE_CATEGORY_ID],
-#                     result=result,
-#                     pos=i[POS],
-#                     points=i[POINTS],
-#                     clas=i[CLAS],
-#                     ))
+        (RESULT_PHASE_CATEGORY_ID, RESULT_ID, POS, POINTS, CLAS
+        ) = range(5)
+        for i in res:
+            result = self.champ.heats.get_result(i[RESULT_ID])
+            self.append(ResultPhaseCategory(
+                    results_phase_category=self,
+                    result_phase_category_id=i[RESULT_PHASE_CATEGORY_ID],
+                    result=result,
+                    pos=i[POS],
+                    points=i[POINTS],
+                    clas=i[CLAS],
+                    ))
 
 #     @property
 #     def list_fields(self):

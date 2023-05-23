@@ -27,6 +27,15 @@ class Heats(list):
                 break
         return heat
 
+    def get_result(self, result_id):
+        for heat in self:
+            heat.results.load_items_from_dbs()
+            for result in heat.results:
+                if result.result_id == result_id:
+                    result.result_splits.load_items_from_dbs()
+                    return result
+        return None
+
     @property
     def item_blank(self):
         return Heat(

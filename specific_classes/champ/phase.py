@@ -403,6 +403,8 @@ select event_code from events where event_id =
     def calculate_results(self):
         categories_results = {}
         for phase_category in self.phase_categories:
+            results_phase_category = phase_category.results_phase_category
+            results_phase_category.delete_all_items()
             category_results = []
             print('{} {}'.format(phase_category.category.name, phase_category.action))
             # get all results for this category
@@ -410,31 +412,75 @@ select event_code from events where event_id =
             for heat in self.heats:
                 heat.results.load_items_from_dbs()
                 for result in heat.results:
-                    if phase_category.category.category_id in result.categories:
+                    if phase_category.category in result.categories:
                         result.result_splits.load_items_from_dbs()
                         results.append(result)
-            print("Aquí a ordenación por categoría non debería ter sentido")
-            print("ordenar por marca e por serie, se na mesma serie e crono manual, non fai reparto")
-            print("se en distintas series repartir puntos, pensar no caso de que dous na mesma serie empaten e non se reparten puntos pero os dous teñen que repartir co empate da seguinte serie")
-            """
-            O reparto de puntos funciona do seguinte xeito
-            Empatan dous a tempo pero como é manual un é primeiroe outro é segundo
-            Na seguinte serie empatan outros dous co mesmo tempo
-
-            Como e o reparto?
-                os primeiros como están en series distintas reparten tempo por igualar posición
-                Os segundos (que serían o posto 3) reparten puntos entre eles.
-            """
-            results_sorted = sorted(results, key=attrgetter(
-                'category', 'mark_hundredth', 'heat.pos', 'arrival_pos'))
-            results_sorted = sorted(results_sorted, key=attrgetter('issue_pos'), reverse=False)
-            del results[:]
-            results.extend(results_sorted)
             # end get all results for this category
-            if results and phase_category.action == 'PUNC':  # puntuate this category
+            """
+            Unha vez que temos os resultados da categoría:
+            - calculamos a posición
+            - asignamos puntuación
+            gardanse os elementos en results_phases_categories (result_id, phase_category_id, pos, points)
+            """
+            results_sorted = sorted(results, key=attrgetter('mark_hundredth', 'heat.pos', 'arrival_pos'))
+            results_sorted = sorted(results_sorted, key=attrgetter('issue_pos'), reverse=False)
+
+            # Start set category position
+            current_pos = 0
+            current_mark_hundredth = None
+            swimoffs = []  # list of results swimoff
+            swimoff_all = False
+            last_heat_pos = None
+            last_arrival_pos = None
+            pos_adjust = 0
+            for i in results_sorted:
+                result_phase_category = results_phase_category.item_blank
+                result_phase_category.result = i
+                if current_mark_hundredth != i.mark_hundredth:
+                    current_pos += 1 + pos_adjust
+                    pos_adjust = 0
+                    last_heat_pos = i.heat.pos
+                    last_arrival_pos = i.arrival_pos
+                    last_swimoffs = []
+                    category_pos = current_pos
+                    current_mark_hundredth = i.mark_hundredth
+                    swimoffs = []
+                    swimoff_all = False
+                else:  #swimoff
+                    pos_adjust += 1 
+                    if swimoff_all:  # empatan todos co mesmo tempo
+                         category_pos = current_pos
+                    elif i.heat.pos == last_heat_pos:  # empate a tempo na mesma serie
+                        # determinar se tamen empata a posición
+                        if i.arrival_pos == last_arrival_pos:
+                            print("outro empate a tempo e posición na mesma serie")
+                            print("isto só pode pasar con crono electrónico")
+                            category_pos = current_pos
+                        else:  # non empata a posición, crono manual
+                            swimoffs.append(result_phase_category)  # empatados con distintas posicións
+                            category_pos = current_pos + len(swimoffs)
+                            last_arrival_pos = i.arrival_pos
+                    else:  # empate a tempo nunha nova serie
+                        for swimoff in swimoffs:  # empates previos pasan a empatar
+                            swimoff.pos = current_pos
+                        category_pos = current_pos
+                        swimoff_all = True
+                text = "Tempo: {0} | Serie: {1} | Chegada: {2} | Orde categoría: {3}"
+                values = (i.mark_time, str(i.heat.pos), str(i.arrival_pos), str(category_pos))
+                print(text.format(*values))
+                result_phase_category.pos = category_pos
+                results_phase_category.append(result_phase_category)
+            # End set category position
+            # Resort
+            results_sorted = sorted(results_phase_category, key=attrgetter('pos'))
+            results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)  
+            del results_phase_category[:]
+            results_phase_category.extend(results_sorted)
+
+            if results_phase_category and phase_category.action == 'PUNC':  # puntuate this category
                 print("aquí o código para puntuar os resultados da categoría")
 
-                # phase_category.results_phase_category.delete_all_items()
+                
 
                 pos_cat = 0
                 pos_points = 1
@@ -463,76 +509,16 @@ select event_code from events where event_id =
                 else:
                     points = points.split(',')
                     points = [int(i) for i in points if i.isdigit()]
-
-                    # orde = -1  # event pos?
-                    tie_pos = 0  # is for ties (ties=empates)
-                    empatados = []
-                    heats_empatados = []
-                    last_mark = -1
-                    last_heat = -1
-                    last_order = -1
-                    last_cat = -1
-                    tot_puntos = 0
-                    prev_category_id = None
-                    posicion = 0
-                    posicion_puntos = 0
                     puntuados_club = {} #codclub: numero de puntuado
-                    
-                    # o primeiro é calcular a posición
-                    results_pos = []
-                    empatados = []
-                    pendentes = []
-
-                    for i in results:
-                        result_phase_category = phase_category.results_phase_category.item_blank
-                        result_phase_category.result = i
-                        engadir = True
-                        
-                        if i.issue_id:
-                            result_phase_category.pos = i.issue_id
-                            phase_category.results_phase_category.append(result_phase_category)
-                        elif last_mark == i.mark_time and i.heat.heat_id not in heats_empatados:
-                            # mira se o empate é noutra serie, no caso de ser 
-                            # outra serie implica que empata a posición
-                            # sábese que está en peor posición pola ordenación
-                            empatados.append(result_phase_category)
-                        elif last_mark == i.mark_time and i.heat.heat_id in heats_empatados:
-                            # empate na mesma serie en peor posición, pasa ó final
-                            # se houbese aquí outro empate non funcionaría
-                            pendentes.append(result_phase_category)
-                        else:
-                            # engade os empatados coa correspondente posición
-                            for empatado in empatados:
-                                empatado.pos = posicion
-                                phase_category.results_phase_category.append(empatado)
-                            empatados = []
-                            heats_empatados = []
-                            if pendentes:                                
-                                # engade os pendentes coa correspondente posición
-                                posicion = posicion + 1
-                                for pendente in pendentes:
-                                    pendente.pos = posicion
-                                    phase_category.results_phase_category.append(pendente)
-                                pendentes = []
-                            posicion = posicion + 1
-                            result_phase_category.pos = posicion
-                            phase_category.results_phase_category.append(result_phase_category)
-                        last_mark = result_phase_category.result.mark_time
-                        if i.heat.heat_id not in heats_empatados:
-                            heats_empatados.append(i.heat.heat_id)
-                    
-                    # agora en base á posición establece a puntuación
-                    
                     posicion_puntos = 0
                     repartir = []
                     last_pos = -1
-                    for i in phase_category.results_phase_category:
-                        puntos = 0
-                        # ten en conta cantos puntúan por entidade
+                    for i in results_phase_category:
                         puntua = False
+                        # ten en conta cantos puntúan por entidade
                         if i.result.entity.entity_id in puntuados_club:
                             if  entity_to_point > puntuados_club[i.result.entity.entity_id]:
-                                puntuados_club[i.result.entity.entity_id] = puntuados_club[i.result.entity.entity_id] + 1
+                                puntuados_club[i.result.entity.entity_id] += 1
                                 puntua = True
                         else:
                             if  entity_to_point:  # > 0
@@ -552,85 +538,16 @@ select event_code from events where event_id =
                                 puntos_a_repartir = sum([i.points for i in repartir])
                                 for i in repartir:
                                     i.points = round(float(puntos_a_repartir) / len(repartir), 1)
-                            repartir = [i, ]
+                            if puntua:
+                                repartir = [i, ]
+                            else:
+                                repartir = []
                         last_pos = i.pos
                     else:
                         if len(repartir) > 1:
                             puntos_a_repartir = sum([i.points for i in repartir])
                             for i in repartir:
                                 i.points = round(float(puntos_a_repartir) / len(repartir), 2)
-
-
-
-                        # # Mira se lle corresponden puntos
-                        # if i.entity.entity_id in puntuados_club:
-                        #     # ten en conta cantos puntuan por club
-                        #     if  entity_to_point_ind > puntuados_club[i.entity.entity_id]:
-                        #         if posicion_puntos < len(points):
-                        #             puntos = points[posicion_puntos]
-                        #             puntuados_club[i.entity.entity_id] = puntuados_club[i.entity.entity_id] + 1
-                        #         posicion_puntos = posicion_puntos + 1
-                        # else:
-                        #     if  entity_to_point_ind > 0:
-                        #         if  posicion_puntos < len(points):
-                        #             puntos = points[posicion_puntos]
-                        #             puntuados_club[i.entity.entity_id] = 1
-                        #         posicion_puntos = posicion_puntos + 1
-                        
-                        # if last_mark == i.mark_time and last_pos == i.pos:
-                        #     # é un empate
-
-                        #     if puntos != 0:
-                        #         empatados.append(result_phase_category)
-                        #         tot_puntos = tot_puntos + puntos
-                        #     else:
-                        #         # retira o resultado para poñer despois dos empatados
-                        #         pendentes.append(result_phase_category)
-                        #         engadir = False
-                        # else:
-                        #     if len(empatados) > 1:
-                        #         media_reparto = round(float(tot_puntos) / len(empatados), 2)
-                        #         for j in empatados:
-                        #             j.points = media_reparto
-                        #     empatados = []
-                        #     tot_puntos = 0
-                        #     if puntos != 0:
-                        #         empatados = [result_phase_category, ]
-                        #         tot_puntos = puntos
-
-                        # if engadir:
-                        #     if i.entity.entity_id in puntuados_club:
-                        #         # ten en conta cantos puntuan por club
-                        #         if  entity_to_point_ind > puntuados_club[i.entity.entity_id]:
-                        #             if posicion_puntos < len(points):
-                        #                 puntos = points[posicion_puntos]
-                        #                 puntuados_club[i.entity.entity_id] = puntuados_club[i.entity.entity_id] + 1
-                        #             posicion_puntos = posicion_puntos + 1
-                        #     else:
-                        #         if  entity_to_point_ind > 0:
-                        #             if  posicion_puntos < len(points):
-                        #                 puntos = points[posicion_puntos]
-                        #                 puntuados_club[i.entity.entity_id] = 1
-                        #             posicion_puntos = posicion_puntos + 1
-
-                        #     posicion = posicion + 1
-                        #     result_phase_category.pos = posicion
-                        #     result_phase_category.points = puntos
-                        #     phase_category.results_phase_category.append(result_phase_category)
-                        # elif pendentes:
-                        #     # engade pendentes
-                        #     for pendente in pedentes:
-                        #         posicion = posicion + 1
-                        #         pendente.pos = posicion
-                        #         pendente.points = puntos
-                        #         phase_category.results_phase_category.append(pendente)
-                        #     cur_res = pendente
-                        #     pendentes = []
-
-                        # last_mark = cur_res.mark_time
-                        # last_heat = cur_res.heat.heat_id
-                        # tie_pos = tie_pos + 1
-
 
             elif results and phase_category.action == 'CLAS':  # clasifica para unha seguite phase
                 #TODO: Facer este códito
@@ -642,7 +559,8 @@ select event_code from events where event_id =
                 phase_category.results_phase_category.save_all_items()
                 categories_results[phase_category.category.name] = phase_category.results_phase_category
 
-    def gen_phase_category_results_pdf(self, d, categories_results):
+
+    def gen_phase_category_results_pdf_seg_pode_boorarse(self, d, categories_results):
         """ Non sei quen usa esta función!! pode_borrarse??"""
         style = [
             ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
@@ -915,29 +833,8 @@ select event_code from events where event_id =
         print('fin results category {}'.format(category_name))
         d.build_file()
 
-    def gen_results_pdf(self, d=False):
-        # Obención de datos
-        results = []
-        # results_issues = []
-        for i in self.heats:
-            i.results.load_items_from_dbs()
-            for j in i.results:
-                j.result_splits.load_items_from_dbs()
-                results.append(j)
-        results_sorted = sorted(results, key=attrgetter('category', 'mark_hundredth'))
-        results_sorted = sorted(results_sorted, key=attrgetter('issue_pos'), reverse=False)
-        del results[:]
-        results.extend(results_sorted)
-        # Fin obtención de datos
-
-        xerar = False
-        if not d:
-            champ = self.phases.champ
-            file_name = '{}_{}.pdf'.format(
-                self.event.file_name, self.progression.lower())
-            d = self.init_report(file_name=file_name)
-            xerar = True
-
+    def gen_phase_category_results_pdf(self, d, results):
+        """ imprime os resultados da categoría"""
         style = [
             ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
             # ('FONTSIZE',(0,0),(-1,-1), 8),
@@ -1064,8 +961,9 @@ select event_code from events where event_id =
         lines = []
 
         position = 1
-        last_result_mark_hundredth = None
-        for i in results:
+        last_result_category_pos = None
+        for result_phase_category in results:
+            i = result_phase_category.result
             if i.heat.phase.event.pos != orde:  #cambio de evento, xera título
                 phase_title = '{}.- {} - {}'.format(
                     i.heat.phase.event.pos,
@@ -1088,18 +986,18 @@ select event_code from events where event_id =
                         'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
                         '', '0,0'],]
             else:
-                if last_result_mark_hundredth == i.mark_hundredth:
-                    position_result = ''
+                if last_result_category_pos == result_phase_category.pos:
+                    category_pos = ''
                 else:
-                    position_result = position
+                    category_pos = result_phase_category.pos
                 line_result = [[
-                        str(position_result), 
+                        str(category_pos), 
                         'X' not in i.heat.phase.event.code.upper() and i.person.license or i.relay.entity.entity_code, 
                         'X' not in i.heat.phase.event.code.upper() and i.person.full_name or i.relay.name, 
                         'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
                         'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
-                        i.mark_time, '0,0'],]
-            last_result_mark_hundredth = i.mark_hundredth
+                        i.mark_time, result_phase_category.points],]
+            last_result_category_pos = result_phase_category.pos
             add_result(line_result)
 
             if i.ind_rel == 'R' and i.result_members.has_set_members:
@@ -1134,7 +1032,7 @@ select event_code from events where event_id =
                     else:
                         has_issue = True
                     
-                    if num_split > 0 and num_split % splits_by_member == 0:
+                    if splits_by_member > num_split and num_split % splits_by_member == 0:
                         if line_splits:
                             table_splits.append(line_splits)
                             line_splits = []
@@ -1198,6 +1096,32 @@ select event_code from events where event_id =
                 add_result_split(table=table_splits)
 
             position += 1
+
+
+    def gen_results_pdf(self, d=False):
+
+        xerar = False
+        if not d:  # Crea o informe se non existise
+            champ = self.phases.champ
+            file_name = '{}_{}.pdf'.format(
+                self.event.file_name, self.progression.lower())
+            d = self.init_report(file_name=file_name)
+            xerar = True
+
+        for phase_category in self.phase_categories:
+            print('{} {}'.format(phase_category.category.name, phase_category.action))
+            results_phase_category = phase_category.results_phase_category
+            results_phase_category.load_items_from_dbs()
+            # FIXME: xa debería vir ordenado ó cargar os resultados
+            results_sorted = sorted(results_phase_category, key=attrgetter('pos'))
+            results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)  
+            del results_phase_category[:]
+            results_phase_category.extend(results_sorted)           
+
+            # Fin obtención de datos
+            print("poñer o de arriba dentro de gen_phase_category_results_pdf")
+            self.gen_phase_category_results_pdf(d=d, results=results_sorted)
+
         if xerar:
             d.build_file()
 

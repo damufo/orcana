@@ -24,6 +24,7 @@ class Result(object):
         self.inscription = kwargs['inscription']
         # self.splits = Splits()
         self.result_splits = ResultSplits(result=self)
+        self.result_splits.load_items_from_dbs()
         if self.ind_rel == 'R':
             self.result_members = ResultMembers(result=self)
             self.result_members.load_items_from_dbs()
@@ -87,17 +88,21 @@ class Result(object):
 
     @property
     def category(self):
+        """
+        Úsase na exportación dos resultados CSV, colle a primeira que atopa
+        """
         category = ''
         if self.person:
             person = self.person
             for i in self.heat.phase.phase_categories:
                 category = i.category
                 print('{} - {}'.format(category.from_age, category.to_age))
-                if person.age > category.from_age and person.age < category.to_age and person.gender_id == category.gender_id:
+                if person.age >= category.from_age and person.age <= category.to_age and person.gender_id == category.gender_id:
                     category = category
+                    return category
         elif self.relay:
             category = self.relay.category
-
+            return category
         return category
 
     @property
@@ -109,21 +114,21 @@ class Result(object):
                 category = i.category
                 print('{} {} - {}'.format(category.name, category.from_age, category.to_age))
                 if person.age >= category.from_age and person.age <= category.to_age and person.gender_id == category.gender_id:
-                    categories.append(category.category_id)
+                    categories.append(category)
         elif self.relay:
-            categories.append(self.relay.category.category_id)
+            categories.append(self.relay.category)
         return categories
 
     @property
     def category_name(self):
-        if self.category:
-            category_name = self.category.name
+        if self.categories:
+            category_name = self.categories[0].name
         else:
             category_name = ''
         return category_name
 
     @property
-    def mark_hundredth(self):
+    def mark_hundredth(self):           
         return self.result_splits[-1].mark_hundredth
 
     @property
