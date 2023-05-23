@@ -782,7 +782,11 @@ values( ?, ?, ?, ?)'''
                     if result.ind_rel == 'I':
                         splits = reversed(result.result_splits[:-1])
                     else:
-                        splits = reversed(result.result_splits)
+                        if len(result.result_splits) >= len(members_licenses_str):
+                            splits = reversed(result.result_splits)
+                        else:
+                            # hai menos parciais que remudistas
+                            splits = []
                     mark_hundredth_adjust = 0
                     for split in splits:
                         line = []
