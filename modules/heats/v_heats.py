@@ -169,8 +169,8 @@ class View(Heats):
             col = self.grd_results.GetGridCursorCol()
             self.grd_results.SetGridCursor(results[0].lane - pool_lane_adjust, col)
         
-        print("ALIÑADO PERSONALIZADO PARA COLUMNA")
-        print("ADAPTA O ALIÑAMENTO INDIVIDUAL/REMUDA")
+        # ALIÑADO PERSONALIZADO PARA COLUMNA
+        # ADAPTA O ALIÑAMENTO INDIVIDUAL/REMUDA
         bg = self.grd_results.GetLabelBackgroundColour()
         col_render = CustomColLabelRenderer(color=bg, ind_rel=heat.ind_rel)
         self.grd_results.SetDefaultColLabelRenderer(col_render)

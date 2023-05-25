@@ -47,7 +47,7 @@ class Phase(object):
         for heat in self.heats:
             heat.results.load_items_from_dbs()
             for result in heat.results:
-                result.result_splits.load_items_from_dbs()
+                # result.result_splits.load_items_from_dbs()
                 results.append(result)
         return results
 
@@ -413,7 +413,7 @@ select event_code from events where event_id =
                 heat.results.load_items_from_dbs()
                 for result in heat.results:
                     if phase_category.category in result.categories:
-                        result.result_splits.load_items_from_dbs()
+                        # result.result_splits.load_items_from_dbs()
                         results.append(result)
             # end get all results for this category
             """

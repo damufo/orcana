@@ -117,8 +117,8 @@ class Presenter(object):
             self.model.results = heat.results
             heat.results.load_items_from_dbs()
             
-            for i in heat.results:
-                i.result_splits.load_items_from_dbs()
+            # for i in heat.results:
+            #     i.result_splits.load_items_from_dbs()
 
             row = self.view.grd_results.GetGridCursorRow()
             print('select_heat, results cusor row: {}'.format(row))
@@ -174,6 +174,10 @@ class Presenter(object):
                 phase.gen_results_pdf()
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
+
+    def gen_clasifications_report(self):
+        champ = self.model.heats.champ
+        champ.gen_clasifications_pdf()
 
     def go_next_heat(self):
         pos = self.view.lsc_heats_plus.get_sel_pos_item()

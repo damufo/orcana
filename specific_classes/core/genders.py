@@ -44,7 +44,7 @@ class Genders(list):
         if add_empty:
             values.append(('', '')) 
         for i in self:
-            values.append((i.name, i.gender_id))
+            values.append((i.long_name, i.gender_id))
         return values
 
 

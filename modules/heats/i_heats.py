@@ -14,7 +14,8 @@ class Interactor(object):
         view.btn_back.Bind(wx.EVT_BUTTON, self.go_back)
         # view.lsc.Bind(wx.EVT_LEFT_DCLICK, self.on_edit)
         view.btn_members.Bind(wx.EVT_BUTTON, self.load_members)
-        view.btn_report.Bind(wx.EVT_BUTTON, self.gen_results_report)
+        view.btn_results.Bind(wx.EVT_BUTTON, self.gen_results_report)
+        view.btn_clasifications.Bind(wx.EVT_BUTTON, self.gen_clasifications_report)
         view.btn_official.Bind(wx.EVT_BUTTON, self.toggle_official)
         view.btn_next.Bind(wx.EVT_BUTTON, self.go_next_heat)
         view.lsc_heats.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_select_heat)
@@ -105,6 +106,9 @@ class Interactor(object):
 
     def gen_results_report(self, event):
         self.presenter.gen_results_report()
+
+    def gen_clasifications_report(self, event):
+        self.presenter.gen_clasifications_report()
 
     def toggle_official(self, event):
         self.presenter.toggle_official()

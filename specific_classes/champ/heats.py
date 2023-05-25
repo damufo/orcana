@@ -32,7 +32,7 @@ class Heats(list):
             heat.results.load_items_from_dbs()
             for result in heat.results:
                 if result.result_id == result_id:
-                    result.result_splits.load_items_from_dbs()
+                    # result.result_splits.load_items_from_dbs()
                     return result
         return None
 

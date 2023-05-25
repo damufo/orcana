@@ -513,6 +513,132 @@ values( ?, ?, ?, ?)'''
 
         d.build_file()
 
+    def gen_clasifications_pdf(self):
+        categories = {}
+        d =  self.init_report(file_name=_("clasifications.pdf"))
+
+        def save_table(lines):
+            col_widths = ['5%', '50%', '20%', '20%', '10%']
+            style = [
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                # ('GRID', (0, 0), (-1, -1), 0.5, d.colors.grey),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+                ('ALIGN', (1, 0), (1, -1), 'LEFT'),
+                ('ALIGN', (3, 0), (3, -1), 'RIGHT'),
+            ]
+
+            table = lines
+            d.insert_table(table=table, colWidths=col_widths, 
+                           style=style, pagebreak=False)
+
+        d.insert_title_1(text=_("Clasifications by category"), alignment=1)
+
+        sql = """
+select 
+
+(select category_code  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)) as category_id,
+(select gender_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)) as category_gender_id,
+(select name  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)) as category_name,
+
+
+    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
+    then 
+        (select long_name from entities e where e.entity_id=(select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id)))
+    else 
+        (select long_name from entities e where e.entity_id=(select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id)))
+    end as "entity",
+    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
+    then 
+        (select entity_code from entities e where e.entity_id=(select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id)))
+    else 
+        (select entity_code from entities e where e.entity_id=(select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id)))
+    end as "entity_code",
+sum(points) 
+
+from results_phases_categories rpc
+
+group by 
+    (select category_code  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
+    (select gender_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
+    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
+    then 
+        (select entity_code from entities e where e.entity_id=(select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id)))
+    else 
+        (select entity_code from entities e where e.entity_id=(select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id)))
+    end
+order by
+(select name  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
+(select gender_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
+sum(points) desc; """
+        (C_CODE, C_GENDER_ID, C_NAME, E_NAME, E_CODE, POINTS) = range(6)
+        res = self.config.dbs.exec_sql(sql=sql)
+
+        if res != 'err' or not res:
+            # calcula a total
+            total = {}
+            for i in res:
+                code = "{}#{}#{}#{}".format(i[C_CODE], i[C_NAME], i[E_NAME], i[E_CODE])
+                if code in total:
+                    total[code] += i[POINTS]
+                else:
+                    total[code] = i[POINTS]
+            sorted_total = sorted(total.items(), key=lambda x:x[1], reverse=True)
+            lines = []
+            for i in sorted_total:
+                line = i[0].split('#')
+                line = [line[0],] + ["T",] + [line[1],] + [line[2],] + [line[3],] + [i[1],]
+                lines.append(line)
+                print(line)
+            res.extend(lines)
+            # converted_dict = dict(sorted_total)
+
+            last_category = None
+            pos = 1
+            last_pos = -1
+            last_points = -1
+            lines = []
+            for i in res:
+                if i[C_GENDER_ID] == "M":
+                    gender = _("Male")
+                elif i[C_GENDER_ID] == "F":
+                    gender = _("Female")
+                elif i[C_GENDER_ID] == "X":
+                    gender = _("Mixed")
+                elif i[C_GENDER_ID] == "T":
+                    gender = _("Total")
+                else:
+                    AssertionError("Category gender unknown.")
+                category_name = "{} {}".format(i[C_NAME], gender)
+                if category_name != last_category:
+                    if lines:
+                        d.insert_title_1(text=last_category, alignment=0)
+                        d.insert_spacer(10, 10)
+                        save_table(lines)
+                    last_category = category_name
+                    lines = []
+                    pos = 1
+                if i[POINTS] == last_points:
+                    line_pos = ""
+                else:
+                    line_pos = pos
+                    last_pos = pos
+                lines.append((
+                    line_pos,
+                    i[E_NAME],
+                    i[E_CODE],
+                    i[POINTS],
+                ))
+                pos += 1
+                last_points = i[POINTS]
+            if lines:
+                d.insert_title_1(text=last_category, alignment=0)
+                d.insert_spacer(10, 10)
+                save_table(lines)
+
+
+        d.build_file()
+        print("fin")
 
     def export_results(self):
         self.gen_lev()
@@ -684,7 +810,7 @@ values( ?, ?, ?, ?)'''
             if heat.official:
                 heat.results.load_items_from_dbs()
                 for result in heat.results:
-                    result.result_splits.load_items_from_dbs()
+                    # result.result_splits.load_items_from_dbs()
                     # Determina se o resultado se ten en conta ou non
                     if result.issue_id:
                         if result.ind_rel == 'I':
