@@ -936,7 +936,31 @@ select event_code from events where event_id =
                 style=style_result,
                 pagebreak=False,
                 alignment='RIGHT')
-            
+
+        def add_member_without_splits(member_lines):
+            style_result = [
+                ('FONTSIZE',(0,0),(-1,-1), 7),
+                ('ALIGN',(0,0),(0,-1), 'CENTER'), #separador
+                ('ALIGN',(1,0),(1,-1), 'RIGHT'),
+                ('ALIGN',(2,0),(2,-1), 'RIGHT'), #separador
+                ('ALIGN',(3,0),(3,-1), 'LEFT'),
+                ('ALIGN',(4,0),(4,-1), 'CENTER'),
+                ('TOPPADDING', (0,0), (-1,-1), -1),
+                # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
+                ]
+            style_result = style + style_result
+            col_widths = ['8%', '8%', '1%', '25%', '10%']
+            # row_heights = (1.5*cm, 2.5*cm)
+            # row_heights = [.6*cm] * len(member_line)
+                
+            d.insert_table(
+                table=member_lines,
+                colWidths=col_widths,
+                rowHeights=.4*cm,
+                style=style_result,
+                pagebreak=False,
+                alignment='LEFT')
+    
         def add_result_split(table):
             style_result = [  # o que queremos mudar respecto do estilo base
                 ('FONTSIZE', (0, 0), (-1, -1), 7),
@@ -1002,73 +1026,86 @@ select event_code from events where event_id =
             add_result(line_result)
 
             if i.ind_rel == 'R' and i.result_members.has_set_members:
-                table_splits = []
-                line_splits = []
-                result_split_pos = 0
-                last_split_hundredth = 0
-
-                num_members = i.result_members.num_members
                 num_splits = len(i.result_splits)
-                splits_by_member = 0
-                if num_splits % num_members == 0:
-                    splits_by_member = int(num_splits / num_members)
+                if num_splits == 1:  # Print line members
+                    member_lines = []
+                    for i in i.result_members:
+                        person = i.person
+                        member_lines.append((
+                            ' ',  # separador
+                            person.license,
+                            ' ',  # separador
+                            person.full_name, 
+                            person.year[2:],
+                            ))
+                    add_member_without_splits(member_lines=member_lines)
+                else:
+                    table_splits = []
+                    line_splits = []
+                    result_split_pos = 0
+                    last_split_hundredth = 0
 
-                current_member = 0
-                has_issue = False
-                for num_split, j in enumerate(i.result_splits, start=1):                
-                    if not i.issue_split or num_split < i.issue_split:
-                        line_splits.append('{} m:'.format(j.distance))
-                        line_splits.append(j.mark_time)
-                        if j.mark_hundredth:
-                            split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
-                            last_split_hundredth = j.mark_hundredth
+                    num_members = i.result_members.num_members
+                    splits_by_member = 0
+                    if num_splits % num_members == 0:
+                        splits_by_member = int(num_splits / num_members)
+
+                    current_member = 0
+                    has_issue = False
+                    for num_split, j in enumerate(i.result_splits, start=1):                
+                        if not i.issue_split or num_split < i.issue_split:
+                            line_splits.append('{} m:'.format(j.distance))
+                            line_splits.append(j.mark_time)
+                            if j.mark_hundredth:
+                                split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
+                                last_split_hundredth = j.mark_hundredth
+                            else:
+                                split_time = ''
+                            line_splits.append(split_time)
+                            result_split_pos +=1
+                            if result_split_pos >= 2:
+                                table_splits.append(line_splits)
+                                line_splits = []
+                                result_split_pos = 0
                         else:
-                            split_time = ''
-                        line_splits.append(split_time)
-                        result_split_pos +=1
-                        if result_split_pos >= 2:
-                            table_splits.append(line_splits)
-                            line_splits = []
-                            result_split_pos = 0
-                    else:
-                        has_issue = True
-                    
-                    if splits_by_member <= num_split and num_split % splits_by_member == 0:
-                        if line_splits:
-                            table_splits.append(line_splits)
-                            line_splits = []
-                            result_split_pos = 0
-
-                        member = i.result_members[current_member].person
-                        member_line = [
-                            member.license, 
-                            member.full_name, 
-                            member.year[2:]]
-
-                        if table_splits:
-                            member_split_line = table_splits.pop(0)
-                            if len(member_split_line) == 3:
-                                member_split_line = member_split_line + ['','','']
-                            member_lines = [member_line + member_split_line, ]
-                        else:
-                            member_lines = [member_line + ['','','','','',''], ]
+                            has_issue = True
                         
-                        while table_splits:
-                            member_split_line = table_splits.pop(0)
-                            if len(member_split_line) == 3:
-                                member_split_line = member_split_line + ['','','']
-                            member_lines.append(['','',''] + member_split_line)
+                        if splits_by_member and splits_by_member <= num_split and num_split % splits_by_member == 0:
+                            if line_splits:
+                                table_splits.append(line_splits)
+                                line_splits = []
+                                result_split_pos = 0
 
-                        add_member_with_splits(member_lines=member_lines)
-                        table_splits = []
-                        result_split_pos = 0
-                        print(i.result_members[current_member].person.name)
-                        current_member += 1
+                            member = i.result_members[current_member].person
+                            member_line = [
+                                member.license, 
+                                member.full_name, 
+                                member.year[2:]]
 
-                if line_splits and not has_issue:
-                    table_splits.append(line_splits)
-                if table_splits:
-                    add_result_split(table=table_splits)    
+                            if table_splits:
+                                member_split_line = table_splits.pop(0)
+                                if len(member_split_line) == 3:
+                                    member_split_line = member_split_line + ['','','']
+                                member_lines = [member_line + member_split_line, ]
+                            else:
+                                member_lines = [member_line + ['','','','','',''], ]
+                            
+                            while table_splits:
+                                member_split_line = table_splits.pop(0)
+                                if len(member_split_line) == 3:
+                                    member_split_line = member_split_line + ['','','']
+                                member_lines.append(['','',''] + member_split_line)
+
+                            add_member_with_splits(member_lines=member_lines)
+                            table_splits = []
+                            result_split_pos = 0
+                            print(i.result_members[current_member].person.name)
+                            current_member += 1
+
+                    if line_splits and not has_issue:
+                        table_splits.append(line_splits)
+                    if table_splits:
+                        add_result_split(table=table_splits)    
 
             elif len(i.result_splits) > 1:
                 table_splits = []
