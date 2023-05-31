@@ -2,6 +2,7 @@
 
 
 from specific_functions import marks
+from specific_functions import utils
 
 
 class Inscription(object):
@@ -47,3 +48,7 @@ class Inscription(object):
     @property
     def equated_time(self):
         return marks.hun2mark(value=self.equated_hundredth)
+
+    @property
+    def venue_normalized(self):
+        return utils.normalize(self.venue)
