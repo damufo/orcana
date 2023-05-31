@@ -265,7 +265,12 @@ select pos, event_id, (select pool_lanes from champs c) as pool_lanes,
 insert into phases_categories (pos, action, phase_id,  category_id)
     select 
         1 as pos,
-        '' as action,   
+        case
+        when (select punctuation_id from categories c where c.category_id=ec.category_id)>0 then
+        "PUNC"
+        else
+        ""
+        end as action, 
         (select phase_id from phases p where p.event_id=ec.event_id) as phase_id,
         ec.category_id
     from events_categories ec 
