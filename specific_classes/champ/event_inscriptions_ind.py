@@ -11,6 +11,8 @@ class EventInscriptionsInd(list):
     def __init__(self, **kwargs):
         self.event = kwargs['event']
         self.config = self.event.config
+        self.sort_reverse = False
+        self.sort_last_field = None
 
     @property
     def champ(self):
@@ -120,25 +122,25 @@ class EventInscriptionsInd(list):
         '''
         field = None
         cols = (
+            '',
             'person.full_name_normalized',
             'person.gender_id',
             'person.birth_date',
-            'person.entity.short_name',
-            'pool_length',
-            'equated_hundredth',
-            'chrono_type',
+            'person.entity.short_name_normalized',
             'mark_hundredth',
+            'pool_length',
+            'chrono_type',
+            'equated_hundredth',
             'date',
-            'venue',
+            'venue_normalized',
             'person.license',
             )
         # cols valid to order
-        order_cols = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
-
+        valid_order_cols = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
 
         if 'num_col' in list(kwargs.keys()):
-            if kwargs['num_col'] in order_cols:
-                field = cols[kwargs['num_col'] + 1]
+            if kwargs['num_col'] in valid_order_cols:
+                field = cols[kwargs['num_col']]
 
         if self.sort_last_field == field:
             self.sort_reverse = not self.sort_reverse
@@ -147,3 +149,8 @@ class EventInscriptionsInd(list):
         if field:
             self.sort_by_field(field=field, reverse=self.sort_reverse)
             self.sort_last_field = field
+
+    def sort_by_field(self, field, reverse=False):
+        self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
+        del self[:]
+        self.extend(self_sort)

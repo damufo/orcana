@@ -12,6 +12,8 @@ class EventInscriptionsRel(list):
     def __init__(self, **kwargs):
         self.event = kwargs['event']
         self.config = self.event.config
+        self.sort_reverse = False
+        self.sort_last_field = None
 
     @property
     def champ(self):
@@ -118,24 +120,23 @@ class EventInscriptionsRel(list):
         '''
         field = None
         cols = (
-            'relay.name',
+            '',
+            'relay.name_normalized',
             'relay.gender_id',
-            'relay.category.name',
-            'relay.entity.short_name',
+            'relay.category.name_normalized',
+            'relay.entity.short_name_normalized',
             'mark_hundredth',
             'pool_length',
             'chrono_type',
             'equated_hundredth',
             'date',
-            'venue',
+            'venue_normalized',
             )
         # cols valid to order
-        order_cols = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-
-
+        valid_order_cols = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         if 'num_col' in list(kwargs.keys()):
-            if kwargs['num_col'] in order_cols:
-                field = cols[kwargs['num_col'] + 1]
+            if kwargs['num_col'] in valid_order_cols:
+                field = cols[kwargs['num_col']]
 
         if self.sort_last_field == field:
             self.sort_reverse = not self.sort_reverse
