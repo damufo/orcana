@@ -10,6 +10,7 @@ class Interactor(object):
         self.presenter = presenter
         self.view = view
         view.parent.Bind(wx.EVT_CLOSE, self.go_back)
+        view.lsc.Bind(wx.EVT_LEFT_DCLICK, self.edit)
         view.btn_back.Bind(wx.EVT_BUTTON, self.go_back)
         view.cho_event_id.Bind(wx.EVT_CHOICE, self.on_refresh)
         view.lsc.Bind(wx.EVT_LIST_COL_END_DRAG, self.save_col_sizes)
