@@ -144,13 +144,14 @@ VALUES(?, ?, ?, ?, ?) '''
         
         # clear previous phase heats
         self.delete_all_heats()
-
         if self.pool_lanes == 5:
             lanes_sort = (3, 4, 2, 5, 1)
         if self.pool_lanes == 6:
             lanes_sort = (3, 4, 2, 5, 1, 6)
         elif self.pool_lanes == 8:
             lanes_sort = (4, 5, 3, 6, 2, 7, 1, 8)
+        else:
+            lanes_sort = ()
         # heats and results
         # Get inscriptions, sorted by time asc
         sql2 = '''
@@ -1010,7 +1011,7 @@ select event_code from events where event_id =
                 num_splits = len(i.result_splits)
                 splits_by_member = 0
                 if num_splits % num_members == 0:
-                    splits_by_member = num_splits / num_members
+                    splits_by_member = int(num_splits / num_members)
 
                 current_member = 0
                 has_issue = False
@@ -1032,7 +1033,7 @@ select event_code from events where event_id =
                     else:
                         has_issue = True
                     
-                    if splits_by_member > num_split and num_split % splits_by_member == 0:
+                    if splits_by_member <= num_split and num_split % splits_by_member == 0:
                         if line_splits:
                             table_splits.append(line_splits)
                             line_splits = []
