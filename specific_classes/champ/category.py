@@ -37,6 +37,10 @@ class Category(object):
             self.punctuation = kwargs['punctuation']
         else:
             self.punctuation = None
+        if 'show_report' in kwargs.keys():
+            self.show_report = int(kwargs['show_report'])
+        else:
+            self.show_report = 0
 
     @property
     def champ(self):
@@ -79,16 +83,18 @@ class Category(object):
         if self.category_id:
             sql = '''
 update categories set  category_code=?, gender_id=?, name=?, from_age=?,
-to_age=?, punctuation_id=? where category_id=?'''
+to_age=?, punctuation_id=?, show_report=? where category_id=?'''
             values = ((self.code, self.gender_id, self.name, self.from_age,
-                self.to_age, self.punctuation_id,self.category_id),)
+                self.to_age, self.punctuation_id, self.show_report,
+                self.category_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
         else:
             sql = '''
 INSERT INTO categories (category_code, gender_id, name, from_age, to_age,
-punctuation_id) VALUES(?, ?, ?, ?, ?, ?) '''
+punctuation_id) VALUES(?, ?, ?, ?, ?, ?, ?) '''
             values = ((self.code, self.gender_id, self.name,
-            self.from_age, self.to_age, self.punctuation_id),)
+            self.from_age, self.to_age, self.punctuation_id,
+            self.show_report),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.category_id = self.config.dbs.last_row_id
             self.champ.categories.append(self)

@@ -20,9 +20,10 @@ class Categories(list):
     def load_items_from_dbs(self):
         del self[:] #borra os elementos que haxa
         (CATEGORY_ID, CODE, GENDER_ID, NAME,
-         FROM_AGE, TO_AGE, PUNCTUATION_ID)  = range(7)
+         FROM_AGE, TO_AGE, PUNCTUATION_ID, SHOW_REPORT)  = range(8)
         sql = '''
-select category_id, category_code, gender_id, name, from_age, to_age, punctuation_id 
+select category_id, category_code, gender_id, name, from_age, to_age,
+punctuation_id, show_report
 from categories order by category_code, gender_id '''
         res = self.config.dbs.exec_sql(sql=sql)
         for i in res:
@@ -36,6 +37,7 @@ from categories order by category_code, gender_id '''
                     from_age=i[FROM_AGE],
                     to_age=i[TO_AGE],
                     punctuation=punctuation,
+                    show_report=i[SHOW_REPORT],
                     ))
 
     def delete_items(self, idxs):
@@ -64,6 +66,7 @@ from categories order by category_code, gender_id '''
             from_age=0,
             to_age=0,
             punctuation=None,
+            show_report=0,
             )
 
     @property
@@ -80,7 +83,8 @@ from categories order by category_code, gender_id '''
             (_('Name'), 'L', 100),
             (_('From age'), 'C', 80),
             (_('To age'), 'C', 80),
-            (_('Punctuation'), 'L', 90),
+            (_('Punctuation'), 'L', 100),
+            (_('Show report'), 'C', 100),
             )
 
     @property
@@ -97,6 +101,7 @@ from categories order by category_code, gender_id '''
                 str(i.from_age),
                 str(i.to_age), 
                 i.punctuation_name, 
+                i.show_report and _('S') or '', 
                 ))
         return  tuple(values)
 
@@ -112,6 +117,7 @@ from categories order by category_code, gender_id '''
             'from_age',
             'to_age',
             'punctuation_name',
+            'show_report',
             )
         order_cols = range(6)
         if 'num_col' in list(kwargs.keys()):

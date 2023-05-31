@@ -60,6 +60,7 @@ class Presenter(object):
             category.from_age = values['from_age']
             category.to_age = values['to_age']
             category.punctuation = punctuation
+            category.show_report = values['show_report']
             category.save()
             self.view.view_plus.stop()
 

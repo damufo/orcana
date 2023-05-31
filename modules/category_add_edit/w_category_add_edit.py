@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -124,6 +124,19 @@ class CategoryAddEdit ( wx.Dialog ):
 
 
 		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )
+
+		bSizer1031 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText321 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Show report:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText321.Wrap( -1 )
+
+		bSizer1031.Add( self.m_staticText321, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.chb_show_report = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer1031.Add( self.chb_show_report, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer1031, 1, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )

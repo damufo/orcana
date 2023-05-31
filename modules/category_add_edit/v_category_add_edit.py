@@ -31,6 +31,7 @@ class View(CategoryAddEdit):
         self.view_plus.cho_load(choice=self.cho_punctuation_id,
                                 values=category.champ.punctuations.choices(add_empty=True),
                                 default=category.punctuation_id) 
+        self.chb_show_report.SetValue(category.show_report)
         self.txt_code.SetFocus()
 
     def get_values(self):
@@ -41,6 +42,7 @@ class View(CategoryAddEdit):
         values["from_age"] = self.txt_from_age_plus.GetValue()
         values["to_age"] = self.txt_to_age_plus.GetValue()
         values["punctuation_id"] = self.view_plus.cho_get(choice=self.cho_punctuation_id)
+        values["show_report"] = self.chb_show_report.GetValue()
         return values
 
     def calculate_category_name(self):
