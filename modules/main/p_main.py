@@ -4,7 +4,7 @@
 from modules.main.m_main import Model
 from modules.main.v_main import MainFrame, View
 from modules.main.i_main import Interactor
-
+from pathlib import Path
 
 class Presenter(object):
 
@@ -14,9 +14,18 @@ class Presenter(object):
         config = champ.config
         error = None
         if 'last_path_dbs' in config.prefs and config.prefs['last_path_dbs']:
-            champ.load_dbs(dbs_path=config.prefs['last_path_dbs'])
-            if not config.prefs['last_path_dbs']:
-                print(_("Error to open last database.\nThe file is not a valid orcana database."))
+            dbs_path = Path(config.prefs['last_path_dbs'])
+            if not dbs_path.exists() or dbs_path.is_dir():
+                message =  _("Error to open last database.\nThe file is not a valid orcana database.")
+                config.prefs['last_path_dbs'] = ""
+                config.prefs.save()
+
+            else:
+                champ.load_dbs(dbs_path=str(dbs_path))
+                if not config.prefs['last_path_dbs']:
+                    message =  _("Error to open last database.\nThe file is not a valid orcana database.")
+                    print(message)
+                    # self.view.msg.warning(message=message)
         print(config.dbs.dbs_path)
         self.main_frame.SetTitle(self.model.champ.name or 'Orcana')
         self.load_me()
