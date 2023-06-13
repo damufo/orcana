@@ -24,7 +24,6 @@ class View(Heats):
         self.lsc_heats.SetName('heats')
         self.view_plus = ViewPlus(self)
         self.msg = Messages(self.parent)
-        self.first_split_col = 7
         # set cols
         self.cols = {}
         self.cols["ind_num_col_fixe"] = 7
@@ -37,10 +36,15 @@ class View(Heats):
         self.cols["rel_col_arrival_mark"] = 4
         self.cols["rel_col_arrival_pos"] = 5
         self.cols["rel_col_issue_id"] = 6
-        self.cols["rel_col_issue_split"] = 7 
+        self.cols["rel_col_issue_split"] = 7
+
+        self.first_split_col = 0
+        self.col_arrival_mark = 0
+
+
 
     def load_heat_grid(self, heat):
-
+        self.heat = heat
         if heat.ind_rel == 'I':
             print('Individual heat')
             num_col_fixe = self.cols["ind_num_col_fixe"]
@@ -57,7 +61,9 @@ class View(Heats):
             col_issue_id = self.cols["rel_col_issue_id"]
             col_issue_split = self.cols["rel_col_issue_split"]        
         
+        # Estas liñas de abaixo úsanse no interactor en OnKeyDown
         self.first_split_col = num_col_fixe
+        self.col_arrival_mark = col_arrival_mark
 
         self.grd_results.SetGridLineColour(Colour(wx.WHITE))
         self.grd_results.SetGridLineColour(Colour(wx.LIGHT_GREY))
@@ -131,7 +137,7 @@ class View(Heats):
                     self.grd_results.SetCellValue(lane, col_members, has_set_members)
                     self.grd_results.SetCellAlignment(lane, col_members, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 self.grd_results.SetCellAlignment(lane, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-                self.grd_results.SetCellValue(lane, 2, str(result.category_name))
+                self.grd_results.SetCellValue(lane, 2, str(result.category_code))
                 self.grd_results.SetCellAlignment(lane, 2, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 if result.arrival_pos:
                     self.grd_results.SetCellValue(lane, col_arrival_pos, str(result.arrival_pos))
@@ -148,6 +154,9 @@ class View(Heats):
                 self.grd_results.SetCellAlignment(lane, col_issue_split, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 self.grd_results.SetReadOnly(lane, 0)  # Name
                 self.grd_results.SetReadOnly(lane, 1)  # Entity
+                self.grd_results.SetReadOnly(lane, 2)  # Category code
+                if heat.ind_rel == 'R':
+                    self.grd_results.SetReadOnly(lane, col_members)  # members
                 self.grd_results.SetReadOnly(lane, col_arrival_pos, False)
                 self.grd_results.SetReadOnly(lane, col_arrival_mark, False)
                 self.grd_results.SetReadOnly(lane, col_issue_id, False)
@@ -167,6 +176,8 @@ class View(Heats):
         if self.chb_go_to_first.GetValue():
             row = self.grd_results.GetGridCursorRow()
             col = self.grd_results.GetGridCursorCol()
+            if col != col_arrival_mark:
+                col = num_col_fixe # first_split_col
             self.grd_results.SetGridCursor(results[0].lane - pool_lane_adjust, col)
         
         # ALIÑADO PERSONALIZADO PARA COLUMNA

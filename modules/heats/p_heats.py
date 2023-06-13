@@ -93,6 +93,26 @@ class Presenter(object):
                 self.model.result = None
         self.view.grd_results.SelectRow(row=row)
 
+    def select_members(self):
+        row = self.view.grd_results.GetGridCursorRow()
+        # self.view.btn_members.Enable(False)
+        # self.view.btn_change_participant.Enable(False)
+        heat = self.model.heat
+        if not heat.official and row != -1:
+            lane = int(self.view.grd_results.GetRowLabelValue(row))
+            result = heat.results.get_result(lane=lane)
+            if self.view.btn_members.IsEnabled():
+                    self.load_members()
+
+        #     print('lane: {}'.format(lane))
+        #     # self.view.btn_change_participant.Enable(True)
+        #     if result:
+        #         # self.model.result = result
+        #         if result.ind_rel == 'R':
+        #     else:
+        #         self.model.result = None
+        # self.view.grd_results.SelectRow(row=row)
+
 
         
 

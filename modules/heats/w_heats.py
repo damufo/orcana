@@ -11,8 +11,8 @@ import wx
 import wx.xrc
 from .custom_grid import CustomGrid
 
-import gettext
-_ = gettext.gettext
+# import gettext
+# _ = gettext.gettext
 
 ###########################################################################
 ## Class Heats

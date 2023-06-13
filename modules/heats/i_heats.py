@@ -31,6 +31,7 @@ class Interactor(object):
 
         view.grd_results.Bind(wx.grid.EVT_GRID_CELL_CHANGED, self.OnGrid1GridEditorHidden)
         view.grd_results.Bind(wx.grid.EVT_GRID_SELECT_CELL, self.on_grid_select_cell)
+        view.grd_results.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK, self.on_select_members)
         # view.grd_results.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.on_grid_select_cell)
         view.grd_results.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         view.btn_change_participant.Bind(wx.EVT_BUTTON, self.res_change)
@@ -43,6 +44,8 @@ class Interactor(object):
 
     def OnKeyDown(self, event):
         first_split_col = self.view.first_split_col
+        col_arrival_mark = self.view.col_arrival_mark
+
         if event.GetKeyCode() != wx.WXK_RETURN:
             event.Skip()
             return
@@ -53,12 +56,12 @@ class Interactor(object):
 
         self.view.grd_results.DisableCellEditControl()
         col = self.view.grd_results.GetGridCursorCol()
-        if col == 3:
+        if col == col_arrival_mark:
             print("Move down")
             success = self.view.grd_results.MoveCursorDown(event.ShiftDown())
-            set_col = 3
+            set_col = col_arrival_mark
         else:
-            print("Move first")
+            print("Move first split")
             success = self.view.grd_results.MoveCursorRight(event.ShiftDown())
             set_col = first_split_col
 
@@ -96,6 +99,16 @@ class Interactor(object):
         # self.presenter.toggle_members_button(row=row)
         self.presenter.select_lane(row=row)
         
+    def on_select_members(self, event):
+        # print("ola caracola2")
+        # row = event.Row
+        col = event.Col
+        
+        # print('row interactor {}'.format(row))
+        # # self.presenter.toggle_members_button(row=row)
+        # self.presenter.select_lane(row=row)
+        if col < 4:
+            self.presenter.select_members()
 
 
     # def change_colum_width(self, event):
