@@ -146,20 +146,39 @@ values( ?, ?, ?, ?)'''
         # Create splits
         splits_for_event = self.config.dbs.exec_sql(
             sql=sql_splits_for_event, values=((self.result.phase.phase_id, ), ))
-        DISTANCE, SPLIT_CODE, OFFICIAL = range(3)
-        for event_split in splits_for_event:
+        if splits_for_event:
+            DISTANCE, SPLIT_CODE, OFFICIAL = range(3)
+            for event_split in splits_for_event:
+                self.config.dbs.exec_sql(
+                    sql=sql_result_split,
+                    values=((
+                        self.result.result_id,
+                        event_split[DISTANCE],
+                        event_split[SPLIT_CODE],
+                        event_split[OFFICIAL]), ))
+                self.append(ResultSplit(
+                        result_splits=self,
+                        result_split_id=self.config.dbs.last_row_id,
+                        distance=event_split[DISTANCE],
+                        mark_hundredth=0,
+                        result_split_code=event_split[SPLIT_CODE],
+                        official=event_split[OFFICIAL],
+                        ))
+        else:
+            distance = int(self.result.event.distance * self.result.event.num_members)
             self.config.dbs.exec_sql(
                 sql=sql_result_split,
                 values=((
                     self.result.result_id,
-                    event_split[DISTANCE],
-                    event_split[SPLIT_CODE],
-                    event_split[OFFICIAL]), ))
+                    distance,
+                    self.result.event.code,
+                    1), ))
             self.append(ResultSplit(
                     result_splits=self,
                     result_split_id=self.config.dbs.last_row_id,
-                    distance=event_split[DISTANCE],
+                    distance=distance,
                     mark_hundredth=0,
-                    result_split_code=event_split[SPLIT_CODE],
-                    official=event_split[OFFICIAL],
+                    result_split_code=self.result.event.code,
+                    official=1,
                     ))
+            
