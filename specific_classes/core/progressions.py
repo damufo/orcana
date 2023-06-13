@@ -14,7 +14,10 @@ class Progressions(list):
         load values
         '''
         del self[:] #borra os elementos que haxa
-        res = ((_('TIM'), 'TIM'), (_('FIN'), 'FIN'), (_('PRE'), 'PRE'))
+        res = (
+            (_('TIM'), 'TIM'),  # forma abreviada de indicar Timed Finals
+            (_('FIN'), 'FIN'),
+            (_('PRE'), 'PRE'))
         for i in res:
             self.append(Progression(
                     progressions=self,
