@@ -83,12 +83,28 @@ class Person(object):
         return count_inscriptions
 
     @property
-    def count_results(self):
+    def count_results__cambiado_polo_de_abaixo(self):
+        # esta función é moi lenta, é moit máis rápido facer a consulta na bd
+        # ver propiedade de abaixo
+        # Seguramente se poida melloar, facend unha única procura onde se vai contando o de todos e logo só sería cargar.
         count_results = 0
-        for i in self.champ.inscriptions:
+        for i in self.champ.results:
             if i.ind_rel == 'I':
                 if i.person.person_id == self.person_id:
                     count_results += 1
+        return count_results
+    @property
+
+    def count_results(self):
+        # é moito máis rápido consultar a base de datos que percorrer os
+        # resultados na  procura da participación
+        # seguramente se poida mellorar cando se busca por resultados
+        count_results = 0
+        sql = '''select count(person_id) from results where person_id=? '''
+        values = ((self.person_id, ), )
+        res = self.config.dbs.exec_sql(sql=sql, values=values)
+        if res:
+            count_results = res[0][0]
         return count_results
 
     @property
