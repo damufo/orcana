@@ -46,6 +46,17 @@ class Champ(object):
         return utils.get_valid_filename(file_name.lower())
 
     @property
+    def results(self):
+        # get all results for champ
+        results = []
+        for heat in self.heats:
+            heat.results.load_items_from_dbs()
+            for result in heat.results:
+                # result.result_splits.load_items_from_dbs()
+                results.append(result)
+        return results
+
+    @property
     def clear_champ(self):
         self.champ_id = 0
         self.name = ''
@@ -71,37 +82,41 @@ class Champ(object):
             if res == 'err' or not res:
                 self.clear_champ
             else:
-                values = res[0]
-                self.champ_id = values[CHAMP_ID]
-                self.name = values[NAME]
-                self.pool_length = values[POOL_LENGTH]
-                self.pool_lanes_text = values[POOL_LANES]
-                self.chrono_type = values[CHRONO_TYPE]
-                self.estament_id = values[ESTAMENT_ID]
-                self.date_age_calculation = values[DATE_AGE_CALCULATION]
-                self.venue = values[VENUE]
-                self.entities = Entities(champ=self)
-                self.entities.load_items_from_dbs()
-                self.sessions = Sessions(champ=self)
-                self.sessions.load_items_from_dbs()
-                self.punctuations = Punctuations(champ=self)
-                self.punctuations.load_items_from_dbs()
-                self.categories = Categories(champ=self)
-                self.categories.load_items_from_dbs()
-                self.events = Events(champ=self)
-                self.events.load_items_from_dbs()
-                self.persons = Persons(champ=self)
-                self.persons.load_items_from_dbs()
-                self.relays = Relays(champ=self)
-                self.relays.load_items_from_dbs()
-                self.inscriptions = Inscriptions(champ=self)
-                self.inscriptions.load_items_from_dbs()
-                self.inscriptions.sort_default()
-                self.phases = Phases(champ=self)
-                self.phases.load_items_from_dbs()
-                self.heats = Heats(champ=self)
-                self.heats.load_items_from_dbs()
-                self.config.prefs['last_path_dbs'] = str(dbs_path)
+                try:
+                    values = res[0]
+                    self.champ_id = values[CHAMP_ID]
+                    self.name = values[NAME]
+                    self.pool_length = values[POOL_LENGTH]
+                    self.pool_lanes_text = values[POOL_LANES]
+                    self.chrono_type = values[CHRONO_TYPE]
+                    self.estament_id = values[ESTAMENT_ID]
+                    self.date_age_calculation = values[DATE_AGE_CALCULATION]
+                    self.venue = values[VENUE]
+                    self.entities = Entities(champ=self)
+                    self.entities.load_items_from_dbs()
+                    self.sessions = Sessions(champ=self)
+                    self.sessions.load_items_from_dbs()
+                    self.punctuations = Punctuations(champ=self)
+                    self.punctuations.load_items_from_dbs()
+                    self.categories = Categories(champ=self)
+                    self.categories.load_items_from_dbs()
+                    self.events = Events(champ=self)
+                    self.events.load_items_from_dbs()
+                    self.persons = Persons(champ=self)
+                    self.persons.load_items_from_dbs()
+                    self.relays = Relays(champ=self)
+                    self.relays.load_items_from_dbs()
+                    self.inscriptions = Inscriptions(champ=self)
+                    self.inscriptions.load_items_from_dbs()
+                    self.inscriptions.sort_default()
+                    self.phases = Phases(champ=self)
+                    self.phases.load_items_from_dbs()
+                    self.heats = Heats(champ=self)
+                    self.heats.load_items_from_dbs()
+                    self.config.prefs['last_path_dbs'] = str(dbs_path)
+                except:  # Algo fallou durante a carga
+                    self.config.prefs['last_path_dbs'] = ""
+                    self.clear_champ
         else:  # Non foi quen de conectar
             self.clear_champ
             print("Isto non debería pasar nunca. Erro:1134987239847105")
@@ -240,7 +255,7 @@ where champ_id=?'''
 
     def auto_gen_heats(self):
         '''
-        Xera as fases como TIM
+        Xera as fases como TIM (forma abreviada de indicar Timed Finals).
         Xera as series
         Xera as liñas de resultados (aquí é onde vai a serie e a pista)
         '''
@@ -386,7 +401,7 @@ select event_code from events where event_id =
 
     def auto_gen_heats_event_category(self):
         '''
-        Xera as fases como TIM
+        Xera as fases como TIM (forma abreviada de indicar Timed Finals).
         Xera as series
         Xera as liñas de resultados (aquí é onde vai a serie e a pista)
         '''
@@ -536,110 +551,110 @@ values( ?, ?, ?, ?)'''
             table = lines
             d.insert_table(table=table, colWidths=col_widths, 
                            style=style, pagebreak=False)
-
-        d.insert_title_1(text=_("Clasifications by category"), alignment=1)
-
-        sql = """
-select 
-
-(select category_code  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)) as category_id,
-(select gender_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)) as category_gender_id,
-(select name  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)) as category_name,
-
-
-    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
-    then 
-        (select long_name from entities e where e.entity_id=(select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id)))
-    else 
-        (select long_name from entities e where e.entity_id=(select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id)))
-    end as "entity",
-    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
-    then 
-        (select entity_code from entities e where e.entity_id=(select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id)))
-    else 
-        (select entity_code from entities e where e.entity_id=(select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id)))
-    end as "entity_code",
-sum(points) 
-
-from results_phases_categories rpc
-
-group by 
-    (select category_code  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
-    (select gender_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
-    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
-    then 
-        (select entity_code from entities e where e.entity_id=(select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id)))
-    else 
-        (select entity_code from entities e where e.entity_id=(select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id)))
-    end
-order by
-(select name  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
-(select gender_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id)),
-sum(points) desc; """
-        (C_CODE, C_GENDER_ID, C_NAME, E_NAME, E_CODE, POINTS) = range(6)
-        res = self.config.dbs.exec_sql(sql=sql)
-
-        if res != 'err' or not res:
-            # calcula a total
-            total = {}
-            for i in res:
-                code = "{}#{}#{}#{}".format(i[C_CODE], i[C_NAME], i[E_NAME], i[E_CODE])
-                if code in total:
-                    total[code] += i[POINTS]
-                else:
-                    total[code] = i[POINTS]
-            sorted_total = sorted(total.items(), key=lambda x:x[1], reverse=True)
+        def save_table_total(category, table_total):
             lines = []
-            for i in sorted_total:
-                line = i[0].split('#')
-                line = [line[0],] + ["T",] + [line[1],] + [line[2],] + [line[3],] + [i[1],]
-                lines.append(line)
-                print(line)
-            res.extend(lines)
-            # converted_dict = dict(sorted_total)
-
-            last_category = None
-            pos = 1
-            last_pos = -1
+            sorted_total = sorted(table_total.items(), key=lambda x:x[1], reverse=True)
+            lines = []
             last_points = -1
-            lines = []
-            for i in res:
-                if i[C_GENDER_ID] == "M":
-                    gender = _("Male")
-                elif i[C_GENDER_ID] == "F":
-                    gender = _("Female")
-                elif i[C_GENDER_ID] == "X":
-                    gender = _("Mixed")
-                elif i[C_GENDER_ID] == "T":
-                    gender = _("Total")
-                else:
-                    AssertionError("Category gender unknown.")
-                category_name = "{} {}".format(i[C_NAME], gender)
-                if category_name != last_category:
-                    if lines:
-                        d.insert_title_1(text=last_category, alignment=0)
-                        d.insert_spacer(10, 10)
-                        save_table(lines)
-                    last_category = category_name
-                    lines = []
-                    pos = 1
-                if i[POINTS] == last_points:
+            last_pos = -1
+            pos = 1
+            for entity_id, points in sorted_total:
+                entity = self.entities.get_entity(entity_id=entity_id)
+                if points == last_points:
                     line_pos = ""
                 else:
                     line_pos = pos
                     last_pos = pos
                 lines.append((
                     line_pos,
-                    i[E_NAME],
-                    i[E_CODE],
-                    i[POINTS],
+                    entity.long_name,
+                    entity.entity_code,
+                    points,
                 ))
+                last_points = points
                 pos += 1
-                last_points = i[POINTS]
-            if lines:
-                d.insert_title_1(text=last_category, alignment=0)
+            gender = _("Total")
+            title_category = "{} {}".format(category.name, gender).capitalize()
+            d.insert_title_1(text=title_category, alignment=0)
+            d.insert_spacer(10, 10)
+            save_table(lines)
+
+        d.insert_title_1(text=_("Clasifications by category"), alignment=1)
+
+        sql = '''
+select 
+    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
+    then 
+        (select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id))
+    else 
+        (select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id))
+    end as "entity_id",
+sum(points) as points
+from results_phases_categories rpc
+where (select category_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id))=?
+
+group by 
+    case when (select person_id from results r where r.result_id=rpc.result_id)>0 
+    then 
+        (select entity_id from persons p where p.person_id=(select person_id from results r where r.result_id=rpc.result_id))
+    else 
+        (select entity_id from relays r where r.relay_id=(select relay_id from results r where r.result_id=rpc.result_id))
+    end
+order by
+sum(points) desc;         '''
+        last_category = None
+        lines = []
+        total = {}
+        (ENTITY_ID, POINTS) = range(2)
+        for category in self.categories:
+            if lines and last_category.show_report:
+                gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
+                title_category = "{} {}".format(last_category.name, gender).capitalize()
+                d.insert_title_1(text=title_category, alignment=0)
                 d.insert_spacer(10, 10)
                 save_table(lines)
+            if last_category and category.code != last_category.code:
+                # print total
+                save_table_total(category=last_category, table_total=total)
+                total = {}
+            res = self.config.dbs.exec_sql(sql=sql, values=((category.category_id,),))
+            lines = []
+            if res != 'err' and res:
+                # print category puntuation
+                gender = self.config.genders.get_long_name(gender_id=category.gender_id)
+                last_points = -1
+                last_pos = -1
+                pos = 1
+                for entity_id, points in res:
+                    entity = self.entities.get_entity(entity_id=entity_id)
+                    if points == last_points:
+                        line_pos = ""
+                    else:
+                        line_pos = pos
+                        last_pos = pos
+                    lines.append((
+                        line_pos,
+                        entity.long_name,
+                        entity.entity_code,
+                        points,
+                    ))
+                    last_points = points
+                    pos += 1
+                    if entity.entity_id in total:
+                        total[entity.entity_id] += points
+                    else:
+                        total[entity.entity_id] = points
+            last_category = category
+        # Isto é para imprimir a última categoría se é que hai que facelo
+        if lines and last_category.show_report:
+            gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
+            title_category = "{} {}".format(last_category.name, gender).capitalize()
+            d.insert_title_1(text=title_category, alignment=0)
+            d.insert_spacer(10, 10)
+            save_table(lines)
+        if total:
+            # print total
+            save_table_total(category=last_category, table_total=total)
 
 
         d.build_file()
@@ -1559,6 +1574,93 @@ sum(points) desc; """
 
         d.build_file()
         print("feito")
+
+    def gen_web_forms_files(self):
+
+        # Choices person
+        file_name = os.path.join(
+                self.config.work_folder_path,
+                'choices_person.csv',
+                )
+        file_path = os.path.join(
+            self.config.work_folder_path,
+            file_name)
+        lines = []
+        for person in self.persons:
+            # F 00071 BUGALLO PÉREZ, Estíbaliz 1084714
+            line = "{} {} {} {}".format(
+                person.gender_id,
+                person.entity.entity_code,
+                "{}, {}".format(person.surname.upper(),
+                person.name.title()),
+                person.license)
+            lines.append((
+                line,
+                "{}#{}#{}".format(
+                    person.gender_id,
+                    person.entity.entity_code,
+                    person.full_name_normalized
+                    )
+                ))
+        sorted_lines = sorted(lines, key=lambda x:x[1], reverse=False)
+        for i in sorted_lines:
+            print(i[0])
+        sorted_lines = [i[0] for i in sorted_lines]         
+        files.set_file_content(content=sorted_lines,
+                               file_path=file_path,
+                               compress=False,
+                               binary=False,
+                               encoding='utf-8-sig',
+                               end_line="\n")
+
+        # Choices club
+        file_name = os.path.join(
+                self.config.work_folder_path,
+                'choices_club.csv,
+                )
+        file_path = os.path.join(
+            self.config.work_folder_path,
+            file_name)
+        lines = []
+        for entity in self.entities:
+            # 00071 Real C. Náutico De Vigo
+            lines.append(
+                "{} {}".format(
+                    entity.entity_code,
+                    entity.long_name,
+                    )
+                )
+        sorted_lines = sorted(lines)
+        for i in sorted_lines:
+            print(i)           
+        files.set_file_content(content=sorted_lines,
+                               file_path=file_path,
+                               compress=False,
+                               binary=False,
+                               encoding='utf-8-sig',
+                               end_line="\n")
+        # Choices event
+        file_name = os.path.join(
+                self.config.work_folder_path,
+                'choices_event.csv',
+                )
+        file_path = os.path.join(
+            self.config.work_folder_path,
+            file_name)
+        lines = []
+        for event in self.events:
+            # 1. Feminino, 400m Libre
+            lines.append(event.long_name)
+        # sorted_lines = sorted(lines)
+        for i in lines:
+            print(i)           
+        files.set_file_content(content=lines,
+                               file_path=file_path,
+                               compress=False,
+                               binary=False,
+                               encoding='utf-8-sig',
+                               end_line="\n")
+        print('fin')
 
     def report_start_list_html(self, phase=None):
         if phase:
