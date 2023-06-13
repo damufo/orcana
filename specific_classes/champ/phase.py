@@ -80,11 +80,10 @@ class Phase(object):
         return '{}_{}'.format(self.event.file_name, self.progression.lower())
 
     @property
-    def categories_names(self):
+    def categories_text(self):
         categories = []
         for i in self.phase_categories:
-            categories.append("{} ({})".format(i.category.name, i.action))
-
+            categories.append("{}_{} ({})".format(i.category.code, i.category.gender_id, i.action))
         return ', '.join(categories)
 
     def already_exists(self, event_id, progression):
@@ -136,7 +135,7 @@ VALUES(?, ?, ?, ?, ?) '''
 
     def gen_heats(self):
         '''
-        Xera as series da fase como TIM
+        Xera as series da fase como TIM (forma abreviada de indicar Timed Finals).
         Xera as series
         Xera as liñas de resultados (aquí é onde vai a serie e a pista)
         '''
@@ -515,6 +514,8 @@ select event_code from events where event_id =
                     repartir = []
                     last_pos = -1
                     for i in results_phase_category:
+                        if i.result.issue_id:  # se ten incidencia non puntúa
+                            break
                         puntua = False
                         # ten en conta cantos puntúan por entidade
                         if i.result.entity.entity_id in puntuados_club:
@@ -1157,6 +1158,7 @@ select event_code from events where event_id =
             results_phase_category.extend(results_sorted)           
 
             # Fin obtención de datos
+            # FIMME: poñer o de arriba dentro de gen_phase_category_results_pdf
             print("poñer o de arriba dentro de gen_phase_category_results_pdf")
             self.gen_phase_category_results_pdf(d=d, results=results_sorted)
 

@@ -106,7 +106,7 @@ order by (select s.xdate || " " ||s.xtime from sessions s where s.session_id=p.s
                     str(i.pool_lanes),
                     i.progression,
                     i.session.date_time,
-                    i.categories_names,
+                    i.categories_text,
                     i.official and _('S') or "",
                     str(len(i.heats)),
                     ))
