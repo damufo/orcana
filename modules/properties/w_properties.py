@@ -189,6 +189,29 @@ class Properties ( wx.Panel ):
 
 		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )
 
+		bSizer1031 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_web_forms_files = wx.Button( self, wx.ID_ANY, _(u"&Web forms files"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_web_forms_files.SetToolTip( _(u"Report inscriptions") )
+
+		bSizer1031.Add( self.btn_web_forms_files, 1, wx.ALL, 5 )
+
+		bSizer141 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_report_heats_pdf1 = wx.Button( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_heats_pdf1.SetToolTip( _(u"Generate PDF report heats") )
+
+		bSizer141.Add( self.btn_report_heats_pdf1, 1, wx.ALL, 5 )
+
+		self.btn_report_heats_html1 = wx.Button( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer141.Add( self.btn_report_heats_html1, 1, wx.ALL, 5 )
+
+
+		bSizer1031.Add( bSizer141, 1, wx.EXPAND, 5 )
+
+
+		bSizer8.Add( bSizer1031, 0, wx.EXPAND, 5 )
+
 		self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer8.Add( self.m_staticline2, 0, wx.ALL|wx.EXPAND, 5 )
 

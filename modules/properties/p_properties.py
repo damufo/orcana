@@ -43,6 +43,9 @@ class Presenter(object):
     def report_heats_html(self):
         self.model.champ.report_start_list_html()
 
+    def gen_web_forms_files(self):
+        self.model.champ.gen_web_forms_files()
+
     def fiarna(self):
         from modules.fiarna import p_fiarna
         p_fiarna.create(parent=self, config=self.model.champ.config)
