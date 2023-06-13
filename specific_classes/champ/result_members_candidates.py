@@ -11,6 +11,8 @@ class PersonsCandidates(list):
         self.champ = champ
         self.result_members = result_members
         self.config = self.champ.config
+        self.sort_reverse = False
+        self.sort_last_field = None
 
     @property
     def champ_id(self):
@@ -133,6 +135,40 @@ from persons where {} order by surname, name '''
                 i.license,
                 ))
         return  tuple(values)
+
+    def list_sort(self, **kwargs):
+        '''
+        Sort results by column num or column name
+        '''
+        field = None
+        cols = (
+            'surname_normalized',
+            'name_normalized',
+            'gender_id',
+            'year',
+            '',
+            '',
+            'license',
+            )
+        # cols valid to order
+        valid_order_cols = (0, 1, 2, 3, 6)
+
+        if 'num_col' in list(kwargs.keys()):
+            if kwargs['num_col'] in valid_order_cols:
+                field = cols[kwargs['num_col']]
+
+        if self.sort_last_field == field:
+            self.sort_reverse = not self.sort_reverse
+        else:
+            self.sort_reverse = False
+        if field:
+            self.sort_by_field(field=field, reverse=self.sort_reverse)
+            self.sort_last_field = field
+
+    def sort_by_field(self, field, reverse=False):
+        self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
+        del self[:]
+        self.extend(self_sort)
 
     # def year_add(self):
     #     for i in self:
