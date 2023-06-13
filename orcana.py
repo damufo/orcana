@@ -36,8 +36,8 @@ from modules.main.p_main import Presenter
 
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
-APP_VERSION = "0.0.4beta"
-APP_VERSION_DATE = "2023-05-31"
+APP_VERSION = "0.0.5beta"
+APP_VERSION_DATE = "2023-06-13"
 
 
 class Application(wx.App):
