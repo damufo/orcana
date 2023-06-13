@@ -24,10 +24,34 @@ class Presenter(object):
         self.view = view
         interactor.install(self, view)
         self.model.candidates.load_items_from_dbs()
-        # Candidates, delete result_members 
-        if self.model.result_members:
-            for result_member in self.model.result_members:
-                self.model.candidates.remove_person(result_member.person.person_id)
+        # Candidates, delete result_members already in use
+        # if self.model.result_members:
+            # for result_member in self.model.result_members:
+            #     self.model.candidates.remove_person(result_member.person.person_id)
+
+        # Delete cadidate members in another relays in same phase
+        participation = 2  # FIXME: controlar o número de veces que está inscrito
+        if participation > 1:
+            phase = self.model.result_members.result.heat.phase
+            phase_results = phase.results
+            for phase_result in phase_results:
+                if phase_result.entity.entity_id == self.model.result_members.result.entity.entity_id:
+                    for result_member in phase_result.result_members:
+                        print(result_member.person.full_name)
+                        self.model.candidates.remove_person(result_member.person.person_id)
+        else:  # Só permite participar nunha remuda
+            phases = self.model.result_members.result.heat.phase.phases
+            for phase in phases:
+                if phase.event.ind_rel == 'R':
+                    phase_results = phase.results
+                    for phase_result in phase_results:
+                        if phase_result.entity.entity_id == self.model.result_members.result.entity.entity_id:
+                            for result_member in phase_result.result_members:
+                                print(result_member.person.full_name)
+                                self.model.candidates.remove_person(result_member.person.person_id)
+
+        
+
         self.view.lsc_candidates_plus.values = self.model.candidates
         self.view.lsc_candidates_plus.load(custom_column_widths=True)
         

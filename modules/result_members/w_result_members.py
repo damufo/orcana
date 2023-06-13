@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -111,7 +111,7 @@ class ResultMembers ( wx.Panel ):
 
 		bsz_events.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
-		self.btn_new_person = wx.Button( self, wx.ID_ANY, _(u"&New"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_new_person = wx.Button( self, wx.ID_ANY, _(u"Add new &person"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_new_person.SetToolTip( _(u"Add new person to members") )
 
 		bsz_events.Add( self.btn_new_person, 0, wx.ALL, 5 )
