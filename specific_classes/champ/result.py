@@ -120,12 +120,17 @@ class Result(object):
         return categories
 
     @property
-    def category_name(self):
-        if self.categories:
-            category_name = self.categories[0].name
-        else:
-            category_name = ''
-        return category_name
+    def category_code(self):
+        # Return code of first category match
+        category_code = ''
+        categories  = self.categories
+        if categories:
+            if len(categories) == 1:
+                category_code = self.categories[0].code
+            else:  # add "+" as multiple category indicator 
+                category_code = "{}+".format(self.categories[0].code)
+        
+        return category_code
 
     @property
     def mark_hundredth(self):           
@@ -203,7 +208,7 @@ class Result(object):
                 sql = ('update results set person_id=?, relay_id=0, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
                 values = ((self.person.person_id, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
-            else:
+            else: 
                 self.relay.save()
                 sql = ('update results set person_id=0, relay_id=?, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
                 values = ((self.relay.relay_id, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
