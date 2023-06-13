@@ -158,6 +158,8 @@ class PersonAddEdit ( wx.Dialog ):
 		bSizer102.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
 		self.btn_acept = wx.Button( self.panel, wx.ID_ANY, _(u"&Acept"), wx.DefaultPosition, wx.DefaultSize, 0 )
+
+		self.btn_acept.SetDefault()
 		self.btn_acept.SetToolTip( _(u"Acept") )
 
 		bSizer102.Add( self.btn_acept, 0, wx.ALL, 5 )
