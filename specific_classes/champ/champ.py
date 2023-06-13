@@ -1616,7 +1616,7 @@ sum(points) desc;         '''
         # Choices club
         file_name = os.path.join(
                 self.config.work_folder_path,
-                'choices_club.csv,
+                'choices_club.csv',
                 )
         file_path = os.path.join(
             self.config.work_folder_path,
