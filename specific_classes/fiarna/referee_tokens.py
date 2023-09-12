@@ -151,17 +151,19 @@ class Token(object):
 
 
 class RefereeTokens(object):
-    """
-    Tasks is a extended list object
-    """
 
-    def __init__(self, config):
+
+    def __init__(self, champ):
         '''
         Constructor
         '''
-        self.config = config
+        self.champ = champ
         from operator import attrgetter
         self.sort_order = 0
+
+    @property
+    def config(self):
+        return self.champ.config
 
     def sort(self, values):
         from operator import attrgetter
@@ -180,13 +182,10 @@ class RefereeTokens(object):
         # self.config.dbs.connection(dbs_path=dbs_path)
 
 #         Championship
-        sql = """
-select name, venue from champs """
-        res = self.config.dbs.exec_sql(sql=sql)
 
-#         CHAMP_DESC, VENUE = range(2)
-        for i in res:
-            champ_desc, venue = i
+
+        champ_desc = self.champ.params.get_value('champ_name')
+        venue = self.champ.params.get_value('champ_venue')
 
 #         Clubes
         sql = """
@@ -260,8 +259,13 @@ sessions s on s.session_id=p.session_id order by xdate, xtime, p.pos;  """
 
 #         heats
         sql = """
-select e.gender_id, e.event_id, '', p.phase_id, r.person_id, r.relay_id, h.pos,
-lane from (((results r inner join heats h on r.heat_id=h.heat_id) inner join phases p on h.phase_id=p.phase_id) inner join events e on p.event_id=e.event_id); """
+select e.gender_id, e.event_id, '', p.phase_id, i.person_id, i.relay_id, h.pos,
+lane from ((((results r 
+left join heats h on r.heat_id=h.heat_id) 
+left join phases p on h.phase_id=p.phase_id) 
+left join events e on p.event_id=e.event_id)
+left join inscriptions i on i.inscription_id=r.inscription_id);
+"""
         tokens = self.config.dbs.exec_sql(sql=sql)
         (GENDER_ID, EVENT_ID, CATEGORY_ID,
          PHASE_ID, PERSON_ID, RELAY_ID, UNIT, LANE) = range(8)
@@ -355,274 +359,6 @@ lane from (((results r inner join heats h on r.heat_id=h.heat_id) inner join pha
                                      i.person.club.short_desc,),
                       "",
                       "{} {}".format(k and k.person.club.code or "",
-                                     k and k.person.club.short_desc or "",)]]
-            style = [('FONTSIZE', (0, 0), (-1, -1), 9),
-                     ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                     ('VALIGN', (0, 0), (-1, -1), 'TOP')]
-            col_widths = ['48%', '4%', '48%']
-            row_heghts = [5*mm, 6*mm]
-            d.insert_table(table=table, colWidths=col_widths,
-                           rowHeights=row_heghts,
-                           style=style, pagebreak=False)
-            table = [
-                    [_("SPLITS LOG"), "", "", "", _("SPLITS LOG"), "", ""],
-                    ["50:", "550:", "1050:", "", "50:", "550:", "1050:"],
-                    ["100:", "600:", "1100:", "", "100:", "600:", "1100:"],
-                    ["150:", "650:", "1150:", "", "150:", "650:", "1150:"],
-                    ["200:", "700:", "1200:", "", "200:", "700:", "1200:"],
-                    ["250:", "750:", "1250:", "", "250:", "750:", "1250:"],
-                    ["300:", "800:", "1300:", "", "300:", "800:", "1300:"],
-                    ["350:", "850:", "1350:", "", "350:", "850:", "1350:"],
-                    ["400:", "900:", "1400:", "", "400:", "900:", "1400:"],
-                    ["450:", "950:", "1450:", "", "450:", "950:", "1450:"],
-                    ["500:", "1000:", "1500:", "", "500:", "1000:", "1500:"],
-                    [_("RECORDING END TIMES"), "",    "", "",
-                     _("RECORDING END TIMES"), "", ""],
-                    [_("CHRONO 1"), _("CHRONO 2"), _("CHRONO 3"), "",
-                     _("CHRONO 1"), _("CHRONO 2"), _("CHRONO 3")],
-                    ["", "", "", "", "", "", ""]]
-            style = [
-                    ('FONTSIZE', (0, 0), (-1, -1), 10),
-                    ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-                    ('SPAN', (0, 0), (2, 0)),
-                    ('SPAN', (4, 0), (-1, 0)),
-                    ('GRID', (0, 1), (2, 10), 0.5, d.colors.lightgrey),
-                    ('GRID', (4, 1), (-1, 10), 0.5, d.colors.lightgrey),
-                    ('FONTSIZE', (0, 1), (-1, 10), 9),
-                    ('ALIGN', (0, 11), (-1, -1), 'CENTER'),
-                    ('SPAN', (0, 11), (2, 11)),
-                    ('SPAN', (4, 11), (-1, 11)),
-                    ('GRID', (0, 12), (2, 13), 0.5, d.colors.lightgrey),
-                    ('GRID', (4, 12), (-1, 13), 0.5, d.colors.lightgrey),
-                    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ]
-            col_widths = ['16%', '16%', '16%', '4%', '16%', '16%', '16%']
-            row_heghts = [6*mm, 5*mm, 5*mm, 5*mm, 5*mm, 5*mm, 5*mm, 5*mm,
-                          5*mm, 5*mm, 5*mm, 6*mm, 5*mm, 5*mm]
-            d.insert_table(table=table, colWidths=col_widths,
-                           rowHeights=row_heghts,
-                           style=style, pagebreak=False)
-
-            table = [[_("END TIME DEFINITIVE"), _("Arrival"),
-                      _("Clasific."), _("Points"), "",
-                      _("END TIME DEFINITIVE"), _("Arrival"),
-                      _("Clasific."), _("Points")],
-                     ["", "", "", "", "", "", ""]]
-            style = [
-                    ('FONTSIZE', (0, 0), (-1, -1), 10),
-                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                    ('GRID', (0, 1), (3, 1), 0.5, d.colors.lightgrey),
-                    ('GRID', (5, 1), (-1, 1), 0.5, d.colors.lightgrey),
-                ]
-            col_widths = ['24%', '8%', '8%', '8%', '4%',
-                          '24%', '8%', '8%', '8%']
-            d.insert_table(table=table, colWidths=col_widths,
-                           style=style, pagebreak=False)
-
-            data_i = _("{venue} on {month} {day}, {year}").format(
-                    venue=venue.title(),
-                    day=i.event.day,
-                    month=i.event.month_text,
-                    year=i.event.year)
-            if k:
-                data_k = _("{venue} on {month} {day}, {year}").format(
-                    venue=venue.title(),
-                    day=k.event.day,
-                    month=k.event.month_text,
-                    year=k.event.year)
-            table = [[_("Signature timekeeper"),
-                      _("Sinature secretary desk"), "",
-                      _("Signature timekeeper"),
-                      _("Sinature secretary desk")],
-                     ["", "", ""],
-                     [data_i, "", "", data_k, ""]]
-            style = [
-                    ('FONTSIZE', (0, 0), (-1, -1), 9),
-                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                    ('ALIGN', (0, 0), (-1, 0), 'LEFT'),
-                    ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
-                    ('ALIGN', (4, 0), (4, 0), 'RIGHT'),
-                    ('SPAN', (0, 2), (1, 2)),
-                    ('SPAN', (3, 2), (-1, 2)),
-                    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-                ]
-            col_widths = ['24%', '24%', '4%', '24%', '24%']
-            row_heghts = [6*mm, 8*mm, 5*mm]
-            d.insert_table(table=table, colWidths=col_widths,
-                           rowHeights=row_heghts,
-                           style=style, pagebreak=False)
-
-            if divmod(x, 4)[1] == 0:
-                table = [[" "]]
-                style = []
-                col_widths = ['100%']
-                row_heghts = [15*mm]
-                d.insert_table(table=table, colWidths=col_widths,
-                               rowHeights=row_heghts,
-                               style=style, pagebreak=False)
-
-        d.build_file()
-
-
-    def report_piscina__pode_borrarse(self, dbs_path, report_path, from_event, to_event, phase):
-        '''
-        Generate a PDF file with licenses to export.
-        '''
-        self.config.dbs.connection(dbs_path=dbs_path)
-
-#         Championship
-        sql = """
-select champdesc, location
-from championship """
-        res = self.config.dbs.exec_sql(sql=sql)
-
-#         CHAMP_DESC, VENUE = range(2)
-        for i in res:
-            champ_desc, venue = i
-
-#         Clubes
-        sql = """
-select clubcode, mediumdesc
-from clubdesc """
-        res = self.config.dbs.exec_sql(sql=sql)
-
-        CLUB_ID, SHORT_DESC = range(2)
-        clubs = {}
-        for i in res:
-            clubs[i[CLUB_ID]] = Club(club_id=i[CLUB_ID],
-                                     short_desc=i[SHORT_DESC])
-
-#         Persons
-        sql = """
-select registerid, license, familyname, givenname, gender, clubcode,
-yearofbirth from register """
-        res = self.config.dbs.exec_sql(sql=sql)
-        (REGISTER_ID, PERSON_ID, SURNAME,
-         NAME, GENDER, CLUB_ID, YEAR_OF_BIRTH) = range(7)
-        persons = {}
-        for i in res:
-            persons[i[REGISTER_ID]] = Person(
-                    person_id=i[PERSON_ID],
-                    name=i[NAME],
-                    surname=i[SURNAME],
-                    gender=i[GENDER],
-                    club=clubs[i[CLUB_ID]],
-                    year_of_birth=i[YEAR_OF_BIRTH])
-
-#         Events
-        sql = """
-select gendercode, eventcode, categorycode, phasecode, phaseorder,
-sessionorder, startdate from phase """
-        res = self.config.dbs.exec_sql(sql=sql)
-        (GENDER_ID, EVENT_ID, CATEGORY_ID,
-         PHASE_ID, PHASE_ORDER, ORDER, DATE) = range(7)
-        events = {}
-        for i in res:
-            event_code = "{}.{}.{}.{}".format(i[GENDER_ID], i[EVENT_ID],
-                                              i[CATEGORY_ID], i[PHASE_ID])
-            events[event_code] = Event(
-                    gender_id=i[GENDER_ID],
-                    event_id=i[EVENT_ID],
-                    category_id=i[CATEGORY_ID],
-                    phase_id=int(i[PHASE_ID]),
-                    phase_order=int(i[PHASE_ORDER]),
-                    order=int(i[ORDER]),
-                    date=i[DATE])
-
-#         Units
-        sql = """
-select gendercode, eventcode,categorycode, phasecode, registerid, unitcode,
-lane from result"""
-        tokens = self.config.dbs.exec_sql(sql=sql)
-        (GENDER_ID, EVENT_ID, CATEGORY_ID,
-         PHASE_ID, PERSON_ID, UNIT, LANE) = range(7)
-        values = []
-        for i in tokens:
-            event_code = "{}.{}.{}.{}".format(i[GENDER_ID], i[EVENT_ID],
-                                              i[CATEGORY_ID], i[PHASE_ID])
-            values.append(Token(
-                    event=events[event_code],
-                    person=persons[i[PERSON_ID]],
-                    unit=int(i[UNIT]),
-                    lane=int(i[LANE])))
-
-        values = self.sort(values)
-#         filter from_event
-        if phase == 0:  # All
-            phase_id = None
-        elif phase == 1:  # Final
-            phase_id = 1
-        elif phase == 2:  # Preliminar
-            phase_id = 2
-        values_filtered = []
-        for i in values:
-            if i.event.order >= from_event and \
-                    i.event.order <= to_event:
-                if phase_id and i.event.phase_id == phase_id:
-                    values_filtered.append(i)
-                elif not phase_id:
-                    values_filtered.append(i)
-        values = values_filtered
-
-        d = ReportBaseRefereeTokens(config=self.config,
-                                    file_name=report_path,
-                                    orientation='portrait',
-                                    title=_("Referee's tokens"))
-
-        tot = len(values)
-        for x in range(0, tot, 2):
-            if x > 0 and divmod(x, 4)[1] == 0:
-                d.insert_page_break()
-            i = values[x]
-            if x < (tot-1):
-                k = values[x+1]
-            else:
-                k = None
-
-            table = [[champ_desc, "", champ_desc]]
-            style = [
-                    ('FONTSIZE', (0, 0), (-1, -1), 10),
-                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                    ('VALIGN', (0, 0), (-1, -1), 'TOP')
-                ]
-            col_widths = ['48%', '4%', '48%']
-            row_heghts = [7*mm]
-            d.insert_table(table=table, colWidths=col_widths,
-                           rowHeights=row_heghts,
-                           style=style, pagebreak=False)
-
-            table = [["{} ({})".format(i.event.event_desc, i.event.phase_desc),
-                      "",
-                      "",
-                      "{} ({})".format(k and k.event.event_desc or "",
-                                       k and k.event.phase_desc or ""),
-                      ""],
-                     [_("UNIT: {}").format(i.unit),
-                      _("LANE: {}").format(i.lane),
-                      "",
-                      _("UNIT: {}").format(k and k.unit or ""),
-                      _("LANE: {}").format(k and str(k.lane) or "")]]
-            style = [
-                    ('FONTSIZE', (0, 0), (-1, -1), 10),
-                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                    ('VALIGN', (0, 0), (-1, -1), 'TOP')]
-            col_widths = ['15%', '33%', '4%', '15%', '33%']
-            row_heghts = [5*mm, 7*mm]
-            d.insert_table(table=table, colWidths=col_widths,
-                           rowHeights=row_heghts,
-                           style=style, pagebreak=False)
-
-            table = [["{} {} ({})".format(i.person.person_id,
-                                          i.person.full_name,
-                                          i.person.year_of_birth),
-                      "",
-                      "{} {} ({})".format(k and k.person.person_id or "",
-                                          k and k.person.full_name or "",
-                                          k and k.person.year_of_birth or "")],
-                     ["{} {}".format(i.person.club.club_id,
-                                     i.person.club.short_desc,),
-                      "",
-                      "{} {}".format(k and k.person.club.club_id or "",
                                      k and k.person.club.short_desc or "",)]]
             style = [('FONTSIZE', (0, 0), (-1, -1), 9),
                      ('ALIGN', (0, 0), (-1, -1), 'LEFT'),

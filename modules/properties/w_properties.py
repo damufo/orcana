@@ -19,7 +19,7 @@ import wx.xrc
 
 class Properties ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 920,570 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 920,630 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
@@ -64,15 +64,15 @@ class Properties ( wx.Panel ):
 
 		bSizer101 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, _(u"Pool lanes:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, _(u"Pool lanes sort:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText31.Wrap( -1 )
 
 		bSizer101.Add( self.m_staticText31, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.txt_pool_lanes = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.txt_pool_lanes.SetToolTip( _(u"Pool lane from best to worst separated by hyphen.") )
+		self.txt_pool_lanes_sort = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_pool_lanes_sort.SetToolTip( _(u"Pool lane from best to worst separated by hyphen.") )
 
-		bSizer101.Add( self.txt_pool_lanes, 1, wx.ALL, 5 )
+		bSizer101.Add( self.txt_pool_lanes_sort, 1, wx.ALL, 5 )
 
 
 		bSizer8.Add( bSizer101, 0, wx.EXPAND, 5 )

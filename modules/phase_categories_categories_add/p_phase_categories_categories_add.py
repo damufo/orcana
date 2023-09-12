@@ -31,12 +31,13 @@ class Presenter(object):
             champ_categories.remove(i.category)
         # Remove incompatible categories
         gender_id = self.model.phase_categories.phase.event.gender_id
-        if gender_id == "X" and phase.event.ind_rel == "R":
-            for i in copy.copy(champ_categories):
-                print((i.code, i.gender_id))
-                if i.gender_id != "X":
-                    champ_categories.remove(i)
-        elif self.model.phase_categories.phase.event.gender_id != "X":
+        # if gender_id == "X" and phase.event.ind_rel == "R":
+        #     for i in copy.copy(champ_categories):
+        #         print((i.code, i.gender_id))
+        #         if i.gender_id != "X":
+        #             champ_categories.remove(i)
+        # el
+        if self.model.phase_categories.phase.event.gender_id != "X":
             for i in copy.copy(champ_categories):
                 print((i.code, i.gender_id))
                 if i.gender_id != gender_id:

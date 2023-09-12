@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -180,6 +180,58 @@ class InscIndAddEdit ( wx.Dialog ):
 
 
 		bSizer8.Add( bSizer10111, 0, wx.EXPAND, 5 )
+
+		bSizer101111 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText31111 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Rejected:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31111.Wrap( -1 )
+
+		bSizer101111.Add( self.m_staticText31111, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.chb_rejected = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer101111.Add( self.chb_rejected, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer101111, 1, wx.EXPAND, 5 )
+
+		bSizer101112 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText31112 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Exchanged:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31112.Wrap( -1 )
+
+		bSizer101112.Add( self.m_staticText31112, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.chb_exchanged = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer101112.Add( self.chb_exchanged, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer101112, 1, wx.EXPAND, 5 )
+
+		bSizer101113 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText31113 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Score:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31113.Wrap( -1 )
+
+		bSizer101113.Add( self.m_staticText31113, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.chb_score = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer101113.Add( self.chb_score, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer101113, 1, wx.EXPAND, 5 )
+
+		bSizer101114 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText31114 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Clasificate:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31114.Wrap( -1 )
+
+		bSizer101114.Add( self.m_staticText31114, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.chb_clasificate = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer101114.Add( self.chb_clasificate, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		bSizer8.Add( bSizer101114, 1, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )

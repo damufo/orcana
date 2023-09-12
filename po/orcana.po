@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-13 12:11+0200\n"
-"PO-Revision-Date: 2023-06-13 12:59+0200\n"
+"PO-Revision-Date: 2023-07-26 18:43+0200\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
@@ -298,7 +298,7 @@ msgstr "Me&mbros"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:106
 msgid "Chan&ge"
-msgstr "&Cam&biar"
+msgstr "Cam&biar"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:107
 msgid "Edit participant"

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 
-
+from specific_classes.champ.relay_members import RelayMembers
 from specific_functions import utils
 
 
@@ -29,10 +29,37 @@ class Relay(object):
             self.entity = kwargs['entity']
         else:
             self.entity = None
+        if 'event' in list(kwargs.keys()):
+            self.event = kwargs['event']
+        else:
+            self.event = None
+        self.relay_members = RelayMembers(relay=self)
+        self.relay_members.load_items_from_dbs()
 
     @property
     def champ(self):
         return self.relays.champ
+
+    @property
+    def event_id(self):
+        event_id = 0
+        if self.event:
+            event_id = self.event.event_id
+        else:
+            AssertionError("Iston on pode ser.")
+        return event_id
+
+    @property
+    def num_members(self):
+        '''
+        get number of members from event id. Ex. 4X50L -> 4
+        '''
+        return self.event.num_members
+
+    @property
+    def has_set_members(self):
+        return self.relay_members.has_set_members
+
 
     @property
     def long_name(self):
@@ -81,77 +108,6 @@ class Relay(object):
         self.entity_id = self.config.entities.get_entity_id(entity_name)
 
     entity_name = property(_get_entity_short_name, _set_entity_short_name)
-#     @property
-#     def save_dict(self):
-#         pos = len(self.categories)
-#         for idx, item in enumerate(self.categories):
-#             if item == self:
-#                 pos = idx
-#                 break
-#         variables = {
-#             "id": self.id,
-#             "pos": pos,
-#             "code": self.code,
-#             "genderId": self.gender_id,
-#             "name": self.name,
-#             "typeId": self.type_id,
-#             "fromYear": self.from_age,
-#             "toYear": self.to_age,
-#             "champId": self.champ.id
-#         }
-#         return variables
-
-#     def save(self):
-#         pos = len(self.categories)
-#         for idx, item in enumerate(self.categories):
-#             if item == self:
-#                 pos = idx
-#                 break
-
-#         query = """
-# mutation(
-#     $id: Int!,
-#     $pos: Int!,
-#     $code: String!,
-#     $genderId: String!,
-#     $name: String!,
-#     $typeId: String!,
-#     $fromYear: Int!,
-#     $toYear: Int!,
-#     $champId: Int!) {
-#   saveCategory(
-#     id: $id,
-#     pos: $pos,
-#     code: $code,
-#     genderId: $genderId,
-#     name: $name,
-#     typeId: $typeId,
-#     fromYear: $fromYear,
-#     toYear: $toYear,
-#     champId: $champId
-#   ) {
-#     id
-#     pos
-#     code
-#     genderId
-#     name
-#     typeId
-#     fromYear
-#     toYear
-#     createdAt
-#     createdBy
-#     updatedAt
-#     updatedBy
-#     champId
-#   }
-# }
-# """
-#         variables = self.save_dict
-#         result = self.config.com_api.execute(query, variables)
-#         if result:
-#             self.id = result["data"]["saveCategory"]["id"]
-#             self.created_by = result["data"]["saveCategory"]["createdBy"]
-#             self.save_action = "U"
 
     @property
     def champ_id(self):
@@ -191,8 +147,8 @@ VALUES(?, ?, ?, ?) '''
         # check if the relay in use
         uses = 0
         sql = '''
-select person_id from inscriptions where relay_id=? union 
-select person_id from results where person_id=?; '''
+select relay_id from inscriptions where relay_id=? union 
+select relay_id from relays where relay_id=?; '''
         res = self.config.dbs.exec_sql(sql=sql, values=((self.relay_id, self.relay_id), ))
         if res:
             uses = len(res)

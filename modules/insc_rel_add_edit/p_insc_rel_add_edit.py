@@ -28,46 +28,65 @@ class Presenter(object):
 
     def acept(self):
         entity = self.model.entity
-        inscription = self.model.inscription
-        if entity:        
-            values  = self.view.get_values()
-            msg = None
-            if not values['relay_name']:
-                msg = 'Set a relay name.'
-                self.view.txt_relay_name.SetFocus()
-            elif not values['category_id']:
-                msg = 'Set a relay category.'
-                self.view.cho_category_id.SetFocus()
-            elif not values['mark_hundredth']:
-                msg = 'Set a mark.'
-                self.view.txt_mark.SetFocus()
-            elif not values['pool_length']:
-                msg = 'Set a pool length.'
-                self.view.cho_pool_length.SetFocus()
-            elif not values['chrono_type']:
-                msg = 'Set a chrono type.'
-                self.view.cho_chrono_type.SetFocus()
-            if msg:
+        inscription = self.model.inscription     
+        values  = self.view.get_values()
+        msg = None
+        if not entity: 
+            msg = _('No entity selected.')
+            self.view.txt_entity_name.SetFocus()
+        elif not values['relay_name']:
+            msg = _('Set a relay name.')
+            self.view.txt_relay_name.SetFocus()
+        elif not values['category_id']:
+            msg = _('Set a relay category.')
+            self.view.cho_category_id.SetFocus()
+        elif not values['mark_hundredth']:
+            msg = _('Set a mark.')
+            self.view.txt_mark.SetFocus()
+        elif not values['pool_length']:
+            msg = _('Set a pool length.')
+            self.view.cho_pool_length.SetFocus()
+        elif not values['chrono_type']:
+            msg = _('Set a chrono type.')
+            self.view.cho_chrono_type.SetFocus()
+        if msg:
+            self.view.msg.warning(msg)
+        else:
+            category = inscription.champ.categories.get_category(category_id=values['category_id'])
+            name = values['relay_name']
+            match_inscription = inscription.inscriptions.search_relay(entity=entity, category=category, name=name)
+            if match_inscription and (match_inscription != inscription):  # é distinta
+                msg = _('This relay already exists.')
                 self.view.msg.warning(msg)
             else:
+                if inscription.inscription_id:  # If exists inscription (edit mode)
+                    clear_relayers = False
+                    if inscription.relay.entity != entity:
+                        clear_relayers = True
+                    if inscription.relay.category != category:
+                        clear_relayers = True
+                    if clear_relayers:
+                        inscription.relay.relay_members.delete_all_items()
+
                 inscription.relay.entity = entity
                 # FIXME: o de abaixo seguramente debería borrarse xa que o sexo ten que obterse da categoría.
                 # ou non, ver o caso no que sexa proba mixta de remudas e clasificacións por sexo.
                 # pensándoo penso que non hai problema se se usa o sexo da categoría
                 inscription.relay.gender_id = self.model.inscription.event.gender_id
-                inscription.relay.name = values['relay_name']
-                category = inscription.champ.categories.get_category(category_id=values['category_id'])
+                inscription.relay.name = name
                 inscription.relay.category = category
+                inscription.relay.gender_id = category.gender_id
                 inscription.mark_hundredth = values['mark_hundredth']
                 inscription.chrono_type = values['chrono_type']
                 inscription.pool_length = values['pool_length']
                 inscription.date = values['date']
                 inscription.venue = values['venue']
-                self.model.inscription.save()
+                inscription.rejected = values['rejected']
+                inscription.exchanged = values['exchanged']
+                inscription.score = values['score']
+                inscription.clasificate = values['clasificate']
+                inscription.save()
                 self.view.view_plus.stop()
-        else:
-            self.view.msg.warning("No entity selected.")
-            self.view.txt_entity_name.SetFocus()
 
     def entity_name(self):
         entity_name = self.view.txt_entity_name.GetValue()

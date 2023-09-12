@@ -30,7 +30,7 @@ class Presenter(object):
         message = _('This action reset all results, delete relay members...'
             'Only current inscriptions will be considered to redo all.')
         self.view.msg.warning(message=message)
-        self.model.champ.auto_gen_heats()
+        self.model.champ.gen_heats()
 
     def report_inscriptions(self):
         self.model.champ.report_inscriptions_by_club()
@@ -48,9 +48,47 @@ class Presenter(object):
 
     def fiarna(self):
         from modules.fiarna import p_fiarna
-        p_fiarna.create(parent=self, config=self.model.champ.config)
+        p_fiarna.create(parent=self, champ=self.model.champ)
 
     def go_back(self):
-        self.view.get_values(champ=self.model.champ)
-        self.model.champ.save()
-        self.parent.load_me()
+        values = self.view.get_values()
+        msg = None
+        pool_lanes_sort_validated = self.model.champ.validade_pool_lanes_sort(values['champ_pool_lanes_sort'])
+        if not values['champ_name']:
+            msg = 'Set a champ name.'
+            self.view.txt_champ_name.SetFocus()
+        elif not values['champ_pool_length']:
+            msg = 'Set a pool length.'
+            self.view.cho_pool_length.SetFocus()
+        elif not pool_lanes_sort_validated:
+            msg = 'Set a pool lanes sort.'
+            self.view.txt_pool_lanes_sort.SetFocus()
+        elif not values['champ_chrono_type']:
+            msg = 'Set a chrono type.'
+            self.view.cho_chrono_type.SetFocus()
+        elif not values['champ_estament_id']:
+            msg = 'Set a estament.'
+            self.view.cho_estament_id.SetFocus()
+        elif not values['champ_date_age_calculation']:
+            msg = 'Set a date age calculation.'
+            self.view.txt_date_age_calculation.SetFocus()
+        elif not values['champ_venue']:
+            msg = 'Set a venue.'
+            self.view.txt_venue.SetFocus()
+        if msg:
+            self.view.msg.warning(msg)
+        else:
+            self.model.champ.params.set_value('champ_name', values['champ_name'])
+            self.model.champ.params.set_value('champ_pool_length', values['champ_pool_length'])
+            self.model.champ.params.set_value('champ_pool_lanes_sort', pool_lanes_sort_validated)
+            self.model.champ.params.set_value('champ_chrono_type', values['champ_chrono_type'])
+            self.model.champ.params.set_value('champ_estament_id', values['champ_estament_id'])
+            self.model.champ.params.set_value('champ_date_age_calculation', values['champ_date_age_calculation'])
+            self.model.champ.params.set_value('champ_venue', values['champ_venue'])
+
+            if 'champ_pool_lanes_sort' in self.model.champ.params.changed:
+                message = _("Do you want to establish this ordering of the estates in all phases?")
+                if self.view.msg.question(message=message):
+                    self.model.champ.phases.set_champ_pool_lanes_sort()
+            self.model.champ.params.save()
+            self.parent.load_me()

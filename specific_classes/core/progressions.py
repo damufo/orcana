@@ -16,8 +16,11 @@ class Progressions(list):
         del self[:] #borra os elementos que haxa
         res = (
             (_('TIM'), 'TIM'),  # forma abreviada de indicar Timed Finals
+            (_('FHT'), 'FHT'),  # Fast heat timed finals
+            (_('PRE'), 'PRE'),
+            (_('SEM'), 'SEM'),
             (_('FIN'), 'FIN'),
-            (_('PRE'), 'PRE'))
+            )
         for i in res:
             self.append(Progression(
                     progressions=self,

@@ -15,6 +15,7 @@ class Interactor(object):
         view.txt_entity_name.Bind(wx.EVT_KILL_FOCUS, self.on_entity_name)
         view.txt_entity_name.Bind(wx.EVT_CHAR, self.on_entity_name_change)
         view.btn_acept.Bind(wx.EVT_BUTTON, self.on_acept)
+        view.btn_delete.Bind(wx.EVT_BUTTON, self.on_delete)
 
     def on_cancel(self, event):
         self.presenter.cancel()
@@ -24,6 +25,9 @@ class Interactor(object):
 
     def on_acept(self, event):
         self.presenter.acept()
+
+    def on_delete(self, event):
+        self.presenter.delete()
     
     def on_entity_name(self, event):
         self.presenter.entity_name()

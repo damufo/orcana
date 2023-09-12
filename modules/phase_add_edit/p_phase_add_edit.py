@@ -30,6 +30,7 @@ class Presenter(object):
         phase = self.model.phase
         values = self.view.get_values()
         msg = None
+        pool_lanes_sort_validated = phase.champ.validade_pool_lanes_sort(values['pool_lanes_sort'])
         if not values['event_id']:
             msg = 'Set a event_id.'
             self.view.cho_event_id.SetFocus()
@@ -39,9 +40,10 @@ class Presenter(object):
         elif phase.already_exists(event_id=values["event_id"], progression=values['progression']):
             msg = 'Already exists.'
             self.view.cho_event_id.SetFocus()
-        elif not values['pool_lanes']:
-            msg = 'Set a pool lanes number.'
-            self.view.txt_pool_lanes.SetFocus()
+        elif not pool_lanes_sort_validated:
+            msg = 'Set a pool lanes sort.'
+            self.view.txt_pool_lanes_sort.SetFocus()
+
         elif not values['session_id']:
             msg = 'Set a session.'
             self.view.cho_session_id.SetFocus()
@@ -53,8 +55,9 @@ class Presenter(object):
             session = phase.champ.sessions.get_session(
                 session_id=values['session_id'])
             phase.event = event
-            phase.pool_lanes = values['pool_lanes']
+            phase.pool_lanes_sort = pool_lanes_sort_validated
             phase.progression = values['progression']
+            phase.num_clas_next_phase = values['num_clas_next_phase']
             phase.session = session
             phase.phases.append(phase)
             phase.save()

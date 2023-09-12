@@ -55,6 +55,10 @@ class Presenter(object):
                     inscription.chrono_type = values['chrono_type']
                     inscription.date = values['date']
                     inscription.venue = values['venue']
+                    inscription.rejected = values['rejected']
+                    inscription.exchanged = values['exchanged']
+                    inscription.score = values['score']
+                    inscription.clasificate = values['clasificate']
                     self.model.inscription.save()
                     self.view.view_plus.stop()
         else:

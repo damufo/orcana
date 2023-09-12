@@ -27,18 +27,18 @@ class View(InscRelAddEdit):
             self.lbl_entity_code.SetLabel(inscription.relay.entity.entity_code)
             self.txt_relay_name.SetValue(inscription.relay.name)
             self.view_plus.cho_load(choice=self.cho_category_id,
-                                values=inscription.event.event_categories.choices(),
+                                values=inscription.phase.phase_categories.choices(),
                                 default=inscription.relay.category.category_id)
         else:
             self.txt_entity_name.SetValue('')
             self.lbl_entity_code.SetLabel('')
             self.txt_relay_name.SetLabel('')
-            category_choices = inscription.event.event_categories.choices()
+            category_choices = inscription.phase.phase_categories.choices()
             category_default = None
             if len(category_choices) == 1:
                 category_default = category_choices[0][1]
             self.view_plus.cho_load(choice=self.cho_category_id,
-                                values=inscription.event.event_categories.choices(),
+                                values=inscription.phase.phase_categories.choices(),
                                 default=category_default)
         if inscription.mark_hundredth:
             self.txt_mark.SetValue(inscription.mark_time)
@@ -47,12 +47,16 @@ class View(InscRelAddEdit):
         
         self.view_plus.cho_load(choice=self.cho_chrono_type,
                                 values=inscription.config.chrono_type.choices(),
-                                default=inscription.chrono_type or inscription.champ.chrono_type)
+                                default=inscription.chrono_type or inscription.champ.params['champ_chrono_type'])
         self.view_plus.cho_load(choice=self.cho_pool_length,
                                 values=inscription.config.pool_length.choices(),
-                                default=inscription.pool_length or inscription.champ.pool_length)
+                                default=inscription.pool_length or inscription.champ.params['champ_pool_length'])
         self.txt_date_plus.SetValue(inscription.date)
         self.txt_venue.SetValue(inscription.venue)
+        self.chb_rejected.SetValue(inscription.rejected)
+        self.chb_exchanged.SetValue(inscription.exchanged)
+        self.chb_score.SetValue(inscription.score)
+        self.chb_clasificate.SetValue(inscription.clasificate)
         self.txt_entity_name.SetFocus()
 
     def get_values(self):
@@ -64,6 +68,10 @@ class View(InscRelAddEdit):
         values['chrono_type'] = self.view_plus.cho_get(self.cho_chrono_type)
         values['date'] = self.txt_date_plus.GetValue()
         values['venue'] = self.txt_venue.GetValue().strip().upper()
+        values['rejected'] = self.chb_rejected.GetValue()
+        values['exchanged'] = self.chb_exchanged.GetValue()
+        values['score'] = self.chb_score.GetValue()
+        values['clasificate'] = self.chb_clasificate.GetValue()
         return values
 
     def set_entity_values(self, entity):

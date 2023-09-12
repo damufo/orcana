@@ -17,6 +17,13 @@ class Categories(list):
     def champ_id(self):
         return self.champ.champ_id
 
+    @property
+    def dict(self):
+        dict_categories = {}
+        for i in self:
+            dict_categories[i.category_id] = i
+        return dict_categories
+
     def load_items_from_dbs(self):
         del self[:] #borra os elementos que haxa
         (CATEGORY_ID, CODE, GENDER_ID, NAME,

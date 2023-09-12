@@ -155,6 +155,12 @@ class ResIndAddEdit ( wx.Dialog ):
 
 		bSizer102.Add( self.btn_cancel, 0, wx.ALL, 5 )
 
+		self.btn_delete = wx.Button( self.panel, wx.ID_ANY, _(u"Delete"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_delete.SetForegroundColour( wx.Colour( 252, 252, 252 ) )
+		self.btn_delete.SetBackgroundColour( wx.Colour( 252, 0, 0 ) )
+
+		bSizer102.Add( self.btn_delete, 0, wx.ALL, 5 )
+
 
 		bSizer102.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 

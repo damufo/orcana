@@ -4,7 +4,7 @@
 from specific_functions import marks
 from specific_functions import conversion
 # from specific_functions import normalize
-from specific_classes.champ.results import Results
+# from specific_classes.champ.results import Results
 
 
 class Heat(object):
@@ -17,15 +17,7 @@ class Heat(object):
         self.pos = kwargs['pos']
         self.official = kwargs['official']
         self.start_time = kwargs['start_time']
-        self.results = Results(heat=self)
-
-
-    # def set_type_id(self, type_id):
-    #     self.type_id = type_id
-    #     if self.type_id == 'S':
-    #         self.insc_members = InscMembers(inscription=self)
-    #     else:
-    #         self.insc_members = []
+        # self.results = Results(heat=self)
 
     @property
     def champ(self):
@@ -42,19 +34,28 @@ class Heat(object):
         '''
         return self.phase.event.ind_rel
 
-    # def _get_mark_hundredth(self):
-    #     return self._mark_hundredth
+    def get_result(self, lane):
+        result = None
+        for i in self.results:
+            if i.lane == lane:
+                result = i
+                break
+        return result
 
-    # def _set_mark_hundredth(self, mark_hundredth):
-    #     self._mark_hundredth = mark_hundredth
-
-    # mark_hundredth = property(_get_mark_hundredth, _set_mark_hundredth)
+    @property
+    def results(self):
+        # Return heat results sorted by lane
+        list_results = []
+        for inscription in self.phase.inscriptions:
+            if inscription.result and inscription.result.heat == self:
+                list_results.append(inscription.result)
+        list_results = sorted(list_results, key=lambda x: x.lane)
+        return list_results
 
     @property
     def equated_hundredth(self):
-        champ_pool_length = self.champ.pool_length
-        champ_chrono_type = self.champ.chrono_type
-
+        champ_pool_length = self.champ.params['champ_pool_length']
+        champ_chrono_type = self.champ.params['champ_chrono_type']
         equated_hundredth = conversion.conv_to_pool_chrono(
             mark_hundredth=self.mark_hundredth,
             event_id=self.event.code,
@@ -93,7 +94,9 @@ class Heat(object):
         # asume que se borraron antes todos os results_phases_categories
         print("ATENCIÓN!! Asume que se está a borrar unha fase.")
         # delete all results
-        self.results.delete_all_items()
+        for i in self.results:
+            i.delete()
         sql = ''' delete from heats where heat_id={}'''
         sql = sql.format(self.heat_id)
         self.config.dbs.exec_sql(sql=sql)
+        self.heats.remove(self)

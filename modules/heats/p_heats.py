@@ -20,11 +20,11 @@ def create(parent, heats):
 class Presenter(object):
 
     def __init__(self, parent, model, view, interactor):
+        self.name = "heats"
         self.parent = parent
         self.model = model
         self.view = view
         interactor.install(self, view)
-        self.model.heats.load_items_from_dbs()
         self.view.lsc_heats_plus.values = self.model.heats
         self.view.lsc_heats_plus.load(custom_column_widths=True)
         if 'heats' in self.model.heats.config.views:
@@ -46,43 +46,43 @@ class Presenter(object):
         heat_view['result_cell_col'] = self.view.grd_results.GetGridCursorCol()
         self.model.heats.config.views['heats'] = heat_view
         self.view.lsc_heats_plus.save_custom_column_width()
-        from modules.result_members import p_result_members
-        p_result_members.create(parent=self, result_members=self.model.result.result_members)
+        from modules.relay_members import p_relay_members
+        p_relay_members.create(parent=self, relay_members=self.model.result.relay.relay_members)
 
 
     def view_refresh(self):
         event_id = self.view.get_event_id()
 
-    def toggle_members_button__(self, row):
-        # row = self.view.grd_results.GetGridCursorRow()
-        # print('row presenter {}'.format(row))
-        self.view.btn_members.Enable(False)
-        # self.model.result = None
-        if row != -1:
-            heat = self.model.heat
-            if heat.ind_rel == 'R':
-                if not heat.official:
-                    lane = int(self.view.grd_results.GetRowLabelValue(row))
-                    print('lane {}'.format(lane))
-                    result = heat.results.get_result(lane=lane)
-                    if result:
-                        self.model.result = result
-                        self.view.btn_members.Enable(True)
-                    else:
-                        self.model.result = None
-                        print('non hai resultado')
-                else:
-                    print('isto non debería producirse')
-        else:
-            print('isto nunca debería pasar')
+    # def toggle_members_button__(self, row):
+    #     # row = self.view.grd_results.GetGridCursorRow()
+    #     # print('row presenter {}'.format(row))
+    #     self.view.btn_members.Enable(False)
+    #     # self.model.result = None
+    #     if row != -1:
+    #         heat = self.model.heat
+    #         if heat.ind_rel == 'R':
+    #             if not heat.official:
+    #                 lane = int(self.view.grd_results.GetRowLabelValue(row))
+    #                 print('lane {}'.format(lane))
+    #                 result = heat.get_result(lane=lane)
+    #                 if result:
+    #                     self.model.result = result
+    #                     self.view.btn_members.Enable(True)
+    #                 else:
+    #                     self.model.result = None
+    #                     print('non hai resultado')
+    #             else:
+    #                 print('isto non debería producirse')
+    #     else:
+    #         print('isto nunca debería pasar')
 
     def select_lane(self, row):
         self.view.btn_members.Enable(False)
         self.view.btn_change_participant.Enable(False)
         heat = self.model.heat
-        if not heat.official and row != -1:
+        if row != -1:  # not heat.official and
             lane = int(self.view.grd_results.GetRowLabelValue(row))
-            result = heat.results.get_result(lane=lane)
+            result = heat.get_result(lane=lane)
             print('lane: {}'.format(lane))
             self.view.btn_change_participant.Enable(True)
             if result:
@@ -100,9 +100,9 @@ class Presenter(object):
         heat = self.model.heat
         if not heat.official and row != -1:
             lane = int(self.view.grd_results.GetRowLabelValue(row))
-            result = heat.results.get_result(lane=lane)
-            if self.view.btn_members.IsEnabled():
-                    self.load_members()
+            result = heat.get_result(lane=lane)
+            # if self.view.btn_members.IsEnabled():
+            self.load_members()
 
         #     print('lane: {}'.format(lane))
         #     # self.view.btn_change_participant.Enable(True)
@@ -135,10 +135,6 @@ class Presenter(object):
             heat = self.model.heats[pos]
             self.model.heat = heat
             self.model.results = heat.results
-            heat.results.load_items_from_dbs()
-            
-            # for i in heat.results:
-            #     i.result_splits.load_items_from_dbs()
 
             row = self.view.grd_results.GetGridCursorRow()
             print('select_heat, results cusor row: {}'.format(row))
@@ -152,7 +148,7 @@ class Presenter(object):
 
             if heat.official:
                 self.view.grd_results.EnableEditing(False)
-                self.view.btn_members.Enable(False)
+                # self.view.btn_members.Enable(False)
             else:
                 self.view.grd_results.EnableEditing(True)
                 # self.toggle_members_button(row=row)
@@ -240,7 +236,7 @@ class Presenter(object):
     def update_result(self, col, row):
         heat = self.get_heat()
         lane = int(self.view.grd_results.GetRowLabelValue(row))
-        result = heat.results.get_result(lane=lane)
+        result = heat.get_result(lane=lane)
         if heat and result:
             # self.model.result = result
             if result.ind_rel == 'I':
@@ -269,7 +265,7 @@ class Presenter(object):
                     split.mark_time = value  
                     self.view.grd_results.SetCellValue(row, col_arrival_mark, split.mark_time)
                     self.view.grd_results.SetCellValue(row, col_last_split , split.mark_time)
-                    self.view.update_arrival_pos(result.results)
+                    self.view.update_arrival_pos(heat)
                     # result.save()
                 else:
                     # distance = (col - num_col_fixe) * 50
@@ -297,7 +293,7 @@ class Presenter(object):
                 if result.issue_id and not result.issue_split:
                     result.issue_split = 1
                     self.view.grd_results.SetCellValue(row, col_issue_split , str(1))
-                self.view.update_arrival_pos(result.results)
+                self.view.update_arrival_pos(heat)
                 result.save()
             elif col == col_issue_split:  # Set issue split
                 if result.issue_id:
@@ -317,31 +313,29 @@ class Presenter(object):
         print("fin update result")
 
     def res_change(self):
-        row = self.view.grd_results.GetGridCursorRow()
+        row = self.view.grd_results.GetSelectedRows()[0]
         # print('row presenter {}'.format(row))
         heat = self.get_heat()
         lane = int(self.view.grd_results.GetRowLabelValue(row))
-        result = heat.results.get_result(lane=lane)
+        result = heat.get_result(lane=lane)
         result_index = -1           
-        if not result:
-            result = heat.results.item_blank
-            result.lane = lane
-            if result.ind_rel == 'R':
-                result.relay = result.champ.relays.item_blank
-        else:
-            result_index = heat.results.index(result)
         if self.model.heat.ind_rel == 'I':
             from modules.res_ind_add_edit import p_res_ind_add_edit
-            p_res_ind_add_edit.create(parent=self, result=result)
-            self.view.update_result_lane(row=row, result=result)
-            self.view.update_arrival_pos(heat.results)
+            p_res_ind_add_edit.create(parent=self, heat=heat, lane=lane, result=result)
+            self.select_heat()
+            # self.view.update_result_lane(row=row, result=result)
+            self.view.update_arrival_pos(heat)
         elif self.model.heat.ind_rel == 'R':
             from modules.res_rel_add_edit import p_res_rel_add_edit
-            p_res_rel_add_edit.create(parent=self, result=result)
-            self.view.update_result_lane(row=row, result=result)
-            self.view.update_arrival_pos(heat.results)
+            p_res_rel_add_edit.create(parent=self, heat=heat, lane=lane, result=result)
+            # FIXME: o de abaixo ten que actualizar igual que nas individuais
+            # o motivo é que o cambio pode implicar outra estaxe da mesma serie
+            self.select_heat()
+            # self.view.update_result_lane(row=row, result=result)
+            self.view.update_arrival_pos(heat)
         # Isto é porque o obxexto result cambia o id ó ir ó formulario res_rel_add_edit
-        if result.result_id and result_index != -1 and result != heat.results[result_index]:
-            heat.results[result_index] = result
+        print('En teoría o de abaixo xa non fai falta')
+        # if result.result_id and result_index != -1 and result != heat.results[result_index]:
+        #     heat.results[result_index] = result
         self.select_lane(row=row)
 

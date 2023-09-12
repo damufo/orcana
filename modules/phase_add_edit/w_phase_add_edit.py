@@ -20,7 +20,7 @@ import wx.xrc
 class PhaseAddEdit ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Phase Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 703,356 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Phase Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 703,385 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -56,14 +56,14 @@ class PhaseAddEdit ( wx.Dialog ):
 
 		bSizer101 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText31 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Pool lanes:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Pool lanes sort:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText31.Wrap( -1 )
 
 		bSizer101.Add( self.m_staticText31, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.txt_pool_lanes = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.txt_pool_lanes.SetMaxLength( 15 )
-		bSizer101.Add( self.txt_pool_lanes, 2, wx.ALL, 5 )
+		self.txt_pool_lanes_sort = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_pool_lanes_sort.SetMaxLength( 128 )
+		bSizer101.Add( self.txt_pool_lanes_sort, 2, wx.ALL, 5 )
 
 
 		bSizer8.Add( bSizer101, 0, wx.EXPAND, 5 )
@@ -97,6 +97,22 @@ class PhaseAddEdit ( wx.Dialog ):
 
 
 		bSizer8.Add( bSizer1031, 0, wx.EXPAND, 5 )
+
+		bSizer1011 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText311 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Num. next phase:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText311.Wrap( -1 )
+
+		self.m_staticText311.SetToolTip( _(u"Number participants to clasificate next phase.") )
+
+		bSizer1011.Add( self.m_staticText311, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.txt_num_clas_next_phase = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_num_clas_next_phase.SetMaxLength( 128 )
+		bSizer1011.Add( self.txt_num_clas_next_phase, 2, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer1011, 0, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )

@@ -27,7 +27,11 @@ class Presenter(object):
                     print(message)
                     # self.view.msg.warning(message=message)
         print(config.dbs.dbs_path)
-        self.main_frame.SetTitle(self.model.champ.name or 'Orcana')
+        champ_name = None
+        if 'champ_name' in self.model.champ.params:
+            champ_name = self.model.champ.params['champ_name']
+            self.model.champ.has_champ = True
+        self.main_frame.SetTitle(champ_name or 'Orcana')
         self.load_me()
         self.view.parent.view_plus.start()
 
@@ -36,15 +40,18 @@ class Presenter(object):
         self.view.SetName('main')
         interactor = Interactor()
         interactor.install(self, self.view)
-        self.view.set_buttons(has_champ=self.model.champ.champ_id)
+        self.view.set_buttons(has_champ=self.model.champ.has_champ)
 
     def about(self):
         self.view.about(config=self.model.config)
 
     def open_db(self):
         self.view.open_db(champ=self.model.champ)
-        self.view.set_buttons(has_champ=self.model.champ.champ_id)
-        self.main_frame.SetTitle(self.model.champ.name or 'Orcana')
+        self.view.set_buttons(has_champ=self.model.champ.has_champ)
+        champ_name = ''
+        if self.model.champ.has_champ:
+            champ_name = self.model.champ.params['champ_name']
+        self.main_frame.SetTitle(champ_name or 'Orcana')
         # self.main_frame.SetTitle(self.model.champ.config.prefs['last_path_dbs'] or 'Orcana')
 
     def report_results(self):
@@ -85,14 +92,16 @@ class Presenter(object):
         if not self.model.champ.heats:
             self.view.msg.warning(message=_('No heats in this championship.'))
         else:
+            from specific_classes.champ.heats_champ import HeatsChamp
+            heats_champ = HeatsChamp(self.model.champ)
             from modules.heats import p_heats
-            p_heats.create(parent=self, heats=self.model.champ.heats)
+            p_heats.create(parent=self, heats=heats_champ)
 
-    def load_result_members(self, parent, result_members=None):
-        if not result_members:
-            result_members = self.model.config.views['result_members']['result_members']
-        from modules.result_members import p_result_members
-        p_result_members.create(parent=parent, result_members=result_members)
+    # def load_result_members_pode_borrarse(self, parent, result_members=None):
+    #     if not result_members:
+    #         result_members = self.model.config.views['result_members']['result_members']
+    #     from modules.result_members import p_result_members
+    #     p_result_members.create(parent=parent, result_members=result_members)
 
     def load_results(self):
         from modules.results import p_results

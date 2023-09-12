@@ -11,6 +11,13 @@ class Events(list):
         self.config = self.champ.config
 
     @property
+    def dict(self):
+        dict_events = {}
+        for i in self:
+            dict_events[i.event_id] = i
+        return dict_events
+
+    @property
     def champ_id(self):
         return self.champ.champ_id
 
@@ -20,7 +27,7 @@ class Events(list):
 
     # @property
     # def estament_id(self):
-    #     return self.champ.estament_id 
+    #     return self.champ.params['champ_estament_id'] 
 
     # @property
     # def scope_id(self):
@@ -28,11 +35,11 @@ class Events(list):
 
     @property
     def pool_length(self):
-        return self.champ.pool_length
+        return self.champ.params['champ_pool_length']
 
     @property
     def chrono_type(self):
-        return self.champ.chrono_type
+        return self.champ.params['champ_chrono_type']
 
     @property
     def results_from_date(self):
@@ -126,7 +133,6 @@ from events order by pos '''
                     ind_rel=i[IND_REL],
                     insc_max=i[INSC_MAX]
                     )
-                event.event_categories.load_items_from_dbs()
                 self.append(event)
 
     @property
@@ -143,7 +149,7 @@ from events order by pos '''
             (_('Name'), 'L', 240),
             (_('Ind/Rel'), 'C', 55),
             (_('I. Max'), 'C', 65),
-            (_('Categorías'), 'L', 120),)
+            )
 
     @property
     def list_values(self):
@@ -160,7 +166,7 @@ from events order by pos '''
                            i.name,
                            i.ind_rel,
                            i.insc_max,
-                           i.event_categories.list_text))
+                           ))
         return tuple(values)
 
     def move_down(self, pos):

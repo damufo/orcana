@@ -28,6 +28,13 @@ class Entities(list):
                 long_name='',
                 )
 
+    @property
+    def dict(self):
+        dict_entities = {}
+        for i in self:
+            dict_entities[i.entity_id] = i
+        return dict_entities
+
     def choices(self, add_empty=False, federation_id=None):
         values = []
         if add_empty:

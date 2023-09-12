@@ -61,9 +61,6 @@ class Events ( wx.Panel ):
 
 		bSizer8 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_categories = wx.Button( self, wx.ID_ANY, _(u"&Categories"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer8.Add( self.btn_categories, 0, wx.ALL, 5 )
-
 		self.btn_delete = wx.Button( self, wx.ID_ANY, _(u"D&elete"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
 		self.btn_delete.SetToolTip( _(u"Delete") )
 

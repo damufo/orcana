@@ -10,6 +10,9 @@ from specific_functions import marks
 from specific_functions import conversion
 # from specific_functions import normalize
 from specific_classes.champ.phase_categories import PhaseCategories
+from specific_classes.champ.inscriptions import Inscriptions
+from specific_classes.champ.heats import Heats
+from specific_classes.champ.result import Result
 
 class Phase(object):
 
@@ -18,38 +21,86 @@ class Phase(object):
         self.config = self.phases.config
         self.phase_id = kwargs['phase_id']
         self.event = kwargs['event']
-        self.pool_lanes = kwargs['pool_lanes']
+        self.pool_lanes_sort = kwargs['pool_lanes_sort']
         self.progression = kwargs['progression']
         self.session = kwargs['session']
-        # self.heats = []  # non sei para que se usa isto?
+        self.num_clas_next_phase = kwargs['num_clas_next_phase']
+        self.parent = kwargs['parent']
         self.phase_categories = PhaseCategories(phase=self)
+        self.phase_categories.load_items_from_dbs()
+        self.heats = Heats(phase=self)
+        self.heats.load_items_from_dbs()
+        self.inscriptions = Inscriptions(phase=self)
+        self.inscriptions.load_items_from_dbs()
+        # FIXME: poñer a liña de abaixo dentro de inscricións
+        print("poñer a liña de abaixo dentro de inscriptions")
+        self.load_results_from_dbs()
 
     @property
     def pos(self):
         return self.phases.index(self) + 1
+    
+    @property
+    def long_name(self):
+        return '{}.- {} ({})'.format(self.event.pos, self.event.name, self.progression)
 
     @property
     def champ(self):
         return self.phases.champ
 
     @property
-    def heats(self):
-        heats = []
-        for heat in self.champ.heats:
-            if heat.phase == self:
-                heats.append(heat)
-        return heats
+    def ind_rel(self):
+        return self.event.ind_rel
+
+    @property
+    def pool_lanes(self):
+        # tuple or sorted pool number lanes, ex. (3, 4, 2, 5, 1, 6)
+        pool_lanes_sort = self.pool_lanes_sort.replace(' ', '')
+        pool_lanes = [int(i) for i in pool_lanes_sort.split(',')
+                                   if i.isdigit()]
+        return tuple(pool_lanes)
+
+    @property
+    def pool_lanes_count(self):
+        return len(self.pool_lanes)
+
+    @property
+    def pool_lane_min(self):
+        return min(self.pool_lanes)
+
+    @property
+    def pool_lane_max(self):
+        return max(self.pool_lanes)
+
+    # @property
+    # def results(self):
+    #     # return a list of all results for this phase
+    #     results = []
+    #     for heat in self.heats:
+    #         for result in heat.results:
+    #             # result.result_splits.load_items_from_dbs()
+    #             results.append(result)
+    #     return results
 
     @property
     def results(self):
-        # get all results for this phase
-        results = []
-        for heat in self.heats:
-            heat.results.load_items_from_dbs()
-            for result in heat.results:
-                # result.result_splits.load_items_from_dbs()
-                results.append(result)
-        return results
+        # Return phase results sorted by heat and lane
+        list_results = []
+        for inscription in self.inscriptions:
+            if inscription.result:
+                list_results.append(inscription.result)
+        list_results = sorted(list_results, key=lambda x: x.lane)
+        list_results = sorted(list_results, key=lambda x: x.heat.pos)
+        return list_results
+
+    @property
+    def results_dict(self):
+        # Return phase results sorted by heat and lane
+        dict_results = {}
+        for inscription in self.inscriptions:
+            if inscription.result:
+                dict_results[inscription.result.result_id] = inscription.result
+        return dict_results
 
     @property
     def official(self):
@@ -86,6 +137,40 @@ class Phase(object):
             categories.append("{}_{} ({})".format(i.category.code, i.category.gender_id, i.action))
         return ', '.join(categories)
 
+    def load_results_from_dbs(self):
+        # remove results for all phase inscriptions
+        for i in self.inscriptions:
+            i.result = None
+    
+        dict_heats = self.heats.dict
+        dict_inscriptions = self.inscriptions.dict
+        # load phase results
+        sql = '''
+select result_id, heat_id, lane, arrival_pos, issue_id,
+issue_split, equated_hundredth, inscription_id
+from results
+where inscription_id in (select inscription_id from inscriptions where phase_id=?)  order by lane; '''
+        values = ((self.phase_id, ), )
+        res = self.config.dbs.exec_sql(sql=sql, values=values)
+        (RESULT_ID, HEAT_ID, LANE, ARRIVAL_POS, 
+        ISSUE_ID, ISSUE_SPLIT, EQUATED_HUNDREDTH, INSCRIPTION_ID
+        ) = range(8)
+        for i in res:
+            inscription = dict_inscriptions[i[INSCRIPTION_ID]]
+            heat = dict_heats[i[HEAT_ID]]
+            result = Result(
+                    inscription=inscription,
+                    result_id=i[RESULT_ID],
+                    heat=heat,
+                    lane=i[LANE],
+                    arrival_pos=i[ARRIVAL_POS],
+                    issue_id=i[ISSUE_ID],
+                    issue_split=i[ISSUE_SPLIT],
+                    equated_hundredth=i[EQUATED_HUNDREDTH],
+                    )
+            inscription.result = result
+
+
     def already_exists(self, event_id, progression):
         exists = False
         for i in self.phases:
@@ -101,17 +186,21 @@ class Phase(object):
         """
         if self.phase_id:
             sql = '''
-update phases set pos=?, event_id=?, pool_lanes=?, progression=?, session_id=? 
+update phases set pos=?, event_id=?, pool_lanes_sort=?, progression=?,
+session_id=?, num_clas_next_phase=?, parent_id=?
 where phase_id=?'''
-            values = ((self.pos, self.event.event_id, self.pool_lanes,
-            self.progression, self.session.session_id, self.phase_id),)
+            values = ((self.pos, self.event.event_id, self.pool_lanes_sort,
+            self.progression, self.session.session_id, self.num_clas_next_phase,
+            self.parent and self.parent.phase_id or 0, self.phase_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
         else:
             sql = '''
-INSERT INTO phases (pos, event_id, pool_lanes, progression, session_id)
-VALUES(?, ?, ?, ?, ?) '''
-            values = ((self.pos, self.event.event_id, self.pool_lanes,
-            self.progression, self.session.session_id),)
+INSERT INTO phases (pos, event_id, pool_lanes_sort, progression, session_id,
+num_clas_next_phase, parent_id)
+VALUES(?, ?, ?, ?, ?, ?, ?) '''
+            values = ((self.pos, self.event.event_id, self.pool_lanes_sort,
+            self.progression, self.session.session_id,
+            self.num_clas_next_phase, self.parent and self.parent.phase_id or 0),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.phase_id = self.config.dbs.last_row_id
 
@@ -135,44 +224,52 @@ VALUES(?, ?, ?, ?, ?) '''
 
     def gen_heats(self):
         '''
-        Xera as series da fase como TIM (forma abreviada de indicar Timed Finals).
+        Xera as series da fase como TIM (TIM=Timed Finals)
         Xera as series
         Xera as liñas de resultados (aquí é onde vai a serie e a pista)
         '''
-        print("Generate sphase eries")
-        
-        # clear previous phase heats
-        self.delete_all_heats()
-        if self.pool_lanes == 5:
-            lanes_sort = (3, 4, 2, 5, 1)
-        if self.pool_lanes == 6:
-            lanes_sort = (3, 4, 2, 5, 1, 6)
-        elif self.pool_lanes == 8:
-            lanes_sort = (4, 5, 3, 6, 2, 7, 1, 8)
-        else:
-            lanes_sort = ()
+        print("Generate phase heats")
+        pool_lanes = self.pool_lanes
+        pool_lanes_count = self.pool_lanes_count
+        # clear previous phase results and heats
+        # Is not necessary when load, clear all
+        # remove phase results_splits, results and heats in dbs
+        sql = '''
+delete from results_splits where result_id in 
+(select result_id from results where inscription_id in 
+(select inscription_id from inscriptions where phase_id=?));'''
+        values = ((self.phase_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+        sql = '''
+delete from results where inscription_id in 
+(select inscription_id from inscriptions where phase_id=?)'''
+        values = ((self.phase_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+        sql = '''
+delete from heats where phase_id=?'''
+        values = ((self.phase_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+
         # heats and results
         # Get inscriptions, sorted by time asc
         sql2 = '''
-select (select person_id from persons p where p.person_id=i.person_id) person_id,
-(select relay_id from relays r where r.relay_id=i.relay_id) relay_id,
-equated_hundredth, inscription_id
-from inscriptions i where event_id={} order by equated_hundredth; '''
-        sql2 = sql2.format(self.event.event_id)
+select equated_hundredth, inscription_id
+from inscriptions i where phase_id={} and rejected=0 and exchanged=0 order by equated_hundredth; '''
+        sql2 = sql2.format(self.phase_id)
         res2 = self.config.dbs.exec_sql(sql=sql2)
         count_inscriptions = len(res2)
         inscriptions = list(res2)
         results = []
         heats = []
         if count_inscriptions:
-            tot_heats, first_heat = divmod(count_inscriptions, self.pool_lanes)
+            tot_heats, first_heat = divmod(count_inscriptions, pool_lanes_count)
             if first_heat != 0:
                 tot_heats += 1
             sql_heat = '''
 insert into heats (phase_id, pos) values(?, ?)'''
             sql_result = '''
-insert into results (heat_id, lane, person_id, relay_id, equated_hundredth, inscription_id)
-values(?, ?, ?, ?, ?,?)'''
+insert into results (heat_id, lane, equated_hundredth, inscription_id)
+values(?, ?, ?, ?)'''
             sql_splits_for_event = '''
 select distance, split_code, official from splits_for_event where 
 event_code=(select event_code from events where event_id=
@@ -185,14 +282,12 @@ values( ?, ?, ?, ?)'''
                 values = ((self.phase_id, heat_pos), )
                 self.config.dbs.exec_sql(sql=sql_heat, values=values)
                 heat_id = self.config.dbs.last_row_id
-                for lane in lanes_sort:
+                for lane in pool_lanes:
                     inscription = inscriptions.pop(0)
-                    PERSON_ID, RELAY_ID, EQUATED_HUNDREDTH, INSCRIPTION_ID = range(4) 
+                    EQUATED_HUNDREDTH, INSCRIPTION_ID = range(2) 
                     values = ((
                         heat_id,
                         lane,
-                        inscription[PERSON_ID] or 0,
-                        inscription[RELAY_ID] or 0,
                         inscription[EQUATED_HUNDREDTH],
                         inscription[INSCRIPTION_ID],
                         ),)
@@ -239,28 +334,28 @@ select event_code from events where event_id =
                         break
                     elif len(inscriptions) == 0:
                         break
-        # self.phases.load_items_from_dbs()
-        self.champ.heats.load_items_from_dbs()
-        print("load heats for this phase")
-        print('Fin')
+        print("load heats and results for this phase")
+        self.heats.load_items_from_dbs()
+        self.load_results_from_dbs()
+        print('End phase gen_heats()')
 
     def init_report(self, file_name):
         file_path = os.path.join(
             self.config.work_folder_path,
             file_name)
         champ = self.phases.champ
-        if champ.chrono_type == 'M':
+        if champ.params['champ_chrono_type'] == 'M':
             chrono_text = _('manual')
         else:
             chrono_text = _('electronic')
         subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
-            champ.venue, champ.pool_length, chrono_text)
+            champ.params['champ_venue'], champ.params['champ_pool_length'], chrono_text)
         d =  ReportBase(
                 app_path_folder=self.config.app_path_folder,
                 app_version=self.config.app_version,
                 file_path=file_path, 
                 orientation='portrait',
-                title=champ.name,
+                title=champ.params['champ_name'],
                 subtitle=subtitle)
         return d
 
@@ -354,29 +449,24 @@ select event_code from events where event_id =
                 alignment='RIGHT')
 
         phase = self
-        phase_title = '{}.- {} ({})'.format(phase.event.pos, phase.event.name, phase.progression)
-        add_phase_title([[phase_title], ])
+        add_phase_title([[phase.long_name], ])
         heats = [heat for heat in self.heats if heat.phase == phase]
         count_heats = len(heats)
-        inscriptions =  phase.event.inscriptions
-        inscriptions.load_items_from_dbs()
+        inscriptions =  phase.inscriptions
         for heat in heats:
             heat_title = _('Heat {} of {}').format(heat.pos, count_heats)
             add_heat_title([[heat_title], ])
-            heat.results.load_items_from_dbs()
+            # heat.results.load_items_from_dbs()
             # FIXME: poñer isto na clase resultados
             # crear unha lista de inscricións con todas as inscricións
             # e poñela en champ
             for result in heat.results:
-                if result.inscription:
-                    time_sart_list = '{} {}{}'.format(
-                        result.inscription.mark_time,
-                        result.inscription.pool_length,
-                        result.inscription.chrono_type)
-                    equated_time = result.equated_time
-                else:
-                    time_sart_list = ''
-                    equated_time = result.equated_time
+                time_start_list = '{} {}{}'.format(
+                    result.inscription.mark_time,
+                    result.inscription.pool_length,
+                    result.inscription.chrono_type)
+                equated_time = result.equated_time
+
 
                 line_result = [[
                         str(result.lane), 
@@ -384,12 +474,12 @@ select event_code from events where event_id =
                         'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
                         'X' not in result.event.code.upper() and result.person.year[2:] or "", 
                         'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
-                        time_sart_list, equated_time],]
+                        time_start_list, equated_time],]
                 add_result(line_result)
                 if result.ind_rel == 'R':
-                    if not result.result_members:
-                        result.result_members.load_items_from_dbs()
-                    members = '; '.join([i.person.full_name for i in result.result_members])
+                    if not result.relay.relay_members:
+                        result.relay.relay_members.load_items_from_dbs()
+                    members = '; '.join([i.person.full_name for i in result.relay.relay_members])
                     print(members)
                     if members:
                         add_relay_members([[members], ])
@@ -409,12 +499,11 @@ select event_code from events where event_id =
             print('{} {}'.format(phase_category.category.name, phase_category.action))
             # get all results for this category
             results = []
-            for heat in self.heats:
-                heat.results.load_items_from_dbs()
-                for result in heat.results:
-                    if phase_category.category in result.categories:
-                        # result.result_splits.load_items_from_dbs()
-                        results.append(result)
+            # phase.inscriptions.load_items_from_dbs()
+            for result in self.results:
+                if phase_category.category in result.categories:
+                    # result.result_splits.load_items_from_dbs()
+                    results.append(result)
             # end get all results for this category
             """
             Unha vez que temos os resultados da categoría:
@@ -553,8 +642,10 @@ select event_code from events where event_id =
 
             elif results and phase_category.action == 'CLAS':  # clasifica para unha seguite phase
                 #TODO: Facer este códito
+                print('pendene de facer')
                 pass
             elif results and phase_category.action == '':  # nin clasifica nin puntua esta categoría da phase
+                print('pendene de facer')
                 pass
             
             if phase_category.results_phase_category:
@@ -735,13 +826,13 @@ select event_code from events where event_id =
                 add_result(line_result)
                 print(line_result)
 
-                if i.ind_rel == 'R' and i.result_members.has_set_members:
+                if i.ind_rel == 'R' and i.relay.relay_members.has_set_members:
                     table_splits = []
                     line_splits = []
                     result_split_pos = 0
                     last_split_hundredth = 0
 
-                    num_members = i.result_members.num_members
+                    num_members = i.relay.relay_members.num_members
                     num_splits = len(i.result_splits)
                     splits_by_member = 0
                     if num_splits % num_members == 0:
@@ -773,7 +864,7 @@ select event_code from events where event_id =
                                 line_splits = []
                                 result_split_pos = 0
 
-                            member = i.result_members[current_member].person
+                            member = i.relay.relay_members[current_member].person
                             member_line = [
                                 member.license, 
                                 member.long_name, 
@@ -796,7 +887,7 @@ select event_code from events where event_id =
                             add_member_with_splits(member_lines=member_lines)
                             table_splits = []
                             result_split_pos = 0
-                            print(i.result_members[current_member].person.name)
+                            print(i.relay.relay_members[current_member].person.name)
                             current_member += 1
 
                     if line_splits and not has_issue:
@@ -1026,11 +1117,11 @@ select event_code from events where event_id =
             last_result_category_pos = result_phase_category.pos
             add_result(line_result)
 
-            if i.ind_rel == 'R' and i.result_members.has_set_members:
+            if i.ind_rel == 'R' and i.relay.relay_members.has_set_members:
                 num_splits = len(i.result_splits)
                 if num_splits == 1:  # Print line members
                     member_lines = []
-                    for i in i.result_members:
+                    for i in i.relay.relay_members:
                         person = i.person
                         member_lines.append((
                             ' ',  # separador
@@ -1046,7 +1137,7 @@ select event_code from events where event_id =
                     result_split_pos = 0
                     last_split_hundredth = 0
 
-                    num_members = i.result_members.num_members
+                    num_members = i.relay.relay_members.num_members
                     splits_by_member = 0
                     if num_splits % num_members == 0:
                         splits_by_member = int(num_splits / num_members)
@@ -1077,7 +1168,7 @@ select event_code from events where event_id =
                                 line_splits = []
                                 result_split_pos = 0
 
-                            member = i.result_members[current_member].person
+                            member = i.relay.relay_members[current_member].person
                             member_line = [
                                 member.license, 
                                 member.full_name, 
@@ -1100,7 +1191,7 @@ select event_code from events where event_id =
                             add_member_with_splits(member_lines=member_lines)
                             table_splits = []
                             result_split_pos = 0
-                            print(i.result_members[current_member].person.name)
+                            print(i.relay.relay_members[current_member].person.name)
                             current_member += 1
 
                     if line_splits and not has_issue:
@@ -1135,6 +1226,7 @@ select event_code from events where event_id =
                 add_result_split(table=table_splits)
 
             position += 1
+        print('fin phase_category_results')
 
 
     def gen_results_pdf(self, d=False):
@@ -1301,7 +1393,7 @@ select event_code from events where event_id =
 #         from specific_classes.report_base import ReportBase
 
 #         champ = self.phases.champ
-#         if champ.chrono_type == 'M':
+#         if champ.params['champ_chrono_type'] == 'M':
 #             chrono_text = _('manual')
 #         else:
 #             chrono_text = _('electronic')
@@ -1312,12 +1404,12 @@ select event_code from events where event_id =
 #             self.config.app_path_folder,
 #             long_name)
 #         subtitle = "{}. Piscina de {} m. Cronometraxe {}.".format(
-#             champ.venue, champ.pool_length, chrono_text)
+#             champ.params['champ_venue'], champ.params['champ_pool_length'], chrono_text)
 #         d =  ReportBase(
 #                 config= self.config,
 #                 file_name = file_name, 
 #                 orientation='portrait',
-#                 title=champ.name,
+#                 title=champ.params['champ_name'],
 #                 subtitle=subtitle)
         
 # #        colspan = 9

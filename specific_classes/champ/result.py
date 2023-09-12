@@ -4,51 +4,49 @@ import bisect
 # from unicodedata import category
 from specific_functions import marks
 from specific_classes.champ.result_splits import ResultSplits
-from specific_classes.champ.result_members import ResultMembers
 
 
 class Result(object):
 
     def __init__(self, **kwargs):
-        self.results = kwargs['results']
-        self.config = self.results.config
+        self.inscription = kwargs['inscription']
+        self.config = self.inscription.config
         self.result_id = int(kwargs['result_id'])
-        # self.heat = kwargs['heat']
+        self.heat = kwargs['heat']
         self.lane = kwargs['lane']
-        self.person = kwargs['person']
-        self.relay = kwargs['relay']
         self.arrival_pos = kwargs['arrival_pos']
         self.issue_id = kwargs['issue_id']
         self.issue_split = kwargs['issue_split']
         self.equated_hundredth = kwargs['equated_hundredth'] # marca de ordenación, predeterminada é a de inscricion 
-        self.inscription = kwargs['inscription']
-        # self.splits = Splits()
         self.result_splits = ResultSplits(result=self)
         self.result_splits.load_items_from_dbs()
-        if self.ind_rel == 'R':
-            self.result_members = ResultMembers(result=self)
-            self.result_members.load_items_from_dbs()
-        else:
-            self.result_members = None
 
     def __lt__(a, b):
         return a.lane < b.lane
 
     @property
     def champ(self):
-        return self.results.champ
-
-    @property
-    def heat(self):
-        return self.results.heat
+        return self.inscription.champ
 
     @property
     def event(self):
-        return self.results.event
+        return self.heat.event
+
+    @property
+    def person(self):
+        return self.inscription.person
+
+    @property
+    def relay(self):
+        return self.inscription.relay
+
+    @property
+    def event(self):
+        return self.inscription.event
 
     @property
     def phase(self):
-        return self.results.phase
+        return self.inscription.phase
 
     @property
     def entity(self):
@@ -68,10 +66,7 @@ class Result(object):
 
     @property
     def ind_rel(self):
-        '''
-        return I: individual, R: relay
-        '''
-        return self.heat.ind_rel
+        return self.heat.phase.event.ind_rel
     
     @property
     def owner(self):
@@ -92,7 +87,7 @@ class Result(object):
         Úsase na exportación dos resultados CSV, colle a primeira que atopa
         """
         category = ''
-        if self.person:
+        if self.ind_rel == 'I':
             person = self.person
             for i in self.heat.phase.phase_categories:
                 category = i.category
@@ -100,7 +95,7 @@ class Result(object):
                 if person.age >= category.from_age and person.age <= category.to_age and person.gender_id == category.gender_id:
                     category = category
                     return category
-        elif self.relay:
+        elif self.ind_rel == 'R':
             category = self.relay.category
             return category
         return category
@@ -108,14 +103,14 @@ class Result(object):
     @property
     def categories(self):
         categories = []
-        if self.person:
+        if self.ind_rel == 'I':
             person = self.person
             for i in self.heat.phase.phase_categories:
                 category = i.category
                 print('{} {} - {}'.format(category.name, category.from_age, category.to_age))
                 if person.age >= category.from_age and person.age <= category.to_age and person.gender_id == category.gender_id:
                     categories.append(category)
-        elif self.relay:
+        elif self.ind_rel == 'R':
             categories.append(self.relay.category)
         return categories
 
@@ -144,7 +139,7 @@ class Result(object):
     def issue_pos(self):
         return self.config.issues.get_pos(self.issue_id)
 
-    def is_inscript(self, person_id):
+    def is_inscript_xa_existe_en_inscrions_pode_borrarse(self, person_id):
         already_inscript = False
         if self.ind_rel == 'I':
             for heat in self.heat.heats:
@@ -170,8 +165,8 @@ class Result(object):
 
     # @property
     # def equated_hundredth(self):
-    #     champ_pool_length = self.champ.pool_length
-    #     champ_chrono_type = self.champ.chrono_type
+    #     champ_pool_length = self.champ.params['champ_pool_length']
+    #     champ_chrono_type = self.champ.params['champ_chrono_type']
 
     #     equated_hundredth = conversion.conv_to_pool_chrono(
     #         mark_hundredth=self.mark_hundredth,
@@ -205,46 +200,44 @@ class Result(object):
     def save(self):
         if self.result_id:  # Edit
             if self.ind_rel == 'I':
-                sql = ('update results set person_id=?, relay_id=0, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
-                values = ((self.person.person_id, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
+                sql = (
+                    'update results set heat_id=?, lane=?, arrival_pos=?, '
+                    'issue_id=?, issue_split=? where result_id=? ')
+                values = ((
+                    self.heat.heat_id, self.lane, self.arrival_pos,
+                    self.issue_id, self.issue_split, self.result_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
             else: 
-                self.relay.save()
-                sql = ('update results set person_id=0, relay_id=?, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
-                values = ((self.relay.relay_id, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
+                sql = ('update results set heat_id=?, lane=?, arrival_pos=?, issue_id=?, issue_split=? where result_id=? ')
+                values = ((self.heat.heat_id, self.lane, self.arrival_pos, self.issue_id, self.issue_split, self.result_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
 
         else:  # Insert
             if self.ind_rel == 'I':
                 sql = '''
-    INSERT INTO results (heat_id, lane, person_id, arrival_pos, issue_id, issue_split)
-    VALUES(?, ?, ?, ?, ?, ?) '''
-                values = ((self.heat.heat_id, self.lane, self.person.person_id,
-                        self.arrival_pos, self.issue_id, self.issue_split),)
+INSERT INTO results (heat_id, lane, arrival_pos, issue_id, issue_split, equated_hundredth, inscription_id)
+VALUES(?, ?, ?, ?, ?, ?, ?) '''
+                values = ((self.heat.heat_id, self.lane,
+                    self.arrival_pos, self.issue_id, self.issue_split,
+                    self.equated_hundredth, self.inscription.inscription_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.result_id = self.config.dbs.last_row_id
             else:
-                self.relay.save()
                 sql = '''
-    INSERT INTO results (heat_id, lane, relay_id, arrival_pos, issue_id, issue_split)
-    VALUES(?, ?, ?, ?, ?, ?) '''
-                values = ((self.heat.heat_id, self.lane, self.relay.relay_id,
-                self.arrival_pos, self.issue_id, self.issue_split),)
+INSERT INTO results (heat_id, lane, arrival_pos, issue_id, issue_split, equated_hundredth, inscription_id)
+VALUES(?, ?, ?, ?, ?, ?, ?) '''
+                values = ((self.heat.heat_id, self.lane,
+                    self.arrival_pos, self.issue_id, self.issue_split,
+                    self.equated_hundredth, self.inscription.inscription_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.result_id = self.config.dbs.last_row_id
             self.result_splits.create_splits()
-            bisect.insort(self.results, self)
-            print(len(self.results))
+            # bisect.insort(self.results, self)
+            # print(len(self.results))
 
 
     def delete(self):
         if self.result_id:
-            if self.ind_rel == 'R':  # borra tamén a remuda
-                if not self.relay.is_in_use:
-                    self.relay.delete()
-            sql =  ("delete from results_members where result_id=?")
-            values = ((self.result_id, ), )
-            self.config.dbs.exec_sql(sql=sql, values=values)
             sql =  ("delete from results_splits where result_id=?")
             values = ((self.result_id, ), )
             self.config.dbs.exec_sql(sql=sql, values=values)
@@ -252,5 +245,5 @@ class Result(object):
             values = ((self.result_id, ), )
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.result_id = 0
-            self.results.remove(self)
-            # del(self)
+            self.inscription.result = None
+            del self

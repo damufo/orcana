@@ -15,6 +15,7 @@ class Interactor(object):
         view.txt_person_full_name.Bind(wx.EVT_KILL_FOCUS, self.on_person_full_name)
         view.txt_person_full_name.Bind(wx.EVT_CHAR, self.on_person_full_name_change)
         view.btn_acept.Bind(wx.EVT_BUTTON, self.on_acept)
+        view.btn_delete.Bind(wx.EVT_BUTTON, self.on_delete)
 
     def on_add_person(self, event):
         self.presenter.add_person()
@@ -24,6 +25,9 @@ class Interactor(object):
 
     def on_acept(self, event):
         self.presenter.acept()
+
+    def on_delete(self, event):
+        self.presenter.delete()
     
     def on_person_full_name(self, event):
         self.presenter.person_full_name()

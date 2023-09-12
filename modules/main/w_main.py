@@ -51,10 +51,10 @@ class Main ( wx.Panel ):
 		self.btn_persons = wx.Button( self, wx.ID_ANY, _(u"&Persons"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.btn_persons, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.btn_relais = wx.Button( self, wx.ID_ANY, _(u"&Relays"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_relais.Hide()
+		self.btn_relays = wx.Button( self, wx.ID_ANY, _(u"&Relays"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_relays.Hide()
 
-		bSizer5.Add( self.btn_relais, 0, wx.ALL|wx.EXPAND, 5 )
+		bSizer5.Add( self.btn_relays, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.btn_inscriptions = wx.Button( self, wx.ID_ANY, _(u"Ins&criptions"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.btn_inscriptions, 0, wx.ALL|wx.EXPAND, 5 )

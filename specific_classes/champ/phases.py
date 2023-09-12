@@ -20,14 +20,23 @@ class Phases(list):
         self.sort_last_field = None
 
     @property
+    def dict(self):
+        dict_phases = {}
+        for i in self:
+            dict_phases[i.phase_id] = i
+        return dict_phases
+
+    @property
     def item_blank(self):
         return Phase(
             phases=self,
             phase_id=0,
             event=None,
-            pool_lanes=0,
+            pool_lanes_sort='',
             progression='',
             session=None,
+            num_clas_next_phase=0,
+            parent=None,
             )
 
     def get_phase(self, phase_id):
@@ -37,6 +46,13 @@ class Phases(list):
                 phase = i
                 break
         return phase
+
+    def set_champ_pool_lanes_sort(self):
+        champ_pool_lanes_sort = self.champ.params['champ_pool_lanes_sort']
+        for i in self:
+            i.pool_lanes_sort = champ_pool_lanes_sort
+            i.save()
+        return
 
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):
@@ -53,26 +69,34 @@ class Phases(list):
         self.pop(idx)  # remove element from list
 
     def load_items_from_dbs(self):
-        del self[:]  # borra os elementos que haxa
+        dict_events = self.champ.events.dict
+        dict_sessions = self.champ.sessions.dict
+        dict_phases = self.champ.phases.dict
+
+        self.clear()  # borra os elementos que haxa
         sql = '''
-select phase_id, pos, event_id, pool_lanes, progression, session_id
+select phase_id, pos, event_id, pool_lanes_sort, progression, session_id, 
+num_clas_next_phase, parent_id
 from phases p 
 order by (select s.xdate || " " ||s.xtime from sessions s where s.session_id=p.session_id), pos; '''
         res = self.config.dbs.exec_sql(sql=sql)
-        (PHASE_ID, POS, EVENT_ID, POOL_LANES, PROGRESSION, SESSION_ID) = range(6)
+        (PHASE_ID, POS, EVENT_ID, POOL_LANES_SORT, PROGRESSION, SESSION_ID,
+        NUM_CLAS_NEXT_PHASE, PARENT_ID) = range(8)
         for i in res:
-            event = self.champ.events.get_event(i[EVENT_ID])
-            session = self.champ.sessions.get_session(i[SESSION_ID])
+            event = dict_events[i[EVENT_ID]]
+            session = dict_sessions[i[SESSION_ID]]
+            phase_parent = i[PARENT_ID] and dict_phases[i[PARENT_ID]] or 0
             phase = Phase(
                     phases=self,
                     phase_id=i[PHASE_ID],
                     pos=i[POS],
                     event=event,
-                    pool_lanes=i[POOL_LANES],
+                    pool_lanes_sort=i[POOL_LANES_SORT],
                     progression=i[PROGRESSION],
                     session=session,
+                    num_clas_next_phase=i[NUM_CLAS_NEXT_PHASE],
+                    parent=phase_parent,
                     )
-            phase.phase_categories.load_items_from_dbs()
             self.append(phase)
 
     @property
@@ -103,7 +127,7 @@ order by (select s.xdate || " " ||s.xtime from sessions s where s.session_id=p.s
             values.append((
                     # i.pos,
                     i.event.long_name,
-                    str(i.pool_lanes),
+                    str(i.pool_lanes_count),
                     i.progression,
                     i.session.date_time,
                     i.categories_text,
@@ -168,3 +192,14 @@ order by (select s.xdate || " " ||s.xtime from sessions s where s.session_id=p.s
         for pos in items:
             i = self[pos]
             i.save()
+
+    def choices(self, add_empty=False):
+        '''
+        return values for wxchoice with ClientData
+        '''
+        values = []
+        if add_empty:
+            values.append(('', 0))
+        for i in self:
+            values.append((i.long_name, i.phase_id))
+        return values

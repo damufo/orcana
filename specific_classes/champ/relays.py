@@ -11,50 +11,15 @@ class Relays(list):
         self.config = self.champ.config
 
     @property
+    def dict(self):
+        dict_relays = {}
+        for i in self:
+            dict_relays[i.relay_id] = i
+        return dict_relays
+
+    @property
     def champ_id(self):
         return self.champ.champ_id
-
-    @property    
-    def item_blank(self):
-        return Relay(
-            relays=self,
-            relay_id=0,
-            gender_id='',
-            category=None,
-            entity=None,
-        )
-
-    def load_items_from_dbs(self):
-        del self[:] #borra os elementos que haxa
-        
-        (RELAY_ID, NAME, GENDER_ID, CATEGORY_ID, ENTITY_ID)  = range(5)
-        sql = '''
-select relay_id, name, gender_id, category_id, entity_id 
-from relays order by entity_id, name '''
-        res = self.config.dbs.exec_sql(sql=sql)
-        for i in res:
-            entity = self.champ.entities.get_entity(entity_id = i[ENTITY_ID])
-            category = self.champ.categories.get_category(category_id = i[CATEGORY_ID])
-            self.append(Relay(
-                    relays=self,
-                    relay_id=i[RELAY_ID],
-                    name=i[NAME],
-                    gender_id=i[GENDER_ID],
-                    category=category,
-                    entity=entity
-                    ))
-
-    def delete_items(self, idxs):
-        for idx in sorted(idxs, reverse=True):
-            self[idx].delete()
-
-    def get_relay(self, relay_id):
-        relay = None
-        for i in self:
-            if i.relay_id == relay_id:
-                relay = i
-                break
-        return relay
 
     @property    
     def item_blank(self):
@@ -68,7 +33,52 @@ from relays order by entity_id, name '''
                 gender_id='',
                 category=None,
                 entity=None,
+                event=None,
                 )
+
+    def load_items_from_dbs(self):
+
+        categories = self.champ.categories.dict
+        entities = self.champ.entities.dict
+        del self[:] #borra os elementos que haxa
+        
+        (RELAY_ID, NAME, GENDER_ID, CATEGORY_ID, ENTITY_ID)  = range(5)
+        sql = '''
+select relay_id, name, gender_id, category_id, entity_id
+from relays r order by entity_id, name; '''
+        res = self.config.dbs.exec_sql(sql=sql)
+        for i in res:
+            entity = entities[i[ENTITY_ID]]
+            category = categories[i[CATEGORY_ID]]
+            self.append(Relay(
+                    relays=self,
+                    relay_id=i[RELAY_ID],
+                    name=i[NAME],
+                    gender_id=i[GENDER_ID],
+                    category=category,
+                    entity=entity,
+                    event=None,
+                    ))
+
+    def clear_without_inscription(self):
+        for i in self:
+            if not i.event:
+                assert "Isto nunca debería pasar"
+                print("Isto nunca debería pasar.")
+                i.delete()
+
+
+    def delete_items(self, idxs):
+        for idx in sorted(idxs, reverse=True):
+            self[idx].delete()
+
+    def get_relay(self, relay_id):
+        relay = None
+        for i in self:
+            if i.relay_id == relay_id:
+                relay = i
+                break
+        return relay
 
     @property
     def list_fields(self):

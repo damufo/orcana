@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -36,15 +36,15 @@ class Inscriptions ( wx.Panel ):
 
 		bSizer73 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, _(u"Event:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, _(u"Phase:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText4.Wrap( -1 )
 
 		bSizer73.Add( self.m_staticText4, 0, wx.ALL, 5 )
 
-		cho_event_idChoices = []
-		self.cho_event_id = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cho_event_idChoices, 0 )
-		self.cho_event_id.SetSelection( 0 )
-		bSizer73.Add( self.cho_event_id, 1, wx.ALL, 5 )
+		cho_phase_idChoices = []
+		self.cho_phase_id = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cho_phase_idChoices, 0 )
+		self.cho_phase_id.SetSelection( 0 )
+		bSizer73.Add( self.cho_phase_id, 1, wx.ALL, 5 )
 
 
 		bSizer7.Add( bSizer73, 0, wx.EXPAND, 5 )
@@ -74,6 +74,9 @@ class Inscriptions ( wx.Panel ):
 		bSizer71.Add( ( 0, 0), 1, 0, 5 )
 
 		bSizer4 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_members = wx.Button( self, wx.ID_ANY, _(u"Mem&bers"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer4.Add( self.btn_members, 0, wx.ALL, 5 )
 
 		self.btn_delete = wx.Button( self, wx.ID_ANY, _(u"D&elete"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer4.Add( self.btn_delete, 1, wx.ALL, 5 )

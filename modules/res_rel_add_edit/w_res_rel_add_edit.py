@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.9.0 Jun 11 2020)
+## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -20,7 +20,7 @@ import wx.xrc
 class ResRelAddEdit ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Result Relay Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 708,419 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Result Relay Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 716,446 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -162,6 +162,12 @@ class ResRelAddEdit ( wx.Dialog ):
 		self.btn_cancel.SetToolTip( _(u"Cancel") )
 
 		bSizer102.Add( self.btn_cancel, 0, wx.ALL, 5 )
+
+		self.btn_delete = wx.Button( self.panel, wx.ID_ANY, _(u"Delete"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_delete.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
+		self.btn_delete.SetBackgroundColour( wx.Colour( 252, 0, 0 ) )
+
+		bSizer102.Add( self.btn_delete, 0, wx.ALL, 5 )
 
 
 		bSizer102.Add( ( 0, 0), 1, wx.EXPAND, 5 )

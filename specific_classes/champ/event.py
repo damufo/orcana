@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*- 
 
-from specific_classes.champ.event_inscriptions_ind import EventInscriptionsInd
-from specific_classes.champ.event_inscriptions_rel import EventInscriptionsRel
-from specific_classes.champ.event_categories import EventCategories
-
 
 class Event(object):
 
@@ -15,11 +11,6 @@ class Event(object):
         self.gender_id = kwargs['gender_id']
         self.name = kwargs['name']
         self.insc_max = int(kwargs['insc_max'])
-        if self.ind_rel == 'I':
-            self.inscriptions = EventInscriptionsInd(event=self)
-        elif self.ind_rel == 'R':
-            self.inscriptions = EventInscriptionsRel(event=self)
-        self.event_categories = EventCategories(event=self)
 
     @property
     def pos(self):
@@ -64,12 +55,22 @@ class Event(object):
 
     @property
     def num_splits(self):
+        # return integer count splits
         distance = self.distance
         num_members = self.num_members
         distance_total = distance * num_members
         splits = distance_total / 50
         if splits < 1:
             splits = 1
+        return splits
+
+    @property
+    def splits(self):
+        # default_event_splits
+        sql = '''
+select distance, split_code, official from splits_for_event where 
+event_code=? order by distance; '''
+        splits = self.config.dbs.exec_sql(sql=sql, values=((self.code, ), ))
         return splits
 
     @property
@@ -149,10 +150,6 @@ VALUES(?, ?, ?, ?, ?, ?) '''
             self.event_id = self.config.dbs.last_row_id
 
     def delete(self):
-
-        # Estas event_categoríes veñen do xesde, non hai acceso desde orcana
-        self.event_categories.delete_all_items()
-
         sql = ''' delete from events where event_id={}'''
         sql = sql.format(self.event_id)
         self.config.dbs.exec_sql(sql=sql)

@@ -10,6 +10,13 @@ class Sessions(list):
         self.champ = champ
         self.config = self.champ.config
 
+    @property
+    def dict(self):
+        dict_sessions = {}
+        for i in self:
+            dict_sessions[i.session_id] = i
+        return dict_sessions
+
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):
             self.delete_item(idx)

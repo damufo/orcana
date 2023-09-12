@@ -2,22 +2,29 @@
 
 
 import os
+
 from operator import attrgetter
-# from specific_classes.report_base import ReportBase
-#from specific_classes.conversions import Conversions
-# from specific_classes.champ.phases import Phases
 from specific_classes.champ.heat import Heat
-# from specific_functions import times
-# from specific_functions import files
 
 
 class Heats(list):
 
-    def __init__(self, champ):
-        self.champ = champ
-        self.config = champ.config
+    def __init__(self, phase):
+        self.phase = phase
+        self.config = phase.config
         self.sort_reverse = False
         self.sort_last_field = None
+
+    @property
+    def champ(self):
+        return self.phase.champ
+
+    @property
+    def dict(self):
+        dict_heats = {}
+        for i in self:
+            dict_heats[i.heat_id] = i
+        return dict_heats
 
     def get_heat(self, heat_id):
         heat = None
@@ -47,10 +54,6 @@ class Heats(list):
             start_time='',
             )
 
-    @property
-    def champs(self):
-        return self.champ.champs
-
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):
             self.delete_item(idx)
@@ -62,25 +65,18 @@ class Heats(list):
     def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
         sql = '''
-select heat_id, phase_id, pos, official, start_time
-from heats u 
-order by 
-    (select xdate || " " || xtime from sessions where session_id=(
-            select session_id from phases p where p.phase_id=phase_id)),
-    (select pos from phases p where p.phase_id=phase_id),
-    (select pos from events e where e.event_id=(
-            select p.event_id from phases p where p.phase_id=u.phase_id)),
-     pos '''
-        res = self.config.dbs.exec_sql(sql=sql)
-        (HEAT_ID, PHASE_ID, POS, OFFICIAL, START_TIME) = range(5)
+select heat_id, pos, official, start_time 
+from heats where phase_id=? order by pos '''
+        values = ((self.phase.phase_id, ), )
+        res = self.config.dbs.exec_sql(sql=sql, values=values)
+        (HEAT_ID, POS, OFFICIAL, START_TIME) = range(4)
         # for i in self.champ.phases:
         #     i.heats = []
         for i in res:
-            phase = self.champ.phases.get_phase(i[PHASE_ID])
             heat = Heat(
                     heats=self,
                     heat_id=i[HEAT_ID],
-                    phase=phase,
+                    phase=self.phase,
                     pos=i[POS],
                     official=i[OFFICIAL],
                     start_time=i[START_TIME],

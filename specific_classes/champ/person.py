@@ -69,7 +69,7 @@ class Person(object):
     def age(self):
         age = dates.get_age_for_date(
             birth_date=self.birth_date,
-            date_age_calculation=self.champ.date_age_calculation)
+            date_age_calculation=self.champ.params['champ_date_age_calculation'])
         return age
 
     @property
@@ -83,24 +83,15 @@ class Person(object):
         return count_inscriptions
 
     @property
-    def count_results__cambiado_polo_de_abaixo(self):
-        # esta función é moi lenta, é moit máis rápido facer a consulta na bd
-        # ver propiedade de abaixo
-        # Seguramente se poida melloar, facend unha única procura onde se vai contando o de todos e logo só sería cargar.
-        count_results = 0
-        for i in self.champ.results:
-            if i.ind_rel == 'I':
-                if i.person.person_id == self.person_id:
-                    count_results += 1
-        return count_results
-    @property
-
     def count_results(self):
         # é moito máis rápido consultar a base de datos que percorrer os
         # resultados na  procura da participación
         # seguramente se poida mellorar cando se busca por resultados
         count_results = 0
-        sql = '''select count(person_id) from results where person_id=? '''
+        sql = '''
+select count(*) from results r
+where inscription_id in 
+    (select i.inscription_id from inscriptions i where r.inscription_id=i.inscription_id and person_id=?); '''
         values = ((self.person_id, ), )
         res = self.config.dbs.exec_sql(sql=sql, values=values)
         if res:
@@ -114,7 +105,7 @@ class Person(object):
     @property
     def name_normalized(self):
         return utils.normalize(self.name)
-        
+
     @property
     def already_exists(self):
         exists = False
@@ -126,6 +117,33 @@ class Person(object):
                     exists = True
                     break
         return exists
+
+    @property
+    def inscriptions(self):
+        inscriptions = []
+        for phase in self.champ.phases:
+            for inscription in phase.inscriptions:
+                if inscription.person:
+                    if inscription.person.person_id == self.person_id:
+                        inscriptions.append(inscription)
+        return inscriptions
+
+    @property
+    def results_de_momento_non_se_usa_pode_borrarse(self):
+        results = []
+        for phase in phases:
+            for inscription in phase.inscriptions:
+                if inscription.result:
+                    results.append(inscription.result)
+
+    def get_phase_insc(self, phase_id):
+        # check if person or relay has another inscription
+        inscription = None
+        for i in self.inscriptions:
+            if i.phase.phase_id == phase_id:
+                inscription = i
+                break
+        return inscription
 
     def _get_entity_id(self):
         value = None
@@ -266,9 +284,7 @@ union select person_id from results_members where person_id=?; '''
     def is_in_use_rel(self):
         # check if in result relay members
         uses = 0
-        sql = '''
-select person_id from inscriptions_members where person_id=? union 
-select person_id from results_members where person_id=?; '''
+        sql = '''select person_id from relay_members where person_id=?; '''
         res = self.config.dbs.exec_sql(sql=sql, values=((self.person_id, self.person_id), ))
         if res:
             uses = len(res)

@@ -17,6 +17,10 @@ class ResultsPhaseCategory(list):
     def champ(self):
         return self.phase_category.champ
 
+    @property
+    def phase(self):
+        return self.phase_category.phase
+
     # @property
     # def event(self):
     #     return self.result.event
@@ -55,7 +59,7 @@ delete from results_phases_categories where phase_category_id={}'''
 
     def load_items_from_dbs(self):
         print("pendente")
-
+        phase_results_dict = self.phase.results_dict
         del self[:]  # borra os elementos que haxa
         sql = '''
 select result_phase_category_id, result_id, pos, points, clas
@@ -66,7 +70,7 @@ where phase_category_id=? '''
         (RESULT_PHASE_CATEGORY_ID, RESULT_ID, POS, POINTS, CLAS
         ) = range(5)
         for i in res:
-            result = self.champ.heats.get_result(i[RESULT_ID])
+            result = phase_results_dict[i[RESULT_ID]]
             self.append(ResultPhaseCategory(
                     results_phase_category=self,
                     result_phase_category_id=i[RESULT_PHASE_CATEGORY_ID],

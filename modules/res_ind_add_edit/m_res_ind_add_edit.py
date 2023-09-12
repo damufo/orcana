@@ -3,7 +3,12 @@
 
 class Model(object):
 
-    def __init__(self, result):
+    def __init__(self, heat, lane, result):
+        self.heat = heat
+        self.lane = lane
         self.result = result
-        self.person = None
+        if result and result.person:
+            self.person = result.person
+        else:
+            self.person = None
         self.person_full_name_change = False

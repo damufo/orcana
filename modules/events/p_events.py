@@ -38,22 +38,6 @@ class Presenter(object):
         self.view.close()
         self.parent.load_me()
 
-    def event_categories(self):
-        print("set categories")
-        idxs = self.view.lsc_plus.get_sel_pos_items()
-        if len(idxs) < 1:
-            self.view.msg.warning(message=_("No item selected."))
-        elif len(idxs) > 1:
-            self.view.msg.warning(message=_("Only one item can be selected."))
-        else:
-            idx = idxs[0]
-            event = self.model.events[idx]
-
-            event_categories = event.event_categories
-            from modules.event_categories import p_event_categories
-            p_event_categories.create(parent=self, event_categories=event_categories)
-            self.view.lsc_plus.update_item(idx)
-
     def move_down(self):
         idxs = self.view.lsc_plus.get_sel_pos_items()
         if len(idxs) < 1:

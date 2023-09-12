@@ -25,13 +25,13 @@ from .v_fiarna import View
 from .i_fiarna import Interactor
 
 
-def create(parent, config):
+def create(parent, champ):
     '''
     parent is a presenter
     '''
     return Presenter(
             parent=parent,
-            model=Model(config=config),
+            model=Model(champ=champ),
             view=View(parent.view),
             interactor=Interactor())
 

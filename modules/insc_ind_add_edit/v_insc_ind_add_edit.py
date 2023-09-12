@@ -45,6 +45,10 @@ class View(InscIndAddEdit):
                                 default=inscription.pool_length)
         self.txt_date_plus.SetValue(inscription.date)
         self.txt_venue.SetValue(inscription.venue)
+        self.chb_rejected.SetValue(inscription.rejected)
+        self.chb_exchanged.SetValue(inscription.exchanged)
+        self.chb_score.SetValue(inscription.score)
+        self.chb_clasificate.SetValue(inscription.clasificate)
         self.txt_person_full_name.SetFocus()
 
     def get_values(self):
@@ -54,6 +58,10 @@ class View(InscIndAddEdit):
         values['chrono_type'] = self.view_plus.cho_get(self.cho_chrono_type)
         values['date'] = self.txt_date_plus.GetValue()
         values['venue'] = self.txt_venue.GetValue().strip().upper()
+        values['rejected'] = self.chb_rejected.GetValue()
+        values['exchanged'] = self.chb_exchanged.GetValue()
+        values['score'] = self.chb_score.GetValue()
+        values['clasificate'] = self.chb_clasificate.GetValue()
         return values
 
     def set_person_values(self, person):

@@ -22,5 +22,5 @@ from specific_classes.fiarna.referee_tokens import RefereeTokens
 
 class Model(object):
 
-    def __init__(self, config):
-        self.referee_tokens = RefereeTokens(config=config)
+    def __init__(self, champ):
+        self.referee_tokens = RefereeTokens(champ=champ)

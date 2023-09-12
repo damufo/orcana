@@ -33,10 +33,10 @@ class View(Inscriptions):
         #     )
         # self.parent.view_plus.set_button_image(button_image)
 
-    def set_events(self, events):
-        self.view_plus.cho_load(choice=self.cho_event_id,
-                                values=events.choices(add_empty=False),
-                                default=events[0].event_id)
+    def set_phases(self, phases):
+        self.view_plus.cho_load(choice=self.cho_phase_id,
+                                values=phases.choices(add_empty=False),
+                                default=phases[0].phase_id)
 
     def set_ind(self):
         # self.lsc_ind_inscriptions.Show()
@@ -50,9 +50,9 @@ class View(Inscriptions):
         self.lsc.SetName('rel_inscriptions')
         # self.Layout()
 
-    def get_event_id(self):
-        event_id = self.view_plus.cho_get(self.cho_event_id)
-        return event_id
+    def get_phase_id(self):
+        phase_id = self.view_plus.cho_get(self.cho_phase_id)
+        return phase_id
 
     def close(self):
         # self.lsc_ind_inscriptions_plus.save_custom_column_width()

@@ -14,6 +14,13 @@ class Persons(list):
         self.sort_last_field = None
 
     @property
+    def dict(self):
+        dict_persons = {}
+        for i in self:
+            dict_persons[i.person_id] = i
+        return dict_persons
+
+    @property
     def champ_id(self):
         return self.champ.champ_id
 
@@ -183,7 +190,7 @@ from persons order by surname, name '''
             'entity.entity_code',
             'entity.short_name',
             'license',
-            'count_inscriptions'
+            'count_inscriptions',
             'count_results'
             )
         order_cols = range(8)

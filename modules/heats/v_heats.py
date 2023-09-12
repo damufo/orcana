@@ -45,14 +45,15 @@ class View(Heats):
 
     def load_heat_grid(self, heat):
         self.heat = heat
-        if heat.ind_rel == 'I':
+        ind_rel = heat.ind_rel
+        if ind_rel == 'I':
             print('Individual heat')
             num_col_fixe = self.cols["ind_num_col_fixe"]
             col_arrival_mark = self.cols["ind_col_arrival_mark"]
             col_arrival_pos = self.cols["ind_col_arrival_pos"]
             col_issue_id = self.cols["ind_col_issue_id"]
             col_issue_split = self.cols["ind_col_issue_split"]
-        elif heat.ind_rel == 'R':
+        elif ind_rel == 'R':
             print('Relay heat')
             num_col_fixe = self.cols["rel_num_col_fixe"]
             col_members = self.cols["rel_col_members"]
@@ -71,14 +72,23 @@ class View(Heats):
         self.grd_results.DisableDragRowSize()  # prevent row resize in height
 
         results = heat.results
+        # if not len(results):
+        #     self.grd_results.Hide()
+        #     self.msg.warning(_("No exists results in this heat."))
+            
+        # else:
+        self.grd_results.Show()
         total_lanes = self.grd_results.GetNumberRows()
-        pool_lanes = heat.phase.pool_lanes
-        if total_lanes > pool_lanes:
-            self.grd_results.DeleteRows(0, total_lanes - pool_lanes)
-        elif total_lanes < pool_lanes:
-            self.grd_results.InsertRows(0, pool_lanes - total_lanes)
+        pool_lanes_count = heat.phase.pool_lanes_count
+        if total_lanes > pool_lanes_count:
+            self.grd_results.DeleteRows(0, total_lanes - pool_lanes_count)
+        elif total_lanes < pool_lanes_count:
+            self.grd_results.InsertRows(0, pool_lanes_count - total_lanes)
         # header splits
-        count_splits = len(results[0].result_splits)
+        
+        # count_splits = len(results[0].result_splits)
+        event_splits = heat.event.splits
+        count_splits = len(event_splits)
 
         current_cols = self.grd_results.GetNumberCols()
         required_cols = num_col_fixe + count_splits
@@ -87,12 +97,13 @@ class View(Heats):
             self.grd_results.DeleteCols(num_col_fixe -1, current_cols - required_cols)
         elif current_cols < required_cols:
             self.grd_results.InsertCols(current_cols - 1, required_cols - current_cols)
-        for i, split in enumerate(results[0].result_splits):
+        (DISTANCE, SPLIT_CODE, OFFICIAL) = range(3)
+        for i, event_split in enumerate(event_splits):
             col = num_col_fixe + i
-            self.grd_results.SetColLabelValue(col, str(split.distance))
+            self.grd_results.SetColLabelValue(col, str(event_split[DISTANCE]))
             self.grd_results.SetColSize(col, 100)
         self.grd_results.ClearGrid()
-        if pool_lanes != 10:
+        if pool_lanes_count != 10:
             pool_lane_adjust = 1
         else:
             pool_lane_adjust = 0
@@ -103,7 +114,7 @@ class View(Heats):
         self.grd_results.SetColSize(1, 200)
         self.grd_results.SetColLabelValue(2, _('Category'))
         self.grd_results.SetColSize(2, 100)
-        if heat.ind_rel == 'R':
+        if ind_rel == 'R':
             self.grd_results.SetColLabelValue(col_members, _('Members'))
             self.grd_results.SetColSize(col_members, 100)
         self.grd_results.SetColLabelValue(col_arrival_mark, _('Mark'))
@@ -117,20 +128,20 @@ class View(Heats):
         results_dict = {}
         for i in results:
             results_dict[i.lane] = i
-        for lane in range(0, pool_lanes):
+        for lane in range(0, pool_lanes_count):
             lane_adjusted = (lane + pool_lane_adjust)
             if lane_adjusted in results_dict:
                 result = results_dict[lane_adjusted]
                 choices_list = heat.config.issues.choices()
                 choice_editor = wx.grid.GridCellChoiceEditor(choices_list, allowOthers=False) 
                 self.grd_results.SetCellEditor(lane, col_issue_id, choice_editor)
-                if result.person:
+                if ind_rel == 'I':
                     self.grd_results.SetCellValue(lane, 0, result.person.full_name)
                     self.grd_results.SetCellValue(lane, 1, str(result.person.entity.short_name))
-                elif result.relay:
+                elif ind_rel == 'R':
                     self.grd_results.SetCellValue(lane, 0, result.relay.name)
                     self.grd_results.SetCellValue(lane, 1, str(result.relay.entity.short_name))
-                    if result.result_members.has_set_members:
+                    if result.relay.has_set_members:
                         has_set_members = '√'
                     else:
                         has_set_members = ''
@@ -155,7 +166,7 @@ class View(Heats):
                 self.grd_results.SetReadOnly(lane, 0)  # Name
                 self.grd_results.SetReadOnly(lane, 1)  # Entity
                 self.grd_results.SetReadOnly(lane, 2)  # Category code
-                if heat.ind_rel == 'R':
+                if ind_rel == 'R':
                     self.grd_results.SetReadOnly(lane, col_members)  # members
                 self.grd_results.SetReadOnly(lane, col_arrival_pos, False)
                 self.grd_results.SetReadOnly(lane, col_arrival_mark, False)
@@ -173,7 +184,7 @@ class View(Heats):
                 for i in range(self.grd_results.GetNumberCols()):
                     self.grd_results.SetReadOnly(lane, i, True)
         self.load_arrival_order(results=results)
-        if self.chb_go_to_first.GetValue():
+        if results and self.chb_go_to_first.GetValue():
             row = self.grd_results.GetGridCursorRow()
             col = self.grd_results.GetGridCursorCol()
             if col != col_arrival_mark:
@@ -183,7 +194,7 @@ class View(Heats):
         # ALIÑADO PERSONALIZADO PARA COLUMNA
         # ADAPTA O ALIÑAMENTO INDIVIDUAL/REMUDA
         bg = self.grd_results.GetLabelBackgroundColour()
-        col_render = CustomColLabelRenderer(color=bg, ind_rel=heat.ind_rel)
+        col_render = CustomColLabelRenderer(color=bg, ind_rel=ind_rel)
         self.grd_results.SetDefaultColLabelRenderer(col_render)
 
     def update_result_lane(self, row, result):
@@ -197,14 +208,15 @@ class View(Heats):
                 self.grd_results.SetReadOnly(row, col, True)
         else:
             heat = result.heat
-            if heat.ind_rel == 'I':
+            ind_rel = heat.ind_rel
+            if ind_rel == 'I':
                 print('Individual heat')
                 num_col_fixe = self.cols["ind_num_col_fixe"]
                 col_arrival_mark = self.cols["ind_col_arrival_mark"]
                 col_arrival_pos = self.cols["ind_col_arrival_pos"]
                 col_issue_id = self.cols["ind_col_issue_id"]
                 col_issue_split = self.cols["ind_col_issue_split"]
-            elif heat.ind_rel == 'R':
+            elif ind_rel == 'R':
                 print('Relay heat')
                 num_col_fixe = self.cols["rel_num_col_fixe"]
                 col_members = self.cols["rel_col_members"]
@@ -219,13 +231,13 @@ class View(Heats):
             choices_list = heat.config.issues.choices()
             choice_editor = wx.grid.GridCellChoiceEditor(choices_list, allowOthers=False) 
             self.grd_results.SetCellEditor(row, col_issue_id, choice_editor)
-            if result.person:
+            if ind_rel == 'I':
                 self.grd_results.SetCellValue(row, 0, result.person.full_name)
                 self.grd_results.SetCellValue(row, 1, str(result.person.entity.short_name))
-            elif result.relay:
+            elif ind_rel == 'R':
                 self.grd_results.SetCellValue(row, 0, result.relay.name)
                 self.grd_results.SetCellValue(row, 1, str(result.relay.entity.short_name))
-                if result.result_members.has_set_members:
+                if result.relay.relay_members.has_set_members:
                     has_set_members = '√'
                 else:
                     has_set_members = ''
@@ -271,16 +283,19 @@ class View(Heats):
                 arrival_order += ' {}'.format(i.lane)
         self.lbl_arrival_order.SetLabel(arrival_order)
 
-    def update_arrival_pos(self, results):
-        heat = results.heat
-        if heat.ind_rel == 'I':
+    def update_arrival_pos(self, heat):
+        results = heat.results
+        
+        ind_rel = heat.ind_rel
+
+        if ind_rel == 'I':
             print('Individual heat')
             num_col_fixe = self.cols["ind_num_col_fixe"]
             col_arrival_mark = self.cols["ind_col_arrival_mark"]
             col_arrival_pos = self.cols["ind_col_arrival_pos"]
             col_issue_id = self.cols["ind_col_issue_id"]
             col_issue_split = self.cols["ind_col_issue_split"]
-        elif heat.ind_rel == 'R':
+        elif ind_rel == 'R':
             print('Relay heat')
             num_col_fixe = self.cols["rel_num_col_fixe"]
             col_members = self.cols["rel_col_members"]
