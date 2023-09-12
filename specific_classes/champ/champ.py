@@ -103,7 +103,7 @@ class Champ(object):
         self.config.dbs.connect(dbs_path=dbs_path)
         # Comproba que sexa unha base de datos correcta
         if self.config.dbs.connection:
-            # try:
+            try:
                 self.params = Params(champ=self)
                 self.params.load_items_from_dbs()
                 self.entities = Entities(champ=self)
@@ -131,9 +131,9 @@ class Champ(object):
 
                 self.config.prefs['last_path_dbs'] = str(dbs_path)
                 self.has_champ = True
-            # except:  # Algo fallou durante a carga
-            #     self.config.prefs['last_path_dbs'] = ""
-            #     self.clear_champ
+            except:  # Algo fallou durante a carga
+                self.config.prefs['last_path_dbs'] = ""
+                self.clear_champ
         else:  # Non foi quen de conectar
             self.clear_champ
             print("Isto non debería pasar nunca. Erro:1134987239847105")
