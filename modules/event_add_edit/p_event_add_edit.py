@@ -45,7 +45,8 @@ class Presenter(object):
             event.code = values['code']
             event.gender_id = values['gender_id']
             event.name = values['name']
-            event.events.append(event)
+            if not event in event.events:
+                event.events.append(event)
             event.save()
             self.view.view_plus.stop()
 
