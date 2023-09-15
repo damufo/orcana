@@ -61,6 +61,8 @@ class Presenter(object):
             category.to_age = values['to_age']
             category.punctuation = punctuation
             category.show_report = values['show_report']
+            if not category in category.categories:
+                category.categories.append(category)
             category.save()
             self.view.view_plus.stop()
 
