@@ -163,31 +163,11 @@ class Properties ( wx.Panel ):
 
 		bSizer12.Add( self.btn_fiarna, 1, wx.ALL, 5 )
 
+		self.btn_punctuations = wx.Button( self, wx.ID_ANY, _(u"P&unctuations"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer12.Add( self.btn_punctuations, 1, wx.ALL, 5 )
+
 
 		bSizer8.Add( bSizer12, 0, wx.EXPAND, 5 )
-
-		bSizer103 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.btn_report_inscriptions = wx.Button( self, wx.ID_ANY, _(u"Report ins&criptions"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_report_inscriptions.SetToolTip( _(u"Report inscriptions") )
-
-		bSizer103.Add( self.btn_report_inscriptions, 1, wx.ALL, 5 )
-
-		bSizer14 = wx.BoxSizer( wx.HORIZONTAL )
-
-		self.btn_report_heats_pdf = wx.Button( self, wx.ID_ANY, _(u"Report heats &PDF"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_report_heats_pdf.SetToolTip( _(u"Generate PDF report heats") )
-
-		bSizer14.Add( self.btn_report_heats_pdf, 1, wx.ALL, 5 )
-
-		self.btn_report_heats_html = wx.Button( self, wx.ID_ANY, _(u"Report heats &HTML"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer14.Add( self.btn_report_heats_html, 1, wx.ALL, 5 )
-
-
-		bSizer103.Add( bSizer14, 1, wx.EXPAND, 5 )
-
-
-		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )
 
 		bSizer1031 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -196,21 +176,34 @@ class Properties ( wx.Panel ):
 
 		bSizer1031.Add( self.btn_web_forms_files, 1, wx.ALL, 5 )
 
-		bSizer141 = wx.BoxSizer( wx.HORIZONTAL )
-
 		self.btn_classifications = wx.Button( self, wx.ID_ANY, _(u"Cla&ssifications"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_classifications.SetToolTip( _(u"Generate PDF report heats") )
 
-		bSizer141.Add( self.btn_classifications, 1, wx.ALL, 5 )
+		bSizer1031.Add( self.btn_classifications, 1, wx.ALL, 5 )
 
 		self.btn_sessions = wx.Button( self, wx.ID_ANY, _(u"S&essions"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer141.Add( self.btn_sessions, 1, wx.ALL, 5 )
-
-
-		bSizer1031.Add( bSizer141, 1, wx.EXPAND, 5 )
+		bSizer1031.Add( self.btn_sessions, 1, wx.ALL, 5 )
 
 
 		bSizer8.Add( bSizer1031, 0, wx.EXPAND, 5 )
+
+		bSizer103 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.btn_report_inscriptions = wx.Button( self, wx.ID_ANY, _(u"Report ins&criptions"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_inscriptions.SetToolTip( _(u"Report inscriptions") )
+
+		bSizer103.Add( self.btn_report_inscriptions, 1, wx.ALL, 5 )
+
+		self.btn_report_heats_pdf = wx.Button( self, wx.ID_ANY, _(u"Report heats &PDF"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_heats_pdf.SetToolTip( _(u"Generate PDF report heats") )
+
+		bSizer103.Add( self.btn_report_heats_pdf, 1, wx.ALL, 5 )
+
+		self.btn_report_heats_html = wx.Button( self, wx.ID_ANY, _(u"Report heats &HTML"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer103.Add( self.btn_report_heats_html, 1, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )
 
 		self.m_staticline2 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		bSizer8.Add( self.m_staticline2, 0, wx.ALL|wx.EXPAND, 5 )
