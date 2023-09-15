@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import gettext
-# _ = gettext.gettext
+import gettext
+_ = gettext.gettext
 
 ###########################################################################
 ## Class InscRelAddEdit
@@ -230,13 +230,13 @@ class InscRelAddEdit ( wx.Dialog ):
 
 		bSizer1011113 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText311113 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Clasificate:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText311113 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Classify:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText311113.Wrap( -1 )
 
 		bSizer1011113.Add( self.m_staticText311113, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.chb_clasificate = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer1011113.Add( self.chb_clasificate, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		self.chb_classify = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer1011113.Add( self.chb_classify, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
 		bSizer8.Add( bSizer1011113, 0, wx.EXPAND, 5 )

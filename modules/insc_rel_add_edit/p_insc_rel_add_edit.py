@@ -84,7 +84,7 @@ class Presenter(object):
                 inscription.rejected = values['rejected']
                 inscription.exchanged = values['exchanged']
                 inscription.score = values['score']
-                inscription.clasificate = values['clasificate']
+                inscription.classify = values['classify']
                 inscription.save()
                 self.view.view_plus.stop()
 

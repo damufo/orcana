@@ -48,8 +48,9 @@ class View(InscIndAddEdit):
         self.chb_rejected.SetValue(inscription.rejected)
         self.chb_exchanged.SetValue(inscription.exchanged)
         self.chb_score.SetValue(inscription.score)
-        self.chb_clasificate.SetValue(inscription.clasificate)
+        self.chb_classify.SetValue(inscription.classify)
         self.txt_person_full_name.SetFocus()
+        self.set_classify()
 
     def get_values(self):
         values = {}
@@ -61,7 +62,7 @@ class View(InscIndAddEdit):
         values['rejected'] = self.chb_rejected.GetValue()
         values['exchanged'] = self.chb_exchanged.GetValue()
         values['score'] = self.chb_score.GetValue()
-        values['clasificate'] = self.chb_clasificate.GetValue()
+        values['classify'] = self.chb_classify.GetValue()
         return values
 
     def set_person_values(self, person):
@@ -75,3 +76,10 @@ class View(InscIndAddEdit):
             self.lbl_license.SetLabel("")
             self.lbl_entity_code.SetLabel("")
             self.lbl_entity_short_name.SetLabel("")
+
+    def set_classify(self):
+        if self.chb_classify.GetValue():
+            self.chb_score.Enable(True)
+        else:
+            self.chb_score.SetValue(0)
+            self.chb_score.Enable(False)

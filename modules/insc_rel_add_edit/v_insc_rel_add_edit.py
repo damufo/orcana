@@ -56,8 +56,9 @@ class View(InscRelAddEdit):
         self.chb_rejected.SetValue(inscription.rejected)
         self.chb_exchanged.SetValue(inscription.exchanged)
         self.chb_score.SetValue(inscription.score)
-        self.chb_clasificate.SetValue(inscription.clasificate)
+        self.chb_classify.SetValue(inscription.classify)
         self.txt_entity_name.SetFocus()
+        self.set_classify()
 
     def get_values(self):
         values = {}
@@ -71,7 +72,7 @@ class View(InscRelAddEdit):
         values['rejected'] = self.chb_rejected.GetValue()
         values['exchanged'] = self.chb_exchanged.GetValue()
         values['score'] = self.chb_score.GetValue()
-        values['clasificate'] = self.chb_clasificate.GetValue()
+        values['classify'] = self.chb_classify.GetValue()
         return values
 
     def set_entity_values(self, entity):
@@ -81,3 +82,10 @@ class View(InscRelAddEdit):
         else:
             self.txt_entity_name.SetValue('')
             self.lbl_entity_code.SetLabel('')
+
+    def set_classify(self):
+        if self.chb_classify.GetValue():
+            self.chb_score.Enable(True)
+        else:
+            self.chb_score.SetValue(0)
+            self.chb_score.Enable(False)

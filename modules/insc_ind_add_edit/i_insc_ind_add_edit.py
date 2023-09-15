@@ -15,6 +15,7 @@ class Interactor(object):
         view.txt_person_full_name.Bind(wx.EVT_KILL_FOCUS, self.on_person_full_name)
         view.txt_person_full_name.Bind(wx.EVT_CHAR, self.on_person_full_name_change)
         view.btn_acept.Bind(wx.EVT_BUTTON, self.on_acept)
+        view.chb_classify.Bind(wx.EVT_CHECKBOX, self.on_classify)
 
     def on_cancel(self, event):
         self.presenter.cancel()
@@ -27,6 +28,9 @@ class Interactor(object):
     
     def on_person_full_name(self, event):
         self.presenter.person_full_name()
+
+    def on_classify(self, event):
+        self.view.set_classify()
 
     def on_person_full_name_change(self, event):
         skip_keys = (wx.WXK_TAB, wx.WXK_SHIFT, wx.WXK_RETURN)

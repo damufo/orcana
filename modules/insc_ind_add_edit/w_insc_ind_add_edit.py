@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import gettext
-# _ = gettext.gettext
+import gettext
+_ = gettext.gettext
 
 ###########################################################################
 ## Class InscIndAddEdit
@@ -168,18 +168,18 @@ class InscIndAddEdit ( wx.Dialog ):
 
 		bSizer8.Add( bSizer101, 0, wx.EXPAND, 5 )
 
-		bSizer10111 = wx.BoxSizer( wx.HORIZONTAL )
+		bSizer1012 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText3111 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Venue:"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText3111.Wrap( -1 )
+		self.m_staticText312 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Venue:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText312.Wrap( -1 )
 
-		bSizer10111.Add( self.m_staticText3111, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		bSizer1012.Add( self.m_staticText312, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.txt_venue = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer10111.Add( self.txt_venue, 2, wx.ALL, 5 )
+		bSizer1012.Add( self.txt_venue, 2, wx.ALL, 5 )
 
 
-		bSizer8.Add( bSizer10111, 0, wx.EXPAND, 5 )
+		bSizer8.Add( bSizer1012, 1, wx.EXPAND, 5 )
 
 		bSizer101111 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -192,7 +192,7 @@ class InscIndAddEdit ( wx.Dialog ):
 		bSizer101111.Add( self.chb_rejected, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		bSizer8.Add( bSizer101111, 1, wx.EXPAND, 5 )
+		bSizer8.Add( bSizer101111, 0, wx.EXPAND, 5 )
 
 		bSizer101112 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -205,7 +205,7 @@ class InscIndAddEdit ( wx.Dialog ):
 		bSizer101112.Add( self.chb_exchanged, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		bSizer8.Add( bSizer101112, 1, wx.EXPAND, 5 )
+		bSizer8.Add( bSizer101112, 0, wx.EXPAND, 5 )
 
 		bSizer101113 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -218,20 +218,20 @@ class InscIndAddEdit ( wx.Dialog ):
 		bSizer101113.Add( self.chb_score, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		bSizer8.Add( bSizer101113, 1, wx.EXPAND, 5 )
+		bSizer8.Add( bSizer101113, 0, wx.EXPAND, 5 )
 
 		bSizer101114 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText31114 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Clasificate:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31114 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Classify:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText31114.Wrap( -1 )
 
 		bSizer101114.Add( self.m_staticText31114, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.chb_clasificate = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer101114.Add( self.chb_clasificate, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		self.chb_classify = wx.CheckBox( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer101114.Add( self.chb_classify, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		bSizer8.Add( bSizer101114, 1, wx.EXPAND, 5 )
+		bSizer8.Add( bSizer101114, 0, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )
