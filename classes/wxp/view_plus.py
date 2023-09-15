@@ -87,16 +87,51 @@ class ViewPlus(object):
 
     def cho_load(self, choice, values, default=None):
         '''
+        for wxchoice
         set a choice with client data value
         '''
         choice.Clear()
         for i in values:
-            if choice.ClassName == 'wxCheckListBox':
-                choice.Append(item=i[0])
-            else:
-                choice.Append(item=i[0], clientData=i[1])
+            choice.Append(item=i[0], clientData=i[1])
         if default is not None:
             self.cho_set(choice, default)
+
+    def clb_load(self, choice, values, default=[]):
+        '''
+        For wxchecklistbox
+        set a choices with client data value
+        default, list
+        '''
+        choice.Clear()
+        for i in values:
+            choice.Append(item=i[0], clientData=i[1])
+        if default is not None:
+            for j in default:
+                self.clb_set(choice, j)
+        
+    def clb_set(self, choice, value):
+        '''
+        For wxchecklistbox
+        set value when same client data
+        value is a clientData id
+        '''
+        for i in range(choice.GetCount()):
+            if str(choice.GetClientData(i)) == str(value):
+                choice.Check(i)
+                break
+
+    def clb_get(self, choice):
+        '''
+        For wxchecklistbox
+        Get list with choice client data
+        '''
+        values = []
+        if len(choice.Items):
+            if choice.GetCheckedItems() != -1:  # add for wxpython < 2.8
+                for i in choice.GetCheckedItems():
+                    values.append(choice.GetClientData(i))  # wx 2.8
+        return values
+
 
     def start(self, modal=False):
         self.view_set_pos_size()
