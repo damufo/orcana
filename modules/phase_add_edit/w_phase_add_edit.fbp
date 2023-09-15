@@ -47,7 +47,7 @@
             <property name="minimum_size"></property>
             <property name="name">PhaseAddEdit</property>
             <property name="pos"></property>
-            <property name="size">703,385</property>
+            <property name="size">703,405</property>
             <property name="style">wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Phase Add Edit</property>
@@ -856,7 +856,7 @@
                                                     <property name="style"></property>
                                                     <property name="subclass">; ; forward_declare</property>
                                                     <property name="toolbar_pane">0</property>
-                                                    <property name="tooltip">Number participants to clasificate next phase.</property>
+                                                    <property name="tooltip"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
@@ -916,7 +916,7 @@
                                                     <property name="style"></property>
                                                     <property name="subclass">; ; forward_declare</property>
                                                     <property name="toolbar_pane">0</property>
-                                                    <property name="tooltip"></property>
+                                                    <property name="tooltip">Number participants to classify for next phase.</property>
                                                     <property name="validator_data_type"></property>
                                                     <property name="validator_style">wxFILTER_NONE</property>
                                                     <property name="validator_type">wxDefaultValidator</property>

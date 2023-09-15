@@ -16,6 +16,7 @@ from specific_classes.champ.persons import Persons
 from specific_classes.champ.relays import Relays
 # from specific_classes.champ.inscriptions import Inscriptions
 from specific_classes.champ.phases import Phases
+from specific_classes.champ.classifications import Classifications
 # from specific_classes.champ.heats import Heats
 from specific_functions import files
 from specific_functions.files import get_file_content
@@ -103,7 +104,7 @@ class Champ(object):
         self.config.dbs.connect(dbs_path=dbs_path)
         # Comproba que sexa unha base de datos correcta
         if self.config.dbs.connection:
-            try:
+            # try:
                 self.params = Params(champ=self)
                 self.params.load_items_from_dbs()
                 self.entities = Entities(champ=self)
@@ -122,6 +123,8 @@ class Champ(object):
                 self.relays.load_items_from_dbs()
                 self.phases = Phases(champ=self)
                 self.phases.load_items_from_dbs()
+                self.classifications = Classifications(champ=self)
+                self.classifications.load_items_from_dbs()
                 self.relays.clear_without_inscription()
 
 
@@ -131,9 +134,9 @@ class Champ(object):
 
                 self.config.prefs['last_path_dbs'] = str(dbs_path)
                 self.has_champ = True
-            except:  # Algo fallou durante a carga
-                self.config.prefs['last_path_dbs'] = ""
-                self.clear_champ
+            # except:  # Algo fallou durante a carga
+            #     self.config.prefs['last_path_dbs'] = ""
+            #     self.clear_champ
         else:  # Non foi quen de conectar
             self.clear_champ
             print("Isto non debería pasar nunca. Erro:1134987239847105")
@@ -287,9 +290,8 @@ class Champ(object):
 
         d.build_file()
 
-    def gen_clasifications_pdf(self):
-        categories = {}
-        d =  self.init_report(file_name=_("clasifications.pdf"))
+    def gen_classifications_pdf(self):
+        d =  self.init_report(file_name=_("classifications.pdf"))
 
         def save_table(lines):
             col_widths = ['5%', '50%', '20%', '20%', '10%']
@@ -305,37 +307,10 @@ class Champ(object):
             table = lines
             d.insert_table(table=table, colWidths=col_widths, 
                            style=style, pagebreak=False)
-        def save_table_total(category, table_total):
-            lines = []
-            sorted_total = sorted(table_total.items(), key=lambda x:x[1], reverse=True)
-            lines = []
-            last_points = -1
-            last_pos = -1
-            pos = 1
-            for entity_id, points in sorted_total:
-                entity = self.entities.get_entity(entity_id=entity_id)
-                if points == last_points:
-                    line_pos = ""
-                else:
-                    line_pos = pos
-                    last_pos = pos
-                lines.append((
-                    line_pos,
-                    entity.long_name,
-                    entity.entity_code,
-                    points,
-                ))
-                last_points = points
-                pos += 1
-            gender = _("Total")
-            title_category = "{} {}".format(category.name, gender).capitalize()
-            d.insert_title_1(text=title_category, alignment=0)
-            d.insert_spacer(10, 10)
-            save_table(lines)
 
-        d.insert_title_1(text=_("Clasifications by category"), alignment=1)
+        d.insert_title_1(text=_("Classifications"), alignment=1)
 
-        sql = '''
+        sql_points_club_category = '''
 select 
     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 
     then 
@@ -356,63 +331,185 @@ group by
     end
 order by
 sum(points) desc;          '''
-        last_category = None
-        lines = []
-        total = {}
-        (ENTITY_ID, POINTS) = range(2)
-        for category in self.categories:
-            if lines and last_category.show_report:
-                gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
-                title_category = "{} {}".format(last_category.name, gender).capitalize()
-                d.insert_title_1(text=title_category, alignment=0)
-                d.insert_spacer(10, 10)
-                save_table(lines)
-            if last_category and category.code != last_category.code:
-                # print total
-                save_table_total(category=last_category, table_total=total)
-                total = {}
-            res = self.config.dbs.exec_sql(sql=sql, values=((category.category_id,),))
-            lines = []
-            if res != 'err' and res:
-                # print category puntuation
-                gender = self.config.genders.get_long_name(gender_id=category.gender_id)
-                last_points = -1
-                last_pos = -1
-                pos = 1
-                for entity_id, points in res:
-                    entity = self.entities.get_entity(entity_id=entity_id)
-                    if points == last_points:
-                        line_pos = ""
-                    else:
-                        line_pos = pos
-                        last_pos = pos
-                    lines.append((
-                        line_pos,
-                        entity.long_name,
-                        entity.entity_code,
-                        points,
-                    ))
-                    last_points = points
-                    pos += 1
-                    if entity.entity_id in total:
-                        total[entity.entity_id] += points
-                    else:
-                        total[entity.entity_id] = points
-            last_category = category
-        # Isto é para imprimir a última categoría se é que hai que facelo
-        if lines and last_category.show_report:
-            gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
-            title_category = "{} {}".format(last_category.name, gender).capitalize()
-            d.insert_title_1(text=title_category, alignment=0)
+        entities_dict = self.entities.dict
+        for classification in self.classifications:
+            d.insert_title_1(text=classification.name, alignment=0)
             d.insert_spacer(10, 10)
-            save_table(lines)
-        if total:
-            # print total
-            save_table_total(category=last_category, table_total=total)
+            # Sump points for all classification categories
+            entity_points = {}
+            # (ENTITY_ID, POINTS) = range(2)
+            for category in classification.categories:
+                # Determine factor correction
+                if not classification.gender_id:
+                    factor_correction = 1
+                elif classification.gender_id and classification.gender_id == category.gender_id:
+                    factor_correction = 1
+                elif classification.gender_id != 'X' and category.gender_id == 'X':
+                    factor_correction = 0.5  
+                else:  # no resto dos casos non puntúa     
+                    factor_correction = 0
 
+                res = self.config.dbs.exec_sql(
+                        sql=sql_points_club_category,
+                        values=((category.category_id,),))
+                if res != 'err' and res:
+                    for entity_id, points in res:
+                        if entity_id in entity_points:
+                            entity_points[entity_id] += points * factor_correction
+                        else:
+                            entity_points[entity_id] = points * factor_correction
+            # Print clasification lines
+            lines = []
+            last_points = -1
+            last_pos = -1
+            pos = 1
+            entity_points_sorted = dict(sorted(entity_points.items(), key=lambda item: item[1], reverse=True))  # Sort by points
+            for entity_id, points in entity_points_sorted.items():
+                entity = entities_dict[entity_id]
+                if points == last_points:
+                    line_pos = ""
+                else:
+                    line_pos = pos
+                    last_pos = pos
+                lines.append((
+                    line_pos,
+                    entity.long_name,
+                    entity.entity_code,
+                    points,
+                ))
+                last_points = points
+                pos += 1
+            save_table(lines)
 
         d.build_file()
         print("fin")
+
+#     def gen_classifications_pdf_old(self):
+#         categories = {}
+#         d =  self.init_report(file_name=_("classifications.pdf"))
+
+#         def save_table(lines):
+#             col_widths = ['5%', '50%', '20%', '20%', '10%']
+#             style = [
+#                 ('FONTSIZE', (0, 0), (-1, -1), 9),
+#                 # ('GRID', (0, 0), (-1, -1), 0.5, d.colors.grey),
+#                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+#                 ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+#                 ('ALIGN', (1, 0), (1, -1), 'LEFT'),
+#                 ('ALIGN', (3, 0), (3, -1), 'RIGHT'),
+#             ]
+
+#             table = lines
+#             d.insert_table(table=table, colWidths=col_widths, 
+#                            style=style, pagebreak=False)
+#         def save_table_total(category, table_total):
+#             lines = []
+#             sorted_total = sorted(table_total.items(), key=lambda x:x[1], reverse=True)
+#             lines = []
+#             last_points = -1
+#             last_pos = -1
+#             pos = 1
+#             for entity_id, points in sorted_total:
+#                 entity = self.entities.get_entity(entity_id=entity_id)
+#                 if points == last_points:
+#                     line_pos = ""
+#                 else:
+#                     line_pos = pos
+#                     last_pos = pos
+#                 lines.append((
+#                     line_pos,
+#                     entity.long_name,
+#                     entity.entity_code,
+#                     points,
+#                 ))
+#                 last_points = points
+#                 pos += 1
+#             gender = _("Total")
+#             title_category = "{} {}".format(category.name, gender).capitalize()
+#             d.insert_title_1(text=title_category, alignment=0)
+#             d.insert_spacer(10, 10)
+#             save_table(lines)
+
+#         d.insert_title_1(text=_("Classifications by category"), alignment=1)
+
+#         sql = '''
+# select 
+#     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 
+#     then 
+#         (select entity_id from persons p where p.person_id=(select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
+#     else 
+#         (select entity_id from relays r where r.relay_id=(select relay_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
+#     end as "entity_id",
+    
+# sum(points) as points
+# from results_phases_categories rpc
+# where (select category_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id))=?
+# group by 
+#     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 
+#     then 
+#         (select entity_id from persons p where p.person_id=(select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
+#     else 
+#         (select entity_id from relays r where r.relay_id=(select relay_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
+#     end
+# order by
+# sum(points) desc;          '''
+#         last_category = None
+#         lines = []
+#         total = {}
+#         (ENTITY_ID, POINTS) = range(2)
+#         for category in self.categories:
+#             if lines and last_category.show_report:
+#                 gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
+#                 title_category = "{} {}".format(last_category.name, gender).capitalize()
+#                 d.insert_title_1(text=title_category, alignment=0)
+#                 d.insert_spacer(10, 10)
+#                 save_table(lines)
+#             if last_category and category.code != last_category.code:
+#                 # print total
+#                 save_table_total(category=last_category, table_total=total)
+#                 total = {}
+#             res = self.config.dbs.exec_sql(sql=sql, values=((category.category_id,),))
+#             lines = []
+#             if res != 'err' and res:
+#                 # print category puntuation
+#                 gender = self.config.genders.get_long_name(gender_id=category.gender_id)
+#                 last_points = -1
+#                 last_pos = -1
+#                 pos = 1
+#                 for entity_id, points in res:
+#                     entity = self.entities.get_entity(entity_id=entity_id)
+#                     if points == last_points:
+#                         line_pos = ""
+#                     else:
+#                         line_pos = pos
+#                         last_pos = pos
+#                     lines.append((
+#                         line_pos,
+#                         entity.long_name,
+#                         entity.entity_code,
+#                         points,
+#                     ))
+#                     last_points = points
+#                     pos += 1
+#                     if entity.entity_id in total:
+#                         total[entity.entity_id] += points
+#                     else:
+#                         total[entity.entity_id] = points
+#             last_category = category
+#         # Isto é para imprimir a última categoría se é que hai que facelo
+#         if lines and last_category.show_report:
+#             gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
+#             title_category = "{} {}".format(last_category.name, gender).capitalize()
+#             d.insert_title_1(text=title_category, alignment=0)
+#             d.insert_spacer(10, 10)
+#             save_table(lines)
+#         if total:
+#             # print total
+#             save_table_total(category=last_category, table_total=total)
+
+
+#         d.build_file()
+#         print("fin")
 
     def export_results(self):
         self.gen_lev()

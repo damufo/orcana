@@ -1403,7 +1403,7 @@
                                         <property name="gripper">0</property>
                                         <property name="hidden">0</property>
                                         <property name="id">wxID_ANY</property>
-                                        <property name="label">&amp;Fiarna</property>
+                                        <property name="label">Re&amp;feree tokens</property>
                                         <property name="margins"></property>
                                         <property name="markup">0</property>
                                         <property name="max_size"></property>
@@ -1810,7 +1810,7 @@
                                                 <property name="gripper">0</property>
                                                 <property name="hidden">0</property>
                                                 <property name="id">wxID_ANY</property>
-                                                <property name="label"></property>
+                                                <property name="label">Cla&amp;ssifications</property>
                                                 <property name="margins"></property>
                                                 <property name="markup">0</property>
                                                 <property name="max_size"></property>
@@ -1820,7 +1820,7 @@
                                                 <property name="minimize_button">0</property>
                                                 <property name="minimum_size"></property>
                                                 <property name="moveable">1</property>
-                                                <property name="name">btn_report_heats_pdf1</property>
+                                                <property name="name">btn_classifications</property>
                                                 <property name="pane_border">1</property>
                                                 <property name="pane_position"></property>
                                                 <property name="pane_size"></property>
@@ -1883,7 +1883,7 @@
                                                 <property name="gripper">0</property>
                                                 <property name="hidden">0</property>
                                                 <property name="id">wxID_ANY</property>
-                                                <property name="label"></property>
+                                                <property name="label">S&amp;essions</property>
                                                 <property name="margins"></property>
                                                 <property name="markup">0</property>
                                                 <property name="max_size"></property>
@@ -1893,7 +1893,7 @@
                                                 <property name="minimize_button">0</property>
                                                 <property name="minimum_size"></property>
                                                 <property name="moveable">1</property>
-                                                <property name="name">btn_report_heats_html1</property>
+                                                <property name="name">btn_sessions</property>
                                                 <property name="pane_border">1</property>
                                                 <property name="pane_position"></property>
                                                 <property name="pane_size"></property>

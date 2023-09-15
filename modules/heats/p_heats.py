@@ -80,11 +80,12 @@ class Presenter(object):
         self.view.btn_members.Enable(False)
         self.view.btn_change_participant.Enable(False)
         heat = self.model.heat
-        if row != -1:  # not heat.official and
+        if row != -1:
+            if not heat.official:
+                self.view.btn_change_participant.Enable(True)
             lane = int(self.view.grd_results.GetRowLabelValue(row))
             result = heat.get_result(lane=lane)
             print('lane: {}'.format(lane))
-            self.view.btn_change_participant.Enable(True)
             if result:
                 self.model.result = result
                 if result.ind_rel == 'R':
@@ -101,8 +102,8 @@ class Presenter(object):
         if not heat.official and row != -1:
             lane = int(self.view.grd_results.GetRowLabelValue(row))
             result = heat.get_result(lane=lane)
-            # if self.view.btn_members.IsEnabled():
-            self.load_members()
+            if self.view.btn_members.IsEnabled():
+                self.load_members()
 
         #     print('lane: {}'.format(lane))
         #     # self.view.btn_change_participant.Enable(True)
@@ -191,9 +192,9 @@ class Presenter(object):
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
 
-    def gen_clasifications_report(self):
+    def gen_classifications_report(self):
         champ = self.model.heats.champ
-        champ.gen_clasifications_pdf()
+        champ.gen_classifications_pdf()
 
     def go_next_heat(self):
         pos = self.view.lsc_heats_plus.get_sel_pos_item()

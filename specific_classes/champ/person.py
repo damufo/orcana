@@ -99,6 +99,39 @@ where inscription_id in
         return count_results
 
     @property
+    def count_inscriptions_relays(self):
+        # é moito máis rápido consultar a base de datos que percorrer os
+        # resultados na  procura da participación
+        # seguramente se poida mellorar cando se busca por resultados
+        count_relays = 0
+        sql = '''
+select count(*) from inscriptions
+        where relay_id in (select relay_id from relays_members where person_id=?); '''
+        values = ((self.person_id, ), )
+        res = self.config.dbs.exec_sql(sql=sql, values=values)
+        if res:
+            count_results = res[0][0]
+        return count_results
+
+    @property
+    def count_results_relays(self):
+        # é moito máis rápido consultar a base de datos que percorrer os
+        # resultados na  procura da participación
+        # seguramente se poida mellorar cando se busca por resultados
+        count_relays = 0
+        sql = '''
+select count(*) from results r
+where inscription_id in 
+    (select i.inscription_id from inscriptions i 
+        where r.inscription_id=i.inscription_id and relay_id in
+            (select relay_id from relays_members where person_id=?)); '''
+        values = ((self.person_id, ), )
+        res = self.config.dbs.exec_sql(sql=sql, values=values)
+        if res:
+            count_results = res[0][0]
+        return count_results
+
+    @property
     def surname_normalized(self):
         return utils.normalize(self.surname)
 

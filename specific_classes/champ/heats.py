@@ -125,7 +125,7 @@ from heats where phase_id=? order by pos '''
                 width as integer)
         """
         return (
-                (_('N.'), 'C', 40),
+                (_('N. heat'), 'C', 40),
                 (_('Event'), 'L', 120),
                 (_('Progression'), 'C', 90),
                 (_('Heat'), 'C', 40),

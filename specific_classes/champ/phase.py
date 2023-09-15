@@ -378,15 +378,19 @@ select event_code from events where event_id =
             # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
             # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
             ]
+
         def add_phase_title(lines):
             style_title = [
                 ('ALIGN',(0,0),(-1,-1), 'LEFT'),
                 ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
                 ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('ALIGN',(1,0),(-1,-1), 'RIGHT'),
+                ('FONT', (1, 0), (-1, -1), 'Open Sans Regular'),
+                ('FONTSIZE', (1, 0), (-1, -1), 8),
                 # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
                 ]
             style_title = style + style_title
-            col_widths = ['100%']
+            col_widths = ['80%', '20%']
             d.insert_table(
                 table=lines,
                 colWidths=col_widths,
@@ -449,7 +453,8 @@ select event_code from events where event_id =
                 alignment='RIGHT')
 
         phase = self
-        add_phase_title([[phase.long_name], ])
+        # add_phase_title([[phase.long_name], ])
+        add_phase_title(((phase.long_name, phase.date_time[:-3]), ))
         heats = [heat for heat in self.heats if heat.phase == phase]
         count_heats = len(heats)
         inscriptions =  phase.inscriptions
@@ -513,6 +518,7 @@ select event_code from events where event_id =
             """
             results_sorted = sorted(results, key=attrgetter('mark_hundredth', 'heat.pos', 'arrival_pos'))
             results_sorted = sorted(results_sorted, key=attrgetter('issue_pos'), reverse=False)
+            results_sorted = sorted(results_sorted, key=attrgetter('inscription.classify'), reverse=True)
 
             # Start set category position
             current_pos = 0
@@ -525,6 +531,10 @@ select event_code from events where event_id =
             for i in results_sorted:
                 result_phase_category = results_phase_category.item_blank
                 result_phase_category.result = i
+                if not i.inscription.classify:  # not score go to next
+                    result_phase_category.pos = -1
+                    results_phase_category.append(result_phase_category)
+                    continue
                 if current_mark_hundredth != i.mark_hundredth:
                     current_pos += 1 + pos_adjust
                     pos_adjust = 0
@@ -560,16 +570,17 @@ select event_code from events where event_id =
                 result_phase_category.pos = category_pos
                 results_phase_category.append(result_phase_category)
             # End set category position
+
+            # Puntua
             # Resort
             results_sorted = sorted(results_phase_category, key=attrgetter('pos'))
-            results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)  
+            results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)
+            # results_sorted = sorted(results_sorted, key=attrgetter('result.inscription.classify'), reverse=True)
             del results_phase_category[:]
             results_phase_category.extend(results_sorted)
 
             if results_phase_category and phase_category.action == 'PUNC':  # puntuate this category
                 print("aquí o código para puntuar os resultados da categoría")
-
-                
 
                 pos_cat = 0
                 pos_points = 1
@@ -605,6 +616,9 @@ select event_code from events where event_id =
                     for i in results_phase_category:
                         if i.result.issue_id:  # se ten incidencia non puntúa
                             break
+                        if not i.result.inscription.score:
+                            i.points = 0.0
+                            continue
                         puntua = False
                         # ten en conta cantos puntúan por entidade
                         if i.result.entity.entity_id in puntuados_club:
@@ -652,282 +666,8 @@ select event_code from events where event_id =
                 phase_category.results_phase_category.save_all_items()
                 categories_results[phase_category.category.name] = phase_category.results_phase_category
 
-
-    def gen_phase_category_results_pdf_seg_pode_boorarse(self, d, categories_results):
-        """ Non sei quen usa esta función!! pode_borrarse??"""
-        style = [
-            ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
-            # ('FONTSIZE',(0,0),(-1,-1), 8),
-            ('ALIGN',(0,0),(-1,-1), 'CENTER'),
-            ('VALIGN', (0,0), (-1,-1), 'BOTTOM'), 
-            # ('TOPPADDING', (0,0), (-1,-1), 0),
-            ('LEFTPADDING', (0,0), (-1,-1), 3),
-            ('RIGHTPADDING', (0,0), (-1,-1), 3),
-            # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
-            # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
-            ]
-        def add_event_title(lines):
-            style_title = [
-                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
-                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
-                ]
-            style_title = style + style_title
-            col_widths = ['100%']
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.8*cm,
-                style=style_title,
-                pagebreak=False)
-
-        def add_category_title(lines):
-            style_title = [
-                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
-                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 8),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
-                ]
-            style_title = style + style_title
-            col_widths = ['100%']
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.8*cm,
-                style=style_title,
-                pagebreak=False)
-
-        def add_result(lines):
-            style_result = [
-                ('FONTSIZE',(0,0),(-1,-1), 8),
-                ('ALIGN',(2,0),(2,-1), 'LEFT'),
-                ('ALIGN',(5,0),(5,-1), 'RIGHT'),  #mark
-                ('ALIGN',(6,0),(6,-1), 'RIGHT'),  #points
-                ('FONT', (2,0),(2,-1), 'Open Sans Bold'),
-                ('FONT', (5,0),(5,-1), 'Open Sans Bold'),
-                ('FONT', (6,0),(6,-1), 'Open Sans Bold'),
-                # ('TOPPADDING', (0,0), (-1,-1), 6),
-                # ('BOTTOMPADDING', (0,0), (-1,-1), 0),
-                # ('VALIGN', (0,0), (-1,-1), 'BOTTOM'), 
-                ]
-            style_result = style + style_result
-
-            col_widths = ['4%', '10%', '40%', '6%', '20%', '10%', '10%']
-            row_heights = (1.5*cm, 2.5*cm)
-            row_heights = [.8*cm] * len(lines)
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.8*cm,
-                style=style_result,
-                pagebreak=False)
-
-        def add_member(lines):
-            style_result = [
-                ('FONTSIZE',(0,0),(-1,-1), 8),
-                ('ALIGN',(0,0),(0,-1), 'CENTER'),
-                ('ALIGN',(1,0),(2,-1), 'LEFT'),
-                ('ALIGN',(2,0),(2,-1), 'CENTER'),
-                ('FONT', (1,0),(1,-1), 'Open Sans Bold'),
-                ]
-            style_result = style + style_result
-
-            col_widths = ['10%', '40%', '6%', '20%', '10%', '14%']
-            row_heights = (1.5*cm, 2.5*cm)
-            row_heights = [.8*cm] * len(lines)
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.6*cm,
-                style=style_result,
-                pagebreak=False,
-                alignment='LEFT')
-
-        def add_member_with_splits(member_lines):
-            style_result = [
-                ('FONTSIZE',(0,0),(-1,-1), 7),
-                ('ALIGN',(0,0),(0,-1), 'CENTER'),
-                ('ALIGN',(1,0),(2,-1), 'LEFT'),
-                ('ALIGN',(2,0),(2,-1), 'CENTER'),
-                ('TOPPADDING', (0,0), (-1,-1), -1),
-                ('ALIGN', (3, 0), (-1, -1), 'RIGHT'),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-                # ('FONT', (1,0),(1,-1), 'Open Sans Bold'),
-                ]
-            style_result = style + style_result
-
-            col_widths = ['8%', '25%', '10%', '11%', '7%', '7%', '11%', '7%', '7%']
-            # row_heights = (1.5*cm, 2.5*cm)
-            # row_heights = [.6*cm] * len(member_line)
-                
-            d.insert_table(
-                table=member_lines,
-                colWidths=col_widths,
-                rowHeights=.4*cm,
-                style=style_result,
-                pagebreak=False,
-                alignment='RIGHT')
-            
-        def add_result_split(table):
-            style_result = [  # o que queremos mudar respecto do estilo base
-                ('FONTSIZE', (0, 0), (-1, -1), 7),
-                ('ALIGN', (0, 0), (-1, -1), 'RIGHT'),
-                ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-                ('TOPPADDING', (0,0), (-1,-1), -1),
-                # ('BOTTOMPADDING', (0,0), (-1,-1), 0), 
-                ]
-            style_result = style  + style_result
-
-            col_widths = ['11%', '7%', '7%', '11%', '7%', '7%', '11%', '7%', '7%', '11%', '7%', '7%']
-
-            d.insert_table(
-                table=table,
-                colWidths=col_widths,
-                rowHeights=.4*cm,
-                style=style_result,
-                pagebreak=False,
-                alignment='LEFT')
-
-        # Xera o informe
-        # Category title
-        event_title = '{}.- {}'.format(
-            self.event.pos,
-            self.event.name
-            )
-        add_event_title([[event_title, ]])
-        # end category title
-        for category_name, results_phase_category in categories_results.items():
-            add_category_title([[category_name, ]])
-            last_pos = None
-            for result_phase_category in results_phase_category:
-                i = result_phase_category.result
-                if i.issue_id:
-                    line_result = [[
-                            i.issue_id, 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.license or i.relay.name, 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.full_name or "", 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
-                            '', '0,0'],]
-                else:
-                    if last_pos == result_phase_category.pos:
-                        position_result = ''
-                    else:
-                        position_result = result_phase_category.pos
-                    line_result = [[
-                            str(position_result), 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.license or i.relay.entity.entity_code, 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.full_name or i.relay.name, 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
-                            'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
-                            i.mark_time, str(result_phase_category.points).replace(".", ",")],]
-                last_pos = result_phase_category.pos
-                add_result(line_result)
-                print(line_result)
-
-                if i.ind_rel == 'R' and i.relay.relay_members.has_set_members:
-                    table_splits = []
-                    line_splits = []
-                    result_split_pos = 0
-                    last_split_hundredth = 0
-
-                    num_members = i.relay.relay_members.num_members
-                    num_splits = len(i.result_splits)
-                    splits_by_member = 0
-                    if num_splits % num_members == 0:
-                        splits_by_member = num_splits / num_members
-
-                    current_member = 0
-                    has_issue = False
-                    for num_split, j in enumerate(i.result_splits, start=1):                
-                        if not i.issue_split or num_split < i.issue_split:
-                            line_splits.append('{} m:'.format(j.distance))
-                            line_splits.append(j.mark_time)
-                            if j.mark_hundredth:
-                                split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
-                                last_split_hundredth = j.mark_hundredth
-                            else:
-                                split_time = ''
-                            line_splits.append(split_time)
-                            result_split_pos +=1
-                            if result_split_pos >= 2:
-                                table_splits.append(line_splits)
-                                line_splits = []
-                                result_split_pos = 0
-                        else:
-                            has_issue = True
-                        
-                        if num_split > 0 and num_split % splits_by_member == 0:
-                            if line_splits:
-                                table_splits.append(line_splits)
-                                line_splits = []
-                                result_split_pos = 0
-
-                            member = i.relay.relay_members[current_member].person
-                            member_line = [
-                                member.license, 
-                                member.long_name, 
-                                member.year[2:]]
-
-                            if table_splits:
-                                member_split_line = table_splits.pop(0)
-                                if len(member_split_line) == 3:
-                                    member_split_line = member_split_line + ['','','']
-                                member_lines = [member_line + member_split_line, ]
-                            else:
-                                member_lines = [member_line + ['','','','','',''], ]
-                            
-                            while table_splits:
-                                member_split_line = table_splits.pop(0)
-                                if len(member_split_line) == 3:
-                                    member_split_line = member_split_line + ['','','']
-                                member_lines.append(['','',''] + member_split_line)
-
-                            add_member_with_splits(member_lines=member_lines)
-                            table_splits = []
-                            result_split_pos = 0
-                            print(i.relay.relay_members[current_member].person.name)
-                            current_member += 1
-
-                    if line_splits and not has_issue:
-                        table_splits.append(line_splits)
-                    if table_splits:
-                        add_result_split(table=table_splits)    
-
-                elif len(i.result_splits) > 1:
-                    table_splits = []
-                    line_splits = []
-                    result_split_pos = 0
-                    last_split_hundredth = 0
-                    for num_split, j in enumerate(i.result_splits):
-                        if not i.issue_split or (num_split < i.issue_split and i.ind_rel == 'R'):
-                            line_splits.append('{} m:'.format(j.distance))
-                            line_splits.append(j.mark_time)
-                            if j.mark_hundredth:
-                                split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
-                                last_split_hundredth = j.mark_hundredth
-                            else:
-                                split_time = ''
-                            line_splits.append(split_time)
-                            result_split_pos +=1
-                            if result_split_pos >= 4:
-                                table_splits.append(line_splits)
-                                line_splits = []
-                                result_split_pos = 0
-                        else:
-                            break
-                    if line_splits:
-                        table_splits.append(line_splits)
-                    add_result_split(table=table_splits)
-
-
-            print('fin results category {}'.format(category_name))
-        print('fin results category {}'.format(category_name))
-        d.build_file()
-
     def gen_phase_category_results_pdf(self, d, results):
-        """ imprime os resultados da categoría"""
+        """ imprime os resultados por categorías"""
         style = [
             ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
             # ('FONTSIZE',(0,0),(-1,-1), 8),
@@ -951,6 +691,26 @@ select event_code from events where event_id =
                 ]
             style_title = style + style_title
             col_widths = ['80%', '20%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.8*cm,
+                style=style_title,
+                pagebreak=False)
+
+        def add_phase_category(lines):
+            style_title = [
+                ('FONTSIZE',(0,0),(-1,-1), 8),
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Regular'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('ALIGN',(1,0),(-1,-1), 'RIGHT'),
+                ('FONT', (1, 0), (-1, -1), 'Open Sans Regular'),
+                ('FONTSIZE', (1, 0), (-1, -1), 8),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['100%', ]
             d.insert_table(
                 table=lines,
                 colWidths=col_widths,
@@ -1073,26 +833,32 @@ select event_code from events where event_id =
                 pagebreak=False,
                 alignment='LEFT')
         # Xera o informe
-        orde = None
-        category = None
+        # orde = None
+        # category = None
+        if results:
+            phase = results[0].phase
+            category = results[0].category
+            add_phase_title(((phase.long_name, phase.date_time[:-3]), ))
+            add_phase_category(((category.code_gender, ), ))
         lines = []
 
         position = 1
         last_result_category_pos = None
         for result_phase_category in results:
             i = result_phase_category.result
-            if i.heat.phase.event.pos != orde:  #cambio de evento, xera título
-                phase_title = '{}.- {} - {}'.format(
-                    i.heat.phase.event.pos,
-                    i.heat.phase.event.name,
-                    i.heat.phase.progression)
-                phase_date_time = '{} {}'.format(
-                    i.heat.phase.session.xdate,
-                    i.heat.phase.session.xtime)
-                # d.insert_title_1(text=event_title, alignment=0)
-                lines.append([phase_title, phase_date_time])
-                add_phase_title(lines)
-                orde = i.heat.phase.event.pos
+            # if i.heat.phase.event.pos != orde:  #cambio de evento, xera título
+            #     phase_title = '{}.- {} - {}'.format(
+            #         i.heat.phase.event.pos,
+            #         i.heat.phase.event.name,
+            #         result_phase_category.results_phase_category.phase_category.category.code_gender,
+            #         i.heat.phase.progression)
+            #     phase_date_time = '{} {}'.format(
+            #         i.heat.phase.session.xdate,
+            #         i.heat.phase.session.xtime)
+            #     # d.insert_title_1(text=event_title, alignment=0)
+            #     lines.append([phase_title, phase_date_time])
+            #     add_phase_title(lines)
+            #     orde = i.heat.phase.event.pos
 
             if i.issue_id:
                 line_result = [[
@@ -1102,6 +868,15 @@ select event_code from events where event_id =
                         'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
                         'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
                         '', '0,0'],]
+            elif not i.inscription.classify:
+                line_result = [[
+                        _('NC'), 
+                        'X' not in i.heat.phase.event.code.upper() and i.person.license or i.relay.name, 
+                        'X' not in i.heat.phase.event.code.upper() and i.person.full_name or "", 
+                        'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
+                        'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
+                        '', '0,0'],]
+
             else:
                 if last_result_category_pos == result_phase_category.pos:
                     category_pos = ''
@@ -1246,6 +1021,7 @@ select event_code from events where event_id =
             # FIXME: xa debería vir ordenado ó cargar os resultados
             results_sorted = sorted(results_phase_category, key=attrgetter('pos'))
             results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)  
+            results_sorted = sorted(results_sorted, key=attrgetter('result.inscription.classify'), reverse=True)  
             del results_phase_category[:]
             results_phase_category.extend(results_sorted)           
 

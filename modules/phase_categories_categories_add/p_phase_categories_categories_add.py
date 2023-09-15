@@ -53,10 +53,23 @@ class Presenter(object):
         if self.view.categories_selected:
             categories = [self.model.champ_categories[i] for i in self.view.categories_selected]
             action = self.view.get_values()
-            self.model.phase_categories.add_items(
-                categories=categories,
-                action=action,
-                )
+            msg = None
+            if action == 'PUNC':
+                # check is all categoríes has puntuation
+                has_puntuation = True
+                for i in categories:
+                    if not i.punctuation:
+                        has_puntuation = False
+                        break
+                if not has_puntuation:
+                    msg = _("Check that all selected categories has set punctuation.")
+            if msg:
+                self.view.msg.error(msg)
+            else:
+                self.model.phase_categories.add_items(
+                    categories=categories,
+                    action=action,
+                    )
             self.view.view_plus.stop()
         else:
             self.view.msg.warning(message=_("No item selected."))

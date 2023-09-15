@@ -48,7 +48,11 @@ class Category(object):
 
     @property
     def pos(self):
-        return self.result_members.index(self) + 1
+        return self.categories.index(self) + 1
+
+    @property
+    def code_gender(self):
+        return '{}_{}'.format(self.code, self.gender_id)
 
     @property
     def punctuation_name(self):
@@ -91,13 +95,12 @@ to_age=?, punctuation_id=?, show_report=? where category_id=?'''
         else:
             sql = '''
 INSERT INTO categories (category_code, gender_id, name, from_age, to_age,
-punctuation_id) VALUES(?, ?, ?, ?, ?, ?, ?) '''
+punctuation_id, show_report) VALUES(?, ?, ?, ?, ?, ?, ?) '''
             values = ((self.code, self.gender_id, self.name,
             self.from_age, self.to_age, self.punctuation_id,
             self.show_report),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.category_id = self.config.dbs.last_row_id
-            self.champ.categories.append(self)
 
     def delete(self):
         if self.category_id:

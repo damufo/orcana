@@ -16,12 +16,24 @@ class ResultPhaseCategory(object):
         self.clas = kwargs['clas']  # 1 when is clasified to next phase
     
     @property
+    def phase_category(self):
+        return self.results_phase_category.phase_category
+    
+    @property
+    def phase_category_id(self):
+        return self.results_phase_category.phase_category.phase_category_id
+
+    @property
+    def phase(self):
+        return self.results_phase_category.phase_category.phase
+
+    @property
     def phase_id(self):
         return self.results_phase_category.phase_category.phase.phase_id
 
     @property
-    def phase_category_id(self):
-        return self.results_phase_category.phase_category.phase_category_id
+    def category(self):
+        return self.results_phase_category.phase_category.category
 
     @property
     def result_id(self):

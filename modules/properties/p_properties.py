@@ -46,7 +46,15 @@ class Presenter(object):
     def gen_web_forms_files(self):
         self.model.champ.gen_web_forms_files()
 
-    def fiarna(self):
+    def load_classifications(self):
+        # Check if changes in fields
+        print('Check if changes in fields')
+        # if changes:
+        #     question if save changes
+        from modules.classifications import p_classifications
+        p_classifications.create(parent=self, classifications=self.model.champ.classifications)
+
+    def load_fiarna(self):
         from modules.fiarna import p_fiarna
         p_fiarna.create(parent=self, champ=self.model.champ)
 

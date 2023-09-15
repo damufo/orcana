@@ -44,10 +44,10 @@ class Inscription(object):
             self.score = kwargs['score']
         else:
             self.score = True
-        if 'clasificate' in kwargs.keys():
-            self.clasificate = kwargs['clasificate']
+        if 'classify' in kwargs.keys():
+            self.classify = kwargs['classify']
         else:
-            self.clasificate = True
+            self.classify = True
         if 'person' in kwargs.keys():
             self.person = kwargs['person']
         else:
@@ -163,23 +163,23 @@ class Inscription(object):
             if self.inscription_id:        
                 sql = ('update inscriptions set pool_length=?, chrono_type=?, '
                         'mark_hundredth=?, equated_hundredth=?, date=?, venue=?, '
-                        'rejected=?, exchanged=?, score=?, clasificate=?, '
+                        'rejected=?, exchanged=?, score=?, classify=?, '
                         'phase_id=?, person_id=?, relay_id=0 '
                         ' where inscription_id=? ')
                 values = ((self.pool_length, self.chrono_type, self.mark_hundredth, 
                         self.equated_hundredth, self.date, self.venue, 
-                        self.rejected, self.exchanged, self.score, self.clasificate, 
+                        self.rejected, self.exchanged, self.score, self.classify, 
                         self.phase.phase_id, self.person.person_id,
                         self.inscription_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
             else:
                 sql = '''
     INSERT INTO inscriptions (pool_length, chrono_type, mark_hundredth, 
-    equated_hundredth, date, venue, rejected, exchanged, score, clasificate, phase_id, person_id)
+    equated_hundredth, date, venue, rejected, exchanged, score, classify, phase_id, person_id)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) '''
                 values = ((self.pool_length, self.chrono_type, self.mark_hundredth, 
                         self.equated_hundredth, self.date, self.venue, 
-                        self.rejected, self.exchanged, self.score, self.clasificate,
+                        self.rejected, self.exchanged, self.score, self.classify,
                         self.phase.phase_id, self.person.person_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id
@@ -189,22 +189,22 @@ class Inscription(object):
             if self.inscription_id:
                 sql = ('update inscriptions set pool_length=?, chrono_type=?, '
                         'mark_hundredth=?, equated_hundredth=?, date=?, venue=?, '
-                        'rejected=?, exchanged=?, score=?, clasificate=?, '
+                        'rejected=?, exchanged=?, score=?, classify=?, '
                         'phase_id=?, person_id=0, relay_id=? where inscription_id=? ')
                 values = ((self.pool_length, self.chrono_type, self.mark_hundredth, 
                         self.equated_hundredth, self.date, self.venue,
-                        self.rejected, self.exchanged, self.score, self.clasificate,
+                        self.rejected, self.exchanged, self.score, self.classify,
                         self.phase.phase_id, self.relay.relay_id,
                         self.inscription_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
             else:
                 sql = '''
     INSERT INTO inscriptions (pool_length, chrono_type, mark_hundredth, 
-    equated_hundredth, date, venue, rejected, exchanged, score, clasificate, phase_id, relay_id)
+    equated_hundredth, date, venue, rejected, exchanged, score, classify, phase_id, relay_id)
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) '''
                 values = ((self.pool_length, self.chrono_type, self.mark_hundredth, 
                         self.equated_hundredth, self.date, self.venue, 
-                        self.rejected, self.exchanged, self.score, self.clasificate,
+                        self.rejected, self.exchanged, self.score, self.classify,
                         self.phase.phase_id, self.relay.relay_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id

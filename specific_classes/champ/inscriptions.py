@@ -55,7 +55,7 @@ class Inscriptions(list):
                 rejected=0,
                 exchanged=0,
                 score=1,
-                clasificate=1,
+                classify=1,
             )
         elif self.ind_rel == 'R':
             relay = self.champ.relays.item_blank
@@ -75,7 +75,7 @@ class Inscriptions(list):
                 rejected=0,
                 exchanged=0,
                 score=1,
-                clasificate=1,
+                classify=1,
             )
         return incription
 
@@ -100,14 +100,14 @@ class Inscriptions(list):
         dict_relays = self.champ.relays.dict
         sql = '''
 select inscription_id, pool_length, chrono_type, mark_hundredth,
-equated_hundredth, date, venue, rejected, exchanged, score, clasificate,
+equated_hundredth, date, venue, rejected, exchanged, score, classify,
 phase_id, person_id, relay_id
 from inscriptions i where phase_id=? order by equated_hundredth '''
 
         values = ((self.phase.phase_id,),)
         res = self.config.dbs.exec_sql(sql=sql, values=values)
         (INSCRIPTION_ID, POOL_LENGTH, CHRONO_TYPE, MARK_HUNDREDTH,
-EQUATED_HUNDREDTH, DATE, VENUE, REJECTED, EXCHANGED, SCORE, CLASIFICATE,
+EQUATED_HUNDREDTH, DATE, VENUE, REJECTED, EXCHANGED, SCORE, CLASSIFY,
 PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
         for i in res:
             if self.ind_rel == 'I':
@@ -137,7 +137,7 @@ PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
                         rejected=i[REJECTED],
                         exchanged=i[EXCHANGED],
                         score=i[SCORE],
-                        clasificate=i[CLASIFICATE],
+                        classify=i[CLASSIFY],
                         phase=self.phase,
                         person=person,
                         relay=relay,
@@ -203,7 +203,7 @@ PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
                     i.rejected and _('R') or '',
                     i.exchanged and _('E') or '',
                     i.score and _('S') or '',
-                    i.clasificate and _('C') or '',
+                    i.classify and _('C') or '',
                     )
                 values.append((
                     str(pos+1),
@@ -229,7 +229,7 @@ PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
                     i.rejected and _('R') or '',
                     i.exchanged and _('E') or '',
                     i.score and _('S') or '',
-                    i.clasificate and _('C') or '',
+                    i.classify and _('C') or '',
                     )
                 if i.relay.relay_members.has_set_members:
                     has_set_members = '√'

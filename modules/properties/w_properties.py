@@ -158,7 +158,7 @@ class Properties ( wx.Panel ):
 
 		bSizer12.Add( self.btn_generate_champ, 1, wx.ALL, 5 )
 
-		self.btn_fiarna = wx.Button( self, wx.ID_ANY, _(u"&Fiarna"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_fiarna = wx.Button( self, wx.ID_ANY, _(u"Re&feree tokens"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_fiarna.SetToolTip( _(u"Fiarna") )
 
 		bSizer12.Add( self.btn_fiarna, 1, wx.ALL, 5 )
@@ -198,13 +198,13 @@ class Properties ( wx.Panel ):
 
 		bSizer141 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_report_heats_pdf1 = wx.Button( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_report_heats_pdf1.SetToolTip( _(u"Generate PDF report heats") )
+		self.btn_classifications = wx.Button( self, wx.ID_ANY, _(u"Cla&ssifications"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_classifications.SetToolTip( _(u"Generate PDF report heats") )
 
-		bSizer141.Add( self.btn_report_heats_pdf1, 1, wx.ALL, 5 )
+		bSizer141.Add( self.btn_classifications, 1, wx.ALL, 5 )
 
-		self.btn_report_heats_html1 = wx.Button( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer141.Add( self.btn_report_heats_html1, 1, wx.ALL, 5 )
+		self.btn_sessions = wx.Button( self, wx.ID_ANY, _(u"S&essions"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer141.Add( self.btn_sessions, 1, wx.ALL, 5 )
 
 
 		bSizer1031.Add( bSizer141, 1, wx.EXPAND, 5 )

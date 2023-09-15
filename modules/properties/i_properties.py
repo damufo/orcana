@@ -17,6 +17,7 @@ class Interactor(object):
         view.btn_report_heats_html.Bind(wx.EVT_BUTTON, self.on_report_heats_html)
         view.btn_web_forms_files.Bind(wx.EVT_BUTTON, self.on_web_forms_files)
         view.btn_fiarna.Bind(wx.EVT_BUTTON, self.on_fiarna)
+        view.btn_classifications.Bind(wx.EVT_BUTTON, self.on_classifications)
 
     def go_back(self, event):
         self.presenter.go_back()
@@ -37,6 +38,7 @@ class Interactor(object):
         self.presenter.gen_web_forms_files()
 
     def on_fiarna(self, event):
-        self.presenter.fiarna()
+        self.presenter.load_fiarna()
 
-
+    def on_classifications(self, event):
+        self.presenter.load_classifications()

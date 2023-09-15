@@ -38,7 +38,7 @@ class View(PhaseCategories):
         # self.lst_categories.Set(categories)
         values = [
             "PUNC", "Punctuate"
-            "CLAS", "Clasificate"
+            "CLAS", "Classificate"
             "", ""
         ]
         self.view_plus.cho_load(choice=self.cho_action,

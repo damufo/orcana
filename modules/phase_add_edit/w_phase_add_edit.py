@@ -20,7 +20,7 @@ import wx.xrc
 class PhaseAddEdit ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Phase Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 703,385 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Phase Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 703,405 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -103,12 +103,12 @@ class PhaseAddEdit ( wx.Dialog ):
 		self.m_staticText311 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Num. next phase:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText311.Wrap( -1 )
 
-		self.m_staticText311.SetToolTip( _(u"Number participants to clasificate next phase.") )
-
 		bSizer1011.Add( self.m_staticText311, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.txt_num_clas_next_phase = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.txt_num_clas_next_phase.SetMaxLength( 128 )
+		self.txt_num_clas_next_phase.SetToolTip( _(u"Number participants to classify for next phase.") )
+
 		bSizer1011.Add( self.txt_num_clas_next_phase, 2, wx.ALL, 5 )
 
 

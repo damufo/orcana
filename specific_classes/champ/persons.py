@@ -152,8 +152,10 @@ from persons order by surname, name '''
             (_('Entity ID'), 'C', 65),
             (_('Entity name'), 'C', 100),
             (_('License ID'), 'C', 75),
-            (_('Inscriptions'), 'C', 75),
-            (_('Results'), 'C', 75),
+            (_('Inscriptions I.'), 'C', 75),
+            (_('Results I.'), 'C', 75),
+            (_('Inscriptions R.'), 'C', 75),
+            (_('Results R.'), 'C', 75),
             )
     @property
     def list_values(self):
@@ -174,6 +176,8 @@ from persons order by surname, name '''
                 i.license,
                 i.count_inscriptions,
                 i.count_results,
+                i.count_inscriptions_relays,
+                i.count_results_relays,
                 ))
         return  tuple(values)
 
@@ -191,9 +195,11 @@ from persons order by surname, name '''
             'entity.short_name',
             'license',
             'count_inscriptions',
-            'count_results'
+            'count_results',
+            'count_inscriptions_relays',
+            'count_results_relays',
             )
-        order_cols = range(8)
+        order_cols = range(11)
         if 'num_col' in list(kwargs.keys()):
             if kwargs['num_col'] in order_cols:
                 field = cols[kwargs['num_col']]
