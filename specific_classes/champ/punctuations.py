@@ -75,7 +75,8 @@ entity_to_point_rel from punctuations order by name '''
             (_('Name'), 'L', 75),
             (_('P. Ind.'), 'L', 150), 
             (_('P. Rel.'), 'L', 150),
-
+            (_('Entity to Point Ind.'), 'L', 150), 
+            (_('Entity to Point Rel.'), 'L', 150), 
             )
 
     @property
@@ -89,6 +90,8 @@ entity_to_point_rel from punctuations order by name '''
                 i.name,
                 i.points_ind,
                 i.points_rel,
+                i.entity_to_point_ind,
+                i.entity_to_point_rel,
                 ))
         return  tuple(values)
 
@@ -101,8 +104,10 @@ entity_to_point_rel from punctuations order by name '''
             'name',
             'points_ind',
             'points_rel',
+            'entity_to_point_ind',
+            'entity_to_point_rel',
             )
-        order_cols = range(3)
+        order_cols = range(5)
         if 'num_col' in list(kwargs.keys()):
             if kwargs['num_col'] in order_cols:
                 field = cols[kwargs['num_col']]

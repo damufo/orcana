@@ -18,6 +18,7 @@ class Interactor(object):
         view.btn_web_forms_files.Bind(wx.EVT_BUTTON, self.on_web_forms_files)
         view.btn_fiarna.Bind(wx.EVT_BUTTON, self.on_fiarna)
         view.btn_classifications.Bind(wx.EVT_BUTTON, self.on_classifications)
+        view.btn_punctuations.Bind(wx.EVT_BUTTON, self.on_punctuations)
 
     def go_back(self, event):
         self.presenter.go_back()
@@ -42,3 +43,6 @@ class Interactor(object):
 
     def on_classifications(self, event):
         self.presenter.load_classifications()
+
+    def on_punctuations(self, event):
+        self.presenter.load_punctuations()

@@ -27,18 +27,22 @@ class Punctuation(object):
         """
         if self.punctuation_id:
             sql = '''
-update punctuations set  name=?, points_ind=?, points_rel=?
+update punctuations set  name=?, points_ind=?, points_rel=?, 
+entity_to_point_ind=?, entity_to_point_rel=?
 where punctuation_id=?'''
-            values = ((self.name, self.points_ind, self.points_rel),)
+            values = ((self.name, self.points_ind, self.points_rel, 
+                    self.entity_to_point_ind, self.entity_to_point_rel,
+                    self.punctuation_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
         else:
             sql = '''
-INSERT INTO punctuations (name, points_ind, points_rel)
-VALUES(?, ?, ?) '''
-            values = ((self.name, self.points_ind, self.points_rel),)
+INSERT INTO punctuations (name, points_ind, points_rel, entity_to_point_ind,
+entity_to_point_rel)
+VALUES(?, ?, ?, ?, ?) '''
+            values = ((self.name, self.points_ind, self.points_rel,
+                    self.entity_to_point_ind, self.entity_to_point_rel),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.punctuation_id = self.config.dbs.last_row_id
-            self.champ.punctuations.append(self)
 
     def delete(self):
         if self.punctuation_id:
@@ -57,3 +61,13 @@ select punctuation_id from punctuations where punctuation_id=?; '''
         if res:
             uses = len(res)
         return uses
+
+    def validade_points_list(self, points_list):
+        points_list = points_list.replace(' ', '')
+        points_list = [int(i) for i in points_list.split(',')
+                                if i.isdigit()]
+        if not points_list:
+            points_list_txt = ''
+        else:
+            points_list_txt = ', '.join(["%s" % i for i in points_list])
+        return points_list_txt

@@ -608,6 +608,7 @@ select event_code from events where event_id =
                                 puntuados_club[i.entity.entity_id] = 1
                 else:
                     points = points.split(',')
+                    points = [i.strip() for i in points]
                     points = [int(i) for i in points if i.isdigit()]
                     puntuados_club = {} #codclub: numero de puntuado
                     posicion_puntos = 0

@@ -225,9 +225,7 @@ class Champ(object):
         return values
 
     def validade_pool_lanes_sort(self, pool_lanes_sort):
-        pool_lanes = []
         pool_lanes_sort = pool_lanes_sort.replace(' ', '')
-        pool_lanes_cleaned = []
         pool_lanes = [int(i) for i in pool_lanes_sort.split(',')
                                 if i.isdigit()]
         # remove duplicates preserving order
@@ -365,6 +363,8 @@ sum(points) desc;          '''
             pos = 1
             entity_points_sorted = dict(sorted(entity_points.items(), key=lambda item: item[1], reverse=True))  # Sort by points
             for entity_id, points in entity_points_sorted.items():
+                if not entity_id:
+                    print('dd')
                 entity = entities_dict[entity_id]
                 if points == last_points:
                     line_pos = ""

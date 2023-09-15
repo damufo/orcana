@@ -54,11 +54,17 @@ class Presenter(object):
         from modules.classifications import p_classifications
         p_classifications.create(parent=self, classifications=self.model.champ.classifications)
 
+    def load_punctuations(self):
+        msg = self.save_params()
+        if not msg:
+            from modules.punctuations import p_punctuations
+            p_punctuations.create(parent=self, punctuations=self.model.champ.punctuations)
+
     def load_fiarna(self):
         from modules.fiarna import p_fiarna
         p_fiarna.create(parent=self, champ=self.model.champ)
 
-    def go_back(self):
+    def save_params(self):
         values = self.view.get_values()
         msg = None
         pool_lanes_sort_validated = self.model.champ.validade_pool_lanes_sort(values['champ_pool_lanes_sort'])
@@ -99,4 +105,9 @@ class Presenter(object):
                 if self.view.msg.question(message=message):
                     self.model.champ.phases.set_champ_pool_lanes_sort()
             self.model.champ.params.save()
+        return msg
+
+    def go_back(self):
+        msg = self.save_params()
+        if not msg:
             self.parent.load_me()
