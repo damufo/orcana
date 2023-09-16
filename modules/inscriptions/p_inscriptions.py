@@ -135,11 +135,19 @@ class Presenter(object):
     def delete(self):
         idxs = self.view.lsc_plus.get_sel_pos_items()
         if idxs:
-            message = _("Are you sure that delete selected items?\n"
-                "If has results, they are deleted.")
-            if self.view.msg.question(message=message):
-                self.model.inscriptions.delete_items(idxs)
-                self.view.lsc_plus.delete_items(idxs)
+            msg = False
+            for i in idxs:
+                if self.model.inscriptions[i].result and self.model.inscriptions[i].result.official:
+                    msg = _("Is not possible delete a official result.")
+                    break
+            if msg:
+                self.view.msg.warning(message=msg)
+            else:
+                message = _("Are you sure that delete selected items?\n"
+                    "If has results, they are deleted.")
+                if self.view.msg.question(message=message):
+                    self.model.inscriptions.delete_items(idxs)
+                    self.view.lsc_plus.delete_items(idxs)
         else:
             self.view.msg.warning(message=_("No item selected."))
 

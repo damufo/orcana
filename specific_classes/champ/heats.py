@@ -146,7 +146,7 @@ from heats where phase_id=? order by pos '''
                 heat.phase.progression,
                 str(heat.pos),
                 heat.official and '√' or '',
-                heat.start_time and heat.start_time or heat.phase.session.xtime,
+                heat.start_time and heat.start_time or heat.phase.session.time,
                 ))
         return tuple(values)
 

@@ -42,9 +42,9 @@ class Champ(object):
 
     @property
     def file_name(self):
-        xdate = self.sessions[0].xdate.replace('-', '')
+        date = self.sessions[0].date.replace('-', '')
         file_name = '{}_{}_{}'.format(
-            xdate,
+            date,
             self.params['champ_name'],
             self.params['champ_venue'])
         return utils.get_valid_filename(file_name.lower())

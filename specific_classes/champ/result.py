@@ -33,6 +33,10 @@ class Result(object):
         return self.heat.event
 
     @property
+    def official(self):
+        return self.heat.official
+
+    @property
     def person(self):
         return self.inscription.person
 

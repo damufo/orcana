@@ -116,15 +116,15 @@ class Phase(object):
 
     @property
     def date_time(self):
-        # FIXME xtime debería ter sempre un valor válido e correcto de 8 díxitos
+        # FIXME time debería ter sempre un valor válido e correcto de 8 díxitos
         # tamén podería ser un valor de 5 díxitos ó que sempre se lle engadirían os segundos
-        if len(self.session.xtime) == 8:
-            xtime = self.session.xtime
-        elif len(self.session.xtime) == 5:
-            xtime = "{}:00".format(self.session.xtime)
-        elif len(self.session.xtime) < 5:
-            xtime = "00:00:00"
-        return '{} {}'.format(self.session.xdate, xtime)
+        if len(self.session.time) == 8:
+            time = self.session.time
+        elif len(self.session.time) == 5:
+            time = "{}:00".format(self.session.time)
+        elif len(self.session.time) < 5:
+            time = "00:00:00"
+        return '{} {}'.format(self.session.date, time)
 
     @property
     def file_name(self):
@@ -854,8 +854,8 @@ select event_code from events where event_id =
             #         result_phase_category.results_phase_category.phase_category.category.code_gender,
             #         i.heat.phase.progression)
             #     phase_date_time = '{} {}'.format(
-            #         i.heat.phase.session.xdate,
-            #         i.heat.phase.session.xtime)
+            #         i.heat.phase.session.date,
+            #         i.heat.phase.session.time)
             #     # d.insert_title_1(text=event_title, alignment=0)
             #     lines.append([phase_title, phase_date_time])
             #     add_phase_title(lines)

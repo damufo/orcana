@@ -238,9 +238,9 @@ from relays r left join categories c on r.category_id=c.category_id"""
 # select gendercode, eventcode, categorycode, phasecode, phaseorder,
 # sessionorder, startdate from phases p inner join events on  """
         sql = """
-select p.phase_id, e.gender_id, e.event_code, p.progression, p.pos, e.pos, s.xdate ||' '|| s.xtime 
+select p.phase_id, e.gender_id, e.event_code, p.progression, p.pos, e.pos, s.date ||' '|| s.time 
 from (phases p inner join events e on p.event_id=e.event_id) inner join 
-sessions s on s.session_id=p.session_id order by xdate, xtime, p.pos;  """
+sessions s on s.session_id=p.session_id order by s.date, s.time, p.pos;  """
         res = self.config.dbs.exec_sql(sql=sql)
         (PHASE_ID, GENDER_ID, EVENT_ID,
          PHASE_PROGRESSION, PHASE_ORDER, ORDER, DATE) = range(7)

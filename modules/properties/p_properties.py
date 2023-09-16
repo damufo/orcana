@@ -60,6 +60,12 @@ class Presenter(object):
             from modules.punctuations import p_punctuations
             p_punctuations.create(parent=self, punctuations=self.model.champ.punctuations)
 
+    def load_sessions(self):
+        msg = self.save_params()
+        if not msg:
+            from modules.sessions import p_sessions
+            p_sessions.create(parent=self, sessions=self.model.champ.sessions)
+
     def load_fiarna(self):
         from modules.fiarna import p_fiarna
         p_fiarna.create(parent=self, champ=self.model.champ)

@@ -137,8 +137,15 @@ class Presenter(object):
                 message=_("Is not possible sort phase when is official.")
                 self.view.msg.warning(message=message)
             else:
-                phase.gen_heats()
-                self.view.lsc_plus.update_item(idx)
+                sort = True
+                message = _(
+                    "This phase has heats."
+                    "\nAre you sure that sort and delete previous heats and results.")
+                if not self.view.msg.question(message=message):
+                    sort = False
+                if sort:
+                    phase.gen_heats()
+                    self.view.lsc_plus.update_item(idx)
 
     def start_list(self):
         idxs = self.view.lsc_plus.get_sel_pos_items()

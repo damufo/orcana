@@ -78,7 +78,7 @@ class Phases(list):
 select phase_id, pos, event_id, pool_lanes_sort, progression, session_id, 
 num_clas_next_phase, parent_id
 from phases p 
-order by (select s.xdate || " " ||s.xtime from sessions s where s.session_id=p.session_id), pos; '''
+order by (select s.date || " " ||s.time from sessions s where s.session_id=p.session_id), pos; '''
         res = self.config.dbs.exec_sql(sql=sql)
         (PHASE_ID, POS, EVENT_ID, POOL_LANES_SORT, PROGRESSION, SESSION_ID,
         NUM_CLAS_NEXT_PHASE, PARENT_ID) = range(8)

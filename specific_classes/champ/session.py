@@ -10,15 +10,40 @@ class Session(object):
             self.session_id = kwargs['session_id']
         else:
             self.session_id = 0
-        if 'xdate' in kwargs.keys():
-            self.xdate = kwargs['xdate']
+        if 'date' in kwargs.keys():
+            self.date = kwargs['date']
         else:
-            self.xdate = ''
-        if 'xtime' in kwargs.keys():
-            self.xtime = kwargs['xtime']
+            self.date = ''
+        if 'time' in kwargs.keys():
+            self.time = kwargs['time']
         else:
-            self.xtime = ''
+            self.time = ''
 
     @property
     def date_time(self):
-        return "{} {}".format(self.xdate, self.xtime)
+        return "{} {}".format(self.date, self.time)
+
+    def save(self):
+        """
+        Save
+        """
+        if self.session_id:
+            sql = '''
+update sessions set  'date'=?, 'time'=? where session_id=?'''
+            values = ((self.date, self.time,
+                self.session_id),)
+            self.config.dbs.exec_sql(sql=sql, values=values)
+        else:
+            sql = '''
+INSERT INTO sessions ('date', 'time') VALUES(?, ?) '''
+            values = ((self.date, self.time, ), )
+            self.config.dbs.exec_sql(sql=sql, values=values)
+            self.session_id = self.config.dbs.last_row_id
+
+    def delete(self):
+        if self.session_id:
+            sql =  ("delete from sessions where session_id=?")
+            values = ((self.session_id, ), )
+            self.config.dbs.exec_sql(sql=sql, values=values)
+            self.session_id = 0
+            self.sessions.remove(self)
