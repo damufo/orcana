@@ -262,7 +262,7 @@ class ReportBase(object):
             table_formated.append(line)
         return table_formated
 
-    def insert_table(self, table, colWidths=None, rowHeights=None, style=None, pagebreak=False, alignment=None):
+    def insert_table(self, table, colWidths=None, rowHeights=None, style=None, pagebreak=False, alignment=None, keepWithNext=False):
         """
         aligment = [LEFT|RIGHT|CENTER]
         """
@@ -278,6 +278,7 @@ class ReportBase(object):
             t = Table(table, colWidths=colWidths, rowHeights=rowHeights, style=style)
             if alignment:
                 t.hAlign = alignment
+            t.keepWithNext = keepWithNext
             self.story.append(t)
         
     def my_first_page(self, canvas, doc):
