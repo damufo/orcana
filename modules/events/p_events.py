@@ -46,7 +46,7 @@ class Presenter(object):
             self.view.msg.warning(message=_("Only one item can be selected."))
         else:
             idx = idxs[0]
-            if idx == (len(self.model.events)-1):
+            if idx == (len(self.model.events) - 1):
                 self.view.msg.warning(_("This is already the last element."))
             else:
                 self.model.events.move_down(idx)

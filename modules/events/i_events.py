@@ -20,10 +20,6 @@ class Interactor(object):
 
     def go_back(self, event):
         self.presenter.go_back()
-        # if event.CanVeto():
-            # event.Veto()
-            # return
-
 
     def move_down(self, event):
         self.presenter.move_down()
