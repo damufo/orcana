@@ -31,7 +31,7 @@ class View(PhaseCategoriesCategoriesAdd):
         # self.lst_categories.Set(categories)
         values = [
             (_("Punctuate"), "PUNC"),
-            (_("Classificate"), "CLAS"),
+            (_("Classify"), "CLAS"),
             ("", ""),
         ]
         self.view_plus.cho_load(choice=self.cho_action,
@@ -39,31 +39,3 @@ class View(PhaseCategoriesCategoriesAdd):
                                 default="")
     def get_values(self):
         return self.view_plus.cho_get(choice=self.cho_action)
-# class View2(Prefs):
-
-#     def __init__(self, parent):
-#         Prefs.__init__(self, parent)
-#         self.SetName('prefs')
-#         self.view_plus = ViewPlus(self)
-#         self.msg = Messages(self)
-        
-    # def set_values(self, categories):
-    #     self.lst_categories.Set(categories)
-    #     values = [
-    #         "PUNC", "Punctuate"
-    #         "CLAS", "Classificate"
-    #         "", ""
-    #     ]
-    #     self.view_plus.cho_load(choice=self.cho_action,
-    #                             values=values,
-    #                             default="")
-
-    # def select_categories(self, categories_selected):
-    #     for i in categories_selected:
-    #         idx = self.lst_categories.FindString(i)
-    #         self.lst_categories.Select(idx)
-
-    # def get_selections(self):
-    #     selections = self.lst_categories.GetSelections()
-    #     return selections
-
