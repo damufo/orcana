@@ -32,7 +32,7 @@ class Presenter(object):
         values  = self.view.get_values()
         msg = None
         if not entity: 
-            msg = _('No entity selected.')
+            msg = _('Set a entity.')
             self.view.txt_entity_name.SetFocus()
         elif not values['relay_name']:
             msg = _('Set a relay name.')
