@@ -11,8 +11,8 @@ import wx
 import wx.xrc
 from .custom_grid import CustomGrid
 
-# import gettext
-# _ = gettext.gettext
+import gettext
+_ = gettext.gettext
 
 ###########################################################################
 ## Class Heats
@@ -72,7 +72,7 @@ class Heats ( wx.Panel ):
 
 		bSizer11.Add( self.btn_results, 1, wx.EXPAND|wx.ALL, 5 )
 
-		self.btn_classifications = wx.Button( self, wx.ID_ANY, _(u"&Classifications"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_classifications = wx.Button( self, wx.ID_ANY, _(u"Cla&ssifications"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_classifications.SetToolTip( _(u"Generate clasifications report") )
 
 		bSizer11.Add( self.btn_classifications, 0, wx.ALL, 5 )

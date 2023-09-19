@@ -142,7 +142,7 @@ class View(Heats):
                     self.grd_results.SetCellValue(lane, 0, result.relay.name)
                     self.grd_results.SetCellValue(lane, 1, str(result.relay.entity.short_name))
                     if result.relay.has_set_members:
-                        has_set_members = '√'
+                        has_set_members = '√'  # square root
                     else:
                         has_set_members = ''
                     self.grd_results.SetCellValue(lane, col_members, has_set_members)
