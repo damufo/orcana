@@ -104,25 +104,25 @@ from classifications order by pos '''
     #     del self[:]
     #     self.extend(self_sort)
 
-    # def move_down(self, pos):
-    #     if pos < (len(self)-1):
-    #         self[pos], self[pos+1] = self[pos+1], self[pos]
-    #         self.update_items_on_dbs([pos, pos+1])
+    def move_down(self, pos):
+        if pos < (len(self)-1):
+            self[pos], self[pos+1] = self[pos+1], self[pos]
+            self.update_items_on_dbs([pos, pos+1])
 
-    # def move_up(self, pos):
-    #     if pos > 0:
-    #         self[pos], self[pos-1] = self[pos-1], self[pos]
-    #         self.update_items_on_dbs([pos, pos-1])
-   
-    # def update_items_on_dbs(self, items=[]):
-    #     '''
-    #     for year add/substract and up/down
-    #     '''
-    #     if not items:
-    #         items = range(len(self))
-    #     for pos in items:
-    #         i = self[pos]
-    #         i.save()
+    def move_up(self, pos):
+        if pos > 0:
+            self[pos], self[pos-1] = self[pos-1], self[pos]
+            self.update_items_on_dbs([pos, pos-1])
+
+    def update_items_on_dbs(self, items=None):
+        '''
+        Update position
+        '''
+        if not items:
+            items = range(len(self))
+        for pos in items:
+            i = self[pos]
+            i.save()
 
     def choices(self, add_empty=False):
         '''
