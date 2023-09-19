@@ -140,7 +140,7 @@ class Presenter(object):
                 sort = True
                 message = _(
                     "This phase has heats."
-                    "\nAre you sure that sort and delete previous heats and results.")
+                    "\nAre you sure that sort and delete current heats and results?")
                 if not self.view.msg.question(message=message):
                     sort = False
                 if sort:

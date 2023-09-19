@@ -107,7 +107,7 @@ class Presenter(object):
             self.model.champ.params.set_value('champ_venue', values['champ_venue'])
 
             if 'champ_pool_lanes_sort' in self.model.champ.params.changed:
-                message = _("Do you want to establish this ordering of the estates in all phases?")
+                message = _("Do you want to establish this lanes sort for all phases?")
                 if self.view.msg.question(message=message):
                     self.model.champ.phases.set_champ_pool_lanes_sort()
             self.model.champ.params.save()
