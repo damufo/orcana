@@ -108,7 +108,7 @@ from categories order by category_code, gender_id '''
                 str(i.from_age),
                 str(i.to_age), 
                 i.punctuation_name, 
-                i.show_report and _('S') or '', 
+                i.show_report and '√' or '',  # square root 
                 ))
         return  tuple(values)
 

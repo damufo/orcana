@@ -131,7 +131,7 @@ order by (select s.date || " " ||s.time from sessions s where s.session_id=p.ses
                     i.progression,
                     i.session.date_time,
                     i.categories_text,
-                    i.official and _('S') or "",
+                    i.official and '√' or "",
                     str(len(i.heats)),
                     ))
         return tuple(values)
