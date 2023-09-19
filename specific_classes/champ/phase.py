@@ -396,6 +396,157 @@ select event_code from events where event_id =
                 colWidths=col_widths,
                 rowHeights=.8*cm,
                 style=style_title,
+                pagebreak=False,
+                keepWithNext=True)
+
+        def add_heat_title(lines):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 9),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['100%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.8*cm,
+                style=style_title,
+                pagebreak=False,
+                keepWithNext=True)
+
+        def add_result(lines, keep_with_next):
+            style_result = [
+                ('FONTSIZE',(0,0),(-1,-1), 8),
+                ('ALIGN',(2,0),(2,-1), 'LEFT'),
+                ('ALIGN',(5,0),(5,-1), 'RIGHT'),  #mark
+                ('ALIGN',(6,0),(6,-1), 'RIGHT'),  #points
+                ('FONT', (2,0),(2,-1), 'Open Sans Bold'),
+                # ('FONT', (5,0),(5,-1), 'Open Sans Bold'),
+                # ('FONT', (6,0),(6,-1), 'Open Sans Bold'),
+                ]
+            style_result = style + style_result
+            col_widths = ['4%', '10%', '40%', '6%', '20%', '10%', '10%']
+            row_heights = (1.5*cm, 2.5*cm)
+            row_heights = [.8*cm] * len(lines)
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.4*cm,
+                style=style_result,
+                pagebreak=False,
+                keepWithNext=keep_with_next)
+
+        def add_relay_members(lines, keep_with_next):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                # ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 7),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['86%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.4*cm,
+                style=style_title,
+                pagebreak=False,
+                alignment='RIGHT',
+                keepWithNext=keep_with_next)
+
+        phase = self
+        # add_phase_title([[phase.long_name], ])
+        add_phase_title(((phase.long_name, phase.date_time[:-3]), ))
+        heats = [heat for heat in self.heats if heat.phase == phase]
+        count_heats = len(heats)
+        inscriptions =  phase.inscriptions
+        for heat in heats:
+            heat_title = _('Heat {} of {}').format(heat.pos, count_heats)
+            add_heat_title([[heat_title], ])
+            # heat.results.load_items_from_dbs()
+            # FIXME: poñer isto na clase resultados
+            # crear unha lista de inscricións con todas as inscricións
+            # e poñela en champ
+            for result in heat.results:
+                time_start_list = '{} {}{}'.format(
+                    result.inscription.mark_time,
+                    result.inscription.pool_length,
+                    result.inscription.chrono_type)
+                equated_time = result.equated_time
+
+
+                line_result = [[
+                        str(result.lane), 
+                        'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
+                        'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
+                        'X' not in result.event.code.upper() and result.person.year[2:] or "", 
+                        'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
+                        time_start_list, equated_time],]
+
+                members = False
+                if result.ind_rel == 'R':
+                    # if not result.relay.relay_members:
+                    #     result.relay.relay_members.load_items_from_dbs()
+                    members = '; '.join([i.person.full_name for i in result.relay.relay_members])
+
+                if result == heat.results[-1]:
+                    if not members:
+                        add_result(lines=line_result, keep_with_next=False)
+                    else:
+                        add_result(lines=line_result, keep_with_next=True)
+                        add_relay_members([[members], ], keep_with_next=False)
+                else:
+                    add_result(lines=line_result, keep_with_next=True)
+                    if members:
+                        add_relay_members([[members], ], keep_with_next=True)
+                
+                
+
+
+        if xerar:
+            d.build_file()
+
+        print('fin')
+
+    def report_start_list_pdf_seg(self, d=False):
+        xerar = False
+        if not d:
+            file_name = _("start_list_{}_{}.pdf").format(
+                self.event.file_name, self.progression.lower())
+            d =  self.init_report(file_name=file_name)
+            xerar = True
+
+        style = [
+            ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
+            # ('FONTSIZE',(0,0),(-1,-1), 8),
+            ('ALIGN',(0,0),(-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'BOTTOM'), 
+            # ('TOPPADDING', (0,0), (-1,-1), 0),
+            ('LEFTPADDING', (0,0), (-1,-1), 3),
+            ('RIGHTPADDING', (0,0), (-1,-1), 3),
+            # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
+            # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
+            ]
+
+        def add_phase_title(lines):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('ALIGN',(1,0),(-1,-1), 'RIGHT'),
+                ('FONT', (1, 0), (-1, -1), 'Open Sans Regular'),
+                ('FONTSIZE', (1, 0), (-1, -1), 8),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['80%', '20%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.8*cm,
+                style=style_title,
                 pagebreak=False)
 
         def add_heat_title(lines):
@@ -581,79 +732,82 @@ select event_code from events where event_id =
 
             if results_phase_category and phase_category.action == 'PUNC':  # puntuate this category
                 print("aquí o código para puntuar os resultados da categoría")
-
-                pos_cat = 0
-                pos_points = 1
-                entity_punctuated = {} #entity: count punctuated
-                if self.event.ind_rel == 'R':
-                    points = phase_category.category.punctuation.points_rel
-                    entity_to_point = phase_category.category.punctuation.entity_to_point_rel
-                else:
-                    points = phase_category.category.punctuation.points_ind
-                    entity_to_point = phase_category.category.punctuation.entity_to_point_ind
-
-                if points == "FINA":
-                    puntuados_club = {} #codclub: numero de puntuado
-                    for i in results:
-                        result_phase_category = phase_category.results_phase_category.item_blank
-                        result_phase_category.result = i
-                        if i.entity.entity_id in puntuados_club:
-                            # ten en conta cantos puntuan por club
-                            if  entity_to_point > puntuados_club[i.entity.entity_id]:
-                                puntos = self.results.get_fina_points(idx=x)                         
-                                puntuados_club[i.entity.entity_id] = puntuados_club[i.entity.entity_id] + 1
-                        else:
-                            if  entity_to_point > 0:
-                                puntos = self.results.get_fina_points(idx=x)                         
-                                puntuados_club[i.entity.entity_id] = 1
-                else:
-                    points = points.split(',')
-                    points = [i.strip() for i in points]
-                    points = [int(i) for i in points if i.isdigit()]
-                    puntuados_club = {} #codclub: numero de puntuado
-                    posicion_puntos = 0
-                    repartir = []
-                    last_pos = -1
-                    for i in results_phase_category:
-                        if i.result.issue_id:  # se ten incidencia non puntúa
-                            break
-                        if not i.result.inscription.score:
-                            i.points = 0.0
-                            continue
-                        puntua = False
-                        # ten en conta cantos puntúan por entidade
-                        if i.result.entity.entity_id in puntuados_club:
-                            if  entity_to_point > puntuados_club[i.result.entity.entity_id]:
-                                puntuados_club[i.result.entity.entity_id] += 1
-                                puntua = True
-                        else:
-                            if  entity_to_point:  # > 0
-                                puntuados_club[i.result.entity.entity_id] = 1
-                                puntua = True
-                        if puntua:
-                            # Mira se quedan puntos a repartir
-                            if posicion_puntos < len(points):
-                                i.points = float(points[posicion_puntos])
-                                posicion_puntos += 1
-                            else:
+                if phase_category.category.punctuation:
+                    pos_cat = 0
+                    pos_points = 1
+                    entity_punctuated = {} #entity: count punctuated
+                    if self.event.ind_rel == 'R':
+                        points = phase_category.category.punctuation.points_rel
+                        entity_to_point = phase_category.category.punctuation.entity_to_point_rel
+                    else:
+                        points = phase_category.category.punctuation.points_ind
+                        entity_to_point = phase_category.category.punctuation.entity_to_point_ind
+                    if points == "FINA":
+                        puntuados_club = {} #codclub: numero de puntuado
+                        for i in results_phase_category:
+                            if i.result.issue_id:  # se ten incidencia non puntúa
+                                break
+                            if not i.result.inscription.score:
                                 i.points = 0.0
-                        if last_pos == i.pos and puntua:
-                            repartir.append(i)
-                        elif last_pos != i.pos:
+                                continue
+                            puntua = False
+                            if i.result.entity.entity_id in puntuados_club:
+                                # ten en conta cantos puntuan por club
+                                if  entity_to_point > puntuados_club[i.result.entity.entity_id]:
+                                    puntos = self.results.get_fina_points(idx=x)                         
+                                    puntuados_club[i.result.entity.entity_id] = puntuados_club[i.result.entity.entity_id] + 1
+                            else:
+                                if  entity_to_point > 0:
+                                    puntos = self.results.get_fina_points(idx=x)                         
+                                    puntuados_club[i.result.entity.entity_id] = 1
+                    else:
+                        points = points.split(',')
+                        points = [i.strip() for i in points]
+                        points = [int(i) for i in points if i.isdigit()]
+                        puntuados_club = {} #codclub: numero de puntuado
+                        posicion_puntos = 0
+                        repartir = []
+                        last_pos = -1
+                        for i in results_phase_category:
+                            if i.result.issue_id:  # se ten incidencia non puntúa
+                                break
+                            if not i.result.inscription.score:
+                                i.points = 0.0
+                                continue
+                            puntua = False
+                            # ten en conta cantos puntúan por entidade
+                            if i.result.entity.entity_id in puntuados_club:
+                                if  entity_to_point > puntuados_club[i.result.entity.entity_id]:
+                                    puntuados_club[i.result.entity.entity_id] += 1
+                                    puntua = True
+                            else:
+                                if  entity_to_point:  # > 0
+                                    puntuados_club[i.result.entity.entity_id] = 1
+                                    puntua = True
+                            if puntua:
+                                # Mira se quedan puntos a repartir
+                                if posicion_puntos < len(points):
+                                    i.points = float(points[posicion_puntos])
+                                    posicion_puntos += 1
+                                else:
+                                    i.points = 0.0
+                            if last_pos == i.pos and puntua:
+                                repartir.append(i)
+                            elif last_pos != i.pos:
+                                if len(repartir) > 1:
+                                    puntos_a_repartir = sum([i.points for i in repartir])
+                                    for i in repartir:
+                                        i.points = round(float(puntos_a_repartir) / len(repartir), 1)
+                                if puntua:
+                                    repartir = [i, ]
+                                else:
+                                    repartir = []
+                            last_pos = i.pos
+                        else:
                             if len(repartir) > 1:
                                 puntos_a_repartir = sum([i.points for i in repartir])
                                 for i in repartir:
-                                    i.points = round(float(puntos_a_repartir) / len(repartir), 1)
-                            if puntua:
-                                repartir = [i, ]
-                            else:
-                                repartir = []
-                        last_pos = i.pos
-                    else:
-                        if len(repartir) > 1:
-                            puntos_a_repartir = sum([i.points for i in repartir])
-                            for i in repartir:
-                                i.points = round(float(puntos_a_repartir) / len(repartir), 2)
+                                    i.points = round(float(puntos_a_repartir) / len(repartir), 2)
 
             elif results and phase_category.action == 'CLAS':  # clasifica para unha seguite phase
                 #TODO: Facer este códito
