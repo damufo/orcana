@@ -31,6 +31,38 @@ class Presenter(object):
         self.view.close()
         self.parent.parent.load_properties()
 
+    def move_down(self):
+        idxs = self.view.lsc_plus.get_sel_pos_items()
+        if len(idxs) < 1:
+            self.view.msg.warning(message=_("No item selected."))
+        elif len(idxs) > 1:
+            self.view.msg.warning(message=_("Only one item can be selected."))
+        else:
+            idx = idxs[0]
+            if idx == (len(self.model.classifications) - 1):
+                self.view.msg.warning(_("This is already the last element."))
+            else:
+                self.model.classifications.move_down(idx)
+                self.view.lsc_plus.update_item(idx)
+                self.view.lsc_plus.update_item(idx + 1)
+                self.view.lsc_plus.set_sel_pos_item(idx + 1)
+
+    def move_up(self):
+        idxs = self.view.lsc_plus.get_sel_pos_items()
+        if len(idxs) < 1:
+            self.view.msg.warning(message=_("No item selected."))
+        elif len(idxs) > 1:
+            self.view.msg.warning(message=_("Only one item can be selected."))
+        else:
+            idx = idxs[0]
+            if idx == 0:
+                self.view.msg.warning(_("This is already the first element."))
+            else:
+                self.model.classifications.move_up(idx)
+                self.view.lsc_plus.update_item(idx)
+                self.view.lsc_plus.update_item(idx - 1)
+                self.view.lsc_plus.set_sel_pos_item(idx - 1)
+ 
     def add(self):
         classifications = self.model.classifications
         classification = classifications.item_blank
