@@ -70,7 +70,7 @@ class MainFrame(wx.Frame):
         #     self.main_sizer.Destroy()
         self.main_sizer = wx.BoxSizer( wx.VERTICAL )
         self.panel = panel
-        self.main_sizer.Add( self.panel, 1, wx.EXPAND |wx.ALL, 5 )
+        self.main_sizer.Add( self.panel, 1, wx.EXPAND |wx.ALL, 0 )
         self.SetSizer(self.main_sizer)
         # self.Refresh()       
         self.Layout()
