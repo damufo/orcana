@@ -29,41 +29,62 @@ class Presenter(object):
     def acept(self):
         person = self.model.person
         inscription = self.model.inscription
-        if person:
-            if inscription.is_inscript(person):
-                self.view.msg.warning("This person is already inscripted")
-                self.view.txt_person_full_name.SetFocus()
-            else:
-
-                values = self.view.get_values()
-                msg = None
-                if not values['mark_hundredth']:
-                    msg = 'Set a mark.'
-                    self.view.txt_mark.SetFocus()
-                elif not values['chrono_type']:
-                    msg = 'Set a chrono type.'
-                    self.view.cho_chrono_type.SetFocus()
-                elif not values['pool_length']:
-                    msg = 'Set a pool length.'
-                    self.view.cho_pool_length.SetFocus()
-                if msg:
-                    self.view.msg.warning(msg)
-                else:
-                    inscription.person = person
-                    inscription.mark_hundredth = values['mark_hundredth']
-                    inscription.pool_length = values['pool_length']
-                    inscription.chrono_type = values['chrono_type']
-                    inscription.date = values['date']
-                    inscription.venue = values['venue']
-                    inscription.rejected = values['rejected']
-                    inscription.exchanged = values['exchanged']
-                    inscription.score = values['score']
-                    inscription.classify = values['classify']
-                    self.model.inscription.save()
-                    self.view.view_plus.stop()
+        phase = self.model.phase
+        if inscription.result:
+            message = _("Is not possible edit a inscription with a result.")
+            self.view.msg.warning(message=message)
         else:
-            self.view.msg.warning("No person selected.")
-            self.view.txt_person_full_name.SetFocus()
+            values = self.view.get_values()
+            msg = None
+            
+            if not person:
+                msg =_("Set a person.")
+                self.view.txt_person_full_name.SetFocus()
+            elif not phase:
+                msg = _('Set a phase.')
+                self.view.cho_phase_id.SetFocus()
+            elif self.model.inscription.is_inscript(
+                    person_id=person.person_id,
+                    phase_id=phase.phase_id):
+                msg = _('This person already inscript in this phase.')
+            elif not values['mark_hundredth']:
+                msg = _('Set a mark.')
+                self.view.txt_mark.SetFocus()
+            elif not values['chrono_type']:
+                msg = _('Set a chrono type.')
+                self.view.cho_chrono_type.SetFocus()
+            elif not values['pool_length']:
+                msg = _('Set a pool length.')
+                self.view.cho_pool_length.SetFocus()
+            if msg:
+                self.view.msg.warning(msg)
+            else:
+                inscription.person = person
+                # If change phase move to new phase
+                if inscription.inscription_id and inscription.phase != phase:
+                    inscription.inscriptions.remove(inscription)
+                inscription.inscriptions = phase.inscriptions
+                # inscription.phase = phase
+                inscription.person = person
+                inscription.mark_hundredth = values['mark_hundredth']
+                inscription.pool_length = values['pool_length']
+                inscription.chrono_type = values['chrono_type']
+                inscription.date = values['date']
+                inscription.venue = values['venue']
+                inscription.rejected = values['rejected']
+                inscription.exchanged = values['exchanged']
+                inscription.score = values['score']
+                inscription.classify = values['classify']
+                if inscription not in phase.inscriptions:
+                    phase.inscriptions.append(inscription)
+                    person.inscriptions.append(inscription)
+                self.model.inscription.save()
+                self.view.view_plus.stop()
+
+    def phase_id_change(self):
+        # self.model.inscription.person.entity_code = ""
+        phase_id = self.view.view_plus.cho_get(self.view.cho_phase_id)
+        self.model.phase = self.model.inscription.champ.phases.get_phase(phase_id)
 
     def person_full_name(self):
         # self.model.inscription.person.entity_code = ""

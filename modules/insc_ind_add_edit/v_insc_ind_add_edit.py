@@ -21,7 +21,7 @@ class View(InscIndAddEdit):
         self.txt_mark_plus = TxtMark(txt=self.txt_mark)
 
     def set_values(self, inscription):
-        self.lbl_event_name.SetLabel(inscription.event.name)
+
         if inscription.person:
             self.txt_person_full_name.SetValue(inscription.person.full_name)
             self.lbl_license.SetLabel(inscription.person.license)
@@ -49,8 +49,29 @@ class View(InscIndAddEdit):
         self.chb_exchanged.SetValue(inscription.exchanged)
         self.chb_score.SetValue(inscription.score)
         self.chb_classify.SetValue(inscription.classify)
-        self.txt_person_full_name.SetFocus()
         self.set_classify()
+
+        if 'person' in inscription.lock:
+            self.lbl_phase_name.Hide()
+            self.txt_person_full_name.Hide()
+            self.btn_add_person.Hide()
+            # self.btn_add_person.Enable(False)
+            self.lbl_person_full_name.SetLabel(inscription.person.full_name)
+            phases = inscription.person.champ.phases
+            if inscription.phase:
+                phase_id = inscription.phase.phase_id
+            else:
+                phase_id = None
+            choices = phases.choices(add_empty=False, gender_id=inscription.person.gender_id, ind_rel='I')
+            self.view_plus.cho_load(choice=self.cho_phase_id,
+                    values=choices,
+                    default=phase_id)
+            self.cho_phase_id.SetFocus()
+        else:
+            self.cho_phase_id.Hide()
+            self.lbl_person_full_name.Hide()
+            self.txt_person_full_name.SetFocus()
+
 
     def get_values(self):
         values = {}

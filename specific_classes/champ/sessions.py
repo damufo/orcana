@@ -105,6 +105,7 @@ from sessions order by date, time '''
                 self.sort_reverse = False
             self.sort_by_field(field=field, reverse=self.sort_reverse)
             self.sort_last_field = field
+
     def sort_by_field(self, field, reverse=False):
         self_sort = sorted(self, key=attrgetter(field), reverse=reverse)
         del self[:]

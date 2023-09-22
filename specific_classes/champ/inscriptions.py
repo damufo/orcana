@@ -40,7 +40,7 @@ class Inscriptions(list):
     @property    
     def item_blank(self):
         if self.ind_rel == 'I':
-            return Inscription(
+            inscription = Inscription(
                 inscriptions=self,
                 inscription_id=0,
                 pool_length=self.champ.params['champ_pool_length'],
@@ -49,7 +49,6 @@ class Inscriptions(list):
                 equated_hundredth=359999,
                 date='',
                 venue='',
-                phase=self.phase,
                 person=None,
                 relay=None,
                 rejected=0,
@@ -60,7 +59,7 @@ class Inscriptions(list):
         elif self.ind_rel == 'R':
             relay = self.champ.relays.item_blank
             relay.event = self.phase.event
-            return Inscription(
+            inscription = Inscription(
                 inscriptions=self,
                 inscription_id=0,
                 pool_length=self.champ.params['champ_pool_length'],
@@ -69,7 +68,6 @@ class Inscriptions(list):
                 equated_hundredth=359999,
                 date='',
                 venue='',
-                phase=self.phase,
                 person=None,
                 relay=relay,
                 rejected=0,
@@ -77,7 +75,7 @@ class Inscriptions(list):
                 score=1,
                 classify=1,
             )
-        return incription
+        return inscription
 
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):

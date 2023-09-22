@@ -4,7 +4,7 @@
 from datetime import date
 from specific_functions import utils
 from specific_functions import dates
-
+from specific_classes.champ.inscriptions_ind_person import InscriptionsIndPerson
 
 class Person(object):
     
@@ -41,6 +41,7 @@ class Person(object):
             self.entity = kwargs['entity']
         else:
             self.entity = None
+        self.inscriptions = InscriptionsIndPerson(self)
 
     @property
     def champ(self):
@@ -151,15 +152,15 @@ where inscription_id in
                     break
         return exists
 
-    @property
-    def inscriptions(self):
-        inscriptions = []
-        for phase in self.champ.phases:
-            for inscription in phase.inscriptions:
-                if inscription.person:
-                    if inscription.person.person_id == self.person_id:
-                        inscriptions.append(inscription)
-        return inscriptions
+    # @property
+    # def inscriptions(self):
+    #     inscriptions = []
+    #     for phase in self.champ.phases:
+    #         for inscription in phase.inscriptions:
+    #             if inscription.person:
+    #                 if inscription.person.person_id == self.person_id:
+    #                     inscriptions.append(inscription)
+    #     return inscriptions
 
     @property
     def results_de_momento_non_se_usa_pode_borrarse(self):
@@ -305,10 +306,9 @@ VALUES(?, ?, ?, ?, ?, ?) '''
         uses = 0
         sql = '''
 select person_id from inscriptions where person_id=?
-union select person_id from inscriptions_members where person_id=?
-union select person_id from results where person_id=?
-union select person_id from results_members where person_id=?; '''
-        res = self.config.dbs.exec_sql(sql=sql, values=((self.person_id, self.person_id, self.person_id, self.person_id), ))
+union select person_id from relays_members where person_id=?; '''
+        values = ((self.person_id, self.person_id), )
+        res = self.config.dbs.exec_sql(sql=sql, values=values)
         if res:
             uses = len(res)
         return uses
@@ -317,8 +317,8 @@ union select person_id from results_members where person_id=?; '''
     def is_in_use_rel(self):
         # check if in result relay members
         uses = 0
-        sql = '''select person_id from relay_members where person_id=?; '''
-        res = self.config.dbs.exec_sql(sql=sql, values=((self.person_id, self.person_id), ))
+        sql = '''select person_id from relays_members where person_id=?; '''
+        res = self.config.dbs.exec_sql(sql=sql, values=((self.person_id, ), ))
         if res:
             uses = len(res)
         return uses

@@ -5,3 +5,5 @@ class Model(object):
 
     def __init__(self, persons):
         self.persons = persons
+        self.person = None
+

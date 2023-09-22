@@ -17,10 +17,10 @@ class Choices(list):
             )
         """
         for i in choices:
-            self.append(Choice(
-                    id = i[0],
-                    name = i[1]
-                    ))
+                self.append(Choice(
+                        id = i[0],
+                        name = i[1]
+                        ))
 
     def choices(self, add_empty=False):
         '''

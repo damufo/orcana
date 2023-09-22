@@ -19,6 +19,9 @@ class Interactor(object):
         view.btn_add.Bind(wx.EVT_BUTTON, self.add)
         view.btn_edit.Bind(wx.EVT_BUTTON, self.edit)
         view.btn_delete.Bind(wx.EVT_BUTTON, self.delete)
+        view.btn_create_sort.Bind(wx.EVT_BUTTON, self.create_sort)
+        view.btn_delete_sort.Bind(wx.EVT_BUTTON, self.delete_sort)
+        view.btn_start_list.Bind(wx.EVT_BUTTON, self.start_list)
 
     def go_back(self, event):
         self.presenter.go_back()
@@ -48,3 +51,12 @@ class Interactor(object):
     def on_select(self, event):
         self.presenter.select_item()
         event.Skip()
+
+    def create_sort(self, event):
+        self.presenter.create_sort()
+
+    def delete_sort(self, event):
+        self.presenter.delete_sort()
+
+    def start_list(self, event):
+        self.presenter.start_list()

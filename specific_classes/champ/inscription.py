@@ -11,11 +11,16 @@ from specific_functions import utils
 class Inscription(object):
 
     def __init__(self, **kwargs):
-        self.inscriptions = kwargs['inscriptions']
-        self.config = self.inscriptions.config
+        if 'inscriptions' in list(kwargs.keys()):
+            self.inscriptions = kwargs['inscriptions']
+            # self.config = self.inscriptions.config
+        else:  # when inscription add from person, non se sabe onde vai ir
+            self.inscriptions = None
+            # self.config = None
+
         self.inscription_id = int(kwargs['inscription_id'])
         self.mark_hundredth = int(kwargs['mark_hundredth'])
-        self.phase = kwargs['phase']
+        # self.phase = kwargs['phase']
         if 'pool_length' in list(kwargs.keys()):
             self.pool_length = int(kwargs['pool_length'])
         else:
@@ -62,12 +67,41 @@ class Inscription(object):
             self.result = None
 
     @property
+    def config(self):
+        config = None
+        if self.inscriptions:
+            config = self.inscriptions.config
+        elif self.person:
+            config = self.person.config
+        return config
+
+    @property
     def champ(self):
-        return self.inscriptions.champ
+        champ = None
+        if self.inscriptions:
+            champ = self.inscriptions.champ
+        elif self.person:
+            champ = self.person.champ
+        return champ
+
+    @property
+    def phase(self):
+        phase = None
+        if self.inscriptions:
+            phase = self.inscriptions.phase
+        return phase
 
     @property
     def ind_rel(self):
-        return self.phase.event.ind_rel
+        if self.person:
+            ind_rel = 'I'
+        elif self.relay:
+            ind_rel = 'R'
+        elif self.phase:
+            ind_rel = self.phase.event.ind_rel
+        else:
+            ind_rel = None  # Isto non debería pasar nunca
+        return ind_rel
 
     @property
     def event(self):
@@ -183,7 +217,6 @@ class Inscription(object):
                         self.phase.phase_id, self.person.person_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id
-                self.inscriptions.append(self)
             self.inscriptions.sort_default()
         elif self.ind_rel == 'R':
             if self.inscription_id:
@@ -208,7 +241,6 @@ class Inscription(object):
                         self.phase.phase_id, self.relay.relay_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id
-                self.inscriptions.append(self)
             self.inscriptions.sort_default() 
 
 
@@ -240,12 +272,15 @@ class Inscription(object):
         self.inscription_id = 0  # Isto non debería facer falta
         self.phase.inscriptions.remove(self) #remove element from list
 
-    def is_inscript(self, person_id):
+    def is_inscript(self, person_id, phase_id):
         already_inscript = False
         if self.ind_rel == 'I':
-            for inscription in self.inscriptions:
-                if inscription.person.person_id == person_id and inscription != self:
-                # if hasattr(inscription, 'result') and inscription.result:
-                    already_inscript = True
-                    break
+            for inscription in self.champ.inscriptions:
+                if inscription.ind_rel == 'I':
+                    if (inscription.person.person_id == person_id and 
+                            inscription.phase.phase_id == phase_id and
+                            inscription != self):
+                    # if hasattr(inscription, 'result') and inscription.result:
+                        already_inscript = True
+                        break
         return already_inscript

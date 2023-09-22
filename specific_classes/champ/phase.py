@@ -49,6 +49,10 @@ class Phase(object):
         return self.phases.champ
 
     @property
+    def gender_id(self):
+        return self.event.gender_id
+
+    @property
     def ind_rel(self):
         return self.event.ind_rel
 
@@ -219,18 +223,14 @@ VALUES(?, ?, ?, ?, ?, ?, ?) '''
             phase_category.results_phase_category.delete_all_items()
 
     def delete_all_heats(self):
-        for i in self.heats:
-            i.delete()
+        for i in reversed(range(len(self.heats))):
+            self.heats[i].delete()
+        # for i in self.heats:
+        #     i.delete()
+        print(len(self.heats))
 
-    def gen_heats(self):
-        '''
-        Xera as series da fase como TIM (TIM=Timed Finals)
-        Xera as series
-        Xera as liñas de resultados (aquí é onde vai a serie e a pista)
-        '''
-        print("Generate phase heats")
-        pool_lanes = self.pool_lanes
-        pool_lanes_count = self.pool_lanes_count
+    def delete_sort_non_se_usa_pode_borrarse(self):
+        # Remove current sort
         # clear previous phase results and heats
         # Is not necessary when load, clear all
         # remove phase results_splits, results and heats in dbs
@@ -249,6 +249,20 @@ delete from results where inscription_id in
 delete from heats where phase_id=?'''
         values = ((self.phase_id, ), )
         self.config.dbs.exec_sql(sql=sql, values=values)
+
+    def gen_heats(self):
+        '''
+        Xera as series da fase como TIM (TIM=Timed Finals)
+        Xera as series
+        Xera as liñas de resultados (aquí é onde vai a serie e a pista)
+        '''
+        print("Generate phase heats")
+        pool_lanes = self.pool_lanes
+        pool_lanes_count = self.pool_lanes_count
+        
+        # Cambiado delete_sort polo de abaixo
+        # self.delete_sort()
+        self.delete_all_heats()
 
         # heats and results
         # Get inscriptions, sorted by time asc

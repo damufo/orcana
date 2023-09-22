@@ -130,7 +130,7 @@ class Presenter(object):
         current_candidates = len(self.view.candidates_selected)
 
         if (current_selected + current_candidates) > self.model.relay_members.num_members:
-                self.view.msg.warning("No more members are allowed in this relay.")
+                self.view.msg.warning(_("No more members are allowed in this relay."))
                 last_person_added = self.view.candidates_selected[-1]
                 # deselect last person added
                 self.view.lsc_candidates.Select(last_person_added, on=0)
@@ -186,13 +186,13 @@ class Presenter(object):
             relay_members = self.model.relay_members
             for person in candidates_selected:
                 if len(relay_members) >= relay_members.num_members:
-                    self.view.msg.warning("No more members are allowed in this relay.")
+                    self.view.msg.warning(_("No more members are allowed in this relay."))
                     break
                 # check if already in members
                 add_member = True
                 for member in relay_members:
                     if member.person.person_id == person.person_id:
-                        self.view.msg.warning("This person is already a member of the relay.")
+                        self.view.msg.warning(_("This person is already a member of the relay."))
                         add_member = False
                         break
                 if add_member:

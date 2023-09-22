@@ -10,6 +10,7 @@ from classes.wxp.view_plus import ViewPlus
 from classes.wxp.messages import Messages
 
 from .custom_grid import CustomColLabelRenderer
+from .custom_grid import CustomGrid
 from operator import itemgetter, attrgetter
 
 
@@ -41,7 +42,12 @@ class View(Heats):
         self.first_split_col = 0
         self.col_arrival_mark = 0
 
-
+        self.spl_heats.SetName('spl_heats')
+        self.spl_heats_plus = self.parent.get_spl_plus(spl=self.spl_heats, parent=self)
+        # self.spl_persons_plus.load_custom_sashpos()
+        # load_custom_sashpos execútase 300 milisegundos despois de iniciarse
+        # Do contrario non funciona
+        wx.CallLater (500, self.spl_heats_plus.load_custom_sashpos)
 
     def load_heat_grid(self, heat):
         self.heat = heat
@@ -77,7 +83,7 @@ class View(Heats):
         #     self.msg.warning(_("No exists results in this heat."))
             
         # else:
-        self.grd_results.Show()
+        # self.grd_results.Show()
         total_lanes = self.grd_results.GetNumberRows()
         pool_lanes_count = heat.phase.pool_lanes_count
         if total_lanes > pool_lanes_count:
@@ -340,4 +346,5 @@ class View(Heats):
 
     def close(self):
         self.lsc_heats_plus.save_custom_column_width()
-
+        print("save splitter: ", self.spl_heats.GetSashPosition())
+        self.spl_heats_plus.save_custom_sashpos()

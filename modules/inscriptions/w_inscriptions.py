@@ -19,7 +19,7 @@ import wx.xrc
 
 class Inscriptions ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 832,603 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 1258,659 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer2 = wx.BoxSizer( wx.VERTICAL )
@@ -61,11 +61,20 @@ class Inscriptions ( wx.Panel ):
 
 		bSizer6.Add( self.btn_import, 0, wx.ALL, 5 )
 
-		self.btn_members = wx.Button( self, wx.ID_ANY, _(u"&Members"), wx.DefaultPosition, wx.Size( -1,-1 ), wx.BU_EXACTFIT )
-		self.btn_members.Hide()
-		self.btn_members.SetToolTip( _(u"Add 1 year for all categories") )
+		self.btn_create_sort = wx.Button( self, wx.ID_ANY, _(u"Create sor&t"), wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		self.btn_create_sort.SetToolTip( _(u"Sort lanes for inscriptions.") )
 
-		bSizer6.Add( self.btn_members, 1, wx.TOP|wx.BOTTOM, 5 )
+		bSizer6.Add( self.btn_create_sort, 0, wx.ALL, 5 )
+
+		self.btn_delete_sort = wx.Button( self, wx.ID_ANY, _(u"Delete so&rt"), wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		self.btn_delete_sort.SetToolTip( _(u"Delete current sort if exists.") )
+
+		bSizer6.Add( self.btn_delete_sort, 0, wx.ALL, 5 )
+
+		self.btn_start_list = wx.Button( self, wx.ID_ANY, _(u"&Start list"), wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		self.btn_start_list.SetToolTip( _(u"Report of start list") )
+
+		bSizer6.Add( self.btn_start_list, 0, wx.ALL, 5 )
 
 
 		bSizer71.Add( bSizer6, 0, wx.RIGHT|wx.LEFT, 5 )

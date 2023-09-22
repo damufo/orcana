@@ -46,10 +46,15 @@ class InscIndAddEdit ( wx.Dialog ):
 
 		bSizer9.Add( self.m_staticText2, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.lbl_event_name = wx.StaticText( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.lbl_event_name.Wrap( -1 )
+		cho_phase_idChoices = []
+		self.cho_phase_id = wx.Choice( self.panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, cho_phase_idChoices, 0 )
+		self.cho_phase_id.SetSelection( 0 )
+		bSizer9.Add( self.cho_phase_id, 2, wx.ALL, 5 )
 
-		bSizer9.Add( self.lbl_event_name, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		self.lbl_phase_name = wx.StaticText( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_phase_name.Wrap( -1 )
+
+		bSizer9.Add( self.lbl_phase_name, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
 		bSizer8.Add( bSizer9, 0, wx.EXPAND, 5 )
@@ -60,6 +65,11 @@ class InscIndAddEdit ( wx.Dialog ):
 		self.m_staticText21.Wrap( -1 )
 
 		bSizer91.Add( self.m_staticText21, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.lbl_person_full_name = wx.StaticText( self.panel, wx.ID_ANY, _(u"Person full name"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_person_full_name.Wrap( -1 )
+
+		bSizer91.Add( self.lbl_person_full_name, 2, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		bSizer111 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -179,7 +189,7 @@ class InscIndAddEdit ( wx.Dialog ):
 		bSizer1012.Add( self.txt_venue, 2, wx.ALL, 5 )
 
 
-		bSizer8.Add( bSizer1012, 1, wx.EXPAND, 5 )
+		bSizer8.Add( bSizer1012, 0, wx.EXPAND, 5 )
 
 		bSizer101111 = wx.BoxSizer( wx.HORIZONTAL )
 

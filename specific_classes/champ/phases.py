@@ -193,13 +193,18 @@ order by (select s.date || " " ||s.time from sessions s where s.session_id=p.ses
             i = self[pos]
             i.save()
 
-    def choices(self, add_empty=False):
+    def choices(self, add_empty=False, gender_id=None, ind_rel=None):
         '''
         return values for wxchoice with ClientData
+        gender_id: if none return all
+        ind_rel: if none return all
         '''
         values = []
         if add_empty:
             values.append(('', 0))
         for i in self:
-            values.append((i.long_name, i.phase_id))
+            if not gender_id or i.gender_id == gender_id:
+                if not ind_rel or i.ind_rel == ind_rel:
+                    values.append((i.long_name, i.phase_id))
+
         return values

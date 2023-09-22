@@ -14,6 +14,7 @@ class Interactor(object):
         view.btn_add_person.Bind(wx.EVT_BUTTON, self.on_add_person)
         view.txt_person_full_name.Bind(wx.EVT_KILL_FOCUS, self.on_person_full_name)
         view.txt_person_full_name.Bind(wx.EVT_CHAR, self.on_person_full_name_change)
+        view.cho_phase_id.Bind(wx.EVT_CHOICE, self.on_phase_id_change)
         view.btn_acept.Bind(wx.EVT_BUTTON, self.on_acept)
         view.chb_classify.Bind(wx.EVT_CHECKBOX, self.on_classify)
 
@@ -28,6 +29,9 @@ class Interactor(object):
     
     def on_person_full_name(self, event):
         self.presenter.person_full_name()
+
+    def on_phase_id_change(self, event):
+        self.presenter.phase_id_change()
 
     def on_classify(self, event):
         self.view.set_classify()
