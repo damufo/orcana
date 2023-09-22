@@ -28,10 +28,10 @@ class CustomGrid(wx.grid.Grid, glr.GridWithLabelRenderersMixin):
         glr.GridWithLabelRenderersMixin.__init__(self)
 
 
-class CustomGrid(wx.grid.Grid, glr.GridWithLabelRenderersMixin):
-    def __init__(self, parent):
-        wx.grid.Grid.__init__(self, parent)
-        glr.GridWithLabelRenderersMixin.__init__(self)
+# class CustomGrid(wx.grid.Grid, glr.GridWithLabelRenderersMixin):
+#     def __init__(self, parent):
+#         wx.grid.Grid.__init__(self, parent)
+#         glr.GridWithLabelRenderersMixin.__init__(self)
 
 
 class CustomColLabelRenderer(glr.GridLabelRenderer):
