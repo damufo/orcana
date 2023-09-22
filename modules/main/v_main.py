@@ -43,38 +43,37 @@ class MainFrame(wx.Frame):
         #     self.main_sizer.Destroy()
         self.main_sizer = wx.BoxSizer( wx.VERTICAL )
         self.panel = panel
-        self.main_sizer.Add( self.panel, 1, wx.EXPAND |wx.ALL, 5 )
-        self.SetSizer(self.main_sizer)
-        # self.Refresh()       
-        self.Layout()
-
-
-    def load_panel_intento_recuperar_anterior(self, panel, retrieve_previous=False):
-        """
-        por se o intento novamente, dicir que habería que xestionar a creación 
-        das vistas para evitar crear unha nova e cargar a anterior
-        """
-        load_previous = False
-        if self.panel:
-            self.panels[self.panel.Name] = self.panel
-            self.panel.Visible(False)
-            if panel.Name:
-                if panel.Name in self.panels and retrieve_previous:
-                    panel = self.panels[panel.Name]
-                    panel.Visible(True)
-                    load_previous = True
-            else:
-                print("o panel parece non ter nome")
-            # self.panel.Destroy()
-        # if self.main_sizer:
-        #     self.main_sizer.Destroy()
-        self.main_sizer = wx.BoxSizer( wx.VERTICAL )
-        self.panel = panel
         self.main_sizer.Add( self.panel, 1, wx.EXPAND |wx.ALL, 0 )
         self.SetSizer(self.main_sizer)
         # self.Refresh()       
         self.Layout()
-        return load_previous
+
+    # def load_panel_intento_recuperar_anterior(self, panel, retrieve_previous=False):
+    #     """
+    #     por se o intento novamente, dicir que habería que xestionar a creación 
+    #     das vistas para evitar crear unha nova e cargar a anterior
+    #     """
+    #     load_previous = False
+    #     if self.panel:
+    #         self.panels[self.panel.Name] = self.panel
+    #         self.panel.Visible(False)
+    #         if panel.Name:
+    #             if panel.Name in self.panels and retrieve_previous:
+    #                 panel = self.panels[panel.Name]
+    #                 panel.Visible(True)
+    #                 load_previous = True
+    #         else:
+    #             print("o panel parece non ter nome")
+    #         # self.panel.Destroy()
+    #     # if self.main_sizer:
+    #     #     self.main_sizer.Destroy()
+    #     self.main_sizer = wx.BoxSizer( wx.VERTICAL )
+    #     self.panel = panel
+    #     self.main_sizer.Add( self.panel, 1, wx.EXPAND |wx.ALL, 0 )
+    #     self.SetSizer(self.main_sizer)
+    #     # self.Refresh()       
+    #     self.Layout()
+    #     return load_previous
     
 
 
