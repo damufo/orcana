@@ -27,6 +27,7 @@ import locale
 import gettext
 from classes.wxp.view_plus import ViewPlus
 from classes.wxp.list_ctrl_plus import ListCtrlPlus
+from classes.wxp.spl_plus import SplPlus
 from specific_classes.app_icon import app_icon
 from specific_classes.prefs import Prefs
 from specific_classes.config import Config
@@ -82,6 +83,7 @@ class Application(wx.App):
         ViewPlus.image_path = app_path_folder / "images" / "buttons" / "24"
 
         ListCtrlPlus.prefs = config.prefs
+        SplPlus.prefs = config.prefs
 
         champ = Champ(config=config)
         Presenter(champ=champ)
