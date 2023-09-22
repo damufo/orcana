@@ -7,6 +7,7 @@ from wx.lib.wordwrap import wordwrap
 from classes.wxp.view_plus import ViewPlus
 from classes.wxp.messages import Messages
 from classes.wxp.list_ctrl_plus import ListCtrlPlus
+from classes.wxp.spl_plus import SplPlus
 from modules.main.w_main import Main
 
 
@@ -82,6 +83,10 @@ class MainFrame(wx.Frame):
             parent = self
         return ListCtrlPlus(lsc=lsc, view=parent)
 
+    def get_spl_plus(self, spl, parent=None):
+        if not parent:
+            parent = self
+        return SplPlus(spl=spl, view=parent)
 
 class View(Main):
     def __init__(self, parent):
