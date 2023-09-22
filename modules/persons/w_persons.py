@@ -34,12 +34,12 @@ class Persons ( wx.Panel ):
 
 		bSizer7 = wx.BoxSizer( wx.VERTICAL )
 
-		self.spl_persons = wx.SplitterWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SP_3D )
+		self.spl_persons = wx.SplitterWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SP_3D|wx.SP_3DBORDER|wx.SP_3DSASH|wx.SP_BORDER|wx.SP_LIVE_UPDATE )
 		self.spl_persons.Bind( wx.EVT_IDLE, self.spl_personsOnIdle )
 		self.spl_persons.SetMinimumPaneSize( 100 )
 
 		self.m_panel1 = wx.Panel( self.spl_persons, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		self.m_panel1.SetMinSize( wx.Size( -1,400 ) )
+		self.m_panel1.SetMinSize( wx.Size( -1,200 ) )
 
 		bSizer13 = wx.BoxSizer( wx.VERTICAL )
 
@@ -69,14 +69,20 @@ class Persons ( wx.Panel ):
 
 		bSizer13.Add( bSizer4, 0, wx.EXPAND, 5 )
 
+		self.m_staticline3 = wx.StaticLine( self.m_panel1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer13.Add( self.m_staticline3, 0, wx.EXPAND, 5 )
+
 
 		self.m_panel1.SetSizer( bSizer13 )
 		self.m_panel1.Layout()
 		bSizer13.Fit( self.m_panel1 )
 		self.m_panel2 = wx.Panel( self.spl_persons, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-		self.m_panel2.SetMinSize( wx.Size( -1,200 ) )
+		self.m_panel2.SetMinSize( wx.Size( -1,100 ) )
 
 		bSizer14 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_staticline4 = wx.StaticLine( self.m_panel2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer14.Add( self.m_staticline4, 0, wx.EXPAND, 5 )
 
 		self.lsc_inscriptions_ind = wx.ListCtrl( self.m_panel2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT )
 		bSizer14.Add( self.lsc_inscriptions_ind, 1, wx.ALL|wx.EXPAND, 5 )

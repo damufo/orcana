@@ -25,6 +25,8 @@ class View(Persons):
         # load_custom_sashpos execútase 300 milisegundos despois de iniciarse
         # Do contrario non funciona
         wx.CallLater (500, self.spl_persons_plus.load_custom_sashpos)
+        print("split invisible: ", self.spl_persons.IsSashInvisible())
+        print("split size: ", self.spl_persons.GetSashSize())
 
     def close(self):
         self.lsc_persons_plus.save_custom_column_width()

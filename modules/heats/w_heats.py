@@ -47,12 +47,18 @@ class Heats ( wx.Panel ):
 		self.lsc_heats = wx.ListCtrl( self.m_panel1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LC_REPORT|wx.LC_SINGLE_SEL )
 		bSizer91.Add( self.lsc_heats, 1, wx.EXPAND|wx.ALL, 5 )
 
+		self.m_staticline4 = wx.StaticLine( self.m_panel1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer91.Add( self.m_staticline4, 0, wx.EXPAND, 5 )
+
 
 		self.m_panel1.SetSizer( bSizer91 )
 		self.m_panel1.Layout()
 		bSizer91.Fit( self.m_panel1 )
 		self.m_panel2 = wx.Panel( self.spl_heats, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer7 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_staticline3 = wx.StaticLine( self.m_panel2, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer7.Add( self.m_staticline3, 0, wx.EXPAND, 5 )
 
 		bSizer13 = wx.BoxSizer( wx.HORIZONTAL )
 
