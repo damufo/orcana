@@ -38,6 +38,7 @@ class Presenter(object):
         else:
             self.view.lsc_heats_plus.set_sel_pos_item(0)
         # self.view_refresh()
+        self.view.load_splitter()
 
     def load_members(self):
         heat_view = {}

@@ -21,12 +21,16 @@ class View(Persons):
         self.lsc_inscriptions_ind_plus = self.parent.get_lsc_plus(lsc=self.lsc_inscriptions_ind, parent=self)
         self.spl_persons.SetName('spl_persons')
         self.spl_persons_plus = self.parent.get_spl_plus(spl=self.spl_persons, parent=self)
+    
+    def load_splitter(self):
+        # Isto ten que ir ó final de toda a carga de datos e de todo
         # self.spl_persons_plus.load_custom_sashpos()
         # load_custom_sashpos execútase 300 milisegundos despois de iniciarse
         # Do contrario non funciona
-        wx.CallLater (500, self.spl_persons_plus.load_custom_sashpos)
-        print("split invisible: ", self.spl_persons.IsSashInvisible())
-        print("split size: ", self.spl_persons.GetSashSize())
+        # self.spl_XXXX_plus.load_custom_sashpos()
+        wx.CallLater (300, self.spl_persons_plus.load_custom_sashpos)
+        # print("split invisible: ", self.spl_persons.IsSashInvisible())
+        # print("split size: ", self.spl_persons.GetSashSize())
 
     def close(self):
         self.lsc_persons_plus.save_custom_column_width()

@@ -41,13 +41,18 @@ class View(Heats):
 
         self.first_split_col = 0
         self.col_arrival_mark = 0
-
         self.spl_heats.SetName('spl_heats')
         self.spl_heats_plus = self.parent.get_spl_plus(spl=self.spl_heats, parent=self)
+
+    def load_splitter(self):
+        # Isto ten que ir ó final de toda a carga de datos e de todo
         # self.spl_persons_plus.load_custom_sashpos()
         # load_custom_sashpos execútase 300 milisegundos despois de iniciarse
         # Do contrario non funciona
-        wx.CallLater (500, self.spl_heats_plus.load_custom_sashpos)
+        # self.spl_XXXX_plus.load_custom_sashpos()
+        wx.CallLater (300, self.spl_heats_plus.load_custom_sashpos)
+        # print("split invisible: ", self.spl_persons.IsSashInvisible())
+        # print("split size: ", self.spl_persons.GetSashSize())
 
     def load_heat_grid(self, heat):
         self.heat = heat

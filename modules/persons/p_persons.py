@@ -34,6 +34,7 @@ class Presenter(object):
         if self.model.persons:
             self.view.lsc_persons.Focus(0)
             self.view.lsc_persons.Select(0)
+        self.view.load_splitter()
 
     def go_back(self):
         self.view.close()
