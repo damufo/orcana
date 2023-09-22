@@ -114,7 +114,7 @@ class Persons ( wx.Panel ):
 		self.m_panel2.SetSizer( bSizer14 )
 		self.m_panel2.Layout()
 		bSizer14.Fit( self.m_panel2 )
-		self.spl_persons.SplitHorizontally( self.m_panel1, self.m_panel2, 500 )
+		self.spl_persons.SplitHorizontally( self.m_panel1, self.m_panel2, 400 )
 		bSizer7.Add( self.spl_persons, 1, wx.EXPAND, 5 )
 
 		bSizer10 = wx.BoxSizer( wx.VERTICAL )
@@ -154,7 +154,7 @@ class Persons ( wx.Panel ):
 		pass
 
 	def spl_personsOnIdle( self, event ):
-		self.spl_persons.SetSashPosition( 500 )
+		self.spl_persons.SetSashPosition( 400 )
 		self.spl_persons.Unbind( wx.EVT_IDLE )
 
 

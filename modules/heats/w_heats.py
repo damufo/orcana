@@ -25,8 +25,9 @@ class Heats ( wx.Panel ):
 
 		bSizer2 = wx.BoxSizer( wx.VERTICAL )
 
-		self.spl_heats = wx.SplitterWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SP_3D )
+		self.spl_heats = wx.SplitterWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.SP_3D|wx.SP_3DBORDER|wx.SP_3DSASH|wx.SP_BORDER|wx.SP_LIVE_UPDATE )
 		self.spl_heats.Bind( wx.EVT_IDLE, self.spl_heatsOnIdle )
+		self.spl_heats.SetMinimumPaneSize( 100 )
 
 		self.m_panel1 = wx.Panel( self.spl_heats, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		bSizer91 = wx.BoxSizer( wx.VERTICAL )
@@ -153,7 +154,7 @@ class Heats ( wx.Panel ):
 		self.m_panel2.SetSizer( bSizer7 )
 		self.m_panel2.Layout()
 		bSizer7.Fit( self.m_panel2 )
-		self.spl_heats.SplitHorizontally( self.m_panel1, self.m_panel2, 360 )
+		self.spl_heats.SplitHorizontally( self.m_panel1, self.m_panel2, 400 )
 		bSizer2.Add( self.spl_heats, 1, wx.EXPAND, 5 )
 
 
@@ -164,7 +165,7 @@ class Heats ( wx.Panel ):
 		pass
 
 	def spl_heatsOnIdle( self, event ):
-		self.spl_heats.SetSashPosition( 360 )
+		self.spl_heats.SetSashPosition( 400 )
 		self.spl_heats.Unbind( wx.EVT_IDLE )
 
 
