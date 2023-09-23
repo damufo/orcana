@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 
-from specific_classes.champ.results_phase_category import ResultsPhaseCategory
+from specific_classes.champ.phase_category_results import PhaseCategoryResults
 
 
 class PhaseCategory(object):
@@ -12,7 +12,7 @@ class PhaseCategory(object):
         self.phase_category_id = phase_category_id
         self.action = action
         self.category = category
-        self.results_phase_category = ResultsPhaseCategory(self)
+        self.phase_category_results = PhaseCategoryResults(self)
 
     @property
     def champ(self):
@@ -28,7 +28,7 @@ class PhaseCategory(object):
 
     def delete(self):
         # delete results_phases_categories
-        self.results_phase_category.delete_all_items()
+        self.phase_category_results.delete_all_items()
         # delete self
         sql = '''
 delete phases_categories where phase_category_id=?'''

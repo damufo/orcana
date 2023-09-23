@@ -60,9 +60,9 @@ from phases_categories where phase_id=? order by pos '''
         self.config.dbs.exec_sql(sql=sql, values=values)
 
     def delete_all_items(self):
-        # Delete all results_phase_category
+        # Delete all phase_category_results
         for phase_category in self:
-            phase_category.results_phase_category.delete_all_items()
+            phase_category.phase_category_results.delete_all_items()
 
         sql =  ("delete from phases_categories where phase_id=? ")
         values = ((self.phase.phase_id,),)

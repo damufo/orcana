@@ -220,7 +220,7 @@ VALUES(?, ?, ?, ?, ?, ?, ?) '''
 
     def delete_results_phase_categories(self):
         for phase_category in self.phase_categories:
-            phase_category.results_phase_category.delete_all_items()
+            phase_category.phase_category_results.delete_all_items()
 
     def delete_all_heats(self):
         for i in reversed(range(len(self.heats))):
@@ -527,8 +527,8 @@ select event_code from events where event_id =
     def calculate_results(self):
         categories_results = {}
         for phase_category in self.phase_categories:
-            results_phase_category = phase_category.results_phase_category
-            results_phase_category.delete_all_items()
+            phase_category_results = phase_category.phase_category_results
+            phase_category_results.delete_all_items()
             category_results = []
             print('{} {}'.format(phase_category.category.name, phase_category.action))
             # get all results for this category
@@ -558,11 +558,11 @@ select event_code from events where event_id =
             last_arrival_pos = None
             pos_adjust = 0
             for i in results_sorted:
-                result_phase_category = results_phase_category.item_blank
-                result_phase_category.result = i
+                phase_category_result = phase_category_results.item_blank
+                phase_category_result.result = i
                 if not i.inscription.classify:  # not score go to next
-                    result_phase_category.pos = -1
-                    results_phase_category.append(result_phase_category)
+                    phase_category_result.pos = -1
+                    phase_category_results.append(phase_category_result)
                     continue
                 if current_mark_hundredth != i.mark_hundredth:
                     current_pos += 1 + pos_adjust
@@ -585,7 +585,7 @@ select event_code from events where event_id =
                             print("isto só pode pasar con crono electrónico")
                             category_pos = current_pos
                         else:  # non empata a posición, crono manual
-                            swimoffs.append(result_phase_category)  # empatados con distintas posicións
+                            swimoffs.append(phase_category_result)  # empatados con distintas posicións
                             category_pos = current_pos + len(swimoffs)
                             last_arrival_pos = i.arrival_pos
                     else:  # empate a tempo nunha nova serie
@@ -596,19 +596,19 @@ select event_code from events where event_id =
                 text = "Tempo: {0} | Serie: {1} | Chegada: {2} | Orde categoría: {3}"
                 values = (i.mark_time, str(i.heat.pos), str(i.arrival_pos), str(category_pos))
                 print(text.format(*values))
-                result_phase_category.pos = category_pos
-                results_phase_category.append(result_phase_category)
+                phase_category_result.pos = category_pos
+                phase_category_results.append(phase_category_result)
             # End set category position
 
             # Puntua
             # Resort
-            results_sorted = sorted(results_phase_category, key=attrgetter('pos'))
+            results_sorted = sorted(phase_category_results, key=attrgetter('pos'))
             results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)
             # results_sorted = sorted(results_sorted, key=attrgetter('result.inscription.classify'), reverse=True)
-            del results_phase_category[:]
-            results_phase_category.extend(results_sorted)
+            del phase_category_results[:]
+            phase_category_results.extend(results_sorted)
 
-            if results_phase_category and phase_category.action == 'PUNC':  # puntuate this category
+            if phase_category_results and phase_category.action == 'PUNC':  # puntuate this category
                 print("aquí o código para puntuar os resultados da categoría")
                 if phase_category.category.punctuation:
                     pos_cat = 0
@@ -622,7 +622,7 @@ select event_code from events where event_id =
                         entity_to_point = phase_category.category.punctuation.entity_to_point_ind
                     if points == "FINA":
                         puntuados_club = {} #codclub: numero de puntuado
-                        for i in results_phase_category:
+                        for i in phase_category_results:
                             if i.result.issue_id:  # se ten incidencia non puntúa
                                 break
                             if not i.result.inscription.score:
@@ -646,7 +646,7 @@ select event_code from events where event_id =
                         posicion_puntos = 0
                         repartir = []
                         last_pos = -1
-                        for i in results_phase_category:
+                        for i in phase_category_results:
                             if i.result.issue_id:  # se ten incidencia non puntúa
                                 break
                             if not i.result.inscription.score:
@@ -695,9 +695,9 @@ select event_code from events where event_id =
                 print('pendene de facer')
                 pass
             
-            if phase_category.results_phase_category:
-                phase_category.results_phase_category.save_all_items()
-                categories_results[phase_category.category.name] = phase_category.results_phase_category
+            if phase_category.phase_category_results:
+                phase_category.phase_category_results.save_all_items()
+                categories_results[phase_category.category.name] = phase_category.phase_category_results
 
     def gen_phase_category_results_pdf(self, d, results):
         """ imprime os resultados por categorías"""
@@ -877,13 +877,13 @@ select event_code from events where event_id =
 
         position = 1
         last_result_category_pos = None
-        for result_phase_category in results:
-            i = result_phase_category.result
+        for phase_category_result in results:
+            i = phase_category_result.result
             # if i.heat.phase.event.pos != orde:  #cambio de evento, xera título
             #     phase_title = '{}.- {} - {}'.format(
             #         i.heat.phase.event.pos,
             #         i.heat.phase.event.name,
-            #         result_phase_category.results_phase_category.phase_category.category.code_gender,
+            #         phase_category_result.phase_category_results.phase_category.category.code_gender,
             #         i.heat.phase.progression)
             #     phase_date_time = '{} {}'.format(
             #         i.heat.phase.session.date,
@@ -911,18 +911,18 @@ select event_code from events where event_id =
                         '', '0,0'],]
 
             else:
-                if last_result_category_pos == result_phase_category.pos:
+                if last_result_category_pos == phase_category_result.pos:
                     category_pos = ''
                 else:
-                    category_pos = result_phase_category.pos
+                    category_pos = phase_category_result.pos
                 line_result = [[
                         str(category_pos), 
                         'X' not in i.heat.phase.event.code.upper() and i.person.license or i.relay.entity.entity_code, 
                         'X' not in i.heat.phase.event.code.upper() and i.person.full_name or i.relay.name, 
                         'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
                         'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
-                        i.mark_time, result_phase_category.points],]
-            last_result_category_pos = result_phase_category.pos
+                        i.mark_time, phase_category_result.points],]
+            last_result_category_pos = phase_category_result.pos
             add_result(line_result)
 
             if i.ind_rel == 'R' and i.relay.relay_members.has_set_members:
@@ -1049,14 +1049,14 @@ select event_code from events where event_id =
 
         for phase_category in self.phase_categories:
             print('{} {}'.format(phase_category.category.name, phase_category.action))
-            results_phase_category = phase_category.results_phase_category
-            results_phase_category.load_items_from_dbs()
+            phase_category_results = phase_category.phase_category_results
+            phase_category_results.load_items_from_dbs()
             # FIXME: xa debería vir ordenado ó cargar os resultados
-            results_sorted = sorted(results_phase_category, key=attrgetter('pos'))
+            results_sorted = sorted(phase_category_results, key=attrgetter('pos'))
             results_sorted = sorted(results_sorted, key=attrgetter('result.issue_pos'), reverse=False)  
             results_sorted = sorted(results_sorted, key=attrgetter('result.inscription.classify'), reverse=True)  
-            del results_phase_category[:]
-            results_phase_category.extend(results_sorted)           
+            del phase_category_results[:]
+            phase_category_results.extend(results_sorted)           
 
             # Fin obtención de datos
             # FIMME: poñer o de arriba dentro de gen_phase_category_results_pdf

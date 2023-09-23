@@ -2,10 +2,10 @@
 
 
 from operator import attrgetter
-from specific_classes.champ.result_phase_category import ResultPhaseCategory
+from specific_classes.champ.phase_category_result import PhaseCategoryResult
 
 
-class ResultsPhaseCategory(list):
+class PhaseCategoryResults(list):
 
     def __init__(self, phase_category):
         self.phase_category = phase_category
@@ -31,9 +31,9 @@ class ResultsPhaseCategory(list):
 
     @property
     def item_blank(self):
-        return ResultPhaseCategory(
-            results_phase_category=self,
-            result_phase_category_id=0,
+        return PhaseCategoryResult(
+            phase_category_results=self,
+            phase_category_result_id=0,
             result=None,
             pos=0,
             points=0.0,
@@ -62,18 +62,18 @@ delete from results_phases_categories where phase_category_id={}'''
         phase_results_dict = self.phase.results_dict
         del self[:]  # borra os elementos que haxa
         sql = '''
-select result_phase_category_id, result_id, pos, points, clas
+select phase_category_result_id, result_id, pos, points, clas
 from results_phases_categories 
 where phase_category_id=? '''
         res = self.config.dbs.exec_sql(sql=sql, values=((self.phase_category.phase_category_id, ), ))
 #         # FIXME: pendente de rematar
-        (RESULT_PHASE_CATEGORY_ID, RESULT_ID, POS, POINTS, CLAS
+        (phase_category_result_ID, RESULT_ID, POS, POINTS, CLAS
         ) = range(5)
         for i in res:
             result = phase_results_dict[i[RESULT_ID]]
-            self.append(ResultPhaseCategory(
-                    results_phase_category=self,
-                    result_phase_category_id=i[RESULT_PHASE_CATEGORY_ID],
+            self.append(PhaseCategoryResult(
+                    phase_category_results=self,
+                    phase_category_result_id=i[phase_category_result_ID],
                     result=result,
                     pos=i[POS],
                     points=i[POINTS],
