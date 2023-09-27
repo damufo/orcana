@@ -318,7 +318,7 @@ select
     end as "entity_id",
     
 sum(points) as points
-from results_phases_categories rpc
+from phases_categories_results rpc
 where (select category_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id))=?
 group by 
     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 
@@ -442,7 +442,7 @@ sum(points) desc;          '''
 #     end as "entity_id",
     
 # sum(points) as points
-# from results_phases_categories rpc
+# from phases_categories_results rpc
 # where (select category_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id))=?
 # group by 
 #     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 

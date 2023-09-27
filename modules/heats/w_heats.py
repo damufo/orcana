@@ -20,7 +20,7 @@ from .custom_grid import CustomGrid
 
 class Heats ( wx.Panel ):
 
-	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 1119,865 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
+	def __init__( self, parent, id = wx.ID_ANY, pos = wx.DefaultPosition, size = wx.Size( 1388,865 ), style = wx.TAB_TRAVERSAL, name = wx.EmptyString ):
 		wx.Panel.__init__ ( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 
 		bSizer2 = wx.BoxSizer( wx.VERTICAL )
@@ -83,22 +83,27 @@ class Heats ( wx.Panel ):
 		self.btn_official = wx.Button( self.m_panel2, wx.ID_ANY, _(u"&Official"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_official.SetToolTip( _(u"Toggle official") )
 
-		bSizer11.Add( self.btn_official, 1, wx.ALL|wx.EXPAND, 5 )
+		bSizer11.Add( self.btn_official, 1, wx.ALL, 5 )
 
 		self.btn_next = wx.Button( self.m_panel2, wx.ID_ANY, _(u"&Next"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_next.SetToolTip( _(u"Next heat") )
 
-		bSizer11.Add( self.btn_next, 1, wx.ALL|wx.EXPAND, 5 )
+		bSizer11.Add( self.btn_next, 1, wx.ALL, 5 )
 
-		self.btn_results = wx.Button( self.m_panel2, wx.ID_ANY, _(u"&Results"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_results.SetToolTip( _(u"Generate results report") )
+		self.btn_results_report = wx.Button( self.m_panel2, wx.ID_ANY, _(u"&Results report"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_results_report.SetToolTip( _(u"Generate results report") )
 
-		bSizer11.Add( self.btn_results, 1, wx.EXPAND|wx.ALL, 5 )
+		bSizer11.Add( self.btn_results_report, 1, wx.ALL, 5 )
 
-		self.btn_classifications = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Cla&ssifications"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_classifications.SetToolTip( _(u"Generate clasifications report") )
+		self.btn_classifications_report = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Cla&ssif. report"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_classifications_report.SetToolTip( _(u"Generate clasifications report") )
 
-		bSizer11.Add( self.btn_classifications, 0, wx.ALL, 5 )
+		bSizer11.Add( self.btn_classifications_report, 1, wx.ALL, 5 )
+
+		self.btn_phase_category_results = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Phase r&esults"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_phase_category_results.SetToolTip( _(u"List phase categoríes results.") )
+
+		bSizer11.Add( self.btn_phase_category_results, 1, wx.ALL, 5 )
 
 
 		bSizer13.Add( bSizer11, 0, wx.EXPAND, 5 )

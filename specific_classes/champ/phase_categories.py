@@ -25,6 +25,14 @@ class PhaseCategories(list):
     def champ(self):
         return self.phase.champ
 
+    def get_phase_category(self, phase_category_id):
+        phase_category = None
+        for i in self:
+            if i.phase_category_id == phase_category_id:
+                phase_category = i
+                break
+        return phase_category
+
     def load_items_from_dbs(self):
         del self[:] #borra os elementos que haxa
         
@@ -114,7 +122,7 @@ from phases_categories where phase_id=? order by pos '''
         if not self:
             self.load_items_from_dbs()
         for i in self:
-            values.append((i.category.name, i.category.category_id))
+            values.append((i.category.name, i.phase_category_id))
         return values
 
     @property

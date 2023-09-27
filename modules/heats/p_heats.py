@@ -50,32 +50,8 @@ class Presenter(object):
         from modules.relay_members import p_relay_members
         p_relay_members.create(parent=self, relay_members=self.model.result.relay.relay_members)
 
-
     def view_refresh(self):
         event_id = self.view.get_event_id()
-
-    # def toggle_members_button__(self, row):
-    #     # row = self.view.grd_results.GetGridCursorRow()
-    #     # print('row presenter {}'.format(row))
-    #     self.view.btn_members.Enable(False)
-    #     # self.model.result = None
-    #     if row != -1:
-    #         heat = self.model.heat
-    #         if heat.ind_rel == 'R':
-    #             if not heat.official:
-    #                 lane = int(self.view.grd_results.GetRowLabelValue(row))
-    #                 print('lane {}'.format(lane))
-    #                 result = heat.get_result(lane=lane)
-    #                 if result:
-    #                     self.model.result = result
-    #                     self.view.btn_members.Enable(True)
-    #                 else:
-    #                     self.model.result = None
-    #                     print('non hai resultado')
-    #             else:
-    #                 print('isto non debería producirse')
-    #     else:
-    #         print('isto nunca debería pasar')
 
     def select_lane(self, row):
         self.view.btn_members.Enable(False)
@@ -105,18 +81,6 @@ class Presenter(object):
             result = heat.get_result(lane=lane)
             if self.view.btn_members.IsEnabled():
                 self.load_members()
-
-        #     print('lane: {}'.format(lane))
-        #     # self.view.btn_change_participant.Enable(True)
-        #     if result:
-        #         # self.model.result = result
-        #         if result.ind_rel == 'R':
-        #     else:
-        #         self.model.result = None
-        # self.view.grd_results.SelectRow(row=row)
-
-
-        
 
     def go_back(self):
         if 'heats' in self.model.heats.config.views:
@@ -157,32 +121,6 @@ class Presenter(object):
         else:
             self.model.results = None
 
-
-    # def fhase_is_official____(self):
-    #     # aproveitar de aquí para imprimir o resultado, a parte de comprobar se todos está oficial
-    #     pos = self.view.lsc_heats_plus.get_sel_pos_item()
-    #     if pos is not None:
-    #         heat = self.model.heats[pos]
-    #         if heat.official:
-    #             heat.official = 0
-    #             self.view.lsc_heats_plus.update_item(pos)
-    #         else:
-    #             phase_id = heat.phase.phase_id
-    #             pending_heats = True
-    #             for i in heat.heats:
-    #                 if i.phase.phase_id == phase_id:
-    #                     for j in i.results:
-    #                         if not j.mark_hundredth and not j.issue_id:
-    #                             pending_heats = True
-    #                             break
-    #                     if pending_heats:
-    #                         break
-    #             if pending_heats:
-    #                 self.view.msg.error(message=_("There are heats pending completion."))
-    #             else:
-    #                 heat.official = 1
-    #                 self.view.lsc_heats_plus.update_item(pos)
-
     def gen_results_report(self):
         pos = self.view.lsc_heats_plus.get_sel_pos_item()
         if pos is not None:
@@ -192,6 +130,29 @@ class Presenter(object):
                 phase.gen_results_pdf()
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
+
+    def phase_category_results(self):
+        pos = self.view.lsc_heats_plus.get_sel_pos_item()
+        if pos is not None:
+            phase = self.model.heats[pos].phase
+            if phase.official:
+                print('is official')
+                # Garda a siguación do formulario actual (heats)
+                heats_view = {}
+                heats_view['heat_pos'] = self.view.lsc_heats_plus.get_sel_pos_item()
+                heats_view['result_cell_row'] = self.view.grd_results.GetGridCursorRow()
+                heats_view['result_cell_col'] = self.view.grd_results.GetGridCursorCol()
+                self.model.heats.config.views['heats'] = heats_view
+                self.view.lsc_heats_plus.save_custom_column_width()
+                # Fin garda a siguación do formulario actual (heats)
+                phase_category_result_view = {}
+                phase_category_result_view['phase_id'] = phase.phase_id
+                phase_category_result_view['phase_category_id'] = phase.phase_categories[0].phase_category_id
+                self.model.heats.config.views['phase_category_results'] = phase_category_result_view
+                from modules.phase_category_results import p_phase_category_results
+                p_phase_category_results.create(parent=self, champ=phase.champ)
+            else:
+                self.view.msg.error(message=_("Only available for official phases."))
 
     def gen_classifications_report(self):
         champ = self.model.heats.champ

@@ -209,11 +209,10 @@ VALUES(?, ?, ?, ?, ?, ?, ?) '''
             self.phase_id = self.config.dbs.last_row_id
 
     def delete(self):
-        self.phase_categories.delete_all_items()  # con isto bórranse as phases_categories e results_phases_categories
-        # ver reflesion 2022-09-22 en changelog
-        for heat in self.heats:  # as heats realmente non son das fases senón que están todas as do campionato baixo heats
-            heat.delete()  # borra os results que teña e a propia serie
-            heat.heats.remove(heat)  # retira a serie da lista de series
+        self.phase_categories.delete_all_items()  
+        for heat in self.heats:
+            heat.delete()
+            heat.heats.remove(heat)
         sql = ''' delete from phases where phase_id={}'''
         sql = sql.format(self.phase_id)
         self.config.dbs.exec_sql(sql=sql)
@@ -543,7 +542,7 @@ select event_code from events where event_id =
             Unha vez que temos os resultados da categoría:
             - calculamos a posición
             - asignamos puntuación
-            gardanse os elementos en results_phases_categories (result_id, phase_category_id, pos, points)
+            gardanse os elementos en phases_categories_results (result_id, phase_category_id, pos, points)
             """
             results_sorted = sorted(results, key=attrgetter('mark_hundredth', 'heat.pos', 'arrival_pos'))
             results_sorted = sorted(results_sorted, key=attrgetter('issue_pos'), reverse=False)

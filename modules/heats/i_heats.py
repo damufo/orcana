@@ -14,8 +14,9 @@ class Interactor(object):
         view.btn_back.Bind(wx.EVT_BUTTON, self.go_back)
         # view.lsc.Bind(wx.EVT_LEFT_DCLICK, self.on_edit)
         view.btn_members.Bind(wx.EVT_BUTTON, self.load_members)
-        view.btn_results.Bind(wx.EVT_BUTTON, self.gen_results_report)
-        view.btn_classifications.Bind(wx.EVT_BUTTON, self.gen_classifications_report)
+        view.btn_phase_category_results.Bind(wx.EVT_BUTTON, self.phase_category_results)
+        view.btn_results_report.Bind(wx.EVT_BUTTON, self.gen_results_report)
+        view.btn_classifications_report.Bind(wx.EVT_BUTTON, self.gen_classifications_report)
         view.btn_official.Bind(wx.EVT_BUTTON, self.toggle_official)
         view.btn_next.Bind(wx.EVT_BUTTON, self.go_next_heat)
         view.lsc_heats.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_select_heat)
@@ -110,7 +111,6 @@ class Interactor(object):
         if col < 4:
             self.presenter.select_members()
 
-
     # def change_colum_width(self, event):
     #     self.view.lsc_splits_plus.save_custom_column_width()
 
@@ -122,6 +122,9 @@ class Interactor(object):
 
     def gen_classifications_report(self, event):
         self.presenter.gen_classifications_report()
+
+    def phase_category_results(self, event):
+        self.presenter.phase_category_results()
 
     def toggle_official(self, event):
         self.presenter.toggle_official()

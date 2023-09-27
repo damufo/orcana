@@ -27,7 +27,7 @@ class PhaseCategory(object):
         return self.phase_categories.index(self) + 1
 
     def delete(self):
-        # delete results_phases_categories
+        # delete phases_categories_results
         self.phase_category_results.delete_all_items()
         # delete self
         sql = '''
