@@ -151,13 +151,13 @@ class Properties ( wx.Panel ):
 
 		bSizer103.Add( self.btn_report_inscriptions, 1, wx.ALL, 5 )
 
-		self.btn_report_heats_pdf = wx.Button( self, wx.ID_ANY, _(u"Report heats &PDF"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_report_heats_pdf.SetToolTip( _(u"Generate PDF report heats") )
+		self.btn_report_start_list_pdf = wx.Button( self, wx.ID_ANY, _(u"Report start list &PDF"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_report_start_list_pdf.SetToolTip( _(u"Generate PDF report heats") )
 
-		bSizer103.Add( self.btn_report_heats_pdf, 1, wx.ALL, 5 )
+		bSizer103.Add( self.btn_report_start_list_pdf, 1, wx.ALL, 5 )
 
-		self.btn_report_heats_html = wx.Button( self, wx.ID_ANY, _(u"Report heats &HTML"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer103.Add( self.btn_report_heats_html, 1, wx.ALL, 5 )
+		self.btn_report_start_list_html = wx.Button( self, wx.ID_ANY, _(u"Report start list &HTML"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer103.Add( self.btn_report_start_list_html, 1, wx.ALL, 5 )
 
 
 		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )

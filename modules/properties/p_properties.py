@@ -37,10 +37,10 @@ class Presenter(object):
         self.model.champ.report_inscriptions_by_event()
         self.model.champ.report_sumary_participants()
 
-    def report_heats_pdf(self):
+    def report_sart_list_pdf(self):
         self.model.champ.report_start_list_pdf()
 
-    def report_heats_html(self):
+    def report_sart_list_html(self):
         self.model.champ.report_start_list_html()
 
     def gen_web_forms_files(self):

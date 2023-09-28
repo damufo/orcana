@@ -56,7 +56,7 @@ class Inscriptions ( wx.Panel ):
 
 		bSizer6 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_import = wx.Button( self, wx.ID_ANY, _(u"I&mport"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_import = wx.Button( self, wx.ID_ANY, _(u"Im&port"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_import.SetToolTip( _(u"Import from file") )
 
 		bSizer6.Add( self.btn_import, 0, wx.ALL, 5 )
@@ -71,10 +71,10 @@ class Inscriptions ( wx.Panel ):
 
 		bSizer6.Add( self.btn_delete_sort, 0, wx.ALL, 5 )
 
-		self.btn_start_list = wx.Button( self, wx.ID_ANY, _(u"&Start list"), wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
-		self.btn_start_list.SetToolTip( _(u"Report of start list") )
+		self.btn_report_start_list = wx.Button( self, wx.ID_ANY, _(u"Report &start list"), wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+		self.btn_report_start_list.SetToolTip( _(u"Report of start list") )
 
-		bSizer6.Add( self.btn_start_list, 0, wx.ALL, 5 )
+		bSizer6.Add( self.btn_report_start_list, 0, wx.ALL, 5 )
 
 
 		bSizer71.Add( bSizer6, 0, wx.RIGHT|wx.LEFT, 5 )
@@ -84,7 +84,7 @@ class Inscriptions ( wx.Panel ):
 
 		bSizer4 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_members = wx.Button( self, wx.ID_ANY, _(u"Mem&bers"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_members = wx.Button( self, wx.ID_ANY, _(u"Me&mbers"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer4.Add( self.btn_members, 0, wx.ALL, 5 )
 
 		self.btn_delete = wx.Button( self, wx.ID_ANY, _(u"D&elete"), wx.DefaultPosition, wx.DefaultSize, 0 )

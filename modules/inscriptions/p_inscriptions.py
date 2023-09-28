@@ -185,7 +185,7 @@ class Presenter(object):
                     self.model.phase.delete_all_heats()
                     self.load_inscriptions()
 
-    def start_list(self):
+    def report_start_list(self):
         if self.model.phase:
             self.model.phase.report_start_list_pdf()
 

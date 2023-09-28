@@ -21,7 +21,7 @@ class Interactor(object):
         view.btn_delete.Bind(wx.EVT_BUTTON, self.delete)
         view.btn_create_sort.Bind(wx.EVT_BUTTON, self.create_sort)
         view.btn_delete_sort.Bind(wx.EVT_BUTTON, self.delete_sort)
-        view.btn_start_list.Bind(wx.EVT_BUTTON, self.start_list)
+        view.btn_report_start_list.Bind(wx.EVT_BUTTON, self.report_start_list)
 
     def go_back(self, event):
         self.presenter.go_back()
@@ -58,5 +58,5 @@ class Interactor(object):
     def delete_sort(self, event):
         self.presenter.delete_sort()
 
-    def start_list(self, event):
-        self.presenter.start_list()
+    def report_start_list(self, event):
+        self.presenter.report_start_list()
