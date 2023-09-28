@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-27 09:00+0200\n"
-"PO-Revision-Date: 2023-09-27 09:07+0200\n"
+"POT-Creation-Date: 2023-09-28 07:39+0200\n"
+"PO-Revision-Date: 2023-09-28 08:00+0200\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
@@ -285,7 +285,7 @@ msgstr "Seguinte serie"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:93
 msgid "&Results report"
-msgstr "I. Resultados"
+msgstr "Inf. &res."
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:94
 msgid "Generate results report"
@@ -293,7 +293,7 @@ msgstr "Xerar informe de resultados"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:98
 msgid "Cla&ssif. report"
-msgstr "I. Cla&sificacións"
+msgstr "Inf. cla&s."
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:99
 msgid "Generate clasifications report"
@@ -301,7 +301,7 @@ msgstr "Xerar informe de clasificacións"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:103
 msgid "Phase r&esults"
-msgstr "Res. da fase"
+msgstr "R&es. fase"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:104
 msgid "List phase categoríes results."
@@ -316,8 +316,9 @@ msgid "Go to first lane when heat change."
 msgstr "Ir ó primeiro ó cambiar de serie."
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:131
+#: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:87
 msgid "Me&mbers"
-msgstr "Me&mbros"
+msgstr "Co&mposición"
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:134
 msgid "Chan&ge"
@@ -377,7 +378,7 @@ msgstr "Categoría"
 #: /home/damufo/dev/orcana/specific_classes/champ/inscriptions.py:178
 #: /home/damufo/dev/orcana/ficheiros_old/specific_classes/inscriptions_rel_pode_borrarse.py:64
 msgid "Members"
-msgstr "Membros"
+msgstr "Comp. rem."
 
 #: /home/damufo/dev/orcana/modules/heats/v_heats.py:131
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category_results.py:95
@@ -1088,7 +1089,7 @@ msgstr "Rexeitada:"
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:209
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:207
 msgid "Exchanged:"
-msgstr "Trocado:"
+msgstr "Trocada:"
 
 #: /home/damufo/dev/orcana/modules/insc_ind_add_edit/w_insc_ind_add_edit.py:222
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/w_insc_rel_add_edit.py:220
@@ -1160,8 +1161,8 @@ msgid "Inscriptions"
 msgstr "Inscricións"
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:59
-msgid "I&mport"
-msgstr "I&mportar"
+msgid "Im&port"
+msgstr "Im&portar"
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:60
 msgid "Import from file"
@@ -1184,16 +1185,12 @@ msgid "Delete current sort if exists."
 msgstr "Elimina o sorteo actual se existe."
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:74
-msgid "&Start list"
-msgstr "&Series"
+msgid "Report &start list"
+msgstr "Inf. &series"
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:75
 msgid "Report of start list"
 msgstr "Informe de series"
-
-#: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:87
-msgid "Mem&bers"
-msgstr "Compoñentes"
 
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:76
 msgid "The file not exists."
@@ -1428,8 +1425,8 @@ msgid "Report ins&criptions"
 msgstr "Informe de ins&cricións"
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:154
-msgid "Report heats &PDF"
-msgstr "Informe de series en &PDF"
+msgid "Report start list &PDF"
+msgstr "Informe de series &PDF"
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:155
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:174
@@ -1437,8 +1434,8 @@ msgid "Generate PDF report heats"
 msgstr "Xera o informe de series en PDF"
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:159
-msgid "Report heats &HTML"
-msgstr "Informe de series en &HTML"
+msgid "Report start list &HTML"
+msgstr "Informe de series &HTML"
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:167
 msgid "S&essions"
@@ -1457,8 +1454,8 @@ msgid ""
 "This action reset all results, delete relay members...Only current "
 "inscriptions will be considered to redo all."
 msgstr ""
-"Esta acción reiniciará todos os resultados, borrará os membros das "
-"remudas... Só se terán en conta as actuais inscricións para refacer todo."
+"Esta acción borrará todos os resultados, só se terán en conta as actuais "
+"inscricións para refacer todo."
 
 #: /home/damufo/dev/orcana/modules/properties/p_properties.py:110
 msgid "Do you want to establish this lanes sort for all phases?"
@@ -1594,16 +1591,16 @@ msgstr "Xerar as series"
 #: /home/damufo/dev/orcana/modules/relay_members/p_relay_members.py:133
 #: /home/damufo/dev/orcana/modules/relay_members/p_relay_members.py:189
 msgid "No more members are allowed in this relay."
-msgstr "Non se permiten máis membros para esta remuda."
+msgstr "Non se permiten máis compoñentes para esta remuda."
 
 #: /home/damufo/dev/orcana/modules/relay_members/p_relay_members.py:195
 msgid "This person is already a member of the relay."
-msgstr "Esta persoa xa é un membro desta remuda."
+msgstr "Esta persoa xa está nesta remuda."
 
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:27
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:27
 msgid "Relay members"
-msgstr "Membros de remuda"
+msgstr "Composición de remuda"
 
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:41
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:41
@@ -1623,12 +1620,12 @@ msgstr "&Seleccionar"
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:76
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:76
 msgid "Add selected candidates to members"
-msgstr "Engadir candidatos seleccionados a membros"
+msgstr "Engadir candidatos seleccionados á composición da remuda"
 
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:88
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:88
 msgid "Selected members:"
-msgstr "Membros seleccionados:"
+msgstr "Selección de compoñentes:"
 
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:114
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:114
@@ -1638,7 +1635,7 @@ msgstr "Engadir nova &persoa"
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:115
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:115
 msgid "Add new person to members"
-msgstr "Engade unha nova persoa ós membros"
+msgstr "Engade unha nova persoa á composición de remuda"
 
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:119
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:119
@@ -1648,7 +1645,7 @@ msgstr "&Retirar"
 #: /home/damufo/dev/orcana/modules/relay_members/w_relay_members.py:120
 #: /home/damufo/dev/orcana/ficheiros_old/modules/result_members_pode_borrarse/w_result_members.py:120
 msgid "Remove person from members"
-msgstr "Retira a persoa da lista de membros"
+msgstr "Retira a persoa da lista de compoñentes"
 
 #: /home/damufo/dev/orcana/specific_classes/report_base.py:356
 msgid "Orcana v.{}"
@@ -2067,7 +2064,7 @@ msgstr "Amosar no informe"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/persons.py:155
 msgid "Inscriptions I."
-msgstr "Inscricións I."
+msgstr "Insc. ind."
 
 #: /home/damufo/dev/orcana/specific_classes/champ/persons.py:156
 msgid "Results I."
@@ -2075,7 +2072,7 @@ msgstr "Res. ind."
 
 #: /home/damufo/dev/orcana/specific_classes/champ/persons.py:157
 msgid "Inscriptions R."
-msgstr "Inscricións R."
+msgstr "Insc. rem."
 
 #: /home/damufo/dev/orcana/specific_classes/champ/persons.py:158
 msgid "Results R."
@@ -2682,6 +2679,21 @@ msgstr "Examinar..."
 #: /home/damufo/dev/orcana/classes/wxp/messages.py:117
 msgid "Save as..."
 msgstr "Gardar como..."
+
+#~ msgid "I&mport"
+#~ msgstr "I&mportar"
+
+#~ msgid "&Start list"
+#~ msgstr "&Series"
+
+#~ msgid "Mem&bers"
+#~ msgstr "Co&mposición"
+
+#~ msgid "Report heats &PDF"
+#~ msgstr "Informe de series en &PDF"
+
+#~ msgid "Report heats &HTML"
+#~ msgstr "Informe de series en &HTML"
 
 #~ msgid "&Results"
 #~ msgstr "&Resultados"
@@ -7397,9 +7409,6 @@ msgstr "Gardar como..."
 
 #~ msgid "Championship event add"
 #~ msgstr "Engadir proba campionato"
-
-#~ msgid "Im&port"
-#~ msgstr "Im&portar"
 
 #~ msgid "Event&s"
 #~ msgstr "Proba&s"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-27 09:00+0200\n"
+"POT-Creation-Date: 2023-09-28 07:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -315,6 +315,7 @@ msgid "Go to first lane when heat change."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/heats/w_heats.py:131
+#: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:87
 msgid "Me&mbers"
 msgstr ""
 
@@ -1148,7 +1149,7 @@ msgid "Inscriptions"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:59
-msgid "I&mport"
+msgid "Im&port"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:60
@@ -1172,15 +1173,11 @@ msgid "Delete current sort if exists."
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:74
-msgid "&Start list"
+msgid "Report &start list"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:75
 msgid "Report of start list"
-msgstr ""
-
-#: /home/damufo/dev/orcana/modules/inscriptions/w_inscriptions.py:87
-msgid "Mem&bers"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/inscriptions/p_inscriptions.py:76
@@ -1401,7 +1398,7 @@ msgid "Report ins&criptions"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:154
-msgid "Report heats &PDF"
+msgid "Report start list &PDF"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:155
@@ -1410,7 +1407,7 @@ msgid "Generate PDF report heats"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:159
-msgid "Report heats &HTML"
+msgid "Report start list &HTML"
 msgstr ""
 
 #: /home/damufo/dev/orcana/modules/properties/w_properties.py:167
