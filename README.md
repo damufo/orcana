@@ -1,5 +1,7 @@
 # Orcana
 
+A pool swimming championship management application.
+
 
 ## Actualizado de pip
 

@@ -24,11 +24,11 @@ class Config(object):
         self.app_version = app_version
         self.app_version_date = app_version_date
         self.app_description = _("A championships manager.")
-        self.app_copyright = "(C) 2020 Daniel Muñiz Fontoira"
+        self.app_copyright = "(C) 2023 Daniel Muñiz Fontoira"
         self.app_web_site = "https://gitlab.com/damufo/{}".format(app_name)
         self.app_developer = "Daniel Muñiz Fontoira"
         self.app_license = _(
-"Copyright (C) 2023  Daniel Muñiz Fontoira\n\n"
+"{}\n\n"
 "This program is free software: you can redistribute it and/or modify "
 "it under the terms of the GNU General Public License as published by "
 "the Free Software Foundation, either version 3 of the License, or "
@@ -39,6 +39,7 @@ class Config(object):
 "GNU General Public License for more details.\n\n"
 "You should have received a copy of the GNU General Public License "
 "along with this program.  If not, see <http://www.gnu.org/licenses/>.")
+        self.app_license = self.app_license.format(self.app_copyright)
 
         self.app_path_folder = app_path_folder
         self.arg1 = arg1
