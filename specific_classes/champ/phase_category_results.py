@@ -133,7 +133,7 @@ where phase_category_id=? '''
                     i.result.inscription.heat_pos > -1 and i.result.inscription.heat_pos or '',
                     i.result.lane > -1 and i.result.lane or '',
                     i.points,
-                    i.clas,
+                    i.clas_next_phase,
                     ))
         elif self.ind_rel == 'R':
             for pos, i in enumerate(self):
