@@ -23,7 +23,7 @@ class Config(object):
         self.app_title = app_title
         self.app_version = app_version
         self.app_version_date = app_version_date
-        self.app_description = _("A championships manager.")
+        self.app_description = _("A pool swimming championship management application.")
         self.app_copyright = "(C) 2023 Daniel Muñiz Fontoira"
         self.app_web_site = "https://gitlab.com/damufo/{}".format(app_name)
         self.app_developer = "Daniel Muñiz Fontoira"
