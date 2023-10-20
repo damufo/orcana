@@ -161,7 +161,7 @@ from entities order by entity_id'''
             'medium_name_normalized',
             'long_name_normalized',
             )
-        order_cols = range(7)
+        order_cols = range(4)
         if 'num_col' in list(kwargs.keys()):
             if kwargs['num_col'] in order_cols:
                 field = cols[kwargs['num_col']]
