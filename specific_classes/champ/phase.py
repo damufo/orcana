@@ -470,7 +470,6 @@ select event_code from events where event_id =
                 keepWithNext=keep_with_next)
 
         phase = self
-        # add_phase_title([[phase.long_name], ])
         add_phase_title(((phase.long_name, phase.date_time[:-3]), ))
         heats = [heat for heat in self.heats if heat.phase == phase]
         count_heats = len(heats)
@@ -711,24 +710,6 @@ select event_code from events where event_id =
             # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
             # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
             ]
-        def add_phase_title(lines):
-            style_title = [
-                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
-                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
-                ('ALIGN',(1,0),(-1,-1), 'RIGHT'),
-                ('FONT', (1, 0), (-1, -1), 'Open Sans Regular'),
-                ('FONTSIZE', (1, 0), (-1, -1), 8),
-                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
-                ]
-            style_title = style + style_title
-            col_widths = ['80%', '20%']
-            d.insert_table(
-                table=lines,
-                colWidths=col_widths,
-                rowHeights=.8*cm,
-                style=style_title,
-                pagebreak=False)
 
         def add_phase_category(lines):
             style_title = [
@@ -867,30 +848,16 @@ select event_code from events where event_id =
         # Xera o informe
         # orde = None
         # category = None
-        if results:
-            phase = results[0].phase
-            category = results[0].category
-            add_phase_title(((phase.long_name, phase.date_time[:-3]), ))
-            add_phase_category(((category.code_gender, ), ))
+        # FIXME: mellorar este código, seguramente sexa mellor pasar na funcion 
+        # o obxecto phase_category  e  sacar de aí os resultados e a categoría 
+        category = results[0].category
+        add_phase_category(((category.code_gender, ), ))
         lines = []
 
         position = 1
         last_result_category_pos = None
         for phase_category_result in results:
             i = phase_category_result.result
-            # if i.heat.phase.event.pos != orde:  #cambio de evento, xera título
-            #     phase_title = '{}.- {} - {}'.format(
-            #         i.heat.phase.event.pos,
-            #         i.heat.phase.event.name,
-            #         phase_category_result.phase_category_results.phase_category.category.code_gender,
-            #         i.heat.phase.progression)
-            #     phase_date_time = '{} {}'.format(
-            #         i.heat.phase.session.date,
-            #         i.heat.phase.session.time)
-            #     # d.insert_title_1(text=event_title, alignment=0)
-            #     lines.append([phase_title, phase_date_time])
-            #     add_phase_title(lines)
-            #     orde = i.heat.phase.event.pos
 
             if i.issue_id:
                 line_result = [[
@@ -1046,6 +1013,40 @@ select event_code from events where event_id =
             d = self.init_report(file_name=file_name)
             xerar = True
 
+        # FIXME: Mellorar este código, quitar función add_phase_title()
+        style = [
+            ('FONT',(0,0),(-1,-1), 'Open Sans Regular'), 
+            # ('FONTSIZE',(0,0),(-1,-1), 8),
+            ('ALIGN',(0,0),(-1,-1), 'CENTER'),
+            ('VALIGN', (0,0), (-1,-1), 'BOTTOM'), 
+            # ('TOPPADDING', (0,0), (-1,-1), 0),
+            ('LEFTPADDING', (0,0), (-1,-1), 3),
+            ('RIGHTPADDING', (0,0), (-1,-1), 3),
+            # ('BOTTOMPADDING', (0,0), (-1,-1), 3), 
+            # ('GRID', [ 0, 0 ], [ -1, -1 ], 0.05, 'grey' ),
+            ]
+        def add_phase_title(lines):
+            style_title = [
+                ('ALIGN',(0,0),(-1,-1), 'LEFT'),
+                ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('ALIGN',(1,0),(-1,-1), 'RIGHT'),
+                ('FONT', (1, 0), (-1, -1), 'Open Sans Regular'),
+                ('FONTSIZE', (1, 0), (-1, -1), 8),
+                # ('VALIGN', (0,0), (-1,-1), 'MIDDLE'), 
+                ]
+            style_title = style + style_title
+            col_widths = ['80%', '20%']
+            d.insert_table(
+                table=lines,
+                colWidths=col_widths,
+                rowHeights=.8*cm,
+                style=style_title,
+                pagebreak=False)
+
+        add_phase_title(((self.long_name, self.date_time[:-3]), ))
+
+
         for phase_category in self.phase_categories:
             print('{} {}'.format(phase_category.category.name, phase_category.action))
             phase_category_results = phase_category.phase_category_results
@@ -1060,7 +1061,8 @@ select event_code from events where event_id =
             # Fin obtención de datos
             # FIMME: poñer o de arriba dentro de gen_phase_category_results_pdf
             print("poñer o de arriba dentro de gen_phase_category_results_pdf")
-            self.gen_phase_category_results_pdf(d=d, results=results_sorted)
+            if results_sorted:
+                self.gen_phase_category_results_pdf(d=d, results=results_sorted)
 
         if xerar:
             d.build_file()
