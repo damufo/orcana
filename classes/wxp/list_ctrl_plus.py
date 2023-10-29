@@ -209,6 +209,14 @@ class ListCtrlPlus(object):
         for i in sorted(idxs, reverse=True):
             self.delete_item(i)
 
+    def fix_numeration(self, from_idx=0):
+        """
+        fix number item position
+        """
+        for idx in range(from_idx, self.lsc.ItemCount):
+            self.lsc.SetItem(idx, 0, str(idx+1))
+
+
     def set_sel_pos_item(self, pos):
         """
         Set select a position (integer)
