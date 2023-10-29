@@ -51,6 +51,13 @@ class ResultSplits(list):
         print("Aquí o código para borrar os elementos")
         self.pop(idx)  # remove element from list
 
+    def delete_all_items(self):
+
+        sql = ''' delete from results_splits where result_id=? '''
+        values = ((self.result.result_id, ), )
+        self.config.dbs.exec_sql(sql=sql, values=values)
+        self.clear()
+
     def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
         sql = '''

@@ -92,7 +92,7 @@ class Presenter(object):
             self.model.person = person
 
             self.view.lsc_inscriptions_ind_plus.save_custom_column_width()
-            person.inscriptions.load()
+            # person.inscriptions.load()
             self.view.lsc_inscriptions_ind_plus.values = person.inscriptions
             print(len(self.view.lsc_inscriptions_ind_plus.values))
             self.view.lsc_inscriptions_ind_plus.load(custom_column_widths=True)

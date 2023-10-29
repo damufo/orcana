@@ -64,20 +64,19 @@ class InscriptionsIndPerson(list):
     #     super().append(item)
     #     print("engadiuse")
 
-    def load(self):
-        self.clear()  # borra os elementos que haxa
-        # inscriptions = []
-        for phase in self.champ.phases:
-            for inscription in phase.inscriptions:
-                if inscription.person:
-                    if inscription.person.person_id == self.person.person_id:
-                        self.append(inscription)
+    # def load(self):
+    #     self.clear()  # borra os elementos que haxa
+    #     # inscriptions = []
+    #     for phase in self.champ.phases:
+    #         for inscription in phase.inscriptions:
+    #             if inscription.person:
+    #                 if inscription.person.person_id == self.person.person_id:
+    #                     self.append(inscription)
 
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):
             inscription = self[idx]
             inscription.delete()  # from phase.inscriptions
-            self.remove(inscription)  # from here (person.inscriptions)
 
     @property
     def list_fields(self):

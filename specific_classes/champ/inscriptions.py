@@ -77,6 +77,28 @@ class Inscriptions(list):
             )
         return inscription
 
+    def append(self, inscription):
+        # if not isinstance(item, type):
+        #     raise TypeError, 'item is not of type %s' % type
+        super().append(inscription)
+        print("engadiuse a inscricion")
+        if inscription.person:
+            if inscription not in inscription.person.inscriptions:
+                inscription.person.inscriptions.append(inscription)
+            else:
+                print("isto non debería pasar nunca")
+
+    def remove(self, inscription):
+        # if not isinstance(item, type):
+        #     raise TypeError, 'item is not of type %s' % type
+        super().remove(inscription)
+        print("eliminouse a inscricion")
+        if inscription.person:
+            if inscription in inscription.person.inscriptions:
+                inscription.person.inscriptions.remove(inscription)
+            else:
+                print("isto non debería pasar nunca")
+
     def delete_items(self, idxs):
         for idx in sorted(idxs, reverse=True):
             self[idx].delete()
@@ -94,6 +116,12 @@ class Inscriptions(list):
 
     def load_items_from_dbs(self):
         self.clear()  # borra os elementos que haxa
+        # isto de arriba ten que borrar tamén as inscricións das persoas
+        for person in self.champ.persons:
+            for inscription in person.inscriptions:
+                if inscription.phase == self.phase:
+                    person.inscriptions.remove(inscription)
+
         dict_persons = self.champ.persons.dict
         dict_relays = self.champ.relays.dict
         sql = '''
@@ -143,6 +171,8 @@ PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
                 if self.ind_rel == 'R':  # Set inscription (one relay only has one inscription)
                     relay.inscription = inscription
                     print(id(relay))
+                else:
+                    print("is individual")
                 self.append(inscription)
 
     @property
