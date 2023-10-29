@@ -216,7 +216,6 @@ class ListCtrlPlus(object):
         for idx in range(from_idx, self.lsc.ItemCount):
             self.lsc.SetItem(idx, 0, str(idx+1))
 
-
     def set_sel_pos_item(self, pos):
         """
         Set select a position (integer)
