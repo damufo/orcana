@@ -104,7 +104,7 @@ where inscription_id in
         # é moito máis rápido consultar a base de datos que percorrer os
         # resultados na  procura da participación
         # seguramente se poida mellorar cando se busca por resultados
-        count_relays = 0
+        count_results = 0
         sql = '''
 select count(*) from inscriptions
         where relay_id in (select relay_id from relays_members where person_id=?); '''
@@ -119,7 +119,7 @@ select count(*) from inscriptions
         # é moito máis rápido consultar a base de datos que percorrer os
         # resultados na  procura da participación
         # seguramente se poida mellorar cando se busca por resultados
-        count_relays = 0
+        count_results = 0
         sql = '''
 select count(*) from results r
 where inscription_id in 
@@ -165,7 +165,7 @@ where inscription_id in
     @property
     def results_de_momento_non_se_usa_pode_borrarse(self):
         results = []
-        for phase in phases:
+        for phase in self.champ.phases:
             for inscription in phase.inscriptions:
                 if inscription.result:
                     results.append(inscription.result)

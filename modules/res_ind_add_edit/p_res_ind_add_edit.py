@@ -112,26 +112,30 @@ class Presenter(object):
                             "Do you like replace?\n"
                             "This result will be deleted.")):
                         # delete current result
-                        result.inscription.exchanged = True
-                        result.inscription.result = None
-                        result.inscription.save()
-                        result.delete()
+                        current_result.inscription.exchanged = True
+                        current_result.inscription.result = None
+                        current_result.inscription.save()
+                        current_result.delete()
                         # Create inscription and result
-                        match_inscription = heat.phase.inscriptions.item_blank
+                        match_inscription = current_heat.phase.inscriptions.item_blank
                         match_inscription.person = new_person
                         match_inscription.save()
                         match_inscription.add_result(
                                 heat=current_heat, lane=current_lane)
                         match_inscription.result.save()
+                        current_heat.phase.inscriptions.append(match_inscription)  # sobrecargado para que acutalice as inscricións da persoa
+                        # new_person.inscriptions.load()  # actualiza as inscricións da persoa
                         self.view.view_plus.stop()
                 else:
                         # Create inscription and result
-                        match_inscription = heat.phase.inscriptions.item_blank
+                        match_inscription = current_heat.phase.inscriptions.item_blank
                         match_inscription.person = new_person
                         match_inscription.save()
                         match_inscription.add_result(
                                 heat=current_heat, lane=current_lane)
                         match_inscription.result.save()
+                        current_heat.phase.inscriptions.append(match_inscription)  # sobrecargado para que acutalice as inscricións da persoa
+                        # new_person.inscriptions.load()  # actualiza as inscricións da persoa
                         self.view.view_plus.stop()
         else:  # Not person selected
             self.view.msg.warning("No person selected.")

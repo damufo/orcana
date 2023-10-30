@@ -63,5 +63,6 @@ class Presenter(object):
             if self.view.msg.question(message=message):
                 self.model.sessions.delete_items(idxs)
                 self.view.lsc_plus.delete_items(idxs)
+                self.view.lsc_plus.fix_numeration(from_idx=min(idxs))
         else:
             self.view.msg.warning(message=_("No item selected."))

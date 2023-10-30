@@ -65,7 +65,7 @@ class Presenter(object):
                     inscription.inscriptions.remove(inscription)
                 inscription.inscriptions = phase.inscriptions
                 # inscription.phase = phase
-                inscription.person = person
+                # inscription.person = person
                 inscription.mark_hundredth = values['mark_hundredth']
                 inscription.pool_length = values['pool_length']
                 inscription.chrono_type = values['chrono_type']
@@ -76,8 +76,9 @@ class Presenter(object):
                 inscription.score = values['score']
                 inscription.classify = values['classify']
                 if inscription not in phase.inscriptions:
-                    phase.inscriptions.append(inscription)
-                    person.inscriptions.append(inscription)
+                    phase.inscriptions.append(inscription)  #sobrecargado para que engada tamén a inscrición á persoa
+                    # person.inscriptions.append(inscription) # isto debería cascar o correcto sería a liña de abaixo
+                    # person.inscriptions.load()
                 self.model.inscription.save()
                 self.view.view_plus.stop()
 
