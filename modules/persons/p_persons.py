@@ -25,6 +25,11 @@ class Presenter(object):
         self.model = model
         self.view = view
         interactor.install(self, view)
+        # import wx
+        # self.view.Hide()
+        # msg = "Please wait while we process your request..."
+        # busyDlg = wx.BusyInfo(msg)
+
         # self.model.persons.load_items_from_dbs()
         self.view.lsc_persons_plus.values = self.model.persons
         self.view.lsc_persons_plus.load(custom_column_widths=True)
@@ -35,6 +40,9 @@ class Presenter(object):
             self.view.lsc_persons.Focus(0)
             self.view.lsc_persons.Select(0)
         self.view.load_splitter()
+
+        # busyDlg = None
+        # self.view.Show()
 
     def go_back(self):
         self.view.close()
