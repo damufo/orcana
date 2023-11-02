@@ -191,10 +191,10 @@ class Inscription(object):
     @property
     def venue_normalized(self):
         return utils.normalize(self.venue)
- 
+
     def save(self):
         if self.ind_rel == 'I':
-            if self.inscription_id:        
+            if self.inscription_id:
                 sql = ('update inscriptions set pool_length=?, chrono_type=?, '
                         'mark_hundredth=?, equated_hundredth=?, date=?, venue=?, '
                         'rejected=?, exchanged=?, score=?, classify=?, '
@@ -241,7 +241,7 @@ class Inscription(object):
                         self.phase.phase_id, self.relay.relay_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id
-            self.inscriptions.sort_default() 
+            self.inscriptions.sort_default()
 
 
     def delete(self):
