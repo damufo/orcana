@@ -66,7 +66,7 @@ class Phase(object):
 
     @property
     def pool_lanes_count(self):
-        return len(self.pool_lanes)
+        return max(self.pool_lanes)
 
     @property
     def pool_lane_min(self):
