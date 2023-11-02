@@ -25,6 +25,13 @@ class PhaseCategories(list):
     def champ(self):
         return self.phase.champ
 
+    @property
+    def dict(self):
+        dict_phase_categories = {}
+        for i in self:
+            dict_phase_categories[i.phase_category_id] = i
+        return dict_phase_categories
+
     def get_phase_category(self, phase_category_id):
         phase_category = None
         for i in self:

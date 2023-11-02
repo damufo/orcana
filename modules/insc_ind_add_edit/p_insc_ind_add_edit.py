@@ -75,11 +75,11 @@ class Presenter(object):
                 inscription.exchanged = values['exchanged']
                 inscription.score = values['score']
                 inscription.classify = values['classify']
+                inscription.save()
                 if inscription not in phase.inscriptions:
                     phase.inscriptions.append(inscription)  #sobrecargado para que engada tamén a inscrición á persoa
                     # person.inscriptions.append(inscription) # isto debería cascar o correcto sería a liña de abaixo
                     # person.inscriptions.load()
-                self.model.inscription.save()
                 self.view.view_plus.stop()
 
     def phase_id_change(self):

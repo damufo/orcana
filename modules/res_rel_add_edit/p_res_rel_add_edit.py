@@ -67,11 +67,11 @@ class Presenter(object):
         if msg:
             self.view.msg.warning(msg)
         else:
-            categories = self.model.heat.champ.categories.dict
-            relay_entity = self.model.entity_selected
-            relay_category = categories[values["category_id"]]
-            relay_name = values["relay_name"]
             phase = current_heat.phase
+            phase_categories = phase.phase_categories.dict
+            relay_entity = self.model.entity_selected
+            relay_category = phase_categories[values["category_id"]].category
+            relay_name = values["relay_name"]
             # Mira se xa existe a entidade, categoría e nome de remuda
             match_inscription = phase.inscriptions.search_relay(entity=relay_entity, category=relay_category, name=relay_name)  
             # Se existe, pregunta se quero movela a esta estaxe
@@ -148,7 +148,7 @@ class Presenter(object):
                     # current_result.inscription.save()
                 # se non existe engade a inscrición e o resultado
                 else:  # Create inscription and result
-                    new_inscription = self.model.heat.phase.inscriptions.item_blank
+                    new_inscription = phase.inscriptions.item_blank
                     new_inscription.relay.entity = relay_entity
                     new_inscription.relay.category = relay_category
                     new_inscription.relay.name = relay_name
@@ -159,6 +159,7 @@ class Presenter(object):
                     new_inscription.add_result(
                             heat=current_heat, lane=current_lane)
                     new_inscription.result.save()
+                    phase.inscriptions.append(new_inscription)
                 self.view.view_plus.stop()
 
     def entity_name(self):

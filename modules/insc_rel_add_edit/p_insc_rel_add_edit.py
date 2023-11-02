@@ -52,9 +52,11 @@ class Presenter(object):
         if msg:
             self.view.msg.warning(msg)
         else:
-            category = inscription.champ.categories.get_category(category_id=values['category_id'])
+            phase = inscription.phase
+            phase_categories = phase.phase_categories.dict
+            relay_category = phase_categories[values["category_id"]].category
             name = values['relay_name']
-            match_inscription = inscription.inscriptions.search_relay(entity=entity, category=category, name=name)
+            match_inscription = inscription.inscriptions.search_relay(entity=entity, category=relay_category, name=name)
             if match_inscription and (match_inscription != inscription):  # é distinta
                 msg = _('This relay already exists.')
                 self.view.msg.warning(msg)
@@ -63,7 +65,7 @@ class Presenter(object):
                     clear_relayers = False
                     if inscription.relay.entity != entity:
                         clear_relayers = True
-                    if inscription.relay.category != category:
+                    if inscription.relay.category != relay_category:
                         clear_relayers = True
                     if clear_relayers:
                         inscription.relay.relay_members.delete_all_items()
@@ -74,8 +76,8 @@ class Presenter(object):
                 # pensándoo penso que non hai problema se se usa o sexo da categoría
                 inscription.relay.gender_id = self.model.inscription.event.gender_id
                 inscription.relay.name = name
-                inscription.relay.category = category
-                inscription.relay.gender_id = category.gender_id
+                inscription.relay.category = relay_category
+                inscription.relay.gender_id = relay_category.gender_id
                 inscription.mark_hundredth = values['mark_hundredth']
                 inscription.chrono_type = values['chrono_type']
                 inscription.pool_length = values['pool_length']
@@ -86,6 +88,8 @@ class Presenter(object):
                 inscription.score = values['score']
                 inscription.classify = values['classify']
                 inscription.save()
+                if inscription not in phase.inscriptions:
+                    phase.inscriptions.append(inscription)
                 self.view.view_plus.stop()
 
     def entity_name(self):
