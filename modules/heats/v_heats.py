@@ -55,6 +55,7 @@ class View(Heats):
         # print("split size: ", self.spl_persons.GetSashSize())
 
     def load_heat_grid(self, heat):
+        self.grd_results.ClearGrid()
         self.heat = heat
         ind_rel = heat.ind_rel
         if ind_rel == 'I':
