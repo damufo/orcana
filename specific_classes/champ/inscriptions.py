@@ -141,12 +141,11 @@ PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
                 relay = None
             elif self.ind_rel == 'R':
                 person = None
-                print(id(dict_relays[i[RELAY_ID]]))
+                # print(id(dict_relays[i[RELAY_ID]]))
                 relay = dict_relays[i[RELAY_ID]]
-                print(id(relay))
+                # print(id(relay))
                 relay.event = self.phase.event
-                print(id(relay))
-
+                # print(id(relay))
             # phase = self.champ.phases.get_phase(i[PHASE_ID])
             if not person and not relay:
                 AssertionError("Iston on pode ser.")
@@ -170,9 +169,9 @@ PHASE_ID, PERSON_ID, RELAY_ID) = range(14)
                         )
                 if self.ind_rel == 'R':  # Set inscription (one relay only has one inscription)
                     relay.inscription = inscription
-                    print(id(relay))
-                else:
-                    print("is individual")
+                    # print(id(relay))
+                # else:
+                #     print("is individual")
                 self.append(inscription)
 
     @property
