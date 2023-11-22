@@ -70,8 +70,6 @@ class View(Heats):
             value = self.view_plus.prefs.get_value(f'{key}.grd_heats')
             if value:
                 value = int(value)
-            else:
-                defalut_value
             self.col_widths[key] =  value or defalut_value
 
     def save_grid_col_width(self, col, width):
@@ -84,6 +82,14 @@ class View(Heats):
                 key = 'ind_entity'
             elif col == 2:
                 key = 'ind_category'
+            elif col == 3:
+                key = 'ind_mak'
+            elif col == 4:
+                key = 'ind_pos'
+            elif col == 5:
+                key = 'ind_issue'
+            elif col == 6:
+                key = 'ind_issue_split'
             elif col >= self.first_split_col:
                 key = 'ind_split_mark'
                 num_col_fixe = self.cols["ind_num_col_fixe"]
@@ -100,6 +106,16 @@ class View(Heats):
                 key = 'rel_entity'
             elif col == 2:
                 key = 'rel_category'
+            elif col == 3:
+                key = 'rel_members'
+            elif col == 4:
+                key = 'rel_mark'
+            elif col == 5:
+                key = 'rel_pos'
+            elif col == 6:
+                key = 'rel_issue'
+            elif col == 7:
+                key = 'rel_issue_split'
             elif col >= self.first_split_col:
                 key = 'rel_split_mark'
                 num_col_fixe = self.cols["rel_num_col_fixe"]

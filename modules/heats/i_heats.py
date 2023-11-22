@@ -40,11 +40,8 @@ class Interactor(object):
 # view.lsc.Bind(wx.EVT_LIST_COL_END_DRAG, self.save_col_sizes)
 
     def on_resize_col(self, event):
-        print('resize')
         col = event.GetRowOrCol()
         width = self.view.grd_results.GetColSize(col)
-        print(col)
-        print(self.view.grd_results.GetColSize(col))
         self.view.save_grid_col_width(col=col, width=width)
 
     def res_change(self, event):
