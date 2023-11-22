@@ -364,7 +364,9 @@ sum(points) desc;          '''
             entity_points_sorted = dict(sorted(entity_points.items(), key=lambda item: item[1], reverse=True))  # Sort by points
             for entity_id, points in entity_points_sorted.items():
                 if not entity_id:
-                    print('dd')
+                    print('Algo fallou, puntuación sen club.')
+                    print('Seguramente quedou algún resto na táboa phases_categories_results.')
+                    continue
                 entity = entities_dict[entity_id]
                 if points == last_points:
                     line_pos = ""
@@ -721,6 +723,7 @@ sum(points) desc;          '''
                         line.append(result.person.license)  # phaseresult.resultable.profile_number
                         line.append('')  # phaseresult.resultable.@where:code
                         line.append('license')  # phaseresult.resultable.@type
+                        result_gender = genders[result.person.gender_id]
                     else:
                         line.append('')  # phaseresult.last_name
                         line.append('')  # phaseresult.first_name
@@ -735,6 +738,7 @@ sum(points) desc;          '''
                             members_licenses_str = members_licenses
                         distance_per_member = int(result.distance / result.relay.relay_members.num_members)
                         num_member = result.relay.relay_members.num_members  # for splits calculations
+                        result_gender = genders[result.event.gender_id]
 
                     line.append(style_names[result.style_id])  # phaseresult.style.code
                     line.append(result.mark_hundredth)  # phaseresult.value
@@ -746,7 +750,7 @@ sum(points) desc;          '''
                     line.append(str(result.heat.pos))  # phaseresult.custom_fields.result_heat
                     line.append(int(result.category.to_age))  # phaseresult.category.maximum_age
                     line.append(int(result.category.from_age))  # phaseresult.category.minimum_age
-                    line.append(result.category.name)  # phaseresult.category.name
+                    line.append(result.category.code)  # phaseresult.category.name
                     line.append('38')  # phaseresult.category.@where:categorydisciplines.discipline.id
                     line.append(self.params['champ_name'])  # phaseresult.competition
                     line.append(self.params['champ_venue'])  # phaseresult.location
@@ -756,7 +760,7 @@ sum(points) desc;          '''
                     line.append(str(phase.pool_lane_min))  # phaseresult.custom_fields.pool_lanemin
                     line.append(str(phase.pool_lane_max))  # phaseresult.custom_fields.pool_lanemax
                     #FIXME: coller o sexo da persoa ou remuda
-                    line.append(genders[result.event.gender_id])  # phaseresult.gender
+                    line.append(result_gender)  # phaseresult.gender
                     line.append(str(result.event.pos))  # phaseresult.custom_fields.event_number
                     line.append(result.phase.progression)  # phaseresult.custom_fields.event_round
                     line.append(1)  # phaseresult.official
