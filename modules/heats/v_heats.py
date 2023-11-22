@@ -27,22 +27,95 @@ class View(Heats):
         self.msg = Messages(self.parent)
         # set cols
         self.cols = {}
+        # Individual
         self.cols["ind_num_col_fixe"] = 7
         self.cols["ind_col_arrival_mark"] = 3
         self.cols["ind_col_arrival_pos"] = 4
         self.cols["ind_col_issue_id"] = 5
         self.cols["ind_col_issue_split"] = 6
+        # Relay
         self.cols["rel_num_col_fixe"] = 8
         self.cols["rel_col_members"] = 3
         self.cols["rel_col_arrival_mark"] = 4
         self.cols["rel_col_arrival_pos"] = 5
         self.cols["rel_col_issue_id"] = 6
         self.cols["rel_col_issue_split"] = 7
-
         self.first_split_col = 0
         self.col_arrival_mark = 0
         self.spl_heats.SetName('spl_heats')
         self.spl_heats_plus = self.parent.get_spl_plus(spl=self.spl_heats, parent=self)
+        
+        self.view_plus.prefs
+        self.col_widths = {}
+        col_widths =(
+            ('ind_name', 400),
+            ('ind_entity', 200),
+            ('ind_category', 100),
+            ('ind_mark', 100),
+            ('ind_pos', 100),
+            ('ind_issue', 150),
+            ('ind_issue_split', 50),
+            ('ind_split_mark', 100),
+            ('rel_name', 400),
+            ('rel_entity', 200),
+            ('rel_category', 100),
+            ('rel_members', 100),
+            ('rel_mark', 100),
+            ('rel_pos', 100),
+            ('rel_issue', 150),
+            ('rel_issue_split', 50),
+            ('rel_split_mark', 100),
+        )
+        for key, defalut_value in col_widths:
+            value = self.view_plus.prefs.get_value(f'{key}.grd_heats')
+            if value:
+                value = int(value)
+            else:
+                defalut_value
+            self.col_widths[key] =  value or defalut_value
+
+    def save_grid_col_width(self, col, width):
+        ind_rel = self.heat.ind_rel
+        if ind_rel == 'I':
+            if col == 0:
+                key = 'ind_name'
+            elif col == 1:
+                key = 'ind_entity'
+            elif col == 2:
+                key = 'ind_category'
+            elif col >= self.first_split_col:
+                key = 'ind_split_mark'
+                num_col_fixe = self.cols["ind_num_col_fixe"]
+                event_splits = self.heat.event.splits
+                (DISTANCE, SPLIT_CODE, OFFICIAL) = range(3)
+                for i, event_split in enumerate(event_splits):
+                    col = num_col_fixe + i
+                    self.grd_results.SetColLabelValue(col, str(event_split[DISTANCE]))
+                    self.grd_results.SetColSize(col, width)
+        elif ind_rel == 'R':
+            if col == 0:
+                key = 'rel_name'
+            elif col == 1:
+                key = 'rel_entity'
+            elif col == 2:
+                key = 'rel_category'
+            elif col >= self.first_split_col:
+                key = 'rel_split_mark'
+                num_col_fixe = self.cols["rel_num_col_fixe"]
+                event_splits = self.heat.event.splits
+                (DISTANCE, SPLIT_CODE, OFFICIAL) = range(3)
+                for i, event_split in enumerate(event_splits):
+                    col = num_col_fixe + i
+                    self.grd_results.SetColLabelValue(col, str(event_split[DISTANCE]))
+                    self.grd_results.SetColSize(col, width)
+        if key:
+            self.col_widths[key] = width  # category
+            self.view_plus.prefs.set_value(f'{key}.grd_heats',str(width))
+            self.view_plus.prefs.save()
+        else:
+            print('isto nunca debería pasar')
+
+        
 
     def load_splitter(self):
         # Isto ten que ir ó final de toda a carga de datos e de todo
@@ -65,6 +138,17 @@ class View(Heats):
             col_arrival_pos = self.cols["ind_col_arrival_pos"]
             col_issue_id = self.cols["ind_col_issue_id"]
             col_issue_split = self.cols["ind_col_issue_split"]
+
+            col_width_name = self.col_widths['ind_name']
+            col_width_entity = self.col_widths['ind_entity']
+            col_width_category = self.col_widths['ind_category']
+
+            col_width_mark = self.col_widths['ind_mark']
+            col_width_pos = self.col_widths['ind_pos']
+            col_width_issue = self.col_widths['ind_issue']
+            col_width_issue_split = self.col_widths['ind_issue_split']
+            col_width_split_mark = self.col_widths['ind_split_mark']
+
         elif ind_rel == 'R':
             print('Relay heat')
             num_col_fixe = self.cols["rel_num_col_fixe"]
@@ -72,8 +156,18 @@ class View(Heats):
             col_arrival_mark = self.cols["rel_col_arrival_mark"]
             col_arrival_pos = self.cols["rel_col_arrival_pos"]
             col_issue_id = self.cols["rel_col_issue_id"]
-            col_issue_split = self.cols["rel_col_issue_split"]        
-        
+            col_issue_split = self.cols["rel_col_issue_split"]
+    
+            col_width_name = self.col_widths['rel_name']
+            col_width_entity = self.col_widths['rel_entity']
+            col_width_category = self.col_widths['rel_category']
+            col_width_members = self.col_widths['rel_members']
+            col_width_mark = self.col_widths['rel_mark']
+            col_width_pos = self.col_widths['rel_pos']
+            col_width_issue = self.col_widths['rel_issue']
+            col_width_issue_split = self.col_widths['rel_issue_split']
+            col_width_split_mark = self.col_widths['rel_split_mark']
+
         # Estas liñas de abaixo úsanse no interactor en OnKeyDown
         self.first_split_col = num_col_fixe
         self.col_arrival_mark = col_arrival_mark
@@ -113,7 +207,7 @@ class View(Heats):
         for i, event_split in enumerate(event_splits):
             col = num_col_fixe + i
             self.grd_results.SetColLabelValue(col, str(event_split[DISTANCE]))
-            self.grd_results.SetColSize(col, 100)
+            self.grd_results.SetColSize(col, col_width_split_mark)
         self.grd_results.ClearGrid()
         if pool_lanes_count != 10:
             pool_lane_adjust = 1
@@ -121,22 +215,22 @@ class View(Heats):
             pool_lane_adjust = 0
         # Header
         self.grd_results.SetColLabelValue(0, _('Full name'))
-        self.grd_results.SetColSize(0, 400)
+        self.grd_results.SetColSize(0, col_width_name)
         self.grd_results.SetColLabelValue(1, _('Entity'))
-        self.grd_results.SetColSize(1, 200)
+        self.grd_results.SetColSize(1, col_width_entity)
         self.grd_results.SetColLabelValue(2, _('Category'))
-        self.grd_results.SetColSize(2, 100)
+        self.grd_results.SetColSize(2, col_width_category)
         if ind_rel == 'R':
             self.grd_results.SetColLabelValue(col_members, _('Members'))
-            self.grd_results.SetColSize(col_members, 100)
+            self.grd_results.SetColSize(col_members, col_width_members)
         self.grd_results.SetColLabelValue(col_arrival_mark, _('Mark'))
-        self.grd_results.SetColSize(col_arrival_mark, 100)
+        self.grd_results.SetColSize(col_arrival_mark, col_width_mark)
         self.grd_results.SetColLabelValue(col_arrival_pos, _('Pos.'))
-        self.grd_results.SetColSize(col_arrival_pos, 80)
+        self.grd_results.SetColSize(col_arrival_pos, col_width_pos)
         self.grd_results.SetColLabelValue(col_issue_id, _('Issue'))
-        self.grd_results.SetColSize(col_issue_id, 150)
+        self.grd_results.SetColSize(col_issue_id, col_width_issue)
         self.grd_results.SetColLabelValue(col_issue_split, _('I. S.')) # Issue split
-        self.grd_results.SetColSize(col_issue_split, 80)
+        self.grd_results.SetColSize(col_issue_split, col_width_issue_split)
         results_dict = {}
         for i in results:
             results_dict[i.lane] = i

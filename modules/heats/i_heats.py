@@ -29,13 +29,23 @@ class Interactor(object):
         # view.grd_results.Bind(wx.grid.EVT_GRID_RANGE_SELECT, self.OnGrid1GridRangeSelect)
         view.grd_results.Bind(wx.grid.EVT_GRID_RANGE_SELECTING, self.OnGrid1GridRangeSelect)
 
-
         view.grd_results.Bind(wx.grid.EVT_GRID_CELL_CHANGED, self.OnGrid1GridEditorHidden)
         view.grd_results.Bind(wx.grid.EVT_GRID_SELECT_CELL, self.on_grid_select_cell)
         view.grd_results.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK, self.on_select_members)
         # view.grd_results.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.on_grid_select_cell)
         view.grd_results.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
         view.btn_change_participant.Bind(wx.EVT_BUTTON, self.res_change)
+
+        view.grd_results.Bind(wx.grid.EVT_GRID_COL_SIZE, self.on_resize_col)
+# view.lsc.Bind(wx.EVT_LIST_COL_END_DRAG, self.save_col_sizes)
+
+    def on_resize_col(self, event):
+        print('resize')
+        col = event.GetRowOrCol()
+        width = self.view.grd_results.GetColSize(col)
+        print(col)
+        print(self.view.grd_results.GetColSize(col))
+        self.view.save_grid_col_width(col=col, width=width)
 
     def res_change(self, event):
         self.presenter.res_change()
