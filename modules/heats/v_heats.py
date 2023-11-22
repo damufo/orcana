@@ -76,6 +76,7 @@ class View(Heats):
 
     def save_grid_col_width(self, col, width):
         ind_rel = self.heat.ind_rel
+        key = None
         if ind_rel == 'I':
             if col == 0:
                 key = 'ind_name'
