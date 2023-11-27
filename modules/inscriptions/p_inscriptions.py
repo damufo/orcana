@@ -31,12 +31,11 @@ class Presenter(object):
             phase_id = config_views['inscriptions']['phase_id']
             inscription_pos = config_views['inscriptions']['inscription_pos']
             self.view.view_plus.cho_set(choice=self.view.cho_phase_id, value=phase_id)
-            self.load_inscriptions(phase_id=phase_id)
+            self.load_inscriptions()
             self.view.lsc_plus.set_sel_pos_item(inscription_pos)
             self.view.lsc.SetFocus()
         else:
             self.view.lsc_plus.set_sel_pos_item(0)
-
         self.view_refresh()
 
     def view_refresh(self):
@@ -47,7 +46,8 @@ class Presenter(object):
     def load_inscriptions(self):
         if self.model.phase:
             phase = self.model.phase
-            inscriptions = phase.inscriptions
+            phase.inscriptions.sort_default()
+            # inscriptions = phase.inscriptions
             # self.model.inscriptions.load_items_from_dbs()
             if phase.ind_rel == 'I':
                 self.view.set_ind()

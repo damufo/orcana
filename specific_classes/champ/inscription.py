@@ -151,9 +151,9 @@ class Inscription(object):
             category = self.relay.category
         return category
 
-    @property
-    def year(self):
-        return self.birth_date[:4]
+    # @property
+    # def year(self):
+    #     return self.birth_date[:4]
 
     def _get_mark_time(self):
         mark_time = marks.hun2mark(value=self.mark_hundredth)
@@ -217,7 +217,7 @@ class Inscription(object):
                         self.phase.phase_id, self.person.person_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id
-            self.inscriptions.sort_default()
+            # self.inscriptions.sort_default()
         elif self.ind_rel == 'R':
             if self.inscription_id:
                 sql = ('update inscriptions set pool_length=?, chrono_type=?, '
@@ -241,8 +241,7 @@ class Inscription(object):
                         self.phase.phase_id, self.relay.relay_id),)
                 self.config.dbs.exec_sql(sql=sql, values=values)
                 self.inscription_id = self.config.dbs.last_row_id
-            self.inscriptions.sort_default()
-
+            # self.inscriptions.sort_default()
 
     def delete(self):
         '''
