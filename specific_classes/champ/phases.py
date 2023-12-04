@@ -203,7 +203,9 @@ order by (select s.date || " " ||s.time from sessions s where s.session_id=p.ses
         if add_empty:
             values.append(('', 0))
         for i in self:
-            if not gender_id or i.gender_id == gender_id:
+            if (not gender_id
+                or i.gender_id == gender_id
+                or i.gender_id == 'X'):
                 if not ind_rel or i.ind_rel == ind_rel:
                     values.append((i.long_name, i.phase_id))
 
