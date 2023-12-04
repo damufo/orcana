@@ -25,6 +25,10 @@ class Presenter(object):
         interactor.install(self, view)
         self.view.lsc_plus.values = self.model.phase_categories
         self.view.lsc_plus.load(custom_column_widths=True)
+        if self.model.phase_categories.phase.official:
+                # self.view.msg.warning(message=_("Selection invalid, the phase {} {} is official.").format(phase.pos, phase.event.long_name))
+            # disable button acept
+            self.view.disable_buttons()
         self.view.view_plus.start(modal=True)
 
     def edit(self):

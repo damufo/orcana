@@ -36,13 +36,10 @@ class Presenter(object):
         else:
             idx = idxs[0]
             phase = self.model.phases[idx]
-            if phase.official:
-                    self.view.msg.warning(message=_("Selection invalid, the phase {} {} is official.").format(phase.pos, phase.event.long_name))        
-            else:
-                phase_categories = phase.phase_categories
-                from modules.phase_categories import p_phase_categories
-                p_phase_categories.create(parent=self, phase_categories=phase_categories)
-                self.view.lsc_plus.update_item(idx)
+            phase_categories = phase.phase_categories
+            from modules.phase_categories import p_phase_categories
+            p_phase_categories.create(parent=self, phase_categories=phase_categories)
+            self.view.lsc_plus.update_item(idx)
 
     def move_down(self):
         idxs = self.view.lsc_plus.get_sel_pos_items()
