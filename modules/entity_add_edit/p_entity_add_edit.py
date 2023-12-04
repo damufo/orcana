@@ -33,6 +33,8 @@ class Presenter(object):
         if entity.already_exists:
             msg = 'Already exists.'
             self.view.txt_entity_code.SetFocus()
+        elif len(entity.code) != 5:
+            msg = 'Entity code must be 5 characters.'
         elif not entity.short_name:
             msg = 'Set a short name.'
             self.view.txt_short_name.SetFocus()
