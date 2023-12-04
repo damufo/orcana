@@ -112,7 +112,10 @@ class Result(object):
             for i in self.heat.phase.phase_categories:
                 category = i.category
                 print('{} {} - {}'.format(category.name, category.from_age, category.to_age))
-                if person.age >= category.from_age and person.age <= category.to_age and person.gender_id == category.gender_id:
+                if (person.age >= category.from_age 
+                    and person.age <= category.to_age 
+                    and (person.gender_id == category.gender_id 
+                        or category.gender_id == 'X')):
                     categories.append(category)
         elif self.ind_rel == 'R':
             categories.append(self.relay.category)
