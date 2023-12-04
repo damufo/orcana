@@ -58,11 +58,11 @@ class Config(object):
             ('DEPOR', 'Deportista'),
             ('MASTE', 'Master'),
             ))
-        self.gender = Choices(choices=(
-            ('F', _('Female')),
-            ('M', _('Male')),
-            ('X', _('Mixed')),
-            ))
+        # self.gender = Choices(choices=(
+        #     ('F', _('Female')),
+        #     ('M', _('Male')),
+        #     ('X', _('Mixed')),
+        #     ))
         self.event_code = Choices(choices=(
             ('25L', _('25 m Free')),
             ('50L', _('50 m Free')),

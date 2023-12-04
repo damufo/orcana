@@ -36,15 +36,16 @@ class Genders(list):
                 break
         return long_name
 
-    def choices(self, add_empty=False):
+    def choices(self, add_empty=False, exclude_mixe=False):
         '''
         return values for wxchoice with ClientData
         '''
         values = []
         if add_empty:
-            values.append(('', '')) 
+            values.append(('', ''))
         for i in self:
-            values.append((i.long_name, i.gender_id))
+            if not (exclude_mixe and i.gender_id == 'X'):
+                values.append((i.long_name, i.gender_id))
         return values
 
 

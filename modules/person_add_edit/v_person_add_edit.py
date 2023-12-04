@@ -38,7 +38,7 @@ class View(PersonAddEdit):
         self.txt_surname.SetValue(person.surname)
         self.txt_name.SetValue(person.name)
         self.view_plus.cho_load(choice=self.cho_gender_id,
-                                values=person.config.gender.choices(),
+                                values=person.config.genders.choices(exclude_mixe=True),
                                 default=person.gender_id)
         self.txt_birth_date_plus.SetValue(person.birth_date)
         if person.entity:

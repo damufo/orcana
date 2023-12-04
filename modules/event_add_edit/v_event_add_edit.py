@@ -22,8 +22,8 @@ class View(EventAddEdit):
                                 values=event.config.event_code.choices(),
                                 default=event.code)  
         self.view_plus.cho_load(choice=self.cho_gender_id,
-                                values=event.config.gender.choices(),
-                                default=event.gender_id) 
+                                values=event.config.genders.choices(),
+                                default=event.gender_id)
         self.txt_name.SetValue(str(event.name))
         
         self.cho_code.SetFocus()
