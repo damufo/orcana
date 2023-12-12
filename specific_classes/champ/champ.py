@@ -230,15 +230,15 @@ class Champ(object):
                                 if i.isdigit()]
         # remove duplicates preserving order
         pool_lanes_cleaned = sorted(set(pool_lanes), key=lambda x: pool_lanes.index(x))
-
-        if (max(pool_lanes) > 20 or
-        min(pool_lanes) < 0 or
-        len(pool_lanes) != len(pool_lanes_cleaned) or
-        len(pool_lanes) < 3 or
-        len(pool_lanes) > 20):  # Invalid value
+        if (pool_lanes_cleaned 
+                and (max(pool_lanes_cleaned) >= 10
+                or min(pool_lanes_cleaned) < 0
+                or len(pool_lanes_cleaned) != len(pool_lanes)  # Tivo que limpar algo
+                or len(pool_lanes_cleaned) < 3
+                or len(pool_lanes_cleaned) > 10)):  # Invalid value
             pool_lanes_sort = ''
         else:
-            pool_lanes_sort = ', '.join(["%s" % i for i in pool_lanes])
+            pool_lanes_sort = ', '.join(["%s" % i for i in pool_lanes_cleaned])
         return pool_lanes_sort
 
     def gen_heats(self):
