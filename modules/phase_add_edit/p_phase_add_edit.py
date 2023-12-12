@@ -24,6 +24,9 @@ class Presenter(object):
         self.view = view
         interactor.install(self, view)
         self.view.set_values(phase=self.model.phase)
+        if self.model.phase.official:
+            # Disable acept button
+            self.view.btn_acept.Enable(False)
         self.view.view_plus.start(modal=True)
 
     def acept(self):

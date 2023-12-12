@@ -177,12 +177,11 @@ class Presenter(object):
             if phase.official:
                 message=_("Is not possible edit phase when is official.")
                 self.view.msg.warning(message=message)
-            else:
-                if len(phase.heats):
-                    phase.lock = ['event_id']
-                from modules.phase_add_edit import p_phase_add_edit
-                p_phase_add_edit.create(parent=self, phase=phase)
-                self.view.lsc_plus.update_item(idx)
+            if len(phase.heats):
+                phase.lock = ['event_id']
+            from modules.phase_add_edit import p_phase_add_edit
+            p_phase_add_edit.create(parent=self, phase=phase)
+            self.view.lsc_plus.update_item(idx)
 
     def delete(self):
         idxs = self.view.lsc_plus.get_sel_pos_items()
