@@ -67,10 +67,20 @@ class Properties ( wx.Panel ):
 
 		fgSizer1.Add( self.m_staticText31, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
+		bSizer81 = wx.BoxSizer( wx.HORIZONTAL )
+
 		self.txt_pool_lanes_sort = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.txt_pool_lanes_sort.SetToolTip( _(u"Pool lane from best to worst separated by hyphen.") )
 
-		fgSizer1.Add( self.txt_pool_lanes_sort, 0, wx.ALL|wx.EXPAND, 5 )
+		bSizer81.Add( self.txt_pool_lanes_sort, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.btn_sort_to_phases = wx.Button( self, wx.ID_ANY, _(u"Set for all phases"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_sort_to_phases.SetToolTip( _(u"Set pool lanes sort for all phases.") )
+
+		bSizer81.Add( self.btn_sort_to_phases, 0, wx.ALL, 5 )
+
+
+		fgSizer1.Add( bSizer81, 1, wx.EXPAND, 5 )
 
 		self.m_staticText311 = wx.StaticText( self, wx.ID_ANY, _(u"Chrono type:"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText311.Wrap( -1 )

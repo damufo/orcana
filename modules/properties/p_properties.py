@@ -73,7 +73,8 @@ class Presenter(object):
     def save_params(self):
         values = self.view.get_values()
         msg = None
-        pool_lanes_sort_validated = self.model.champ.validade_pool_lanes_sort(values['champ_pool_lanes_sort'])
+        champ = self.model.champ
+        pool_lanes_sort_validated = champ.validade_pool_lanes_sort(values['champ_pool_lanes_sort'])
         if not values['champ_name']:
             msg = 'Set a champ name.'
             self.view.txt_champ_name.SetFocus()
@@ -81,7 +82,7 @@ class Presenter(object):
             msg = 'Set a pool length.'
             self.view.cho_pool_length.SetFocus()
         elif not pool_lanes_sort_validated:
-            msg = 'Set a pool lanes sort.'
+            msg = 'Set a valid pool lanes sort.'
             self.view.txt_pool_lanes_sort.SetFocus()
         elif not values['champ_chrono_type']:
             msg = 'Set a chrono type.'
@@ -98,20 +99,58 @@ class Presenter(object):
         if msg:
             self.view.msg.warning(msg)
         else:
-            self.model.champ.params.set_value('champ_name', values['champ_name'])
-            self.model.champ.params.set_value('champ_pool_length', values['champ_pool_length'])
-            self.model.champ.params.set_value('champ_pool_lanes_sort', pool_lanes_sort_validated)
-            self.model.champ.params.set_value('champ_chrono_type', values['champ_chrono_type'])
-            self.model.champ.params.set_value('champ_estament_id', values['champ_estament_id'])
-            self.model.champ.params.set_value('champ_date_age_calculation', values['champ_date_age_calculation'])
-            self.model.champ.params.set_value('champ_venue', values['champ_venue'])
-
-            if 'champ_pool_lanes_sort' in self.model.champ.params.changed:
-                message = _("Do you want to establish this lanes sort for all phases?")
-                if self.view.msg.question(message=message):
-                    self.model.champ.phases.set_champ_pool_lanes_sort()
-            self.model.champ.params.save()
+            champ.params.set_value('champ_name', values['champ_name'])
+            champ.params.set_value('champ_pool_length', values['champ_pool_length'])
+            champ.params.set_value('champ_pool_lanes_sort', pool_lanes_sort_validated)
+            champ.params.set_value('champ_chrono_type', values['champ_chrono_type'])
+            champ.params.set_value('champ_estament_id', values['champ_estament_id'])
+            champ.params.set_value('champ_date_age_calculation', values['champ_date_age_calculation'])
+            champ.params.set_value('champ_venue', values['champ_venue'])
+            # if 'champ_pool_lanes_sort' in champ.params.changed:
+            #     message = _("Do you want to establish this lanes sort for all phases?")
+            #     if self.view.msg.question(message=message):
+            #         champ.phases.set_champ_pool_lanes_sort()
+            champ.params.save()
+        print("Atras")
         return msg
+
+    def set_sort_to_phases(self):
+        champ = self.model.champ
+        if champ.params['champ_pool_lanes_sort']:
+            message = _("Do you want to establish this lanes sort for all phases?")
+            if self.view.msg.question(message=message):
+                champ.phases.set_champ_pool_lanes_sort()
+        else:
+            message = _("No lanes sort is set.")
+            self.view.msg.warning(message)
+
+    def set_pool_lanes_sort(self):
+        champ = self.model.champ
+        txt_champ_pool_lanes_sort = self.view.txt_pool_lanes_sort.GetValue().strip()
+        pool_lanes_sort_validated = self.model.champ.validade_pool_lanes_sort(
+                txt_champ_pool_lanes_sort)
+        if pool_lanes_sort_validated !=  champ.params['champ_pool_lanes_sort']:
+            champ.params.set_value('champ_pool_lanes_sort', pool_lanes_sort_validated)
+        self.view.txt_pool_lanes_sort.SetValue(pool_lanes_sort_validated)
+
+    # def set_pool_lanes_sort(self):
+    #     txt_champ_pool_lanes_sort = self.view.txt_pool_lanes_sort.GetValue().strip()
+    #     msg = None
+    #     pool_lanes_sort_validated = self.model.champ.validade_pool_lanes_sort(
+    #             txt_champ_pool_lanes_sort)
+    #     if not pool_lanes_sort_validated:
+    #         msg = 'Set a valid pool lanes sort.'
+    #         # self.view.txt_pool_lanes_sort.SetFocus()
+    #         self.view.msg.warning(msg)
+    #         # self.view.txt_pool_lanes_sort.ChangeValue(self.model.champ.params['champ_pool_lanes_sort'])
+    #     else:
+    #         self.view.txt_pool_lanes_sort.ChangeValue(pool_lanes_sort_validated)
+    #         if pool_lanes_sort_validated != self.model.champ.params['champ_pool_lanes_sort']:
+    #             message = _("Do you want to establish this lanes sort for all phases?")
+    #             self.model.champ.params.set_value('champ_pool_lanes_sort', pool_lanes_sort_validated)
+    #             self.model.champ.params.save()
+    #             if self.view.msg.question(message=message):
+    #                 self.model.champ.phases.set_champ_pool_lanes_sort()
 
     def go_back(self):
         msg = self.save_params()

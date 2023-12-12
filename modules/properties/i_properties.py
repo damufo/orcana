@@ -20,13 +20,22 @@ class Interactor(object):
         view.btn_classifications.Bind(wx.EVT_BUTTON, self.on_classifications)
         view.btn_punctuations.Bind(wx.EVT_BUTTON, self.on_punctuations)
         view.btn_sessions.Bind(wx.EVT_BUTTON, self.on_sessions)
+        view.btn_sort_to_phases.Bind(wx.EVT_BUTTON, self.on_sort_to_phases)
+        view.txt_pool_lanes_sort.Bind(wx.EVT_KILL_FOCUS, self.on_pool_lanes_sort)
+
 
     def go_back(self, event):
         self.presenter.go_back()
 
     def on_gen_champ_auto(self, event):
         self.presenter.gen_champ_auto()
-    
+
+    def on_sort_to_phases(self, event):
+        self.presenter.set_sort_to_phases()
+
+    def on_pool_lanes_sort(self, event):
+        self.presenter.set_pool_lanes_sort()
+
     def on_report_inscriptions(self, event):
         self.presenter.report_inscriptions()
 
