@@ -15,6 +15,7 @@ class Interactor(object):
         # view.lsc.Bind(wx.EVT_LEFT_DCLICK, self.on_edit)
         view.btn_members.Bind(wx.EVT_BUTTON, self.load_members)
         view.btn_phase_category_results.Bind(wx.EVT_BUTTON, self.phase_category_results)
+        view.btn_start_list.Bind(wx.EVT_BUTTON, self.gen_start_list_report)
         view.btn_results_report.Bind(wx.EVT_BUTTON, self.gen_results_report)
         view.btn_classifications_report.Bind(wx.EVT_BUTTON, self.gen_classifications_report)
         view.btn_official.Bind(wx.EVT_BUTTON, self.toggle_official)
@@ -126,6 +127,9 @@ class Interactor(object):
 
     def gen_results_report(self, event):
         self.presenter.gen_results_report()
+
+    def gen_start_list_report(self, event):
+        self.presenter.gen_start_list_report()
 
     def gen_classifications_report(self, event):
         self.presenter.gen_classifications_report()

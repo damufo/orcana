@@ -131,6 +131,12 @@ class Presenter(object):
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
 
+    def gen_start_list_report(self):
+        pos = self.view.lsc_heats_plus.get_sel_pos_item()
+        if pos is not None:
+            phase = self.model.heats[pos].phase
+            phase.report_start_list_pdf()
+
     def phase_category_results(self):
         pos = self.view.lsc_heats_plus.get_sel_pos_item()
         if pos is not None:

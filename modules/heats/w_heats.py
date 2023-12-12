@@ -90,6 +90,11 @@ class Heats ( wx.Panel ):
 
 		bSizer11.Add( self.btn_next, 1, wx.ALL, 5 )
 
+		self.btn_start_list = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Sta&rt list"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_start_list.SetToolTip( _(u"Generate results report") )
+
+		bSizer11.Add( self.btn_start_list, 1, wx.ALL, 5 )
+
 		self.btn_results_report = wx.Button( self.m_panel2, wx.ID_ANY, _(u"&Results report"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_results_report.SetToolTip( _(u"Generate results report") )
 
@@ -117,7 +122,7 @@ class Heats ( wx.Panel ):
 
 		bSizer9 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.chb_go_to_first = wx.CheckBox( self.m_panel2, wx.ID_ANY, _(u"Go to first when heat change:"), wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		self.chb_go_to_first = wx.CheckBox( self.m_panel2, wx.ID_ANY, _(u"Go to &first when heat change:"), wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
 		self.chb_go_to_first.SetValue(True)
 		self.chb_go_to_first.SetToolTip( _(u"Go to first lane when heat change.") )
 
