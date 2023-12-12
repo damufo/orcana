@@ -54,11 +54,7 @@ class Events(list):
             self.delete_item(idx)
 
     def delete_item(self, idx):
-
-        query = """ mutation($id: Int!) { deleteEvent(id: $id) { id } } """
-        variables = {"id": self[idx].id}
-        self.config.com_api.execute(query, variables)
-
+        self[idx].delete()
         self.pop(idx)  # remove element from list
 
     def get_event(self, event_id):

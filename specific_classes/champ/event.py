@@ -150,6 +150,9 @@ VALUES(?, ?, ?, ?, ?, ?) '''
             self.event_id = self.config.dbs.last_row_id
 
     def delete(self):
-        sql = ''' delete from events where event_id={}'''
-        sql = sql.format(self.event_id)
-        self.config.dbs.exec_sql(sql=sql)
+        # FIXME: remove here: phases, event categories, event heats and event results
+        print("FIXME: remove here: phases, event categories, event heats and event results")
+        # sql = ''' delete from events where event_id={}'''
+        # sql = sql.format(self.event_id)
+        # self.config.dbs.exec_sql(sql=sql)
+        pass
