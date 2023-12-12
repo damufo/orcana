@@ -37,7 +37,7 @@ class Interactor(object):
     #     self.view.set_classify()
 
     # def on_person_full_name_change(self, event):
-    #     skip_keys = (wx.WXK_TAB, wx.WXK_SHIFT, wx.WXK_RETURN)
+    #     skip_keys = (wx.WXK_TAB, wx.WXK_SHIFT, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER)
     #     kc = event.GetKeyCode()
     #     if kc not in skip_keys:
     #         print('change on')
