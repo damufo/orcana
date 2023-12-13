@@ -55,7 +55,7 @@ class Interactor(object):
         first_split_col = self.view.first_split_col
         col_arrival_mark = self.view.col_arrival_mark
 
-        if event.GetKeyCode() != (wx.WXK_RETURN and wx.WXK_NUMPAD_ENTER):
+        if event.GetKeyCode() not in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             event.Skip()
             return
 
