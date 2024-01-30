@@ -47,10 +47,14 @@ class Event(object):
 
     @property
     def distance(self):
-        distance = self.code[:len(self.code)-1]
-        if self.num_members != 1:
-            # FIXME: revisar que isto estea ben xa que a distancia que pasa é a do parcial
-            distance = distance.upper().split('X')[1]
+        '''
+        Event total event distance
+        '''
+        event_code = self.code.upper()[:-1]  # [:-1] remove style 
+        if 'X' in event_code:
+            distance = event_code.split('X')[1]
+        else:
+            distance = event_code
         return int(distance)
 
     @property
@@ -59,7 +63,7 @@ class Event(object):
         distance = self.distance
         num_members = self.num_members
         distance_total = distance * num_members
-        splits = distance_total / 50
+        splits = int(distance_total / 50)
         if splits < 1:
             splits = 1
         return splits
@@ -71,15 +75,20 @@ class Event(object):
 select distance, split_code, official from splits_for_event where 
 event_code=? order by distance; '''
         splits = self.config.dbs.exec_sql(sql=sql, values=((self.code, ), ))
+        if not splits:  # create defatul final split
+            distance = self.distance
+            num_members = self.num_members
+            distance_total = distance * num_members
+            splits = ((distance_total, self.code, 1), )
         return splits
 
     @property
     def num_members(self):
-        code_split = self.code.upper().split('X')
-        if len(code_split) == 1:
-            num_members = 1
+        event_code = self.code.upper()
+        if 'X' in event_code:
+            num_members = int(event_code.split('X')[0]) 
         else:
-            num_members = int(code_split[0])
+            num_members = 1
         return num_members
 
     @property
