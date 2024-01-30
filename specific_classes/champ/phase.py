@@ -262,9 +262,9 @@ delete from heats where phase_id=?'''
         # Cambiado delete_sort polo de abaixo
         # self.delete_sort()
         self.delete_all_heats()
-
         # heats and results
         # Get inscriptions, sorted by time asc
+        # FIXME get inscriptions from phase
         sql2 = '''
 select equated_hundredth, inscription_id
 from inscriptions i where phase_id={} and rejected=0 and exchanged=0 order by equated_hundredth; '''
@@ -283,11 +283,11 @@ insert into heats (phase_id, pos) values(?, ?)'''
             sql_result = '''
 insert into results (heat_id, lane, equated_hundredth, inscription_id)
 values(?, ?, ?, ?)'''
-            sql_splits_for_event = '''
-select distance, split_code, official from splits_for_event where 
-event_code=(select event_code from events where event_id=
-(select event_id from phases where phase_id=?))
-order by distance; '''
+#             sql_splits_for_event = '''
+# select distance, split_code, official from splits_for_event where 
+# event_code=(select event_code from events where event_id=
+# (select event_id from phases where phase_id=?))
+# order by distance; '''
             sql_result_split = '''
 insert into results_splits (result_id, distance, result_split_code, official) 
 values( ?, ?, ?, ?)'''
@@ -307,41 +307,49 @@ values( ?, ?, ?, ?)'''
                     self.config.dbs.exec_sql(sql=sql_result, values=values)
                     result_id = self.config.dbs.last_row_id
                     # Create splits
-                    splits_for_event = self.config.dbs.exec_sql(
-                        sql=sql_splits_for_event, values=((self.phase_id, ), ))
+                    # splits_for_event = self.config.dbs.exec_sql(
+                    #     sql=sql_splits_for_event, values=((self.phase_id, ), ))
                     DISTANCE, RESULT_SPLIT_CODE, OFFICIAL = range(3)
-                    if splits_for_event:
-                        for event_split in splits_for_event:
-                            self.config.dbs.exec_sql(
-                                sql=sql_result_split,
-                                values=((
-                                    result_id,
-                                    event_split[DISTANCE],
-                                    event_split[RESULT_SPLIT_CODE],
-                                    event_split[OFFICIAL]), ))
-                    else:
-                        # add one final split
-                        # get event_code
-                        sql_event_code = """
-select event_code from events where event_id =
-(select event_id from inscriptions where inscription_id=?); """
-                        res_event_code = self.config.dbs.exec_sql(
-                            sql=sql_event_code,
-                            values=((inscription[INSCRIPTION_ID], ), ))
-                        res_event_code = res_event_code[0][0].upper()
-                        if 'X' in res_event_code:
-                            members = int(res_event_code.split('X')[0])
-                            distance_per_member = res_event_code.split('X')[1][:-1]
-                            distance = int(members) * int(distance_per_member)
-                        else:
-                            distance = res_event_code[:len(res_event_code)-1]
+                    # if splits_for_event:
+                    for event_split in self.event.splits:
                         self.config.dbs.exec_sql(
-                                sql=sql_result_split,
-                                values=((
-                                    result_id,
-                                    distance,
-                                    res_event_code,
-                                    1), ))
+                            sql=sql_result_split,
+                            values=((
+                                result_id,
+                                event_split[DISTANCE],
+                                event_split[RESULT_SPLIT_CODE],
+                                event_split[OFFICIAL]), ))
+#                     else:
+#                         # Isto non debería pasar nunca porque engadín un split 
+#                         # predeterminado no caso de que non haxa na base de datos
+#                         # isto deste else debería poder borrarse
+
+
+#                         # add one final split
+#                         # get event_code
+# #                         sql_event_code = """
+# # select event_code from events where event_id =
+# #     (select event_id from phases where phase_id=
+# #         (select phase_id from inscriptions where inscription_id=?)); """
+# #                         res_event_code = self.config.dbs.exec_sql(
+# #                             sql=sql_event_code,
+# #                             values=((inscription[INSCRIPTION_ID], ), ))
+                        
+# #                         res_event_code = res_event_code[0][0].upper()
+#                         res_event_code = self.event.code.upper()
+#                         if 'X' in res_event_code:
+#                             members = self.event.num_members
+#                             distance_per_member = self.event.distance #res_event_code.split('X')[1][:-1]
+#                             distance = int(members) * int(distance_per_member)
+#                         else:
+#                             distance = self.event.distance
+#                         self.config.dbs.exec_sql(
+#                                 sql=sql_result_split,
+#                                 values=((
+#                                     result_id,
+#                                     distance,
+#                                     res_event_code,
+#                                     1), ))
                     if heat_pos == 2 and len(inscriptions) == 3:
                         print("Recoloca para gantir 3")
                         break
