@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+## Python code generated with wxFormBuilder (version 4.0.0-0-g0efcecf)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -85,25 +85,25 @@ class Main ( wx.Panel ):
 
 		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_about = wx.Button( self, wx.ID_ANY, _(u"A&bout"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_about = wx.Button( self, wx.ID_ANY, _(u"A&bout"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_about.SetToolTip( _(u"About") )
 
-		bSizer7.Add( self.btn_about, 1, wx.ALL, 5 )
+		bSizer7.Add( self.btn_about, 0, wx.ALL, 5 )
 
-		self.btn_open_db = wx.Button( self, wx.ID_ANY, _(u"Open &DB"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_open_db = wx.Button( self, wx.ID_ANY, _(u"Open &DB"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_open_db.SetToolTip( _(u"Open DB") )
 
-		bSizer7.Add( self.btn_open_db, 1, wx.ALL, 5 )
+		bSizer7.Add( self.btn_open_db, 0, wx.ALL, 5 )
 
 		self.btn_report_results = wx.Button( self, wx.ID_ANY, _(u"Report res&ults"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_report_results.SetToolTip( _(u"Generate a PDF report with all results") )
 
 		bSizer7.Add( self.btn_report_results, 0, wx.ALL, 5 )
 
-		self.btn_export_results = wx.Button( self, wx.ID_ANY, _(u"E&x. results"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_export_results = wx.Button( self, wx.ID_ANY, _(u"E&x. results"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_export_results.SetToolTip( _(u"Export resulta to CSV") )
 
-		bSizer7.Add( self.btn_export_results, 1, wx.ALL, 5 )
+		bSizer7.Add( self.btn_export_results, 0, wx.ALL, 5 )
 
 
 		bSizer6.Add( bSizer7, 0, wx.EXPAND, 5 )
