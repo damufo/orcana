@@ -697,7 +697,7 @@ sum(points) desc;          '''
                                 continue
                     if result.ind_rel == 'R': # non envía remudas sen remudistas
                         result.relay.relay_members.load_items_from_dbs()
-                        if result.relay.relay_members.num_members == 0:
+                        if not result.relay.relay_members:
                             print('Erro:  remuda sen membros, isto non debería pasar nunca')
                             continue
                     style_names = {
@@ -782,10 +782,11 @@ sum(points) desc;          '''
                     if result.ind_rel == 'I':
                         splits = reversed(result.result_splits[:-1])
                     else:
-                        if len(result.result_splits) >= len(members_licenses_str):
+                        if ((len(result.result_splits) >= len(members_licenses_str))
+                                and len(result.result_splits) > 1):
                             splits = reversed(result.result_splits)
                         else:
-                            # hai menos parciais que remudistas
+                            # hai menos parciais que remudistas só exporta resultado final
                             splits = []
                     mark_hundredth_adjust = 0
                     for split in splits:
