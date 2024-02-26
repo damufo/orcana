@@ -699,6 +699,8 @@ sum(points) desc;          '''
                         result.relay.relay_members.load_items_from_dbs()
                         if not result.relay.relay_members:
                             print('Erro:  remuda sen membros, isto non debería pasar nunca')
+                            print('amosar mensaxe alertanto')
+                            
                             continue
                     style_names = {
                         'M':'butterfly',
@@ -1683,7 +1685,7 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
                 # add person
                 entity = self.entities.get_entity_by_code(entity_code=i[ENTITY_CODE])
                 if entity:
-                    print("This entity {} already exists.".format(entity.code))
+                    print("This entity {} already exists.".format(entity.entity_code))
                 else:
                     # add entity
                     entity = self.entities.item_blank
