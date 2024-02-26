@@ -69,7 +69,7 @@ class Inscription(object):
     @property
     def config(self):
         config = None
-        if self.inscriptions:
+        if self.inscriptions is not None:
             config = self.inscriptions.config
         elif self.person:
             config = self.person.config
@@ -78,7 +78,7 @@ class Inscription(object):
     @property
     def champ(self):
         champ = None
-        if self.inscriptions:
+        if self.inscriptions is not None:
             champ = self.inscriptions.champ
         elif self.person:
             champ = self.person.champ
@@ -87,7 +87,7 @@ class Inscription(object):
     @property
     def phase(self):
         phase = None
-        if self.inscriptions:
+        if self.inscriptions is not None:
             phase = self.inscriptions.phase
         return phase
 
@@ -176,7 +176,7 @@ class Inscription(object):
         champ_chrono_type = self.champ.params['champ_chrono_type']
         equated_hundredth = conversion.conv_to_pool_chrono(
             mark_hundredth=self.mark_hundredth,
-            event_id=self.event.code,
+            event_id=self.phase.event.code,
             gender_id=gender_id,
             chrono_type=self.chrono_type,
             pool_length=self.pool_length,
