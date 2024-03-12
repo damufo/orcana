@@ -99,7 +99,7 @@ values( ?, ?, ?, ?)'''
                        self.long_name),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.entity_id = self.config.dbs.last_row_id
-            self.champ.entities.append(self)
+            # self.champ.entities.append(self)
 
     def delete(self):
         if self.entity_id:
