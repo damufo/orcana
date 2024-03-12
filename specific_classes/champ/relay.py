@@ -132,7 +132,7 @@ VALUES(?, ?, ?, ?) '''
             self.entity.entity_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.relay_id = self.config.dbs.last_row_id
-            self.champ.relays.append(self)
+            # self.champ.relays.append(self)
 
     def delete(self):
         if self.relay_id:
