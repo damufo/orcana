@@ -63,11 +63,11 @@ class Interactor(object):
         self.view.grd_results.DisableCellEditControl()
         col = self.view.grd_results.GetGridCursorCol()
         if col == col_arrival_mark:
-            print("Move down")
+            # print("Move down")
             success = self.view.grd_results.MoveCursorDown(event.ShiftDown())
             set_col = col_arrival_mark
         else:
-            print("Move first split")
+            # print("Move first split")
             success = self.view.grd_results.MoveCursorRight(event.ShiftDown())
             set_col = first_split_col
 
@@ -92,16 +92,16 @@ class Interactor(object):
         pass
 
     def OnGrid1GridEditorHidden(self, event):
-        print("ola caracola")
+        # print("ola caracola")
         row = event.Row
         col = event.Col
         self.presenter.update_result(col, row)
     
     def on_grid_select_cell(self, event):
-        print("ola caracola2")
+        # print("ola caracola2")
         row = event.Row
         col = event.Col
-        print('row interactor {}'.format(row))
+        # print('row interactor {}'.format(row))
         # self.presenter.toggle_members_button(row=row)
         self.presenter.select_lane(row=row)
         
@@ -177,7 +177,7 @@ class Interactor(object):
 
     def on_select_results_focused(self, event):
         pos = self.view.lsc_results.FocusedItem
-        print(pos)
+        # print(pos)
         color_sel = Colour(wx.LIGHT_GREY)
         color_all = Colour(wx.WHITE)
         bold_font = wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, wx.EmptyString )
@@ -187,7 +187,7 @@ class Interactor(object):
             self.view.lsc_results.SetItemFont(i, normal_font)
             self.view.lsc_results.Select(i, on=0)
         if pos:
-            print("is selected: {}".format(self.view.lsc_results.IsSelected(pos)))
+            # print("is selected: {}".format(self.view.lsc_results.IsSelected(pos)))
             self.view.lsc_results.Focus(pos)
             self.view.lsc_results.SetItemBackgroundColour(pos, color_sel)
             self.view.lsc_results.SetItemFont(pos, bold_font)

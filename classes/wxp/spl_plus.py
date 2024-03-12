@@ -27,7 +27,7 @@ class SplPlus(object):
             self.spl.SetSashPosition(int(sashpos))
         else:
             self.sashpos = self.spl.GetSashPosition()
-        print("load splitter: ", self.spl.GetSashPosition())
+        # print("load splitter: ", self.spl.GetSashPosition())
 
     # def reload_custom_sashpos(self):
     #     sashpos = self.prefs.get_value(

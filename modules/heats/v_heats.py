@@ -149,7 +149,7 @@ class View(Heats):
         self.heat = heat
         ind_rel = heat.ind_rel
         if ind_rel == 'I':
-            print('Individual heat')
+            # print('Individual heat')
             num_col_fixe = self.cols["ind_num_col_fixe"]
             col_arrival_mark = self.cols["ind_col_arrival_mark"]
             col_arrival_pos = self.cols["ind_col_arrival_pos"]
@@ -167,7 +167,7 @@ class View(Heats):
             col_width_split_mark = self.col_widths['ind_split_mark']
 
         elif ind_rel == 'R':
-            print('Relay heat')
+            # print('Relay heat')
             num_col_fixe = self.cols["rel_num_col_fixe"]
             col_members = self.cols["rel_col_members"]
             col_arrival_mark = self.cols["rel_col_arrival_mark"]
@@ -324,7 +324,7 @@ class View(Heats):
         # row = self.grd_results.GetGridCursorRow()
         if not result.result_id:
             # clear line
-            print('clear line')
+            # print('clear line')
             current_cols = self.grd_results.GetNumberCols()
             for col in range(current_cols):
                 self.grd_results.SetCellValue(row, col, '')
@@ -333,14 +333,14 @@ class View(Heats):
             heat = result.heat
             ind_rel = heat.ind_rel
             if ind_rel == 'I':
-                print('Individual heat')
+                # print('Individual heat')
                 num_col_fixe = self.cols["ind_num_col_fixe"]
                 col_arrival_mark = self.cols["ind_col_arrival_mark"]
                 col_arrival_pos = self.cols["ind_col_arrival_pos"]
                 col_issue_id = self.cols["ind_col_issue_id"]
                 col_issue_split = self.cols["ind_col_issue_split"]
             elif ind_rel == 'R':
-                print('Relay heat')
+                # print('Relay heat')
                 num_col_fixe = self.cols["rel_num_col_fixe"]
                 col_members = self.cols["rel_col_members"]
                 col_arrival_mark = self.cols["rel_col_arrival_mark"]
@@ -412,14 +412,14 @@ class View(Heats):
         ind_rel = heat.ind_rel
 
         if ind_rel == 'I':
-            print('Individual heat')
+            # print('Individual heat')
             num_col_fixe = self.cols["ind_num_col_fixe"]
             col_arrival_mark = self.cols["ind_col_arrival_mark"]
             col_arrival_pos = self.cols["ind_col_arrival_pos"]
             col_issue_id = self.cols["ind_col_issue_id"]
             col_issue_split = self.cols["ind_col_issue_split"]
         elif ind_rel == 'R':
-            print('Relay heat')
+            # print('Relay heat')
             num_col_fixe = self.cols["rel_num_col_fixe"]
             col_members = self.cols["rel_col_members"]
             col_arrival_mark = self.cols["rel_col_arrival_mark"]
@@ -436,7 +436,7 @@ class View(Heats):
         equated = 0
         # for i in [i for i in arrival_time_sorted if not i.issue_id]:
         for i in arrival_time_sorted:
-            print("lane {} arrival_hundredth {}".format(i.lane, i.arrival_hundredth))
+            # print("lane {} arrival_hundredth {}".format(i.lane, i.arrival_hundredth))
             save_result =  False
             if not i.arrival_hundredth or i.issue_id:
                 results_dict[i.lane].arrival_pos = 0
@@ -459,7 +459,7 @@ class View(Heats):
             if save_result:
                 results_dict[i.lane].save()
         self.lbl_arrival_order.SetLabel(arrival_order)
-        print("lbl arival positions")
+        # print("lbl arival positions")
     
     def select_phase_medals(self, phase):
         """
@@ -489,5 +489,5 @@ class View(Heats):
 
     def close(self):
         self.lsc_heats_plus.save_custom_column_width()
-        print("save splitter: ", self.spl_heats.GetSashPosition())
+        # print("save splitter: ", self.spl_heats.GetSashPosition())
         self.spl_heats_plus.save_custom_sashpos()

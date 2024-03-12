@@ -227,7 +227,7 @@ class ListCtrlPlus(object):
         if self.lsc.GetItemCount() > 0 and self.lsc.GetItemCount() > pos:
             self.lsc.Select(pos)
             self.lsc.Focus(pos)
-            print('focus: {}'.format(pos))
+            # print('focus: {}'.format(pos))
             self.lsc.EnsureVisible(pos)
         self.lsc.Thaw()
 

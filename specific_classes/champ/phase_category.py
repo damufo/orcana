@@ -169,7 +169,7 @@ VALUES(?, ?, ?, ?) '''
             print('fin phase_category_medals')
 
     def gen_results_report(self, d):
-        print('{} {}'.format(self.category.name, self.action))
+        # print('{} {}'.format(self.category.name, self.action))
         phase_category_results = self.phase_category_results
         phase_category_results.load_items_from_dbs()
         # FIXME: xa debería vir ordenado ó cargar os resultados

@@ -62,7 +62,7 @@ class Presenter(object):
                 self.view.btn_change_participant.Enable(True)
             lane = int(self.view.grd_results.GetRowLabelValue(row))
             result = heat.get_result(lane=lane)
-            print('lane: {}'.format(lane))
+            # print('lane: {}'.format(lane))
             if result:
                 self.model.result = result
                 if result.ind_rel == 'R':
@@ -103,9 +103,9 @@ class Presenter(object):
             self.model.results = heat.results
 
             row = self.view.grd_results.GetGridCursorRow()
-            print('select_heat, results cusor row: {}'.format(row))
+            # print('select_heat, results cusor row: {}'.format(row))
             sel_rows = self.view.grd_results.GetSelectedRows()
-            print('select_heat, results selected rows: {}'.format(sel_rows))
+            # print('select_heat, results selected rows: {}'.format(sel_rows))
 
             self.view.load_heat_grid(heat)
             row = self.view.grd_results.GetGridCursorRow()
@@ -126,7 +126,7 @@ class Presenter(object):
         if pos is not None:
             phase = self.model.heats[pos].phase
             if phase.official:
-                print('is official')
+                # print('is official')
                 phase.gen_results_report()
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
@@ -136,14 +136,19 @@ class Presenter(object):
         if pos is not None:
             phase = self.model.heats[pos].phase
             selections = self.view.select_phase_medals(phase=phase)
-            print(selections)
+            # print(selections)
             if selections:
-                phase.champ.gen_medals_report(selections)
-            # if phase.official:
-            #     print('is official')
-            #     phase.gen_results_pdf()
-            # else:
-            #     self.view.msg.error(message=_("Heats must be in official status."))
+                process = True
+                official_selections = []
+                for i in selections:
+                    if not phase.phases[i].official:
+                        message=_("Ignoring not official phases.")
+                    else:
+                        official_selections.append(i)
+                if message:
+                    self.view.msg.error(message=message)
+                if official_selections:
+                    phase.champ.gen_medals_report(selections)
 
     def gen_start_list_report(self):
         pos = self.view.lsc_heats_plus.get_sel_pos_item()
@@ -156,7 +161,7 @@ class Presenter(object):
         if pos is not None:
             phase = self.model.heats[pos].phase
             if phase.official:
-                print('is official')
+                # print('is official')
                 # Garda a siguación do formulario actual (heats)
                 heats_view = {}
                 heats_view['heat_pos'] = self.view.lsc_heats_plus.get_sel_pos_item()
@@ -233,14 +238,14 @@ class Presenter(object):
         if heat and result:
             # self.model.result = result
             if result.ind_rel == 'I':
-                print('Individual result')
+                # print('Individual result')
                 num_col_fixe = self.view.cols["ind_num_col_fixe"]
                 col_arrival_mark = self.view.cols["ind_col_arrival_mark"]
                 col_arrival_pos = self.view.cols["ind_col_arrival_pos"]
                 col_issue_id = self.view.cols["ind_col_issue_id"]
                 col_issue_split = self.view.cols["ind_col_issue_split"]
             elif result.ind_rel == 'R':
-                print('Relay result')
+                # print('Relay result')
                 num_col_fixe = self.view.cols["rel_num_col_fixe"]
                 # rel_col_members = self.view.cols["rel_col_members"]
                 col_arrival_mark = self.view.cols["rel_col_arrival_mark"]
@@ -248,7 +253,7 @@ class Presenter(object):
                 col_issue_id = self.view.cols["rel_col_issue_id"]
                 col_issue_split = self.view.cols["rel_col_issue_split"]
             value = self.view.grd_results.GetCellValue(row, col).strip()
-            print("value: {}".format(value))
+            # print("value: {}".format(value))
             if col == col_arrival_mark or col >= num_col_fixe:  # Is split mark time
                 count_splits = len(result.result_splits)
                 col_last_split = num_col_fixe + count_splits -1
@@ -302,8 +307,9 @@ class Presenter(object):
                     self.view.grd_results.SetCellValue(row, col_issue_split , "")
                 result.save()
         else:
-            print('non se atopou o resultado')
-        print("fin update result")
+            # print('non se atopou o resultado')
+            pass
+        # print("fin update result")
 
     def res_change(self):
         row = self.view.grd_results.GetSelectedRows()[0]

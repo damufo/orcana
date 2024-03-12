@@ -59,7 +59,7 @@ class Heats(list):
             self.delete_item(idx)
 
     def delete_item(self, idx):
-        print("Aquí o código para borrar os elementos")
+        # print("Aquí o código para borrar os elementos")
         self.pop(idx)  # remove element from list
 
     def load_items_from_dbs(self):

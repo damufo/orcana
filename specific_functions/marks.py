@@ -145,7 +145,7 @@ def validate(value):
             tempo_formatado = ':'.join(tempo_formatado)
             tempo_formatado = tempo_formatado[::-1].replace(':', ',', 1)[::-1]
             
-    print('{} -> {} -> {}  {}'.format(value, tempo_formatado, hundredths, error))
+    # print('{} -> {} -> {}  {}'.format(value, tempo_formatado, hundredths, error))
     return hundredths 
 
 # for value in values:
