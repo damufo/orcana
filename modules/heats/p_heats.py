@@ -140,6 +140,7 @@ class Presenter(object):
             if selections:
                 process = True
                 official_selections = []
+                message = False
                 for i in selections:
                     if not phase.phases[i].official:
                         message=_("Ignoring not official phases.")
