@@ -20,7 +20,7 @@ class View(ClassificationAddEdit):
     def set_values(self, classification):
         self.txt_name.SetValue(classification.name)
         self.view_plus.cho_load(choice=self.cho_gender_id,
-                                values=classification.config.genders.choices(),
+                                values=classification.config.genders.choices(add_empty=True),
                                 default=classification.gender_id)
         choices_categories = classification.champ.categories.choices()
         selected_categories = [i.category_id for i in classification.categories]
