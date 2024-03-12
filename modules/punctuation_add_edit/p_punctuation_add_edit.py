@@ -55,9 +55,9 @@ class Presenter(object):
             punctuation.points_rel = points_rel
             punctuation.entity_to_point_ind = int(values['entity_to_point_ind'])
             punctuation.entity_to_point_rel = int(values['entity_to_point_rel'])
+            punctuation.save()
             if not punctuation in punctuation.punctuations:
                 punctuation.punctuations.append(punctuation)
-            punctuation.save()
             self.view.view_plus.stop()
 
     def cancel(self):

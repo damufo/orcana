@@ -79,6 +79,8 @@ class Presenter(object):
                 inscription.relay.category = relay_category
                 inscription.relay.gender_id = relay_category.gender_id
                 inscription.relay.save()
+                if inscription.relay not in inscription.relay.relays:
+                    inscription.relay.relays.append(inscription.relay)
                 inscription.mark_hundredth = values['mark_hundredth']
                 inscription.chrono_type = values['chrono_type']
                 inscription.pool_length = values['pool_length']

@@ -48,8 +48,8 @@ class Presenter(object):
             self.view.msg.warning(msg)
         else:
             self.model.entity.save()
-            # self.parent.parent.parent.load_result_members(parent=self.parent.parent)
-            # self.view.close()
+            if not self.model.entity in self.model.entity.entities:
+                self.model.entity.entities.append(self.model.entity)
             self.view.view_plus.stop()
 
 
