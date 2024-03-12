@@ -41,9 +41,9 @@ class Presenter(object):
         else:
             session.date = values['date']
             session.time = values['time']
+            session.save()
             if not session in session.sessions:
                 session.sessions.append(session)
-            session.save()
             self.view.view_plus.stop()
 
     def cancel(self):
