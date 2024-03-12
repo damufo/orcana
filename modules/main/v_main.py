@@ -88,7 +88,7 @@ class MainFrame(wx.Frame):
         return SplPlus(spl=spl, view=parent)
 
 class View(Main):
-    def __init__(self, parent):
+    def __init__(self, parent, config):
         Main.__init__(self, parent=parent)
         self.parent = parent
         self.SetName('main')
@@ -101,7 +101,7 @@ class View(Main):
         # self.SetMenuBar(self.menu)
         # import os
         # print(os.getcwd())
-        image_path = './images/logo/app_logo.png'
+        image_path = str(config.app_path_folder) + '/images/logo/app_logo.png'
         self.btm_logo.SetBitmap(wx.Bitmap(image_path, wx.BITMAP_TYPE_ANY))
 
         button_image = (
