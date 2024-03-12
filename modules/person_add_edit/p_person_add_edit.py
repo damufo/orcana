@@ -45,6 +45,10 @@ class Presenter(object):
         elif not self.model.entity:
             msg = 'Set a entity.'
             self.view.txt_entity_name.SetFocus()
+        elif person.persons.check_exists_license(person, values['license']):
+            msg = 'This license already exists.'
+            self.view.txt_license.SetFocus()
+
         if msg:
             self.view.msg.warning(msg)
         else:
@@ -55,6 +59,8 @@ class Presenter(object):
             person.birth_date = values['birth_date']
             person.entity = self.model.entity
             self.model.person.save()
+            if not person in person.persons:
+                person.persons.append(person)
             self.view.view_plus.stop()
 
     def entity_name(self):
