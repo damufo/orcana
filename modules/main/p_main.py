@@ -6,6 +6,7 @@ from modules.main.v_main import MainFrame, View
 from modules.main.i_main import Interactor
 from pathlib import Path
 
+
 class Presenter(object):
 
     def __init__(self, champ):
@@ -33,14 +34,21 @@ class Presenter(object):
             self.model.champ.has_champ = True
         self.main_frame.SetTitle(champ_name or 'Orcana')
         self.load_me()
+        self.check_current_version()
         self.view.parent.view_plus.start()
-
+ 
     def load_me(self):
-        self.view = View(self.main_frame)
+        self.view = View(self.main_frame, config= self.model.config)
         self.view.SetName('main')
         interactor = Interactor()
         interactor.install(self, self.view)
         self.view.set_buttons(has_champ=self.model.champ.has_champ)
+
+    def check_current_version(self):
+        config = self.model.champ.config
+        if config.app_current_version != config.app_version:
+            self.view.lbl_warning_version.Show()
+
 
     def about(self):
         self.view.about(config=self.model.config)

@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 import codecs
 import json
+import requests
 
 import wx
 import locale
@@ -35,17 +36,31 @@ from specific_classes.champ.champ import Champ
 from modules.main.p_main import Presenter
 
 
+try:
+    # Get app current version
+    remote_url = 'https://gitlab.com/damufo/orcana/-/raw/master/VERSION.txt?ref_type=heads'
+    data = requests.get(remote_url)
+    APP_CURRENT_VERSION = data.text
+except:
+    APP_CURRENT_VERSION = ''
+
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
-APP_VERSION = "0.0.10beta"
+APP_VERSION = "0.0.11beta"
 DBS_VERSION = 5
-APP_VERSION_DATE = "2024-01-30"
+APP_VERSION_DATE = "2024-03-12"
+
+if getattr(sys, 'frozen', False): # Running as compiled
+    running_dir = sys._MEIPASS + "/_internal/" # pylint: disable=no-member
+    APP_PATH_FOLDER = Path(sys._MEIPASS)
+else:
+    APP_PATH_FOLDER = Path(__file__).parent.absolute()
 
 
 class Application(wx.App):
 
     def OnInit(self):
-        app_path_folder = Path(__file__).parent.absolute()
+        print(APP_PATH_FOLDER)
         # self.translate(app_path_folder)
         self.name = "{}-{}".format(APP_NAME, wx.GetUserId())
 
@@ -69,8 +84,9 @@ class Application(wx.App):
             app_name=APP_NAME,
             app_title=APP_TITLE,
             app_version=APP_VERSION,
+            app_current_version=APP_CURRENT_VERSION,
             app_version_date=APP_VERSION_DATE,
-            app_path_folder=app_path_folder,
+            app_path_folder=APP_PATH_FOLDER,
             arg1=arg1)
         
         if sys.platform.lower()[:3] == 'lin':
@@ -80,7 +96,7 @@ class Application(wx.App):
 
         ViewPlus.prefs = config.prefs
         ViewPlus.app_icon = app_icon.GetIcon()
-        ViewPlus.image_path = app_path_folder / "images" / "buttons" / "24"
+        ViewPlus.image_path = APP_PATH_FOLDER / "images" / "buttons" / "24"
 
         ListCtrlPlus.prefs = config.prefs
         SplPlus.prefs = config.prefs
@@ -93,7 +109,7 @@ class Application(wx.App):
         '''prepare l10n'''
         if not "app.language" in prefs:
             prefs["app.language"] = 'en'
-        filename = "locale/{}/LC_MESSAGES/orcana.mo".format(prefs["app.language"])
+        filename = str(APP_PATH_FOLDER) + "/locale/{}/LC_MESSAGES/orcana.mo".format(prefs["app.language"])
         try:
             trans = gettext.GNUTranslations(open(filename, "rb"))
         except IOError:
