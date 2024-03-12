@@ -16,12 +16,14 @@ from specific_functions import files
 class Config(object):
 
     def __init__(
-        self, prefs, app_name, app_title, app_version, 
+        self, prefs, app_name, app_title, app_version,
+        app_current_version,
         app_version_date, app_path_folder, arg1):
         self.prefs = prefs
         self.app_name = app_name
         self.app_title = app_title
         self.app_version = app_version
+        self.app_current_version = app_current_version
         self.app_version_date = app_version_date
         self.app_description = _("A pool swimming championship management application.")
         self.app_copyright = "(C) 2023 Daniel Muñiz Fontoira"
