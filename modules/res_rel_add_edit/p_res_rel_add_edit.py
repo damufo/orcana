@@ -145,6 +145,8 @@ class Presenter(object):
                     current_result.inscription.relay.name = relay_name
                     # revisar que borra os remudistas se cambia de club
                     current_result.inscription.relay.save()
+                    if current_result.inscription.relay not in current_result.inscription.relay.relays:
+                        current_result.inscription.relay.relays.append(current_result.inscription.relay)
                     # current_result.inscription.save()
                 # se non existe engade a inscrición e o resultado
                 else:  # Create inscription and result
@@ -155,6 +157,8 @@ class Presenter(object):
                     new_inscription.relay.gender_id = relay_category.gender_id
 
                     new_inscription.relay.save()
+                    if new_inscription.relay not in new_inscription.relay.relays:
+                        new_inscription.relay.relays.append(new_inscription.relay)
                     new_inscription.save()
                     new_inscription.add_result(
                             heat=current_heat, lane=current_lane)

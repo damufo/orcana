@@ -292,7 +292,7 @@ VALUES(?, ?, ?, ?, ?, ?) '''
             self.gender_id, self.birth_date, self.entity_id),)
             self.config.dbs.exec_sql(sql=sql, values=values)
             self.person_id = self.config.dbs.last_row_id
-            self.champ.persons.append(self)
+            # self.champ.persons.append(self)
 
     def delete(self):
         sql =  ("delete from persons where person_id=?")
