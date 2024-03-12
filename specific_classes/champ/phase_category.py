@@ -167,7 +167,6 @@ VALUES(?, ?, ?, ?) '''
                 add_line_medal(lines=line_result, keep_with_next=keep_with_next)
  
             print('fin phase_category_medals')
-    
 
     def gen_results_report(self, d):
         print('{} {}'.format(self.category.name, self.action))
