@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 4.0.0-0-g0efcecf)
+## Python code generated with wxFormBuilder (version 4.1.0-0-g733bf3d)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -32,6 +32,19 @@ class Main ( wx.Panel ):
 		bSizer11.Add( self.btm_logo, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, 20 )
 
 		bSizer5 = wx.BoxSizer( wx.VERTICAL )
+
+		sizer_warning = wx.BoxSizer( wx.VERTICAL )
+
+		self.lbl_warning_version = wx.StaticText( self, wx.ID_ANY, _(u"Atention!! It is not working with the latest version,\nplease update your version of Orcana."), wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTER_HORIZONTAL )
+		self.lbl_warning_version.Wrap( -1 )
+
+		self.lbl_warning_version.SetBackgroundColour( wx.Colour( 255, 0, 0 ) )
+		self.lbl_warning_version.Hide()
+
+		sizer_warning.Add( self.lbl_warning_version, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		bSizer5.Add( sizer_warning, 1, wx.EXPAND, 5 )
 
 		self.btn_properties = wx.Button( self, wx.ID_ANY, _(u"Pr&operties"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer5.Add( self.btn_properties, 0, wx.ALL|wx.EXPAND, 5 )
