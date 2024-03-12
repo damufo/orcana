@@ -64,7 +64,7 @@ delete from phases_categories_results where phase_category_id={}'''
         sql = '''
 select phase_category_result_id, result_id, pos, points, clas_next_phase
 from phases_categories_results 
-where phase_category_id=? '''
+where phase_category_id=? order by pos'''
         res = self.config.dbs.exec_sql(sql=sql, values=((self.phase_category.phase_category_id, ), ))
         (PHASE_CATEGORY_RESULT_ID, RESULT_ID, POS, POINTS, CLAS_NEXT_PHASE) = range(5)
         for i in res:

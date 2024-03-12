@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+## Python code generated with wxFormBuilder (version 4.1.0-0-g733bf3d)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -109,6 +109,9 @@ class Heats ( wx.Panel ):
 		self.btn_phase_category_results.SetToolTip( _(u"List phase categoríes results.") )
 
 		bSizer11.Add( self.btn_phase_category_results, 1, wx.ALL, 5 )
+
+		self.btn_medals_report = wx.Button( self.m_panel2, wx.ID_ANY, _(u"Me&dals"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		bSizer11.Add( self.btn_medals_report, 1, wx.ALL, 5 )
 
 
 		bSizer13.Add( bSizer11, 0, wx.EXPAND, 5 )

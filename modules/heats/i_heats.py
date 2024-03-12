@@ -13,28 +13,25 @@ class Interactor(object):
         view.parent.Bind(wx.EVT_CLOSE, self.go_back)
         view.btn_back.Bind(wx.EVT_BUTTON, self.go_back)
         # view.lsc.Bind(wx.EVT_LEFT_DCLICK, self.on_edit)
-        view.btn_members.Bind(wx.EVT_BUTTON, self.load_members)
-        view.btn_phase_category_results.Bind(wx.EVT_BUTTON, self.phase_category_results)
-        view.btn_start_list.Bind(wx.EVT_BUTTON, self.gen_start_list_report)
-        view.btn_results_report.Bind(wx.EVT_BUTTON, self.gen_results_report)
-        view.btn_classifications_report.Bind(wx.EVT_BUTTON, self.gen_classifications_report)
-        view.btn_official.Bind(wx.EVT_BUTTON, self.toggle_official)
-        view.btn_next.Bind(wx.EVT_BUTTON, self.go_next_heat)
         view.lsc_heats.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_select_heat)
         view.lsc_heats.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.on_select_heat)
         view.lsc_heats.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_select_heat)
-
-
-
+        view.btn_phase_category_results.Bind(wx.EVT_BUTTON, self.phase_category_results)
+        view.btn_start_list.Bind(wx.EVT_BUTTON, self.gen_start_list_report)
+        view.btn_official.Bind(wx.EVT_BUTTON, self.toggle_official)
+        view.btn_results_report.Bind(wx.EVT_BUTTON, self.gen_results_report)
+        view.btn_classifications_report.Bind(wx.EVT_BUTTON, self.gen_classifications_report)
+        view.btn_next.Bind(wx.EVT_BUTTON, self.go_next_heat)
+        view.btn_medals_report.Bind(wx.EVT_BUTTON, self.gen_medals_report)
         view.grd_results.Bind(wx.EVT_MOTION, self.OnMotion)
         # view.grd_results.Bind(wx.grid.EVT_GRID_RANGE_SELECT, self.OnGrid1GridRangeSelect)
         view.grd_results.Bind(wx.grid.EVT_GRID_RANGE_SELECTING, self.OnGrid1GridRangeSelect)
-
         view.grd_results.Bind(wx.grid.EVT_GRID_CELL_CHANGED, self.OnGrid1GridEditorHidden)
         view.grd_results.Bind(wx.grid.EVT_GRID_SELECT_CELL, self.on_grid_select_cell)
         view.grd_results.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK, self.on_select_members)
         # view.grd_results.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.on_grid_select_cell)
         view.grd_results.Bind(wx.EVT_KEY_DOWN, self.OnKeyDown)
+        view.btn_members.Bind(wx.EVT_BUTTON, self.load_members)
         view.btn_change_participant.Bind(wx.EVT_BUTTON, self.res_change)
 
         view.grd_results.Bind(wx.grid.EVT_GRID_COL_SIZE, self.on_resize_col)
@@ -127,6 +124,9 @@ class Interactor(object):
 
     def gen_results_report(self, event):
         self.presenter.gen_results_report()
+
+    def gen_medals_report(self, event):
+        self.presenter.gen_medals_report()
 
     def gen_start_list_report(self, event):
         self.presenter.gen_start_list_report()

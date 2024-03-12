@@ -127,9 +127,23 @@ class Presenter(object):
             phase = self.model.heats[pos].phase
             if phase.official:
                 print('is official')
-                phase.gen_results_pdf()
+                phase.gen_results_report()
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
+
+    def gen_medals_report(self):
+        pos = self.view.lsc_heats_plus.get_sel_pos_item()
+        if pos is not None:
+            phase = self.model.heats[pos].phase
+            selections = self.view.select_phase_medals(phase=phase)
+            print(selections)
+            if selections:
+                phase.champ.gen_medals_report(selections)
+            # if phase.official:
+            #     print('is official')
+            #     phase.gen_results_pdf()
+            # else:
+            #     self.view.msg.error(message=_("Heats must be in official status."))
 
     def gen_start_list_report(self):
         pos = self.view.lsc_heats_plus.get_sel_pos_item()
@@ -184,15 +198,25 @@ class Presenter(object):
                 heat.phase.delete_results_phase_categories()
             else:
                 results = heat.results
+                ind_rel = heat.phase.ind_rel
+                empty_members_relay = False
                 pending_results = False
                 for i in results:
                     if not i.mark_hundredth and not i.issue_id:
                         pending_results = True
                         break
+                    if ind_rel == 'R' and not i.issue_id and not i.relay.has_set_members:
+                        empty_members_relay = True
+                        break
                 if pending_results:
-                    self.view.msg.error(message=_("There are results pending completion."))
+                    self.view.msg.error(
+                        message=_("There are results pending completion."))
                     self.view.grd_results.EnableEditing(True)
+                elif empty_members_relay:
+                    self.view.msg.warning(
+                        message=_("No be able set official without add all relay members."))
                 else:
+
                     heat.official = 1
                     heat.save()
                     self.view.lsc_heats_plus.update_item(pos)

@@ -460,6 +460,32 @@ class View(Heats):
                 results_dict[i.lane].save()
         self.lbl_arrival_order.SetLabel(arrival_order)
         print("lbl arival positions")
+    
+    def select_phase_medals(self, phase):
+        """
+        choide dialog
+        """
+        phases = phase.phases
+        values = []
+        for i in phases:
+            values.append(i.long_name)
+        current_phase = phases.index(phase)
+
+        dlg = wx.MultiChoiceDialog(
+            parent=self.parent,
+            message=_("Phase medals"),
+            caption=self.parent.GetTitle(),
+            choices=values,
+            style=wx.CHOICEDLG_STYLE)
+        dlg.SetSelections((current_phase, ))
+
+        if dlg.ShowModal() == wx.ID_OK:
+            value = dlg.GetSelections()
+        else:
+            value = None
+        dlg.Destroy()
+        self.parent.SetFocus()
+        return value
 
     def close(self):
         self.lsc_heats_plus.save_custom_column_width()
