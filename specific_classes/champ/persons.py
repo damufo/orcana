@@ -52,6 +52,13 @@ from persons order by surname, name '''
         for idx in sorted(idxs, reverse=True):
             self[idx].delete()
 
+    def check_exists_license(self, person, license):
+        exists_license =  False
+        for i in self:
+            if i != person and i.license == license:
+                exists_license =  True
+        return exists_license
+
     def get_persons_with_name(self, criterias, gender_id=None):
         # entities = []
         # for i in self:
