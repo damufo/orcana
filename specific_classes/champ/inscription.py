@@ -144,7 +144,7 @@ class Inscription(object):
             person = self.person
             for i in self.phase.phase_categories:
                 category = i.category
-                print('{} - {}'.format(category.from_age, category.to_age))
+                # print('{} - {}'.format(category.from_age, category.to_age))
                 if person.age > category.from_age and person.age < category.to_age and person.gender_id == category.gender_id:
                     category = category
         elif self.relay:

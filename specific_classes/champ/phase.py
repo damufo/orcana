@@ -12,7 +12,7 @@ from operator import attrgetter
 from specific_classes.champ.phase_categories import PhaseCategories
 from specific_classes.champ.inscriptions import Inscriptions
 from specific_classes.champ.heats import Heats
-from specific_classes.champ.result import Result
+# from specific_classes.champ.result import Result
 
 class Phase(object):
 
@@ -33,8 +33,8 @@ class Phase(object):
         self.inscriptions = Inscriptions(phase=self)
         self.inscriptions.load_items_from_dbs()
         # FIXME: poñer a liña de abaixo dentro de inscricións
-        print("poñer a liña de abaixo dentro de inscriptions")
-        self.load_results_from_dbs()
+        # print("poñer a liña de abaixo dentro de inscriptions")
+        self.inscriptions.load_results_from_dbs()
 
     @property
     def pos(self):
@@ -141,38 +141,38 @@ class Phase(object):
             categories.append("{}_{} ({})".format(i.category.code, i.category.gender_id, i.action))
         return ', '.join(categories)
 
-    def load_results_from_dbs(self):
-        # remove results for all phase inscriptions
-        for i in self.inscriptions:
-            i.result = None
+#     def load_results_from_dbs(self):
+#         # remove results for all phase inscriptions
+#         for i in self.inscriptions:
+#             i.result = None
     
-        dict_heats = self.heats.dict
-        dict_inscriptions = self.inscriptions.dict
-        # load phase results
-        sql = '''
-select result_id, heat_id, lane, arrival_pos, issue_id,
-issue_split, equated_hundredth, inscription_id
-from results
-where inscription_id in (select inscription_id from inscriptions where phase_id=?)  order by lane; '''
-        values = ((self.phase_id, ), )
-        res = self.config.dbs.exec_sql(sql=sql, values=values)
-        (RESULT_ID, HEAT_ID, LANE, ARRIVAL_POS, 
-        ISSUE_ID, ISSUE_SPLIT, EQUATED_HUNDREDTH, INSCRIPTION_ID
-        ) = range(8)
-        for i in res:
-            inscription = dict_inscriptions[i[INSCRIPTION_ID]]
-            heat = dict_heats[i[HEAT_ID]]
-            result = Result(
-                    inscription=inscription,
-                    result_id=i[RESULT_ID],
-                    heat=heat,
-                    lane=i[LANE],
-                    arrival_pos=i[ARRIVAL_POS],
-                    issue_id=i[ISSUE_ID],
-                    issue_split=i[ISSUE_SPLIT],
-                    equated_hundredth=i[EQUATED_HUNDREDTH],
-                    )
-            inscription.result = result
+#         dict_heats = self.heats.dict
+#         dict_inscriptions = self.inscriptions.dict
+#         # load phase results
+#         sql = '''
+# select result_id, heat_id, lane, arrival_pos, issue_id,
+# issue_split, equated_hundredth, inscription_id
+# from results
+# where inscription_id in (select inscription_id from inscriptions where phase_id=?)  order by lane; '''
+#         values = ((self.phase_id, ), )
+#         res = self.config.dbs.exec_sql(sql=sql, values=values)
+#         (RESULT_ID, HEAT_ID, LANE, ARRIVAL_POS, 
+#         ISSUE_ID, ISSUE_SPLIT, EQUATED_HUNDREDTH, INSCRIPTION_ID
+#         ) = range(8)
+#         for i in res:
+#             inscription = dict_inscriptions[i[INSCRIPTION_ID]]
+#             heat = dict_heats[i[HEAT_ID]]
+#             result = Result(
+#                     inscription=inscription,
+#                     result_id=i[RESULT_ID],
+#                     heat=heat,
+#                     lane=i[LANE],
+#                     arrival_pos=i[ARRIVAL_POS],
+#                     issue_id=i[ISSUE_ID],
+#                     issue_split=i[ISSUE_SPLIT],
+#                     equated_hundredth=i[EQUATED_HUNDREDTH],
+#                     )
+#             inscription.result = result
 
 
     def already_exists(self, event_id, progression):
@@ -536,7 +536,7 @@ values( ?, ?, ?, ?)'''
             phase_category_results = phase_category.phase_category_results
             phase_category_results.delete_all_items()
             category_results = []
-            print('{} {}'.format(phase_category.category.name, phase_category.action))
+            # print('{} {}'.format(phase_category.category.name, phase_category.action))
             # get all results for this category
             results = []
             # phase.inscriptions.load_items_from_dbs()

@@ -27,7 +27,7 @@ class Champ(object):
 
     def __init__(self, config):
         self.config = config
-        self.params = {}
+        self._params = {}
         self.has_champ = None
         # self.champ_id = 0
         # self.name = ''
@@ -39,6 +39,16 @@ class Champ(object):
         # self.venue = ''
         # self.pool_lane_min = 0
         # self.pool_lane_max = 9
+        print("champ_class_id: {}".format(id(self)))
+
+    def _get_params(self):
+        return self._params
+
+    def _set_params(self, value):
+        self._params = value
+
+    params = property(_get_params, _set_params)
+
 
     @property
     def file_name(self):
@@ -49,14 +59,14 @@ class Champ(object):
             self.params['champ_venue'])
         return utils.get_valid_filename(file_name.lower())
 
-    @property
-    def inscriptions_dict_pode_borrarse(self):
-        # get all inscriptions for champ
-        dict_inscriptions = {}
-        for phase in self.phases:
-            for i in phase.inscriptions:
-                dict_inscriptions[i.inscription_id] = i
-        return dict_inscriptions
+    # @property
+    # def inscriptions_dict_pode_borrarse(self):
+    #     # get all inscriptions for champ
+    #     dict_inscriptions = {}
+    #     for phase in self.phases:
+    #         for i in phase.inscriptions:
+    #             dict_inscriptions[i.inscription_id] = i
+    #     return dict_inscriptions
 
     @property
     def inscriptions(self):
@@ -88,7 +98,7 @@ class Champ(object):
 
     @property
     def clear_champ(self):
-        self.params = {}
+        self.params = None
         # self.champ_id = 0
         # self.name = ''
         # self.pool_length = 0
@@ -260,7 +270,6 @@ class Champ(object):
         file_path = os.path.join(
             self.config.work_folder_path,
             file_name)
-
         if self.params['champ_chrono_type'] == 'M':
             chrono_text = _('manual')
         else:
@@ -283,9 +292,16 @@ class Champ(object):
             if phase.official:
                 if page_break:
                     d.insert_page_break()
-                phase.gen_results_pdf(d=d)
+                phase.gen_results_report(d=d)
                 page_break = True
 
+        d.build_file()
+
+    def gen_medals_report(self, selections):
+        d =  self.init_report(file_name=_("medals_by_event_category.pdf"))   
+        for i in selections:
+            phase = self.phases[i]
+            phase.gen_medals_report(d=d)
         d.build_file()
 
     def gen_classifications_pdf(self):
@@ -693,15 +709,14 @@ sum(points) desc;          '''
                             num_members = result.relay.relay_members.num_members
                             num_splits = len(result.result_splits)
                             if result.issue_split<=(num_splits/num_members):
-                                print(('issue', result.relay.name, result.issue_id))
+                                # print(('issue', result.relay.name, result.issue_id))
                                 continue
                     if result.ind_rel == 'R': # non envía remudas sen remudistas
                         result.relay.relay_members.load_items_from_dbs()
                         if not result.relay.relay_members:
-                            print('Erro:  remuda sen membros, isto non debería pasar nunca')
-                            print('amosar mensaxe alertanto')
-                            
-                            continue
+                            print('En teoría non se pode en oficial sen remudistas.')
+                            assert "Erro: remuda sen membros, isto non debería pasar nunca" 
+                            continuedeixa
                     style_names = {
                         'M':'butterfly',
                         'E':'backstroke',
