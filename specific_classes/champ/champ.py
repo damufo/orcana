@@ -1634,9 +1634,13 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
                         result.inscription.pool_length,
                         result.inscription.chrono_type)
                     equated_time = result.equated_time
+                    if 'X' not in i.heat.phase.event.code.upper():
+                        license_entity_code = i.person.license
+                    else:
+                        license_entity_code = i.relay.entity.entity_code
                     line_result = [[
                             str(result.lane), 
-                            'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
+                            license_entity_code, 
                             'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
                             'X' not in result.event.code.upper() and result.person.year[2:] or "", 
                             'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
