@@ -357,7 +357,7 @@ values( ?, ?, ?, ?)'''
                         break
         print("load heats and results for this phase")
         self.heats.load_items_from_dbs()
-        self.load_results_from_dbs()
+        self.inscriptions.load_results_from_dbs()
         print('End phase gen_heats()')
 
     def init_report(self, file_name):
@@ -495,18 +495,21 @@ values( ?, ?, ?, ?)'''
                     result.inscription.pool_length,
                     result.inscription.chrono_type)
                 equated_time = result.equated_time
-
-
+                ind_rel = result.ind_rel
+                if ind_rel == 'I':
+                    license_entity_code = result.person.license
+                else:
+                    license_entity_code = result.relay.entity.entity_code
                 line_result = [[
                         str(result.lane), 
-                        'X' not in result.event.code.upper() and result.person.license or result.relay.entity.entity_code, 
-                        'X' not in result.event.code.upper() and result.person.full_name or result.relay.name, 
-                        'X' not in result.event.code.upper() and result.person.year[2:] or "", 
-                        'X' not in result.event.code.upper() and result.person.entity.short_name or result.relay.entity.short_name, 
+                        license_entity_code, 
+                        ind_rel == 'I' and result.person.full_name or result.relay.name, 
+                        ind_rel == 'I' and result.person.year[2:] or "", 
+                        ind_rel == 'I' and result.person.entity.short_name or result.relay.entity.short_name, 
                         time_start_list, equated_time],]
 
                 members = False
-                if result.ind_rel == 'R':
+                if ind_rel == 'R':
                     # if not result.relay.relay_members:
                     #     result.relay.relay_members.load_items_from_dbs()
                     members = '; '.join([i.person.full_name for i in result.relay.relay_members])
