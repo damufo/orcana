@@ -42,6 +42,7 @@ class Presenter(object):
                 self.view.view_plus.cho_set(
                         choice=self.view.cho_phase_id,
                         value=self.model.phase.phase_id)
+                self.phase_change()
             if self.model.phase_category != self.model.phase.phase_categories[0]:
                 self.view.view_plus.cho_set(
                         choice=self.view.cho_phase_category,
