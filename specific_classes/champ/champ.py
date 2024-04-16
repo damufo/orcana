@@ -1634,10 +1634,10 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
                         result.inscription.pool_length,
                         result.inscription.chrono_type)
                     equated_time = result.equated_time
-                    if 'X' not in i.heat.phase.event.code.upper():
-                        license_entity_code = i.person.license
+                    if 'X' not in result.event.code.upper():
+                        license_entity_code = result.person.license
                     else:
-                        license_entity_code = i.relay.entity.entity_code
+                        license_entity_code = result .relay.entity.entity_code
                     line_result = [[
                             str(result.lane), 
                             license_entity_code, 
@@ -1649,7 +1649,7 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
                     if result.ind_rel == 'R':
                         if not result.relay.relay_members:
                             result.relay.relay_members.load_items_from_dbs()
-                        members = '; '.join([i.person.full_name for i in result.relay.relay_members])
+                        members = '; '.join([member.person.full_name for member in result.relay.relay_members])
                         print(members)
                         if members:
                             add_relay_members([[members], ])
