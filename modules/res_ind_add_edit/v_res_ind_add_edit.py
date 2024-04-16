@@ -16,6 +16,15 @@ class View(ResIndAddEdit):
         self.view_plus = ViewPlus(self)
         self.msg = Messages(self)
 
+    def retrieve_focus(self):
+        value = wx.FindWindowByName('res_ind_add_edit')
+        if value:
+            self.Hide()  # Isto é o que o fai funcionar
+            self.Show()
+            self.txt_person_full_name.SetFocus()
+            print('retieve focus en view')
+
+
     def set_heat(self, heat):
         self.lbl_event_name.SetLabel(heat.event.name)
         self.lbl_heat.SetLabel(str(heat.pos))

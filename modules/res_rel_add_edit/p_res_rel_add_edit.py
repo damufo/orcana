@@ -35,18 +35,18 @@ class Presenter(object):
 
     def delete(self):
         current_result = self.model.result
-        if current_result.result_id:  # Question if remove current result
-            message = "Are you sure you want to delete this result?"
+        if current_result and current_result.result_id:  # Question if remove current result
+            message = _("Are you sure you want to delete this result?")
             if self.view.msg.question(message):
-                print('set inscription as rejected and delete current result')
+                # print('set inscription as rejected and delete current result')
                 current_result.inscription.rejected = True
                 current_result.inscription.result = None
                 current_result.inscription.save()
                 current_result.delete()
                 self.view.view_plus.stop()
         else:
-            self.view.msg.warning("There was no longer a relay to delete.")
-            self.view.tx_entity_name.SetFocus()
+            self.view.msg.warning(_("There is no relay to delete."))
+            self.view.txt_entity_name.SetFocus()
             
     def acept(self):
         current_heat = self.model.heat
@@ -56,13 +56,13 @@ class Presenter(object):
         msg = None
         values = self.view.get_values()
         if not self.model.entity_selected:
-            msg = 'Set a entity.'
+            msg = _('Set a entity.')
             self.view.txt_entity_name.SetFocus()
         elif not values["relay_name"]:
-            msg = 'Set a relay name.'
+            msg = _('Set a relay name.')
             self.view.txt_relay_name.SetFocus()
         elif not values["category_id"]:
-            msg = 'Set a relay category.'
+            msg = _('Set a relay category.')
             self.view.txt_relay_category.SetFocus()
         if msg:
             self.view.msg.warning(msg)
@@ -256,7 +256,7 @@ class Presenter(object):
         #             self.set_relay_name()
         #         elif not self.model.entity_selected:
         #             self.view.txt_relay_name.SetValue('')
-        #     else:
+        #     else:'Set a relay category.'
         #         self.model.entity_selected = None
         #         self.view.txt_relay_name.SetValue('')
         #     self.view.set_entity(entity=self.model.entity_selected)

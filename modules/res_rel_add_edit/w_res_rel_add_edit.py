@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+## Python code generated with wxFormBuilder (version 4.1.0-0-g733bf3d)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -93,7 +93,7 @@ class ResRelAddEdit ( wx.Dialog ):
 
 		bSizer111 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.txt_entity_name = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_entity_name = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
 		self.txt_entity_name.SetToolTip( _(u"Person full name (surname, name)") )
 
 		bSizer111.Add( self.txt_entity_name, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )

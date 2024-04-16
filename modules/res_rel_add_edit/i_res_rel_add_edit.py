@@ -13,6 +13,7 @@ class Interactor(object):
         view.btn_cancel.Bind(wx.EVT_BUTTON, self.on_cancel)
         view.btn_add_entity.Bind(wx.EVT_BUTTON, self.on_add_entity)
         view.txt_entity_name.Bind(wx.EVT_KILL_FOCUS, self.on_entity_name)
+        view.txt_entity_name.Bind(wx.EVT_TEXT_ENTER, self.on_entity_name)
         view.txt_entity_name.Bind(wx.EVT_CHAR, self.on_entity_name_change)
         view.btn_acept.Bind(wx.EVT_BUTTON, self.on_acept)
         view.btn_delete.Bind(wx.EVT_BUTTON, self.on_delete)
