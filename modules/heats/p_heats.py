@@ -334,7 +334,7 @@ class Presenter(object):
             # self.view.update_result_lane(row=row, result=result)
             self.view.update_arrival_pos(heat)
         # Isto é porque o obxexto result cambia o id ó ir ó formulario res_rel_add_edit
-        print('En teoría o de abaixo xa non fai falta')
+        # print('En teoría o de abaixo xa non fai falta')
         # if result.result_id and result_index != -1 and result != heat.results[result_index]:
         #     heat.results[result_index] = result
         self.select_lane(row=row)
