@@ -67,8 +67,8 @@ class Messages:
         else:
             value = None
         dlg.Destroy()
-        self.view.SetFocus()
-        print(self.view.GetName())
+        # self.view.SetFocus()
+        # print(self.view.GetName())
         return value
 
     def question(self, message, caption=None):
