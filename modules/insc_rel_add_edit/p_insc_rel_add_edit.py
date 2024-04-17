@@ -66,7 +66,8 @@ class Presenter(object):
                     if inscription.relay.entity != entity:
                         clear_relayers = True
                     if inscription.relay.category != relay_category:
-                        clear_relayers = True
+                        if inscription.relay.relay_members and self.view.msg.question(_('Delete members?')):
+                            clear_relayers = True
                     if clear_relayers:
                         inscription.relay.relay_members.delete_all_items()
 
