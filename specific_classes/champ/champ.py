@@ -715,8 +715,8 @@ sum(points) desc;          '''
                         result.relay.relay_members.load_items_from_dbs()
                         if not result.relay.relay_members:
                             print('En teoría non se pode en oficial sen remudistas.')
-                            assert "Erro: remuda sen membros, isto non debería pasar nunca" 
-                            continuedeixa
+                            assert "Erro: remuda sen membros, isto non debería pasar nunca"
+                            continue
                     style_names = {
                         'M':'butterfly',
                         'E':'backstroke',
