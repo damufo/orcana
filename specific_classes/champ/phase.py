@@ -678,18 +678,22 @@ values( ?, ?, ?, ?)'''
                                     posicion_puntos += 1
                                 else:
                                     i.points = 0.0
-                            if last_pos == i.pos and puntua:
-                                repartir.append(i)
-                            elif last_pos != i.pos:
+
+                            if last_pos != i.pos:
+                                # Reparte os anteriores resultados se é o caso
                                 if len(repartir) > 1:
                                     puntos_a_repartir = sum([i.points for i in repartir])
-                                    for i in repartir:
-                                        i.points = round(float(puntos_a_repartir) / len(repartir), 1)
+                                    for j in repartir:
+                                        j.points = round(float(puntos_a_repartir) / len(repartir), 1)
+                                # Iso é para o actual resultado
                                 if puntua:
                                     repartir = [i, ]
+                                    puntua = False
                                 else:
                                     repartir = []
-                            last_pos = i.pos
+                                last_pos = i.pos
+                            if last_pos == i.pos and puntua:
+                                repartir.append(i)
                         else:
                             if len(repartir) > 1:
                                 puntos_a_repartir = sum([i.points for i in repartir])
