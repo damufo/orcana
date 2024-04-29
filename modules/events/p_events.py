@@ -108,8 +108,7 @@ class Presenter(object):
                         "\nAll event phases, event categories, event heats and "
                         "\nevent results are deleted.")
             if self.view.msg.question(message=message):
-                for i in idxs:
-                    self.model.events.delete_items(idxs)
-                    self.view.lsc_plus.delete_items(idxs)
+                self.model.events.delete_items(idxs)
+                self.view.lsc_plus.delete_items(idxs)
         else:
             self.view.msg.warning(message=_("No item selected."))
