@@ -25,8 +25,8 @@ class Sessions(list):
             self.delete_item(idx)
 
     def delete_item(self, idx):
-        assert "pendente de facer"
-        self.pop(idx)  # remove element from list
+        self[idx].delete()
+
 
     def get_session(self, session_id):
         session = None
