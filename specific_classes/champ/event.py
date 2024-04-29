@@ -161,7 +161,11 @@ VALUES(?, ?, ?, ?, ?, ?) '''
     def delete(self):
         # FIXME: remove here: phases, event categories, event heats and event results
         print("FIXME: remove here: phases, event categories, event heats and event results")
-        # sql = ''' delete from events where event_id={}'''
-        # sql = sql.format(self.event_id)
-        # self.config.dbs.exec_sql(sql=sql)
-        pass
+        # delete phases
+        for phase in self.champ.phases:
+            if phase.event == self:
+                phase.delete()
+        sql = ''' delete from events where event_id={}'''
+        sql = sql.format(self.event_id)
+        self.config.dbs.exec_sql(sql=sql)
+        self.events.remove(self)
