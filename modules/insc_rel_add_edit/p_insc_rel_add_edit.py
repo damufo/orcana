@@ -80,6 +80,7 @@ class Presenter(object):
                 inscription.relay.category = relay_category
                 inscription.relay.gender_id = relay_category.gender_id
                 inscription.relay.save()
+                inscription.relay.inscription = inscription
                 if inscription.relay not in inscription.relay.relays:
                     inscription.relay.relays.append(inscription.relay)
                 inscription.mark_hundredth = values['mark_hundredth']
