@@ -55,7 +55,6 @@ class Events(list):
 
     def delete_item(self, idx):
         self[idx].delete()
-        self.pop(idx)  # remove element from list
 
     def get_event(self, event_id):
         event = None
@@ -63,36 +62,7 @@ class Events(list):
             if i.event_id == event_id:
                 event = i
                 break
-        return event
-
-    # def delete_item(self, pos):
-    #     champ_event = self[pos]
-    #     sql =  ("delete from champ_events where champ_id=? and event_id=? "
-    #             "and gender_id=? and category_id=? ")
-    #     values = ((self.champ.id, champ_event.event_id, 
-    #                champ_event.gender_id, champ_event.category_id),)
-    #     self.config.dbs.exec_sql(sql=sql, values=values)
-    #     self.pop(pos) #remove element from list
-    #     self.update_items_on_dbs() 
-
-    # def delete_items(self, idxs):
-    #     """
-    #     Delete indexes items. idx is a tuple
-    #     """
-    #     sql =  ("delete from champ_events where champ_id=? and event_id=? "
-    #             "and gender_id=? and category_id=? ")
-        
-    #     if idxs:
-    #         values = []
-    #         for idx in sorted(idxs, reverse=True):
-    #             champ_event = self[idx]
-    #             values.append((champ_event.champ_id, champ_event.event_id, 
-    #                champ_event.gender_id, champ_event.category_id))
-    #             self.pop(idx)
-    #         if values:
-    #             self.config.dbs.exec_sql(sql=sql, values=values)
-
-    #         self.update_items_on_dbs()              
+        return event          
 
     @property        
     def item_blank(self):
