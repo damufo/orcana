@@ -212,10 +212,10 @@ VALUES(?, ?, ?, ?, ?, ?, ?) '''
         self.phase_categories.delete_all_items()  
         for heat in self.heats:
             heat.delete()
-            heat.heats.remove(heat)
         sql = ''' delete from phases where phase_id={}'''
         sql = sql.format(self.phase_id)
         self.config.dbs.exec_sql(sql=sql)
+        self.phases.remove(self)
 
     def delete_results_phase_categories(self):
         for phase_category in self.phase_categories:
@@ -682,7 +682,7 @@ values( ?, ?, ?, ?)'''
                             if last_pos != i.pos:
                                 # Reparte os anteriores resultados se é o caso
                                 if len(repartir) > 1:
-                                    puntos_a_repartir = sum([i.points for i in repartir])
+                                    puntos_a_repartir = sum([k.points for k in repartir])
                                     for j in repartir:
                                         j.points = round(float(puntos_a_repartir) / len(repartir), 1)
                                 # Iso é para o actual resultado
@@ -696,9 +696,9 @@ values( ?, ?, ?, ?)'''
                                 repartir.append(i)
                         else:
                             if len(repartir) > 1:
-                                puntos_a_repartir = sum([i.points for i in repartir])
-                                for i in repartir:
-                                    i.points = round(float(puntos_a_repartir) / len(repartir), 2)
+                                puntos_a_repartir = sum([k.points for k in repartir])
+                                for j in repartir:
+                                    j.points = round(float(puntos_a_repartir) / len(repartir), 2)
 
             elif results and phase_category.action == 'CLAS':  # clasifica para unha seguite phase
                 #TODO: Facer este códito
