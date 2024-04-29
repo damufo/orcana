@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+## Python code generated with wxFormBuilder (version 4.1.0-0-g733bf3d)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -43,12 +43,12 @@ class Events ( wx.Panel ):
 
 		bSizer7 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_move_down = wx.Button( self, wx.ID_ANY, _(u"D&own"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_move_down = wx.Button( self, wx.ID_ANY, _(u"D&own"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_move_down.SetToolTip( _(u"Move down") )
 
 		bSizer7.Add( self.btn_move_down, 1, wx.ALL, 5 )
 
-		self.btn_move_up = wx.Button( self, wx.ID_ANY, _(u"&Up"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_move_up = wx.Button( self, wx.ID_ANY, _(u"&Up"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_move_up.SetToolTip( _(u"Move up") )
 
 		bSizer7.Add( self.btn_move_up, 1, wx.ALL, 5 )
@@ -61,17 +61,17 @@ class Events ( wx.Panel ):
 
 		bSizer8 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.btn_delete = wx.Button( self, wx.ID_ANY, _(u"D&elete"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_delete = wx.Button( self, wx.ID_ANY, _(u"D&elete"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_delete.SetToolTip( _(u"Delete") )
 
 		bSizer8.Add( self.btn_delete, 1, wx.ALL, 5 )
 
-		self.btn_edit = wx.Button( self, wx.ID_ANY, _(u"Ed&it"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_edit = wx.Button( self, wx.ID_ANY, _(u"Ed&it"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_edit.SetToolTip( _(u"Edit") )
 
 		bSizer8.Add( self.btn_edit, 1, wx.ALL, 5 )
 
-		self.btn_add = wx.Button( self, wx.ID_ANY, _(u"A&dd"), wx.DefaultPosition, wx.DefaultSize, wx.BU_EXACTFIT )
+		self.btn_add = wx.Button( self, wx.ID_ANY, _(u"A&dd"), wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.btn_add.SetToolTip( _(u"Add") )
 
 		bSizer8.Add( self.btn_add, 1, wx.ALL, 5 )
