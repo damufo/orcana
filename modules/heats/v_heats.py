@@ -226,10 +226,10 @@ class View(Heats):
             self.grd_results.SetColLabelValue(col, str(event_split[DISTANCE]))
             self.grd_results.SetColSize(col, col_width_split_mark)
         self.grd_results.ClearGrid()
-        if pool_lanes_count != 10:
-            pool_lane_adjust = 1
-        else:
-            pool_lane_adjust = 0
+        # if pool_lanes_count != 10:
+        #     pool_lane_adjust = 1
+        # else:
+        #     pool_lane_adjust = 0
         # Header
         self.grd_results.SetColLabelValue(0, _('Full name'))
         self.grd_results.SetColSize(0, col_width_name)
@@ -251,68 +251,75 @@ class View(Heats):
         results_dict = {}
         for i in results:
             results_dict[i.lane] = i
-        for lane in range(0, pool_lanes_count):
-            lane_adjusted = (lane + pool_lane_adjust)
-            if lane_adjusted in results_dict:
-                result = results_dict[lane_adjusted]
+        sorted_pool_lanes = sorted(heat.phase.pool_lanes)
+        # for lane in range(0, pool_lanes_count):
+        for row, lane in enumerate(sorted_pool_lanes):
+            self.grd_results.SetRowLabelValue(row, str(lane))
+            # lane_adjusted = (lane + pool_lane_adjust)
+            # if lane_adjusted in results_dict:
+                # result = results_dict[lane_adjusted]
+            if lane in results_dict:
+                result = results_dict[lane]
                 choices_list = heat.config.issues.choices()
                 choice_editor = wx.grid.GridCellChoiceEditor(choices_list, allowOthers=False) 
-                self.grd_results.SetCellEditor(lane, col_issue_id, choice_editor)
+                self.grd_results.SetCellEditor(row, col_issue_id, choice_editor)
                 if ind_rel == 'I':
-                    self.grd_results.SetCellValue(lane, 0, result.person.full_name)
-                    self.grd_results.SetCellValue(lane, 1, str(result.person.entity.short_name))
+                    self.grd_results.SetCellValue(row, 0, result.person.full_name)
+                    self.grd_results.SetCellValue(row, 1, str(result.person.entity.short_name))
                 elif ind_rel == 'R':
-                    self.grd_results.SetCellValue(lane, 0, result.relay.name)
-                    self.grd_results.SetCellValue(lane, 1, str(result.relay.entity.short_name))
+                    self.grd_results.SetCellValue(row, 0, result.relay.name)
+                    self.grd_results.SetCellValue(row, 1, str(result.relay.entity.short_name))
                     if result.relay.has_set_members:
                         has_set_members = '√'  # square root
                     else:
                         has_set_members = ''
-                    self.grd_results.SetCellValue(lane, col_members, has_set_members)
-                    self.grd_results.SetCellAlignment(lane, col_members, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-                self.grd_results.SetCellAlignment(lane, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-                self.grd_results.SetCellValue(lane, 2, str(result.category_code))
-                self.grd_results.SetCellAlignment(lane, 2, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+                    self.grd_results.SetCellValue(row, col_members, has_set_members)
+                    self.grd_results.SetCellAlignment(row, col_members, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+                self.grd_results.SetCellAlignment(row, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+                self.grd_results.SetCellValue(row, 2, str(result.category_code))
+                self.grd_results.SetCellAlignment(row, 2, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 if result.arrival_pos:
-                    self.grd_results.SetCellValue(lane, col_arrival_pos, str(result.arrival_pos))
+                    self.grd_results.SetCellValue(row, col_arrival_pos, str(result.arrival_pos))
                 else:
-                    self.grd_results.SetCellValue(lane, col_arrival_pos, '')
-                self.grd_results.SetCellAlignment(lane, col_arrival_pos, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-                self.grd_results.SetCellAlignment(lane, col_arrival_mark, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-                self.grd_results.SetCellValue(lane, col_issue_id, str(result.issue_id))
-                self.grd_results.SetCellAlignment(lane, col_issue_id, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+                    self.grd_results.SetCellValue(row, col_arrival_pos, '')
+                self.grd_results.SetCellAlignment(row, col_arrival_pos, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+                self.grd_results.SetCellAlignment(row, col_arrival_mark, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
+                self.grd_results.SetCellValue(row, col_issue_id, str(result.issue_id))
+                self.grd_results.SetCellAlignment(row, col_issue_id, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 if result.issue_id:
-                    self.grd_results.SetCellValue(lane, col_issue_split, str(result.issue_split))
+                    self.grd_results.SetCellValue(row, col_issue_split, str(result.issue_split))
                 else:
-                    self.grd_results.SetCellValue(lane, col_issue_split, '')
-                self.grd_results.SetCellAlignment(lane, col_issue_split, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
-                self.grd_results.SetReadOnly(lane, 0)  # Name
-                self.grd_results.SetReadOnly(lane, 1)  # Entity
-                self.grd_results.SetReadOnly(lane, 2)  # Category code
+                    self.grd_results.SetCellValue(row, col_issue_split, '')
+                self.grd_results.SetCellAlignment(row, col_issue_split, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
+                self.grd_results.SetReadOnly(row, 0)  # Name
+                self.grd_results.SetReadOnly(row, 1)  # Entity
+                self.grd_results.SetReadOnly(row, 2)  # Category code
                 if ind_rel == 'R':
-                    self.grd_results.SetReadOnly(lane, col_members)  # members
-                self.grd_results.SetReadOnly(lane, col_arrival_pos, False)
-                self.grd_results.SetReadOnly(lane, col_arrival_mark, False)
-                self.grd_results.SetReadOnly(lane, col_issue_id, False)
-                self.grd_results.SetReadOnly(lane, col_issue_split, False)
+                    self.grd_results.SetReadOnly(row, col_members)  # members
+                self.grd_results.SetReadOnly(row, col_arrival_pos, False)
+                self.grd_results.SetReadOnly(row, col_arrival_mark, False)
+                self.grd_results.SetReadOnly(row, col_issue_id, False)
+                self.grd_results.SetReadOnly(row, col_issue_split, False)
                 for i in range(count_splits):
                     split = result.result_splits[i]
                     col = num_col_fixe + i
-                    self.grd_results.SetReadOnly(lane, col, False)
-                    self.grd_results.SetCellAlignment(lane, col, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
-                    self.grd_results.SetCellValue(lane, col, split.mark_time)
+                    self.grd_results.SetReadOnly(row, col, False)
+                    self.grd_results.SetCellAlignment(row, col, wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
+                    self.grd_results.SetCellValue(row, col, split.mark_time)
                 # isto vai aquí porque colle o valor do último parcial para poñelo en arrival_time
-                self.grd_results.SetCellValue(lane, col_arrival_mark, split.mark_time)
+                self.grd_results.SetCellValue(row, col_arrival_mark, split.mark_time)
             else:
                 for i in range(self.grd_results.GetNumberCols()):
-                    self.grd_results.SetReadOnly(lane, i, True)
+                    self.grd_results.SetReadOnly(row, i, True)
         self.load_arrival_order(results=results)
         if results and self.chb_go_to_first.GetValue():
             row = self.grd_results.GetGridCursorRow()
             col = self.grd_results.GetGridCursorCol()
             if col != col_arrival_mark:
                 col = num_col_fixe # first_split_col
-            self.grd_results.SetGridCursor(results[0].lane - pool_lane_adjust, col)
+            row = sorted_pool_lanes.index(results[0].lane)
+            self.grd_results.SetGridCursor(row, col)
+            # self.grd_results.SetGridCursor(results[0].lane - pool_lane_adjust, col)
         
         # ALIÑADO PERSONALIZADO PARA COLUMNA
         # ADAPTA O ALIÑAMENTO INDIVIDUAL/REMUDA
@@ -435,12 +442,14 @@ class View(Heats):
         last_arrival_hundredth = 0
         equated = 0
         # for i in [i for i in arrival_time_sorted if not i.issue_id]:
+        sorted_pool_lanes = sorted(heat.phase.pool_lanes)
         for i in arrival_time_sorted:
             # print("lane {} arrival_hundredth {}".format(i.lane, i.arrival_hundredth))
+            row = sorted_pool_lanes.index(i.lane)
             save_result =  False
             if not i.arrival_hundredth or i.issue_id:
                 results_dict[i.lane].arrival_pos = 0
-                self.grd_results.SetCellValue(i.lane-1, col_arrival_pos, '')
+                self.grd_results.SetCellValue(row, col_arrival_pos, '')
             else:
                 if i.arrival_hundredth != last_arrival_hundredth:
                     pos += 1 + equated
@@ -455,7 +464,7 @@ class View(Heats):
                     results_dict[i.lane].arrival_pos = pos
                     equated += 1
                 arrival_order += ' {}'.format(i.lane) 
-                self.grd_results.SetCellValue(i.lane-1, col_arrival_pos, str(pos))
+                self.grd_results.SetCellValue(row, col_arrival_pos, str(pos))
             if save_result:
                 results_dict[i.lane].save()
         self.lbl_arrival_order.SetLabel(arrival_order)
