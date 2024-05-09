@@ -45,7 +45,7 @@ class Presenter(object):
         elif not self.model.entity:
             msg = 'Set a entity.'
             self.view.txt_entity_name.SetFocus()
-        elif person.persons.check_exists_license(person, values['license']):
+        elif person.champ.persons.check_exists_license(person, values['license']):
             msg = 'This license already exists.'
             self.view.txt_license.SetFocus()
 
