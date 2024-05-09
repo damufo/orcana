@@ -262,11 +262,14 @@ class View(Heats):
                 result = results_dict[lane]
                 choices_list = heat.config.issues.choices()
                 choice_editor = wx.grid.GridCellChoiceEditor(choices_list, allowOthers=False) 
-                self.grd_results.SetCellEditor(row, col_issue_id, choice_editor)
                 if ind_rel == 'I':
+                    self.grd_results.SetCellEditor(row, self.cols["ind_col_issue_id"], choice_editor)
+                    self.grd_results.SetCellEditor(row, self.cols["rel_col_issue_id"], None)
                     self.grd_results.SetCellValue(row, 0, result.person.full_name)
                     self.grd_results.SetCellValue(row, 1, str(result.person.entity.short_name))
                 elif ind_rel == 'R':
+                    self.grd_results.SetCellEditor(row, self.cols["rel_col_issue_id"], choice_editor)
+                    self.grd_results.SetCellEditor(row, self.cols["ind_col_issue_id"], None)
                     self.grd_results.SetCellValue(row, 0, result.relay.name)
                     self.grd_results.SetCellValue(row, 1, str(result.relay.entity.short_name))
                     if result.relay.has_set_members:
@@ -362,9 +365,13 @@ class View(Heats):
             choice_editor = wx.grid.GridCellChoiceEditor(choices_list, allowOthers=False) 
             self.grd_results.SetCellEditor(row, col_issue_id, choice_editor)
             if ind_rel == 'I':
+                self.grd_results.SetCellEditor(row, self.cols["ind_col_issue_id"], choice_editor)
+                self.grd_results.SetCellEditor(row, self.cols["rel_col_issue_id"], None)
                 self.grd_results.SetCellValue(row, 0, result.person.full_name)
                 self.grd_results.SetCellValue(row, 1, str(result.person.entity.short_name))
             elif ind_rel == 'R':
+                self.grd_results.SetCellEditor(row, self.cols["rel_col_issue_id"], choice_editor)
+                self.grd_results.SetCellEditor(row, self.cols["ind_col_issue_id"], None)
                 self.grd_results.SetCellValue(row, 0, result.relay.name)
                 self.grd_results.SetCellValue(row, 1, str(result.relay.entity.short_name))
                 if result.relay.relay_members.has_set_members:
