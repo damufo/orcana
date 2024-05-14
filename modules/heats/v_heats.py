@@ -83,7 +83,7 @@ class View(Heats):
             elif col == 2:
                 key = 'ind_category'
             elif col == 3:
-                key = 'ind_mak'
+                key = 'ind_mark'
             elif col == 4:
                 key = 'ind_pos'
             elif col == 5:
