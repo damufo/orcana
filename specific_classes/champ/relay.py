@@ -57,9 +57,15 @@ class Relay(object):
         return self.event.num_members
 
     @property
-    def has_set_members(self):
-        return self.relay_members.has_set_members
+    def has_members(self):
+        return self.relay_members.has_members
 
+    @property
+    def sum_years(self):
+        sum_years = 0
+        for i in  self.relay_members:
+            sum_years += int(i.person.age)
+        return sum_years
 
     @property
     def long_name(self):
