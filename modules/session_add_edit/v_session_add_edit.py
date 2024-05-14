@@ -28,6 +28,7 @@ class View(SessionAddEdit):
     def get_values(self):
         values = {}
         values['date'] = self.txt_date_plus.GetValue()
+        self.txt_time_plus.SetValue(self.txt_time.GetValue())
         values['time'] = self.txt_time_plus.GetValue()
         return values
 
