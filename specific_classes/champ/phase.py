@@ -500,19 +500,41 @@ values( ?, ?, ?, ?)'''
                     license_entity_code = result.person.license
                 else:
                     license_entity_code = result.relay.entity.entity_code
+                
+                if ind_rel == 'I':
+                    name = result.person.full_name
+                    year = result.person.year[2:]
+                    entity = result.person.entity.short_name
+                else:  # is a relay
+                    if self.champ.params['champ_estament_id'] == 'MASTE':
+                        name = '{} {}'.format(result.relay.name, result.relay.category.code)
+                        year = result.relay.sum_years
+                        entity = result.relay.entity.short_name
+                    else:
+                        name = result.relay.name
+                        year = ''
+                        entity = result.relay.entity.short_name
+                    
                 line_result = [[
                         str(result.lane), 
                         license_entity_code, 
-                        ind_rel == 'I' and result.person.full_name or result.relay.name, 
-                        ind_rel == 'I' and result.person.year[2:] or "", 
-                        ind_rel == 'I' and result.person.entity.short_name or result.relay.entity.short_name, 
+                        name, 
+                        year, 
+                        entity, 
                         time_start_list, equated_time],]
+                # line_result = [[
+                #         str(result.lane), 
+                #         license_entity_code, 
+                #         ind_rel == 'I' and result.person.full_name or result.relay.name, 
+                #         ind_rel == 'I' and result.person.year[2:] or "", 
+                #         ind_rel == 'I' and result.person.entity.short_name or result.relay.entity.short_name, 
+                #         time_start_list, equated_time],]
 
                 members = False
                 if ind_rel == 'R':
                     # if not result.relay.relay_members:
                     #     result.relay.relay_members.load_items_from_dbs()
-                    members = '; '.join([i.person.full_name for i in result.relay.relay_members])
+                    members = '; '.join(['{}({})'.format(i.person.full_name, i.person.birth_date[2:4]) for i in result.relay.relay_members])
 
                 if result == heat.results[-1]:
                     if not members:
@@ -906,7 +928,7 @@ values( ?, ?, ?, ?)'''
     #         last_result_category_pos = phase_category_result.pos
     #         add_result(line_result)
 
-    #         if i.ind_rel == 'R' and i.relay.relay_members.has_set_members:
+    #         if i.ind_rel == 'R' and i.relay.relay_members.has_members:
     #             num_splits = len(i.result_splits)
     #             if num_splits == 1:  # Print line members
     #                 member_lines = []
