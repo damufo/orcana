@@ -211,7 +211,7 @@ class Presenter(object):
                     if not i.mark_hundredth and not i.issue_id:
                         pending_results = True
                         break
-                    if ind_rel == 'R' and not i.issue_id and not i.relay.has_set_members:
+                    if ind_rel == 'R' and not i.issue_id and not i.relay.has_members:
                         empty_members_relay = True
                         break
                 if pending_results:
@@ -284,6 +284,7 @@ class Presenter(object):
                 else:
                     self.view.grd_results.SetCellValue(row, col_arrival_pos , str(result.arrival_pos))
                 result.save()
+                self.view.load_arrival_order(heat.results)
             elif col == col_issue_id:  # Set issue id
                 result.issue_id = value
                 if not result.issue_id:
