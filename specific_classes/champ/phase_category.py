@@ -378,7 +378,7 @@ VALUES(?, ?, ?, ?) '''
                 last_result_category_pos = phase_category_result.pos
                 add_result(line_result)
 
-                if i.ind_rel == 'R' and i.relay.relay_members.has_set_members:
+                if i.ind_rel == 'R' and i.relay.relay_members.has_members:
                     num_splits = len(i.result_splits)
                     if num_splits == 1:  # Print line members
                         member_lines = []

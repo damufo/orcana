@@ -137,15 +137,11 @@ where phase_category_id=? order by pos'''
                     ))
         elif self.ind_rel == 'R':
             for pos, i in enumerate(self):
-                if i.result.inscription.relay.relay_members.has_set_members:
-                    has_set_members = '√'
-                else:
-                    has_set_members = ''
                 values.append((
                     str(pos+1),
                     i.result.inscription.relay.name,
                     i.result.inscription.relay.gender_id,
-                    has_set_members,
+                    i.result.inscription.relay.relay_members.has_members,
                     i.result.inscription.relay.category.name,
                     i.result.inscription.relay.entity.short_name,
                     i.result.mark_time,
@@ -184,7 +180,7 @@ where phase_category_id=? order by pos'''
                 'relay.name_normalized',
                 'relay.gender_id',
                 'relay.category.name_normalized',
-                'relay.relay_members.has_set_members',
+                'relay.relay_members.has_members',
                 'relay.entity.short_name_normalized',
                 'mark_hundredth',
                 'heat_pos',

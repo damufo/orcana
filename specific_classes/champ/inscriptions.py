@@ -294,15 +294,11 @@ where inscription_id in (select inscription_id from inscriptions where phase_id=
                     i.score and _('S') or '',
                     i.classify and _('C') or '',
                     )
-                if i.relay.relay_members.has_set_members:
-                    has_set_members = '√'
-                else:
-                    has_set_members = ''
                 values.append((
                     str(pos+1),
                     i.relay.name,
                     i.relay.gender_id,
-                    has_set_members,
+                    i.relay.relay_members.has_members,
                     i.relay.category.name,
                     i.relay.entity.short_name,
                     i.mark_time,
@@ -347,7 +343,7 @@ where inscription_id in (select inscription_id from inscriptions where phase_id=
                 'relay.name_normalized',
                 'relay.gender_id',
                 'relay.category.name_normalized',
-                'relay.relay_members.has_set_members',
+                'relay.relay_members.has_members',
                 'relay.entity.short_name_normalized',
                 'mark_hundredth',
                 'pool_length',

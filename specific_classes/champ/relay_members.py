@@ -50,12 +50,17 @@ where relay_id=? order by pos'''
         return self.relay.event.num_members
 
     @property
-    def has_set_members(self):
+    def has_members(self):
         if len(self) == self.num_members:
-            has_set_members = True
+            has_members = '√'  # square root 
+            sum_years = self.relay.sum_years
+            if self.champ.params['champ_estament_id'] == 'MASTE':
+                if (sum_years < self.relay.category.from_age or
+                        sum_years > self.relay.category.to_age):
+                    has_members += '!'
         else:
-            has_set_members = False
-        return has_set_members
+            has_members = ''
+        return has_members
 
     def delete_items(self, idxs):
         '''
