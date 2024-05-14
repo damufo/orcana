@@ -272,11 +272,7 @@ class View(Heats):
                     self.grd_results.SetCellEditor(row, self.cols["ind_col_issue_id"], None)
                     self.grd_results.SetCellValue(row, 0, result.relay.name)
                     self.grd_results.SetCellValue(row, 1, str(result.relay.entity.short_name))
-                    if result.relay.has_set_members:
-                        has_set_members = '√'  # square root
-                    else:
-                        has_set_members = ''
-                    self.grd_results.SetCellValue(row, col_members, has_set_members)
+                    self.grd_results.SetCellValue(row, col_members, result.relay.has_members)
                     self.grd_results.SetCellAlignment(row, col_members, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 self.grd_results.SetCellAlignment(row, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
                 self.grd_results.SetCellValue(row, 2, str(result.category_code))
@@ -374,11 +370,7 @@ class View(Heats):
                 self.grd_results.SetCellEditor(row, self.cols["ind_col_issue_id"], None)
                 self.grd_results.SetCellValue(row, 0, result.relay.name)
                 self.grd_results.SetCellValue(row, 1, str(result.relay.entity.short_name))
-                if result.relay.relay_members.has_set_members:
-                    has_set_members = '√'
-                else:
-                    has_set_members = ''
-                self.grd_results.SetCellValue(row, col_members, has_set_members)
+                self.grd_results.SetCellValue(row, col_members, result.relay.has_members)
                 self.grd_results.SetCellAlignment(row, col_members, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
             self.grd_results.SetCellAlignment(row, 1, wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
             self.grd_results.SetCellValue(row, 2, str(result.category.name))
