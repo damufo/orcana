@@ -27,28 +27,8 @@ class Champ(object):
 
     def __init__(self, config):
         self.config = config
-        self._params = {}
         self.has_champ = None
-        # self.champ_id = 0
-        # self.name = ''
-        # self.pool_length = 0
-        # self.pool_lanes = ''
-        # self.chrono_type = ''
-        # self.estament_id = ''
-        # self.date_age_calculation = ''
-        # self.venue = ''
-        # self.pool_lane_min = 0
-        # self.pool_lane_max = 9
         print("champ_class_id: {}".format(id(self)))
-
-    def _get_params(self):
-        return self._params
-
-    def _set_params(self, value):
-        self._params = value
-
-    params = property(_get_params, _set_params)
-
 
     @property
     def file_name(self):
@@ -58,15 +38,6 @@ class Champ(object):
             self.params['champ_name'],
             self.params['champ_venue'])
         return utils.get_valid_filename(file_name.lower())
-
-    # @property
-    # def inscriptions_dict_pode_borrarse(self):
-    #     # get all inscriptions for champ
-    #     dict_inscriptions = {}
-    #     for phase in self.phases:
-    #         for i in phase.inscriptions:
-    #             dict_inscriptions[i.inscription_id] = i
-    #     return dict_inscriptions
 
     @property
     def inscriptions(self):
@@ -99,14 +70,6 @@ class Champ(object):
     @property
     def clear_champ(self):
         self.params = None
-        # self.champ_id = 0
-        # self.name = ''
-        # self.pool_length = 0
-        # self.pool_lanes = []
-        # self.chrono_type = ''
-        # self.estament_id = ''
-        # self.date_age_calculation = ''
-        # self.venue = ''
         self.config.prefs['last_path_dbs'] = ''
         self.config.dbs.dbs_path = None
 
@@ -114,7 +77,7 @@ class Champ(object):
         self.config.dbs.connect(dbs_path=dbs_path)
         # Comproba que sexa unha base de datos correcta
         if self.config.dbs.connection:
-            # try:
+            try:
                 self.params = Params(champ=self)
                 self.params.load_items_from_dbs()
                 self.entities = Entities(champ=self)
@@ -141,12 +104,12 @@ class Champ(object):
                 # As series van dentro das phases
                 # As inscricións van dentro das fases
                 # Os resultados carganse despois de cargar as inscricións e asignanse a cada inscrición
-
                 self.config.prefs['last_path_dbs'] = str(dbs_path)
                 self.has_champ = True
-            # except:  # Algo fallou durante a carga
-            #     self.config.prefs['last_path_dbs'] = ""
-            #     self.clear_champ
+            except:  # Algo fallou durante a carga
+                self.config.prefs['last_path_dbs'] = ""
+                self.clear_champ
+                print('Algo fallou durante a carga da base de datos.')
         else:  # Non foi quen de conectar
             self.clear_champ
             print("Isto non debería pasar nunca. Erro:1134987239847105")
@@ -401,133 +364,6 @@ sum(points) desc;          '''
 
         d.build_file()
         print("fin")
-
-#     def gen_classifications_pdf_old(self):
-#         categories = {}
-#         d =  self.init_report(file_name=_("classifications.pdf"))
-
-#         def save_table(lines):
-#             col_widths = ['5%', '50%', '20%', '20%', '10%']
-#             style = [
-#                 ('FONTSIZE', (0, 0), (-1, -1), 9),
-#                 # ('GRID', (0, 0), (-1, -1), 0.5, d.colors.grey),
-#                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-#                 ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
-#                 ('ALIGN', (1, 0), (1, -1), 'LEFT'),
-#                 ('ALIGN', (3, 0), (3, -1), 'RIGHT'),
-#             ]
-
-#             table = lines
-#             d.insert_table(table=table, colWidths=col_widths, 
-#                            style=style, pagebreak=False)
-#         def save_table_total(category, table_total):
-#             lines = []
-#             sorted_total = sorted(table_total.items(), key=lambda x:x[1], reverse=True)
-#             lines = []
-#             last_points = -1
-#             last_pos = -1
-#             pos = 1
-#             for entity_id, points in sorted_total:
-#                 entity = self.entities.get_entity(entity_id=entity_id)
-#                 if points == last_points:
-#                     line_pos = ""
-#                 else:
-#                     line_pos = pos
-#                     last_pos = pos
-#                 lines.append((
-#                     line_pos,
-#                     entity.long_name,
-#                     entity.entity_code,
-#                     points,
-#                 ))
-#                 last_points = points
-#                 pos += 1
-#             gender = _("Total")
-#             title_category = "{} {}".format(category.name, gender).capitalize()
-#             d.insert_title_1(text=title_category, alignment=0)
-#             d.insert_spacer(10, 10)
-#             save_table(lines)
-
-#         d.insert_title_1(text=_("Classifications by category"), alignment=1)
-
-#         sql = '''
-# select 
-#     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 
-#     then 
-#         (select entity_id from persons p where p.person_id=(select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
-#     else 
-#         (select entity_id from relays r where r.relay_id=(select relay_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
-#     end as "entity_id",
-    
-# sum(points) as points
-# from phases_categories_results rpc
-# where (select category_id  from categories c where c.category_id=(select category_id from phases_categories pc where pc.phase_category_id=rpc.phase_category_id))=?
-# group by 
-#     case when (select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id))>0 
-#     then 
-#         (select entity_id from persons p where p.person_id=(select person_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
-#     else 
-#         (select entity_id from relays r where r.relay_id=(select relay_id from inscriptions i where i.inscription_id=(select r.inscription_id from results r where r.result_id=rpc.result_id)))
-#     end
-# order by
-# sum(points) desc;          '''
-#         last_category = None
-#         lines = []
-#         total = {}
-#         (ENTITY_ID, POINTS) = range(2)
-#         for category in self.categories:
-#             if lines and last_category.show_report:
-#                 gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
-#                 title_category = "{} {}".format(last_category.name, gender).capitalize()
-#                 d.insert_title_1(text=title_category, alignment=0)
-#                 d.insert_spacer(10, 10)
-#                 save_table(lines)
-#             if last_category and category.code != last_category.code:
-#                 # print total
-#                 save_table_total(category=last_category, table_total=total)
-#                 total = {}
-#             res = self.config.dbs.exec_sql(sql=sql, values=((category.category_id,),))
-#             lines = []
-#             if res != 'err' and res:
-#                 # print category puntuation
-#                 gender = self.config.genders.get_long_name(gender_id=category.gender_id)
-#                 last_points = -1
-#                 last_pos = -1
-#                 pos = 1
-#                 for entity_id, points in res:
-#                     entity = self.entities.get_entity(entity_id=entity_id)
-#                     if points == last_points:
-#                         line_pos = ""
-#                     else:
-#                         line_pos = pos
-#                         last_pos = pos
-#                     lines.append((
-#                         line_pos,
-#                         entity.long_name,
-#                         entity.entity_code,
-#                         points,
-#                     ))
-#                     last_points = points
-#                     pos += 1
-#                     if entity.entity_id in total:
-#                         total[entity.entity_id] += points
-#                     else:
-#                         total[entity.entity_id] = points
-#             last_category = category
-#         # Isto é para imprimir a última categoría se é que hai que facelo
-#         if lines and last_category.show_report:
-#             gender = self.config.genders.get_long_name(gender_id=last_category.gender_id)
-#             title_category = "{} {}".format(last_category.name, gender).capitalize()
-#             d.insert_title_1(text=title_category, alignment=0)
-#             d.insert_spacer(10, 10)
-#             save_table(lines)
-#         if total:
-#             # print total
-#             save_table_total(category=last_category, table_total=total)
-
-
-#         d.build_file()
-#         print("fin")
 
     def export_results(self):
         self.gen_lev()
@@ -1392,63 +1228,11 @@ sum(points) desc;          '''
                     table=table, colWidths=col_widths,
                     style=style, pagebreak=False)
 
-            # if last_event:
-            #     d.insert_page_break()
-            # d.insert_paragraph("")
-            # last_event = event
-            # style = [
-            #     ('FONT', (0, 0), (-1, -1), 'Open Sans Bold'),
-            #     ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-            #     ('FONTSIZE', (0, 0), (-1, -1), 9),
-            #     ]
-            # col_widths = ['100%', ]
-
-            # table = [["%s. %s" % (event.pos, event.name), ], ]
-            # d.insert_table(table=table, colWidths=col_widths,
-            #                    style=style, pagebreak=False)
-    
-            # inscriptions_ind = [i for i in self.inscriptions if i.event == event]
-            # inscriptions_ind = sorted(inscriptions_ind, key=attrgetter('equated_hundredth'), reverse=False)
-            # lines = []
-            # for row in inscriptions_ind:
-            #     if row.ind_rel == 'I':
-            #         license = row.person.license
-            #         name = row.person.full_name
-            #         birth_year = row.person.birth_date[2:4]
-            #         entity_name = row.person.entity.short_name
-            #     elif row.ind_rel == 'R':
-            #         license = row.relay.entity.entity_code
-            #         name = row.relay.name
-            #         birth_year = row.relay.category.name
-            #         entity_name = row.relay.entity.short_name
-            #     else:
-            #         print("Erro")
-            #         AssertionError("produciuse un erro")
-
-            #     mark_time = '{} {}{}'.format(
-            #         row.mark_time,
-            #         row.pool_length,
-            #         row.chrono_type)
-            #         # pool_chrono = '{}{}'.format(
-            #         #     self.pool_length,
-            #         #     self.chrono_type)
-            #     equated_time = row.equated_time
-            #     lines.append([
-            #         len(lines) + 1, license, name, birth_year,
-            #         entity_name, mark_time, equated_time, row.date, row.venue])
-            # else:
-            #     if lines:
-            #         if event.ind_rel == 'I':
-            #             save_lines_ind(lines=lines)
-            #         else:
-            #             save_lines_rel(lines=lines)
-            #         print("rematou bucle")
-
         d.build_file()
         print("feito")
 
     def gen_web_forms_files(self):
-
+        
         # Choices person
         file_name = os.path.join(
                 self.config.work_folder_path,
