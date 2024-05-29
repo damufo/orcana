@@ -46,9 +46,9 @@ except:
 
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
-APP_VERSION = "0.0.14beta"
+APP_VERSION = "0.0.15beta"
 DBS_VERSION = 5
-APP_VERSION_DATE = "2024-05-07"
+APP_VERSION_DATE = "2024-05-29"
 
 if getattr(sys, 'frozen', False): # Running as compiled
     running_dir = sys._MEIPASS + "/_internal/" # pylint: disable=no-member
@@ -111,7 +111,7 @@ class Application(wx.App):
             prefs["app.language"] = 'en'
         filename = str(APP_PATH_FOLDER) + "/locale/{}/LC_MESSAGES/orcana.mo".format(prefs["app.language"])
         try:
-            trans = gettext.GNUTranslations(open(filename, "rb"))
+            trans = getReleasetext.GNUTranslations(open(filename, "rb"))
         except IOError:
             trans = gettext.NullTranslations()
         trans.install()
