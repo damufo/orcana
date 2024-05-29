@@ -111,7 +111,7 @@ class Application(wx.App):
             prefs["app.language"] = 'en'
         filename = str(APP_PATH_FOLDER) + "/locale/{}/LC_MESSAGES/orcana.mo".format(prefs["app.language"])
         try:
-            trans = getReleasetext.GNUTranslations(open(filename, "rb"))
+            trans = gettext.GNUTranslations(open(filename, "rb"))
         except IOError:
             trans = gettext.NullTranslations()
         trans.install()
