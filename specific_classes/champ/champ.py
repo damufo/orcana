@@ -27,6 +27,7 @@ class Champ(object):
 
     def __init__(self, config):
         self.config = config
+        self.params = Params(champ=self)
         self.has_champ = None
         print("champ_class_id: {}".format(id(self)))
 
@@ -78,7 +79,7 @@ class Champ(object):
         # Comproba que sexa unha base de datos correcta
         if self.config.dbs.connection:
             try:
-                self.params = Params(champ=self)
+                # self.params = Params(champ=self)
                 self.params.load_items_from_dbs()
                 self.entities = Entities(champ=self)
                 self.entities.load_items_from_dbs()
