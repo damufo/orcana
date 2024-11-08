@@ -1479,65 +1479,101 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
                 break
 
         (LICENSE, SURNAME, NAME, GENDER_ID, BIRTH_DATE, ENTITY_CODE,
-        ENTITY_NAME, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO) = range(11)
-        for i in lines[start_line:]:
-            license = i[LICENSE]
-            person = self.persons.get_person_by_license(license=i[LICENSE])
-            if person:
-                print("This person {} already exists.".format(person.full_name))
+        ENTITY_NAME, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO, CATEGORY_CODE) = range(12)
+        for line in lines[start_line:]:
+            event = self.events[int(line[EVENT_POS]) - 1]
+            if event.code != line[EVENT_CODE].upper():
+                print("This event {}.- {} not exists.".format(line[EVENT_POS], line[EVENT_CODE]))
             else:
-                # add person
-                entity = self.entities.get_entity_by_code(entity_code=i[ENTITY_CODE])
-                if entity:
-                    print("This entity {} already exists.".format(entity.entity_code))
-                else:
-                    # add entity
-                    entity = self.entities.item_blank
-                    entity.entity_code = i[ENTITY_CODE]
-                    entity.short_name = i[ENTITY_NAME]
-                    entity.medium_name = i[ENTITY_NAME]
-                    entity.long_name = i[ENTITY_NAME]
-                    # FIXME: revisar que garde o código da entidade cando se importa de csv
-                    entity.save()
-                person = self.persons.item_blank
-                person.license = i[LICENSE]
-                person.surname = i[SURNAME]
-                person.name = i[NAME]
-                person.gender_id = i[GENDER_ID]
-                person.birth_date = i[BIRTH_DATE]
-                person.entity = entity
-                person.save()
-            event = self.events[int(i[EVENT_POS]) - 1]
-            if event.code != i[EVENT_CODE]:
-                print("This event {}.- {} not exists.".format(i[EVENT_POS], i[EVENT_CODE]))
-            else:
-                
-                inscriptions = event.inscriptions
-                inscriptions.load_items_from_dbs()
-                # if not self.check_exists(person=person, event=event):
-                exists_inscription = False
-                for j in inscriptions:
-                    if j.person == person and j.event == event:
-                        exists_inscription = True
+                phase =  None
+                for phase in self.phases:
+                    if phase.event == event and phase.progression in ('TIM', 'PRE'):
+                        phase = phase
                         break
-                if exists_inscription:
-                    # add inscription
-                    print('Inscription already exists.')
+                if not phase:
+                    print("This event {} not has phase.".format(event.code))
                 else:
-                    print('add inscription')
-                    if len(i[POOLCHRONO]) == 3:
-                        pool_length = int(i[POOLCHRONO][:2])
-                        chrono_type = i[POOLCHRONO][2].upper()
+                    entity = self.entities.get_entity_by_code(entity_code=line[ENTITY_CODE])
+                    if entity:
+                        print("This entity {} already exists.".format(entity.entity_code))
                     else:
-                        pool_length = 0
-                        chrono_type = ''
-                    inscription = inscriptions.item_blank
-                    inscription.person = person
-                    inscription.mark_time = i[MARK_TIME]
-                    inscription.pool_length = pool_length
-                    inscription.chrono_type = chrono_type
-                    inscription.date = ''
-                    inscription.venue = ''
-                    inscription.save()
-            print(i)
+                        # add entity
+                        entity = self.entities.item_blank
+                        entity.entity_code = line[ENTITY_CODE]
+                        entity.short_name = line[ENTITY_NAME]
+                        entity.medium_name = line[ENTITY_NAME]
+                        entity.long_name = line[ENTITY_NAME]
+                        # FIXME: revisar que garde o código da entidade cando se importa de csv
+                        entity.save()
+                        if not entity in entity.entities:
+                            entity.entities.append(entity)
+
+                    if event.ind_rel == 'R':  # Is a relay inscription
+                        # add relay
+                        print('add relay inscription')
+                        category = None
+                        for phase_category in phase.phase_categories:
+                            if phase_category.category.code == line[CATEGORY_CODE] and phase_category.category.gender_id == line[GENDER_ID]:
+                                category = phase_category.category
+                                break
+                        if not category:
+                            print("This category {} {} not exists.".format(line[CATEGORY_CODE], line[GENDER_ID]))
+                        else:
+                            new_inscription = phase.inscriptions.item_blank
+                            new_inscription.relay.entity = entity
+                            new_inscription.relay.category = category
+                            new_inscription.relay.name = line[SURNAME]
+                            new_inscription.relay.gender_id = category.gender_id
+                            new_inscription.relay.save()
+                            if new_inscription.relay not in new_inscription.relay.relays:
+                                new_inscription.relay.relays.append(new_inscription.relay)
+                            new_inscription.save()
+                            if new_inscription not in phase.inscriptions:
+                                new_inscription.inscriptions.append(new_inscription)
+                    else:  # Is a individual inscription
+                        license = line[LICENSE]
+                        person = self.persons.get_person_by_license(license=line[LICENSE])
+                        if person:
+                            print("This person {} already exists.".format(person.full_name))
+                        else:
+                            # add person
+                            person = self.persons.item_blank
+                            person.license = line[LICENSE]
+                            person.surname = line[SURNAME]
+                            person.name = line[NAME]
+                            person.gender_id = line[GENDER_ID]
+                            person.birth_date = line[BIRTH_DATE]
+                            person.entity = entity
+                            person.save()
+                            if not person in person.persons:
+                                person.persons.append(person)
+
+                        exists_inscription = False
+                        for j in phase.inscriptions:
+                            if j.person == person:
+                                exists_inscription = True
+                                break
+                        if exists_inscription:
+                            # add inscription
+                            print('Inscription already exists.')
+                        else:
+                            print('add person inscription')
+                            if len(line[POOLCHRONO]) == 3:
+                                pool_length = int(line[POOLCHRONO][:2])
+                                chrono_type = line[POOLCHRONO][2].upper()
+                            else:
+                                pool_length = 0
+                                chrono_type = ''
+                            new_inscription = phase.inscriptions.item_blank
+                            new_inscription.person = person
+                            new_inscription.mark_time = line[MARK_TIME]
+                            new_inscription.pool_length = pool_length
+                            new_inscription.chrono_type = chrono_type
+                            new_inscription.date = ''
+                            new_inscription.venue = ''
+                            new_inscription.save()
+                            if new_inscription not in phase.inscriptions:
+                                new_inscription.inscriptions.append(new_inscription)
+
+                    print(line)
         return True
