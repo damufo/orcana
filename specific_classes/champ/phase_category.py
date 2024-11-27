@@ -362,7 +362,7 @@ VALUES(?, ?, ?, ?) '''
                             'X' not in i.heat.phase.event.code.upper() and i.person.full_name or "", 
                             'X' not in i.heat.phase.event.code.upper() and i.person.year[2:] or "", 
                             'X' not in i.heat.phase.event.code.upper() and i.person.entity.short_name or i.relay.entity.short_name, 
-                            '', '0,0'],]
+                            i.mark_time, '0,0'],]
                 else:
                     if last_result_category_pos == phase_category_result.pos:
                         category_pos = ''
