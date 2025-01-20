@@ -6,7 +6,7 @@ import json
 from operator import attrgetter
 from reportlab.lib.units import cm
 from specific_classes.report_base import ReportBase
-from specific_classes.champ.params import Params
+# from specific_classes.champ.params import Params
 from specific_classes.champ.entities import Entities
 from specific_classes.champ.punctuations import Punctuations
 from specific_classes.champ.categories import Categories
@@ -27,7 +27,7 @@ class Champ(object):
 
     def __init__(self, config):
         self.config = config
-        self.params = Params(champ=self)
+        self.params = None
         self.has_champ = None
         print("champ_class_id: {}".format(id(self)))
 
@@ -70,9 +70,20 @@ class Champ(object):
 
     @property
     def clear_champ(self):
-        self.params = None
+        self.params = Params(config=self.config)
         self.config.prefs['last_path_dbs'] = ''
         self.config.dbs.dbs_path = None
+        
+    @property
+    def all_is_official(self):
+        all_official = True
+        # check if official
+        is_official = False
+        for phase in self.phases:
+            if not phase.official:
+                all_official = False
+                break
+        return all_official
 
     def load_dbs(self, dbs_path):
         self.config.dbs.connect(dbs_path=dbs_path)
@@ -107,7 +118,8 @@ class Champ(object):
                 # Os resultados carganse despois de cargar as inscricións e asignanse a cada inscrición
                 self.config.prefs['last_path_dbs'] = str(dbs_path)
                 self.has_champ = True
-            except:  # Algo fallou durante a carga
+            except Exception as ex:  # Algo fallou durante a carga
+                print(ex.message)
                 self.config.prefs['last_path_dbs'] = ""
                 self.clear_champ
                 print('Algo fallou durante a carga da base de datos.')
@@ -368,6 +380,7 @@ sum(points) desc;          '''
 
     def export_results(self):
         self.gen_lev()
+        self.gen_results_lenex()
 
     def gen_lev(self):
         """
@@ -560,6 +573,7 @@ sum(points) desc;          '''
                         'B':'breaststroke',
                         'L':'freestyle',
                         'S':'medley',
+                        'G':'butterfly',  # costas-braza
                         }
                     genders = {
                         'M':'male',
@@ -688,7 +702,7 @@ sum(points) desc;          '''
                         line.append(split_mark_hundredth)  # phaseresult.value
                         line.append(split_distance)  # phaseresult.goal
                         line.append('{}'.format(result.heat.start_time or result.phase.date_time))  # phaseresult.date
-                        #FIXME: points
+                        #FIXME: pendente engadir os puntos waq
                         line.append('0')  # phaseresult.custom_fields.result_point
                         line.append(str(result.lane))  # phaseresult.custom_fields.result_lane
                         line.append(str(result.heat.pos))  # phaseresult.custom_fields.result_heat
@@ -703,7 +717,7 @@ sum(points) desc;          '''
                         line.append(self.params['champ_venue'])  # phaseresult.custom_fields.pool_name
                         line.append(str(phase.pool_lane_min))  # phaseresult.custom_fields.pool_lanemin
                         line.append(str(phase.pool_lane_max))  # phaseresult.custom_fields.pool_lanemax
-                        #FIXME: coller o sexo da persoa ou remuda
+                        #FIinit_reportXME: coller o sexo da persoa ou remuda
                         line.append(split_gender)  # phaseresult.gender
                         line.append(str(result.event.pos))  # phaseresult.custom_fields.event_number
                         line.append(result.phase.progression)  # phaseresult.custom_fields.event_round
@@ -765,6 +779,29 @@ sum(points) desc;          '''
                                encoding='utf-8-sig',
                                end_line="\n")
         print('Fin')
+
+    def gen_results_lenex(self):
+        print("Generating results (lenex format)")
+        from specific_classes.extra.lenex import Lenex
+        lenex = Lenex()
+        content = lenex.gen_results(champ=self)
+        if content:
+            content = lenex.header + content
+            content = content + lenex.footer
+            file_name = '{}.lef'.format(
+                self.file_name)
+            file_path = os.path.join(
+                self.config.work_folder_path,
+                file_name)
+            files.set_file_content(
+                content=content,
+                file_path=file_path,
+                compress=False,
+                binary=False,
+                encoding='utf-8-sig',
+                end_line="\n")
+        else:
+            print("No data to export")
 
     def report_inscriptions_by_club(self, entity=None):
         if entity:
