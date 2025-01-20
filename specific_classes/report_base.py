@@ -43,11 +43,29 @@ class ReportBase(object):
         images_path = '%s%s%s%s' % (self.app_path_folder, os.sep, 
                                     'images', os.sep)
         self.app_version = app_version
+        self.author = os.environ.get('USER', os.environ.get('USERNAME'))
+        self.creator = 'Orcana {}'.format(self.app_version)
         self.title = title
         self.subtitle = subtitle
         self.logo_left = Image.open('%s%s' % (images_path, 'logo_left.png'))
         self.logo_right = Image.open('%s%s' % (images_path, 'logo_right.png'))
         self.logo_foot = Image.open('%s%s' % (images_path, 'logo_foot.png'))
+        # Resize images
+        # width
+        img = self.logo_foot
+        max_width = 1072
+        if img.size[0] > max_width:
+            height_percent = (max_width / float(img.size[0]))
+            height_size = int((float(img.size[1]) * float(height_percent)))
+            img = img.resize((max_width, height_size), Image.Resampling.LANCZOS)
+        # height
+        max_height = 120
+        if img.size[1] > max_height:
+            width_percent = (max_height / float(img.size[1]))
+            width_size = int((float(img.size[0]) * float(width_percent)))
+            img = img.resize((width_size, max_height), Image.Resampling.LANCZOS)
+        self.logo_foot = img
+
 
         self.estiloencabezado = ParagraphStyle('',
                                       fontName='Open Sans Bold',
@@ -283,9 +301,10 @@ class ReportBase(object):
         
     def my_first_page(self, canvas, doc):
         
-        canvas.setAuthor('FEGAN')
+        canvas.setAuthor(self.author)
+        canvas.setCreator(self.creator)
         canvas.setSubject('')
-        canvas.setTitle('')
+        canvas.setTitle(self.title)
         
         canvas.saveState()
         start_y_foot = 3.5*cm
