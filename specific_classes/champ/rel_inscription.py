@@ -3,6 +3,7 @@
 
 from specific_classes.champ.result_members import RelayMembers
 from specific_functions import times
+from specific_functions import marks
 from specific_functions import conversion
 from specific_functions import normalize
 
@@ -164,6 +165,10 @@ class RelInscription(object):
             to_pool_length=champ_pool_length,
             to_chrono_type=champ_chrono_type)
         return equated_hundredth
+
+    @property
+    def mark_time_st(self):  # lenex swim time 
+        return marks.hun2mark(value=self.mark_hundredth, force='hours')
 
     def _get_mark_time(self):
         mark_time = times.int2time(value=self.mark_hundredth, precision='hun')
