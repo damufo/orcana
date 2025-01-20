@@ -151,7 +151,7 @@ def validate(value):
 # for value in values:
 #     validate(value)
 
-def hun2mark(value, zero_fill=False, force=''):
+def hun2mark(value, zero_fill=False, force='hours'):
     """
     Convert a hundredths (integer) to mark (text)
     force [hours|minutes]
@@ -164,11 +164,11 @@ def hun2mark(value, zero_fill=False, force=''):
         seconds = int(value / adjust) % 60
         minutes = int((value / (60 * adjust)) % 60)
         hours = int((value / (3600 * adjust)))
-        result = 0
+        result = ""
 #            hours
         if hours:
             result = str(hours)
-        elif force == hours:
+        elif force == 'hours':
             result = "00"
 
 #            minutes
