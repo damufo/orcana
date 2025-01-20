@@ -147,13 +147,19 @@ class Inscription(object):
                 # print('{} - {}'.format(category.from_age, category.to_age))
                 if person.age > category.from_age and person.age < category.to_age and person.gender_id == category.gender_id:
                     category = category
+                    break
         elif self.relay:
             category = self.relay.category
         return category
 
+
     # @property
     # def year(self):
     #     return self.birth_date[:4]
+
+    @property
+    def mark_time_st(self):  # lenex swim time 
+        return marks.hun2mark(value=self.mark_hundredth, force='hours')
 
     def _get_mark_time(self):
         mark_time = marks.hun2mark(value=self.mark_hundredth)
