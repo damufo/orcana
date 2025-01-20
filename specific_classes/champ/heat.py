@@ -66,6 +66,10 @@ class Heat(object):
             to_chrono_type=champ_chrono_type)
         return equated_hundredth
 
+    @property
+    def mark_time_st(self):  # lenex swim time 
+        return marks.hun2mark(value=self.mark_hundredth, force='hours')
+
     def _get_mark_time(self):
         mark_time = marks.hun2mark(value=self.mark_hundredth)
         return mark_time
