@@ -157,7 +157,12 @@ class View(Main):
         import os
         msg = self.msg
         config = champ.config
-        fol_reports = config.prefs.get_value('general.fol_reports')
+        if champ.has_champ:
+            fol_reports = os.path.dirname(config.prefs['last_path_dbs'])
+            if not os.path.isdir(fol_reports):
+                fol_reports = config.prefs.get_value('general.fol_reports')
+        else:
+            fol_reports = config.prefs.get_value('general.fol_reports')
 
         if not fol_reports or not os.path.exists(fol_reports):
             fol_reports = str(config.app_path_folder)

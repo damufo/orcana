@@ -29,7 +29,7 @@ class Presenter(object):
                     # self.view.msg.warning(message=message)
         print(config.dbs.dbs_path)
         champ_name = None
-        if 'champ_name' in self.model.champ.params:
+        if self.model.champ.params and 'champ_name' in self.model.champ.params:
             champ_name = self.model.champ.params['champ_name']
             self.model.champ.has_champ = True
         self.main_frame.SetTitle(champ_name or 'Orcana')
@@ -63,10 +63,29 @@ class Presenter(object):
         # self.main_frame.SetTitle(self.model.champ.config.prefs['last_path_dbs'] or 'Orcana')
 
     def report_results(self):
-        self.model.champ.report_results()
+        gen_report = True
+        if not self.model.champ.all_is_official:
+            message = _("Any phase is not official. Do you want continue?")
+            if not self.view.msg.question(message=message):
+                gen_report = False
+        if gen_report:
+            self.model.champ.report_errors = ''
+            self.model.champ.report_results()
+
+            if self.model.champ.report_errors:
+                self.view.msg.warning(
+                    message=self.model.champ.report_errors)
+
+            self.model.champ.export_results()
+            message = _("The operation was successful!")
+            self.view.msg.information(message=message)
 
     def export_results(self):
+        if not self.model.champ.all_is_official:
+            message=_("Any phase is not official.")
+            self.view.msg.warning(message=message)
         self.model.champ.export_results()
+
 
     def load_properties(self):
         from modules.properties import p_properties

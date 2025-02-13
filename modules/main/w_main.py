@@ -114,6 +114,7 @@ class Main ( wx.Panel ):
 		bSizer7.Add( self.btn_report_results, 0, wx.ALL, 5 )
 
 		self.btn_export_results = wx.Button( self, wx.ID_ANY, _(u"E&x. results"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.btn_export_results.Hide()
 		self.btn_export_results.SetToolTip( _(u"Export resulta to CSV") )
 
 		bSizer7.Add( self.btn_export_results, 0, wx.ALL, 5 )
