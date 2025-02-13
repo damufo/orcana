@@ -34,6 +34,7 @@ from specific_classes.prefs import Prefs
 from specific_classes.config import Config
 from specific_classes.champ.champ import Champ
 from modules.main.p_main import Presenter
+from specific_classes.champ.params import Params
 
 
 try:
@@ -46,7 +47,7 @@ except:
 
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
-APP_VERSION = "0.0.15beta"
+APP_VERSION = "0.0.16beta"
 DBS_VERSION = 5
 APP_VERSION_DATE = "2024-05-29"
 
@@ -102,6 +103,7 @@ class Application(wx.App):
         SplPlus.prefs = config.prefs
 
         champ = Champ(config=config)
+        champ.params = Params(config=config)
         Presenter(champ=champ)
         return True
 
