@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 17:59+0100\n"
-"PO-Revision-Date: 2025-02-12 17:59+0100\n"
+"POT-Creation-Date: 2025-02-13 09:14+0100\n"
+"PO-Revision-Date: 2025-02-13 09:14+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: gl_ES\n"
@@ -2134,6 +2134,22 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:361
 msgid "NC"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:420
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:489
+msgid ""
+"{} has imposible partials.\n"
+"Possition: {}\n"
+"\n"
+msgstr ""
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:422
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:491
+msgid ""
+"{} did a split of more than 2:00.00.\n"
+"Possition: {}\n"
+"\n"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/heats.py:128

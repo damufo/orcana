@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 17:59+0100\n"
-"PO-Revision-Date: 2025-02-12 18:00+0100\n"
+"POT-Creation-Date: 2025-02-13 09:14+0100\n"
+"PO-Revision-Date: 2025-02-13 09:17+0100\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
@@ -2170,6 +2170,28 @@ msgstr "Código da proba"
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:361
 msgid "NC"
 msgstr "NC"
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:420
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:489
+msgid ""
+"{} has imposible partials.\n"
+"Possition: {}\n"
+"\n"
+msgstr ""
+"{} posiblemente ten un parcial incorrecto.\n"
+"Posición: {}\n"
+"\n"
+
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:422
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:491
+msgid ""
+"{} did a split of more than 2:00.00.\n"
+"Possition: {}\n"
+"\n"
+msgstr ""
+"{} ten un parcial de máis de 2:00.00.\n"
+"Posición: {}\n"
+"\n"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/heats.py:128
 msgid "N. heat"
