@@ -169,6 +169,7 @@ VALUES(?, ?, ?, ?) '''
             print('fin phase_category_medals')
 
     def gen_results_report(self, d):
+        errors = ''
         # print('{} {}'.format(self.category.name, self.action))
         phase_category_results = self.phase_category_results
         phase_category_results.load_items_from_dbs()
@@ -396,7 +397,7 @@ VALUES(?, ?, ?, ?) '''
                         table_splits = []
                         line_splits = []
                         result_split_pos = 0
-                        last_split_hundredth = 0
+                        last_mark_hundredth = 0
 
                         num_members = i.relay.relay_members.num_members
                         splits_by_member = 0
@@ -405,15 +406,25 @@ VALUES(?, ?, ?, ?) '''
 
                         current_member = 0
                         has_issue = False
+                        last_split_blank = 0
                         for num_split, j in enumerate(i.result_splits, start=1):                
                             if not i.issue_split or num_split < i.issue_split:
                                 line_splits.append('{} m:'.format(j.distance))
                                 line_splits.append(j.mark_time)
+
                                 if j.mark_hundredth:
-                                    split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
-                                    last_split_hundredth = j.mark_hundredth
+                                    split_time = marks.hun2mark(j.mark_hundredth - last_mark_hundredth)
+                                    split_hundredth = j.mark_hundredth - last_mark_hundredth
+                                    last_mark_hundredth = j.mark_hundredth                                
+                                    if split_hundredth > 0 and split_hundredth < 22:
+                                        errors += "{} has imposible partials.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                    elif split_hundredth > 12000 * (last_split_blank + 1):
+                                        errors += "{} has partial de máis de 2:00.00.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                    last_split_blank = 0
                                 else:
                                     split_time = ''
+                                    last_split_blank += 1 
+
                                 line_splits.append(split_time)
                                 result_split_pos +=1
                                 if result_split_pos >= 2:
@@ -464,16 +475,27 @@ VALUES(?, ?, ?, ?) '''
                     table_splits = []
                     line_splits = []
                     result_split_pos = 0
-                    last_split_hundredth = 0
+                    last_mark_hundredth = 0
+                    last_split_blank = 0
                     for num_split, j in enumerate(i.result_splits):
                         if not i.issue_split or (num_split < i.issue_split and i.ind_rel == 'R'):
                             line_splits.append('{} m:'.format(j.distance))
                             line_splits.append(j.mark_time)
                             if j.mark_hundredth:
-                                split_time = marks.hun2mark(j.mark_hundredth - last_split_hundredth)
-                                last_split_hundredth = j.mark_hundredth
+                                split_time = marks.hun2mark(j.mark_hundredth - last_mark_hundredth)
+                                split_hundredth = j.mark_hundredth - last_mark_hundredth
+                                last_mark_hundredth = j.mark_hundredth                                
+                                if split_hundredth > 0 and split_hundredth < 22:
+                                    errors += "{} has imposible partials.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                elif split_hundredth > 12000 * (last_split_blank + 1):
+                                    errors += "{} has partial de máis de 2:00.00.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                last_split_blank = 0
                             else:
                                 split_time = ''
+                                last_split_blank += 1 
+
+
+
                             line_splits.append(split_time)
                             result_split_pos +=1
                             if result_split_pos >= 4:
@@ -488,3 +510,5 @@ VALUES(?, ?, ?, ?) '''
 
                 position += 1
             print('fin phase_category_results')
+        if errors:
+            self.champ.report_errors += errors
