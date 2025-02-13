@@ -135,6 +135,32 @@ class Result(object):
         return category_code
 
     @property
+    def points(self):  # points for first category match, de momento non usado
+        points = 0
+        phase_category = ''
+        if self.inscription.person:
+            person = self.person
+            for i in self.inscription.phase.phase_categories:
+
+                if (self.inscription.person.age >  i.category.from_age and 
+                        self.inscription.person.age <  i.category.to_age and 
+                        self.inscription.person.gender_id ==  i.category.gender_id):
+                    phase_category = i
+                    break
+        elif self.inscirption.relay:
+            for i in self.inscription.phase.phase_categories:
+                if self.inscription.relay.category.category_id == i.category.category_id:
+                    phase_category = i
+                    break
+
+        if phase_category:
+            for result in phase_category.phase_category_results:
+                if result.result_id == self.result_id:
+                    points = result.points
+                    break
+        return points
+
+    @property
     def mark_hundredth(self):           
         return self.result_splits[-1].mark_hundredth
 
@@ -144,7 +170,10 @@ class Result(object):
 
     @property
     def issue_pos(self):
-        return self.config.issues.get_pos(self.issue_id)
+        pos = 0
+        if self.issue_id:
+            pos = self.config.issues.get_pos(self.issue_id)
+        return pos
 
     def is_inscript_xa_existe_en_inscrions_pode_borrarse(self, person_id):
         already_inscript = False
@@ -184,6 +213,10 @@ class Result(object):
     #         to_pool_length=champ_pool_length,
     #         to_chrono_type=champ_chrono_type)
     #     return equated_hundredth
+    @property
+    def mark_time_st(self):  # lenex swim time 
+        return marks.hun2mark(value=self.arrival_hundredth, force='hours')
+
     @property
     def mark_time(self): 
         return marks.hun2mark(value=self.arrival_hundredth)
