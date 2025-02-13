@@ -90,6 +90,8 @@ class Event(object):
             style = _("BACKSTSTROKE")
         elif self.event_id.endswith("S"):
             style = _("STYLES")
+        else:
+            print(self.event_id[-1])
         event_desc = "{}.- {}m {} {} {}".format(self.order,
                                                 self.event_id[:-1],
                                                 style,
@@ -440,6 +442,162 @@ left join inscriptions i on i.inscription_id=r.inscription_id);
                       _("Sinature secretary desk")],
                      ["", "", ""],
                      [data_i, "", "", data_k, ""]]
+            style = [
+                    ('FONTSIZE', (0, 0), (-1, -1), 9),
+                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                    ('ALIGN', (0, 0), (-1, 0), 'LEFT'),
+                    ('ALIGN', (1, 0), (1, 0), 'RIGHT'),
+                    ('ALIGN', (4, 0), (4, 0), 'RIGHT'),
+                    ('SPAN', (0, 2), (1, 2)),
+                    ('SPAN', (3, 2), (-1, 2)),
+                    ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ]
+            col_widths = ['24%', '24%', '4%', '24%', '24%']
+            row_heghts = [6*mm, 8*mm, 5*mm]
+            d.insert_table(table=table, colWidths=col_widths,
+                           rowHeights=row_heghts,
+                           style=style, pagebreak=False)
+
+            if divmod(x, 4)[1] == 0:
+                table = [[" "]]
+                style = []
+                col_widths = ['100%']
+                row_heghts = [15*mm]
+                d.insert_table(table=table, colWidths=col_widths,
+                               rowHeights=row_heghts,
+                               style=style, pagebreak=False)
+
+        d.build_file()
+
+    def report_modelo(self, report_path):
+        '''
+        Generate a PDF file with licenses to export.
+        '''
+        
+
+
+        d = ReportBaseRefereeTokens(app_path_folder=self.config.app_path_folder,
+                                    file_path=report_path,
+                                    orientation='portrait',
+                                    title=_("Referee's tokens"))
+
+        tot = 4
+        for x in range(0, tot, 2):
+            if x > 0 and divmod(x, 4)[1] == 0:
+                d.insert_page_break()
+
+            table = [[
+                "Competición:_________________________",
+                "", 
+                "Competición:_________________________"]]
+            style = [
+                    ('FONTSIZE', (0, 0), (-1, -1), 10),
+                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                    ('VALIGN', (0, 0), (-1, -1), 'TOP')
+                ]
+            col_widths = ['48%', '4%', '48%']
+            row_heghts = [7*mm]
+            d.insert_table(table=table, colWidths=col_widths,
+                           rowHeights=row_heghts,
+                           style=style, pagebreak=False)
+
+            table =  [["N. Proba: _____ Proba: ________________",
+                       "",
+                       "",
+                       "N. Proba: _____ Proba: ________________",
+                       ""],
+                     ["Serie: ______",
+                      "Estaxe: ______",
+                      "",
+                      "Serie: ______",
+                      "Estaxe: ______",]]
+            style = [
+                    ('FONTSIZE', (0, 0), (-1, -1), 10),
+                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                    ('VALIGN', (0, 0), (-1, -1), 'TOP')]
+            col_widths = ['15%', '33%', '4%', '15%', '33%']
+            row_heghts = [5*mm, 7*mm]
+            d.insert_table(table=table, colWidths=col_widths,
+                           rowHeights=row_heghts,
+                           style=style, pagebreak=False)
+
+            table = [["Lic.: ________ Nome:________________________ (Ano:____)",
+                      "",
+                      "Lic.: ________ Nome:________________________ (Ano:____)"],
+                     ["Club ID: ________ Nome:______________________________",
+                      "",
+                      "Club ID: ________ Nome:______________________________"]]
+            style = [('FONTSIZE', (0, 0), (-1, -1), 9),
+                     ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                     ('VALIGN', (0, 0), (-1, -1), 'TOP')]
+            col_widths = ['48%', '4%', '48%']
+            row_heghts = [5*mm, 6*mm]
+            d.insert_table(table=table, colWidths=col_widths,
+                           rowHeights=row_heghts,
+                           style=style, pagebreak=False)
+            table = [
+                    [_("SPLITS LOG"), "", "", "", _("SPLITS LOG"), "", ""],
+                    ["50:", "550:", "1050:", "", "50:", "550:", "1050:"],
+                    ["100:", "600:", "1100:", "", "100:", "600:", "1100:"],
+                    ["150:", "650:", "1150:", "", "150:", "650:", "1150:"],
+                    ["200:", "700:", "1200:", "", "200:", "700:", "1200:"],
+                    ["250:", "750:", "1250:", "", "250:", "750:", "1250:"],
+                    ["300:", "800:", "1300:", "", "300:", "800:", "1300:"],
+                    ["350:", "850:", "1350:", "", "350:", "850:", "1350:"],
+                    ["400:", "900:", "1400:", "", "400:", "900:", "1400:"],
+                    ["450:", "950:", "1450:", "", "450:", "950:", "1450:"],
+                    ["500:", "1000:", "1500:", "", "500:", "1000:", "1500:"],
+                    [_("RECORDING END TIMES"), "",    "", "",
+                     _("RECORDING END TIMES"), "", ""],
+                    [_("CHRONO 1"), _("CHRONO 2"), _("CHRONO 3"), "",
+                     _("CHRONO 1"), _("CHRONO 2"), _("CHRONO 3")],
+                    ["", "", "", "", "", "", ""]]
+            style = [
+                    ('FONTSIZE', (0, 0), (-1, -1), 10),
+                    ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+                    ('SPAN', (0, 0), (2, 0)),
+                    ('SPAN', (4, 0), (-1, 0)),
+                    ('GRID', (0, 1), (2, 10), 0.5, d.colors.lightgrey),
+                    ('GRID', (4, 1), (-1, 10), 0.5, d.colors.lightgrey),
+                    ('FONTSIZE', (0, 1), (-1, 10), 9),
+                    ('ALIGN', (0, 11), (-1, -1), 'CENTER'),
+                    ('SPAN', (0, 11), (2, 11)),
+                    ('SPAN', (4, 11), (-1, 11)),
+                    ('GRID', (0, 12), (2, 13), 0.5, d.colors.lightgrey),
+                    ('GRID', (4, 12), (-1, 13), 0.5, d.colors.lightgrey),
+                    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ]
+            col_widths = ['16%', '16%', '16%', '4%', '16%', '16%', '16%']
+            row_heghts = [6*mm, 5*mm, 5*mm, 5*mm, 5*mm, 5*mm, 5*mm, 5*mm,
+                          5*mm, 5*mm, 5*mm, 6*mm, 5*mm, 5*mm]
+            d.insert_table(table=table, colWidths=col_widths,
+                           rowHeights=row_heghts,
+                           style=style, pagebreak=False)
+
+            table = [[_("END TIME DEFINITIVE"), _("Arrival"),
+                      _("Clasific."), _("Points"), "",
+                      _("END TIME DEFINITIVE"), _("Arrival"),
+                      _("Clasific."), _("Points")],
+                     ["", "", "", "", "", "", ""]]
+            style = [
+                    ('FONTSIZE', (0, 0), (-1, -1), 10),
+                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                    ('GRID', (0, 1), (3, 1), 0.5, d.colors.lightgrey),
+                    ('GRID', (5, 1), (-1, 1), 0.5, d.colors.lightgrey),
+                ]
+            col_widths = ['24%', '8%', '8%', '8%', '4%',
+                          '24%', '8%', '8%', '8%']
+            d.insert_table(table=table, colWidths=col_widths,
+                           style=style, pagebreak=False)
+
+            data_i = _("_________________ a _____ de _____________ de ______")
+
+            table = [[_("Signature timekeeper"),
+                      _("Sinature secretary desk"), "",
+                      _("Signature timekeeper"),
+                      _("Sinature secretary desk")],
+                     ["", "", ""],
+                     [data_i, "", "", data_i, ""]]
             style = [
                     ('FONTSIZE', (0, 0), (-1, -1), 9),
                     ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
