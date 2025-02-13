@@ -417,9 +417,9 @@ VALUES(?, ?, ?, ?) '''
                                     split_hundredth = j.mark_hundredth - last_mark_hundredth
                                     last_mark_hundredth = j.mark_hundredth                                
                                     if split_hundredth > 0 and split_hundredth < 22:
-                                        errors += "{} has imposible partials.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                        errors += _("{} has imposible partials.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
                                     elif split_hundredth > 12000 * (last_split_blank + 1):
-                                        errors += "{} has partial de máis de 2:00.00.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                        errors += _("{} did a split of more than 2:00.00.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
                                     last_split_blank = 0
                                 else:
                                     split_time = ''
@@ -486,9 +486,9 @@ VALUES(?, ?, ?, ?) '''
                                 split_hundredth = j.mark_hundredth - last_mark_hundredth
                                 last_mark_hundredth = j.mark_hundredth                                
                                 if split_hundredth > 0 and split_hundredth < 22:
-                                    errors += "{} has imposible partials.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                    errors += _("{} has imposible partials.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
                                 elif split_hundredth > 12000 * (last_split_blank + 1):
-                                    errors += "{} has partial de máis de 2:00.00.\nPossition: {}\n\n".format(self.phase.long_name, str(position))
+                                    errors += _("{} did a split of more than 2:00.00.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
                                 last_split_blank = 0
                             else:
                                 split_time = ''
