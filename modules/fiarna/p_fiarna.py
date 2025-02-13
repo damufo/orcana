@@ -72,6 +72,10 @@ class Presenter(object):
                 from_event=from_event,
                 to_event=to_event,
                 phase=phase)
+            file_name = _("referee_tokens_model.pdf")
+            file_path = os.path.join(config.work_folder_path, file_name)
+            self.model.referee_tokens.report_modelo(
+                report_path=str(file_path))
             # self.view.msg.information(_("The operation was successful!"))
             self.view.close()
 
