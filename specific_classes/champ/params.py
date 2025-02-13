@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*- 
 
 
-from specific_classes.champ.param import Param
-
-
 class Params(dict):
 
-    def __init__(self, champ):
-        self.champ = champ
-        self.config = champ.config
+    def __init__(self, config):
+        self.config = config
         self.changed = []
         
     def load_items_from_dbs(self):
