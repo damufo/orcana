@@ -151,7 +151,7 @@ def validate(value):
 # for value in values:
 #     validate(value)
 
-def hun2mark(value, zero_fill=False, force='hours'):
+def hun2mark(value, zero_fill=False, force=''):
     """
     Convert a hundredths (integer) to mark (text)
     force [hours|minutes]
