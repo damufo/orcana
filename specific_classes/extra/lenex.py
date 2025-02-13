@@ -167,7 +167,7 @@ class Lenex(object):
             content += """              </HEATS>\n"""
 
 
-        content += """            </EVENT>\n"""
+            content += """            </EVENT>\n"""
         content += """          </EVENTS>\n"""
         content += """        </SESSION>\n"""
         content += """      </SESSIONS>\n"""
@@ -261,75 +261,67 @@ class Lenex(object):
                                     split.mark_time_st,
                                 )
                             content += """                  </SPLITS>\n"""
-                        content += """                </RESULT>\n"""
+                            content += """                </RESULT>\n"""
                 content += """              </RESULTS>\n"""
+                content += """            </ATHLETE>\n"""
             content += """          </ATHLETES>\n"""
+            
             content += """          <RELAYS>\n"""
+            # open_relays = False
             for relay in champ.relays:
-              if relay.entity == entity:
-                content += (
-"""            <RELAY agemax="{}" agemin="{}" agetotalmax="{}" agetotalmin="{}" """
-"""gender="{}" number="{}">\n              <RESULTS>\n""").format(
-                    relay.category.to_age,
-                    relay.category.from_age,
-                    "-1",  #FIXME: for master competition
-                    "-1",  #FIXME: for master competition
-                    relay.gender_id,
-                    relay.relay_id,  #FIXME: relay number
-                )
-
-                """
-                continuar aquí:
-                <RESULTS> (de relay)
-                buscar o ficheiro lenex de resultados da copa de españa div2 
-                que está dentro de doc en ordcana e ir á liña 1983.
-                basicamente sería copiar do mesmo que as persoas.
-                """
-                if relay.inscription and relay.inscription.result:
-                    result = relay.inscription.result
-                    # eventid is phase_id
-                    status = ""
-                    if result.issue_id:
-                        # EXH: exhibition swim.
-                        # DSQ: athlete/relay disqualified.
-                        # DNS: athlete/relay did not start (no reason given or to late
-                        # withdrawl).
-                        # DNF: athlete/relay did not finish.
-                        # SICK: athlete is sick. Está enfermo
-                        # WDR: athlete/relay was withdrawn (on time). Retirouse
-                        if result.issue_id not in ('DSQ', 'DNS', 'DNF', 'SICK', 'WDR'):
-                            print(result.issue_id)
-                            if result.issue_id == 'NPR':
-                                status = 'DNS'
-                            elif result.issue_id == 'BAI':
-                                status = 'WDR'
-                            elif result.issue_id == 'RET':
-                                status = 'DNF'
-                            else:
-                                status = 'DSQ'
-                        else:
-                            status =  """status="{}" """.format(result.issue_id)
-                    elif not inscription.classify:
-                        status =  """status="EXH" """                        
-
-                    if len(result.result_splits) == 1:
-                        content += (
-"""                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
-"""heatid="{}" lane="{}" entrytime="{}" entrycourse="{}" />\n""").format(
-                        result.phase.phase_id,
-                        status,
-                        result.category.punctuation or 0,
-                        result.mark_time_st,
-                        result.result_id,
-                        result.heat.heat_id,
-                        result.lane,
-                        inscription.mark_time_st,
-                        inscription.pool_length == 25 and "SCM" or "LCM",
+                if relay.entity == entity:
+                    # if not open_relays:
+                    #     content += """          <RELAYS>\n"""
+                        # open_relays = True
+                    content += (
+    """            <RELAY agemax="{}" agemin="{}" agetotalmax="{}" agetotalmin="{}" """
+    """gender="{}" number="{}">\n              <RESULTS>\n""").format(
+                        relay.category.to_age,
+                        relay.category.from_age,
+                        "-1",  #FIXME: for master competition
+                        "-1",  #FIXME: for master competition
+                        relay.gender_id,
+                        relay.relay_id,  #FIXME: relay number
                     )
-                    else:  # Has more 1 split
-                        content += (
-"""                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
-"""heatid="{}" lane="{}" entrytime="{}" entrycourse="{}">\n""").format(
+
+                    """
+                    continuar aquí:
+                    <RESULTS> (de relay)
+                    buscar o ficheiro lenex de resultados da copa de españa div2 
+                    que está dentro de doc en ordcana e ir á liña 1983.
+                    basicamente sería copiar do mesmo que as persoas.
+                    """
+                    if relay.inscription and relay.inscription.result:
+                        result = relay.inscription.result
+                        # eventid is phase_id
+                        status = ""
+                        if result.issue_id:
+                            # EXH: exhibition swim.
+                            # DSQ: athlete/relay disqualified.
+                            # DNS: athlete/relay did not start (no reason given or to late
+                            # withdrawl).
+                            # DNF: athlete/relay did not finish.
+                            # SICK: athlete is sick. Está enfermo
+                            # WDR: athlete/relay was withdrawn (on time). Retirouse
+                            if result.issue_id not in ('DSQ', 'DNS', 'DNF', 'SICK', 'WDR'):
+                                print(result.issue_id)
+                                if result.issue_id == 'NPR':
+                                    status = 'DNS'
+                                elif result.issue_id == 'BAI':
+                                    status = 'WDR'
+                                elif result.issue_id == 'RET':
+                                    status = 'DNF'
+                                else:
+                                    status = 'DSQ'
+                            else:
+                                status =  """status="{}" """.format(result.issue_id)
+                        elif not inscription.classify:
+                            status =  """status="EXH" """                        
+
+                        if len(result.result_splits) == 1:
+                            content += (
+    """                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
+    """heatid="{}" lane="{}" entrytime="{}" entrycourse="{}" />\n""").format(
                             result.phase.phase_id,
                             status,
                             result.category.punctuation or 0,
@@ -340,25 +332,44 @@ class Lenex(object):
                             inscription.mark_time_st,
                             inscription.pool_length == 25 and "SCM" or "LCM",
                         )
-                        content += """                  <SPLITS>\n"""
-                        for split in result.result_splits[:-1]:
+                        else:  # Has more 1 split
                             content += (
+"""                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
+"""heatid="{}" lane="{}" entrytime="{}" entrycourse="{}">\n""").format(
+                                result.phase.phase_id,
+                                status,
+                                result.category.punctuation or 0,
+                                result.mark_time_st,
+                                result.result_id,
+                                result.heat.heat_id,
+                                result.lane,
+                                inscription.mark_time_st,
+                                inscription.pool_length == 25 and "SCM" or "LCM",
+                            )
+                            content += """                  <SPLITS>\n"""
+                            for split in result.result_splits[:-1]:
+                                content += (
 """                    <SPLIT distance="{}" swimtime="{}" />\n""").format(
-                                split.distance,
-                                split.mark_time_st,
-                            )
-                        content += """                  </SPLITS>\n"""
-                        content += """                  <RELAYPOSITIONS>\n"""
+                                    split.distance,
+                                    split.mark_time_st,
+                                )
+                            content += """                  </SPLITS>\n"""
+                            content += """                  <RELAYPOSITIONS>\n"""
 
-                        for member in relay.relay_members:
-                            content += (
+                            for member in relay.relay_members:
+                                content += (
 """                    <RELAYPOSITION athleteid="{}" number="{}" />\n""").format(
-                                member.person_id,
-                                member.pos,
-                            )
-                        content += """                  </RELAYPOSITIONS>\n"""
-                    content += """                </RESULT>\n"""
-                content += """              </RESULTS>\n"""
+                                    member.person_id,
+                                    member.pos,
+                                )
+                            content += """                  </RELAYPOSITIONS>\n"""
+                            content += """                </RESULT>\n"""
+                    content += """              </RESULTS>\n"""
+                    content += """            </RELAY>\n""" 
+            # if open_relays:  # Close relays
+            content += """          </RELAYS>\n"""
+
+            content += """        </CLUB>\n"""
         content += """      </CLUBS>\n"""
         content += """    </MEET>\n"""
         content += """  </MEETS>\n"""
