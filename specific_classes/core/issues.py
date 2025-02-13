@@ -15,6 +15,9 @@ class Issues(list):
             if i.issue_id == issue_id:
                 pos = i.pos
                 break
+        if pos == 0:  # Issue not found
+            #FIXME:
+            pos = 999
         return pos
 
     def load_items_from_dbs(self):
@@ -38,7 +41,7 @@ class Issues(list):
             # ('WFN', 8, _('Wrong Finish')),  # DCI - Chegada irregular
             # ('DFS', 9, _('False Start')),  # DSA - Saída anticipada
             # ('DIS', 10, _('Ilegal start')),  # DPA - Posta anticiapda
-            # ('>15', 10, _('>15m immersion')),  # >15m inmersión
+            # ('>15', 10, _('>15m immersion')),  # >15m inmersión | Sobrepasar 15 m de inmersión
             )
         (ISSUE_ID, POS, NAME) = range(3) 
         for i in ISSUES:
