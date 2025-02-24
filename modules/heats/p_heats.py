@@ -286,10 +286,15 @@ class Presenter(object):
                 result.save()
                 self.view.load_arrival_order(heat.results)
             elif col == col_issue_id:  # Set issue id
-                result.issue_id = value
+                # get issue_id
+                issue_id = result.config.issues.get_issue_id(name=value)
+                result.issue_id = issue_id
                 if not result.issue_id:
                     result.issue_split = 0
+                    self.view.grd_results.SetCellValue(row, col_issue_id , "")
                     self.view.grd_results.SetCellValue(row, col_issue_split , "")
+                else:
+                    self.view.grd_results.SetCellValue(row, col_issue_id , issue_id)
                 if result.issue_id and not result.issue_split:
                     result.issue_split = 1
                     self.view.grd_results.SetCellValue(row, col_issue_split , str(1))
