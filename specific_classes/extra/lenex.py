@@ -6,6 +6,9 @@ Created on 23/12/2024
 @author: damufo
 '''
 
+import os
+import zipfile
+
 
 class Lenex(object):
     '''
@@ -84,9 +87,10 @@ class Lenex(object):
         content="""  <MEETS>
     <MEET city="{7}" name="{0}" course="{1}" startmethod="1" timing="{2}" touchpad="ONESIDE" masters="F" nation="ESP" maxentriesathlete="4" hytek.courseorder="S">
       <AGEDATE value="{4}" type="YEAR" />
-      <POOL lanemin="{5}" lanemax="{6}" />
+      <POOL name="{7}" lanemin="{5}" lanemax="{6}" />
       <FACILITY city="{7}" nation="ESP" />
       <POINTTABLE pointtableid="3017" name="AQUA Point Scoring" version="2024" />
+      <QUALIFY until="1800-01-01" conversion="ESP.CONVERSION" />
 """.format(
         champ.params["champ_name"],
         champ.params["champ_pool_length"]==25 and "SCM" or "LCM",
@@ -213,13 +217,13 @@ class Lenex(object):
                             if result.issue_id not in ('DSQ', 'DNS', 'DNF', 'SICK', 'WDR'):
                                 print(result.issue_id)
                                 if result.issue_id == 'NPR':
-                                    status = 'DNS'
+                                    status = 'status="DNS" '
                                 elif result.issue_id == 'BAI':
-                                    status = 'WDR'
+                                    status = 'status="WDR" '
                                 elif result.issue_id == 'RET':
-                                    status = 'DNF'
+                                    status = 'status="DNF" '
                                 else:
-                                    status = 'DSQ'
+                                    status = 'status="DSQ" '
                             else:
                                 status =  """status="{}" """.format(result.issue_id)
                         elif not inscription.classify:
@@ -232,7 +236,7 @@ class Lenex(object):
                             result.phase.phase_id,
                             status,
                             0,  #FIXME: pendente engadir os puntos waq
-                            result.mark_time_st,
+                            result.mark_time_st or "00:00:00.00",
                             result.result_id,
                             result.heat.heat_id,
                             result.lane,
@@ -245,8 +249,8 @@ class Lenex(object):
     """heatid="{}" lane="{}" entrytime="{}" entrycourse="{}">\n""").format(
                                 result.phase.phase_id,
                                 status,
-                                result.category.punctuation or 0,
-                                result.mark_time_st,
+                                0,  #FIXME: pendente engadir os puntos waq
+                                result.mark_time_st or "00:00:00.00",
                                 result.result_id,
                                 result.heat.heat_id,
                                 result.lane,
@@ -258,7 +262,7 @@ class Lenex(object):
                                 content += (
 """                    <SPLIT distance="{}" swimtime="{}" />\n""").format(
                                     split.distance,
-                                    split.mark_time_st,
+                                    split.mark_time_st or "00:00:00.00",
                                 )
                             content += """                  </SPLITS>\n"""
                             content += """                </RESULT>\n"""
@@ -266,13 +270,14 @@ class Lenex(object):
                 content += """            </ATHLETE>\n"""
             content += """          </ATHLETES>\n"""
             
-            content += """          <RELAYS>\n"""
-            # open_relays = False
+            
+            # content += """          <RELAYS>\n"""
+            open_relays = False
             for relay in champ.relays:
                 if relay.entity == entity:
-                    # if not open_relays:
-                    #     content += """          <RELAYS>\n"""
-                        # open_relays = True
+                    if not open_relays:
+                        content += """          <RELAYS>\n"""
+                        open_relays = True
                     content += (
     """            <RELAY agemax="{}" agemin="{}" agetotalmax="{}" agetotalmin="{}" """
     """gender="{}" number="{}">\n              <RESULTS>\n""").format(
@@ -306,13 +311,13 @@ class Lenex(object):
                             if result.issue_id not in ('DSQ', 'DNS', 'DNF', 'SICK', 'WDR'):
                                 print(result.issue_id)
                                 if result.issue_id == 'NPR':
-                                    status = 'DNS'
+                                    status = 'status="DNS" '
                                 elif result.issue_id == 'BAI':
-                                    status = 'WDR'
+                                    status = 'status="WDR" '
                                 elif result.issue_id == 'RET':
-                                    status = 'DNF'
+                                    status = 'status="DNF" '
                                 else:
-                                    status = 'DSQ'
+                                    status = 'status="DSQ" '
                             else:
                                 status =  """status="{}" """.format(result.issue_id)
                         elif not inscription.classify:
@@ -324,8 +329,8 @@ class Lenex(object):
     """heatid="{}" lane="{}" entrytime="{}" entrycourse="{}" />\n""").format(
                             result.phase.phase_id,
                             status,
-                            result.category.punctuation or 0,
-                            result.mark_time_st,
+                            0,  #FIXME: pendente engadir os puntos waq
+                            result.mark_time_st or "00:00:00.00",
                             result.result_id,
                             result.heat.heat_id,
                             result.lane,
@@ -338,8 +343,8 @@ class Lenex(object):
 """heatid="{}" lane="{}" entrytime="{}" entrycourse="{}">\n""").format(
                                 result.phase.phase_id,
                                 status,
-                                result.category.punctuation or 0,
-                                result.mark_time_st,
+                                0,  #FIXME: pendente engadir os puntos waq
+                                result.mark_time_st or "00:00:00.00",
                                 result.result_id,
                                 result.heat.heat_id,
                                 result.lane,
@@ -351,7 +356,7 @@ class Lenex(object):
                                 content += (
 """                    <SPLIT distance="{}" swimtime="{}" />\n""").format(
                                     split.distance,
-                                    split.mark_time_st,
+                                    split.mark_time_st or "00:00:00.00",
                                 )
                             content += """                  </SPLITS>\n"""
                             content += """                  <RELAYPOSITIONS>\n"""
@@ -366,9 +371,8 @@ class Lenex(object):
                             content += """                </RESULT>\n"""
                     content += """              </RESULTS>\n"""
                     content += """            </RELAY>\n""" 
-            # if open_relays:  # Close relays
-            content += """          </RELAYS>\n"""
-
+            if open_relays:  # Close relays
+                content += """          </RELAYS>\n"""
             content += """        </CLUB>\n"""
         content += """      </CLUBS>\n"""
         content += """    </MEET>\n"""
@@ -377,8 +381,20 @@ class Lenex(object):
 # liña 2456 viraxe irregular
         print(content)
         return content
-
-
+    
+    def save_file(self, content, file_path_lef, file_path_lxf):
+            content = self.header + content
+            content = content + self.footer
+            fil = open(file_path_lef, 'w', encoding='utf-8-sig')
+            fil.write(content)
+            fil.close()
+            if file_path_lxf:  # compress to zip .lxf
+                file_name = os.path.basename(file_path_lef)
+                zip = zipfile.ZipFile (file_path_lxf, "w")
+                zip.write (filename=file_path_lef, arcname=file_name)
+                zip.close()
+                os.remove(file_path_lef)
+                
             
 
         
