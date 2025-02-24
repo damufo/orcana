@@ -2,6 +2,7 @@
 
 
 import os
+from pathlib import Path
 import json
 from operator import attrgetter
 from reportlab.lib.units import cm
@@ -39,6 +40,21 @@ class Champ(object):
             self.params['champ_name'],
             self.params['champ_venue'])
         return utils.get_valid_filename(file_name.lower())
+
+    @property
+    def folder_dbs(self):
+        config = self.config
+        folder_dbs = ""
+        if self.has_champ:
+            folder_dbs = os.path.dirname(config.prefs['last_path_dbs'])
+            if not os.path.isdir(folder_dbs):
+                folder_dbs = config.prefs.get_value('general.fol_reports')
+        else:
+            folder_dbs = config.prefs.get_value('general.fol_reports')
+
+        if not folder_dbs or not os.path.exists(folder_dbs):
+            folder_dbs = str(Path.home())
+        return folder_dbs
 
     @property
     def inscriptions(self):
@@ -786,20 +802,18 @@ sum(points) desc;          '''
         lenex = Lenex()
         content = lenex.gen_results(champ=self)
         if content:
-            content = lenex.header + content
-            content = content + lenex.footer
-            file_name = '{}.lef'.format(
-                self.file_name)
-            file_path = os.path.join(
+            file_name_lef = '{}.lef'.format(self.file_name)
+            file_path_lef = os.path.join(
                 self.config.work_folder_path,
-                file_name)
-            files.set_file_content(
+                file_name_lef)
+            file_name_lxf = '{}.lxf'.format(self.file_name)
+            file_path_lxf = os.path.join(
+                    self.config.work_folder_path,
+                    file_name_lxf)
+            lenex.save_file(
                 content=content,
-                file_path=file_path,
-                compress=False,
-                binary=False,
-                encoding='utf-8-sig',
-                end_line="\n")
+                file_path_lef=file_path_lef,
+                file_path_lxf=file_path_lxf)
         else:
             print("No data to export")
 
@@ -1499,118 +1513,128 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
         print('fin')
 
     def import_insc_from_file(self, file_path):
+        msg = ""
         print(file_path)
-        lines = get_file_content(file_path=file_path,
+        lines = []
+        if file_path._str[-4:].lower() == ".csv":
+            lines = get_file_content(file_path=file_path,
                                             mode="csv",
                                             compressed=False,
                                             encoding='utf-8-sig')
+        elif file_path._str[-4:].lower() == ".csv":
+            lines = get_file_content(file_path=file_path,
+                                            mode="ods",
+                                            compressed=False,
+                                            encoding='utf-8-sig')
+        start_line = None
         if not lines:
-            print("O ficheiro está baleiro!!")
-            raise ValueError("O ficheiro está baleiro!!")
-            
-
-        start_line = 1
-        for pos, i in enumerate(lines):
-            if i[0]== 'RFEN ID':
-                start_line = pos + 1
-                break
-
-        (LICENSE, SURNAME, NAME, GENDER_ID, BIRTH_DATE, ENTITY_CODE,
-        ENTITY_NAME, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO, CATEGORY_CODE) = range(12)
-        for line in lines[start_line:]:
-            event = self.events[int(line[EVENT_POS]) - 1]
-            if event.code != line[EVENT_CODE].upper():
-                print("This event {}.- {} not exists.".format(line[EVENT_POS], line[EVENT_CODE]))
-            else:
-                phase =  None
-                for phase in self.phases:
-                    if phase.event == event and phase.progression in ('TIM', 'PRE'):
-                        phase = phase
-                        break
-                if not phase:
-                    print("This event {} not has phase.".format(event.code))
+            print(_("O ficheiro é incorrecto ou está baleiro!!"))
+            msg = _("O ficheiro é incorrecto ou está baleiro!!")
+        else: 
+            for pos, i in enumerate(lines):
+                if i[0]== 'RFENID':
+                    start_line = pos + 1
+                    break
+        if not start_line:
+            msg = _("O ficheiro é incorrecto ou está baleiro!!")    
+        if not msg:  # continua
+            (LICENSE, SURNAME, NAME, GENDER_ID, NATIOALITY, BIRTH_DATE, ENTITY_CODE,
+            ENTITY_NAME, ENTITY_ZIP_CODE, EVENT_POS, EVENT_CODE, MARK_TIME, POOLCHRONO, CATEGORY_CODE) = range(14)
+            for line in lines[start_line:]:
+                event = self.events[int(line[EVENT_POS]) - 1]
+                if event.code != line[EVENT_CODE].upper():
+                    print("This event {}.- {} not exists.".format(line[EVENT_POS], line[EVENT_CODE]))
                 else:
-                    entity = self.entities.get_entity_by_code(entity_code=line[ENTITY_CODE])
-                    if entity:
-                        print("This entity {} already exists.".format(entity.entity_code))
+                    phase =  None
+                    for phase in self.phases:
+                        if phase.event == event and phase.progression in ('TIM', 'PRE'):
+                            phase = phase
+                            break
+                    if not phase:
+                        print("This event {} not has phase.".format(event.code))
                     else:
-                        # add entity
-                        entity = self.entities.item_blank
-                        entity.entity_code = line[ENTITY_CODE]
-                        entity.short_name = line[ENTITY_NAME]
-                        entity.medium_name = line[ENTITY_NAME]
-                        entity.long_name = line[ENTITY_NAME]
-                        # FIXME: revisar que garde o código da entidade cando se importa de csv
-                        entity.save()
-                        if not entity in entity.entities:
-                            entity.entities.append(entity)
+                        entity = self.entities.get_entity_by_code(entity_code=line[ENTITY_CODE])
+                        if entity:
+                            print("This entity {} already exists.".format(entity.entity_code))
+                        else:
+                            # add entity
+                            entity = self.entities.item_blank
+                            entity.entity_code = line[ENTITY_CODE]
+                            entity.short_name = line[ENTITY_NAME]
+                            entity.medium_name = line[ENTITY_NAME]
+                            entity.long_name = line[ENTITY_NAME]
+                            # FIXME: revisar que garde o código da entidade cando se importa de csv
+                            entity.save()
+                            if not entity in entity.entities:
+                                entity.entities.append(entity)
 
-                    if event.ind_rel == 'R':  # Is a relay inscription
-                        # add relay
-                        print('add relay inscription')
-                        category = None
-                        for phase_category in phase.phase_categories:
-                            if phase_category.category.code == line[CATEGORY_CODE] and phase_category.category.gender_id == line[GENDER_ID]:
-                                category = phase_category.category
-                                break
-                        if not category:
-                            print("This category {} {} not exists.".format(line[CATEGORY_CODE], line[GENDER_ID]))
-                        else:
-                            new_inscription = phase.inscriptions.item_blank
-                            new_inscription.relay.entity = entity
-                            new_inscription.relay.category = category
-                            new_inscription.relay.name = line[SURNAME]
-                            new_inscription.relay.gender_id = category.gender_id
-                            new_inscription.relay.save()
-                            if new_inscription.relay not in new_inscription.relay.relays:
-                                new_inscription.relay.relays.append(new_inscription.relay)
-                            new_inscription.save()
-                            if new_inscription not in phase.inscriptions:
-                                new_inscription.inscriptions.append(new_inscription)
-                    else:  # Is a individual inscription
-                        license = line[LICENSE]
-                        person = self.persons.get_person_by_license(license=line[LICENSE])
-                        if person:
-                            print("This person {} already exists.".format(person.full_name))
-                        else:
-                            # add person
-                            person = self.persons.item_blank
-                            person.license = line[LICENSE]
-                            person.surname = line[SURNAME]
-                            person.name = line[NAME]
-                            person.gender_id = line[GENDER_ID]
-                            person.birth_date = line[BIRTH_DATE]
-                            person.entity = entity
-                            person.save()
-                            if not person in person.persons:
-                                person.persons.append(person)
-
-                        exists_inscription = False
-                        for j in phase.inscriptions:
-                            if j.person == person:
-                                exists_inscription = True
-                                break
-                        if exists_inscription:
-                            # add inscription
-                            print('Inscription already exists.')
-                        else:
-                            print('add person inscription')
-                            if len(line[POOLCHRONO]) == 3:
-                                pool_length = int(line[POOLCHRONO][:2])
-                                chrono_type = line[POOLCHRONO][2].upper()
+                        if event.ind_rel == 'R':  # Is a relay inscription
+                            # add relay
+                            print('add relay inscription')
+                            category = None
+                            for phase_category in phase.phase_categories:
+                                if phase_category.category.code == line[CATEGORY_CODE] and phase_category.category.gender_id == line[GENDER_ID]:
+                                    category = phase_category.category
+                                    break
+                            if not category:
+                                print("This category {} {} not exists.".format(line[CATEGORY_CODE], line[GENDER_ID]))
                             else:
-                                pool_length = 0
-                                chrono_type = ''
-                            new_inscription = phase.inscriptions.item_blank
-                            new_inscription.person = person
-                            new_inscription.mark_time = line[MARK_TIME]
-                            new_inscription.pool_length = pool_length
-                            new_inscription.chrono_type = chrono_type
-                            new_inscription.date = ''
-                            new_inscription.venue = ''
-                            new_inscription.save()
-                            if new_inscription not in phase.inscriptions:
-                                new_inscription.inscriptions.append(new_inscription)
+                                new_inscription = phase.inscriptions.item_blank
+                                new_inscription.relay.entity = entity
+                                new_inscription.relay.category = category
+                                new_inscription.relay.name = line[SURNAME]
+                                new_inscription.relay.gender_id = category.gender_id
+                                new_inscription.relay.save()
+                                if new_inscription.relay not in new_inscription.relay.relays:
+                                    new_inscription.relay.relays.append(new_inscription.relay)
+                                new_inscription.save()
+                                if new_inscription not in phase.inscriptions:
+                                    new_inscription.inscriptions.append(new_inscription)
+                        else:  # Is a individual inscription
+                            license = line[LICENSE]
+                            person = self.persons.get_person_by_license(license=line[LICENSE])
+                            if person:
+                                print("This person {} already exists.".format(person.full_name))
+                            else:
+                                # add person
+                                person = self.persons.item_blank
+                                person.license = line[LICENSE]
+                                person.surname = line[SURNAME]
+                                person.name = line[NAME]
+                                person.gender_id = line[GENDER_ID]
+                                person.birth_date = line[BIRTH_DATE]
+                                person.entity = entity
+                                #FIXME: Check all values filled and are right types
+                                person.save()
+                                if not person in person.persons:
+                                    person.persons.append(person)
 
-                    print(line)
-        return True
+                            exists_inscription = False
+                            for j in phase.inscriptions:
+                                if j.person == person:
+                                    exists_inscription = True
+                                    break
+                            if exists_inscription:
+                                # add inscription
+                                print('Inscription already exists.')
+                            else:
+                                print('add person inscription')
+                                if len(line[POOLCHRONO]) == 3:
+                                    pool_length = int(line[POOLCHRONO][:2])
+                                    chrono_type = line[POOLCHRONO][2].upper()
+                                else:
+                                    pool_length = 0
+                                    chrono_type = ''
+                                new_inscription = phase.inscriptions.item_blank
+                                new_inscription.person = person
+                                new_inscription.mark_time = line[MARK_TIME]
+                                new_inscription.pool_length = pool_length
+                                new_inscription.chrono_type = chrono_type
+                                new_inscription.date = ''
+                                new_inscription.venue = ''
+                                new_inscription.save()
+                                if new_inscription not in phase.inscriptions:
+                                    new_inscription.inscriptions.append(new_inscription)
+
+                        print(line)
+        return msg
