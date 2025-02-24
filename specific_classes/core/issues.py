@@ -19,6 +19,14 @@ class Issues(list):
             #FIXME:
             pos = 999
         return pos
+    
+    def get_issue_id(self, name):
+        issue_id = ""
+        for issue in self:
+            if issue.name == name:
+                issue_id = issue.issue_id
+                break
+        return issue_id
 
     def load_items_from_dbs(self):
         del self[:]  # borra os elementos que haxa
@@ -30,6 +38,11 @@ class Issues(list):
             ('WDR', 5, _('Athlete/Relay was withdrawn (on time)')),  # Baixa 
             ('SICK', 4, _('Athlete is sick.')),  # Baixa por enfermidade
 
+# DSQ: descualificación
+# DNS: non presentación
+# DNF: retiramento
+# WDR: baixa / retiramento en prazo
+# SICK: baixa por enfermidade (fora de prazo)
             # Another issues 
             # ('DSQ', 1, _('Disqualified')),  # DES - Descualificación
             # ('DNF', 2, _('Did Not Finish')),  # RET - Retiramento
@@ -58,5 +71,5 @@ class Issues(list):
         '''
         values = ['',]
         for i in self:
-            values.append(i.issue_id)
+            values.append(i.name)
         return values
