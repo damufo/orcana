@@ -39,7 +39,7 @@ from specific_classes.champ.params import Params
 
 try:
     # Get app current version
-    remote_url = 'https://github.com/damufo/orcana/blob/master/VERSION.txt'
+    remote_url = 'https://raw.githubusercontent.com/damufo/orcana/refs/heads/master/VERSION.txt'
     data = requests.get(remote_url)
     APP_CURRENT_VERSION = data.text
 except:
