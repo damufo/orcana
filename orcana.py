@@ -39,7 +39,7 @@ from specific_classes.champ.params import Params
 
 try:
     # Get app current version
-    remote_url = 'https://gitlab.com/damufo/orcana/-/raw/master/VERSION.txt?ref_type=heads'
+    remote_url = 'https://github.com/damufo/orcana/blob/master/VERSION.txt'
     data = requests.get(remote_url)
     APP_CURRENT_VERSION = data.text
 except:
@@ -47,9 +47,9 @@ except:
 
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
-APP_VERSION = "0.0.16beta"
+APP_VERSION = "0.0.17beta"
 DBS_VERSION = 5
-APP_VERSION_DATE = "2024-05-29"
+APP_VERSION_DATE = "2025-02-24"
 
 if getattr(sys, 'frozen', False): # Running as compiled
     running_dir = sys._MEIPASS + "/_internal/" # pylint: disable=no-member
