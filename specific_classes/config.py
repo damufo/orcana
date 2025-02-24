@@ -26,7 +26,7 @@ class Config(object):
         self.app_current_version = app_current_version
         self.app_version_date = app_version_date
         self.app_description = _("A pool swimming championship management application.")
-        self.app_copyright = "(C) 2023 Daniel Muñiz Fontoira"
+        self.app_copyright = "(C) 2025 Daniel Muñiz Fontoira"
         self.app_web_site = "https://github.com/damufo/{}".format(app_name)
         self.app_developer = "Daniel Muñiz Fontoira"
         self.app_license = _(
