@@ -66,8 +66,10 @@ class Presenter(object):
     def import_from_file(self):
         msg = self.view.msg
         champ = self.model.phase.champ
+        fol_dbs = champ.folder_dbs
         file_path = self.view.msg.open_file(
-            suffixes=[".csv"],
+            default_dir=fol_dbs,
+            suffixes=[".csv", ".ods"],
             )
         if not file_path:
             msg.error(_("No file was selected."))
@@ -75,8 +77,8 @@ class Presenter(object):
             if not file_path.exists() or file_path.is_dir():
                 msg.error(_("The file not exists."))
             else:
-                file_valid = champ.import_insc_from_file(file_path=file_path)
-                if not file_valid:
+                error = champ.import_insc_from_file(file_path=file_path)
+                if error:
                     msg.error(_("This file haven't a format correct."))
                 else:
                     self.view_refresh()

@@ -154,33 +154,33 @@ class View(Main):
             self.btn_results.Enable(False)
 
     def open_db(self, champ):
-        import os
+        # import os
         msg = self.msg
         config = champ.config
-        if champ.has_champ:
-            fol_reports = os.path.dirname(config.prefs['last_path_dbs'])
-            if not os.path.isdir(fol_reports):
-                fol_reports = config.prefs.get_value('general.fol_reports')
-        else:
-            fol_reports = config.prefs.get_value('general.fol_reports')
+        fol_reports = champ.folder_dbs
+        # if champ.has_champ:
+        #     fol_reports = os.path.dirname(config.prefs['last_path_dbs'])
+        #     if not os.path.isdir(fol_reports):
+        #         fol_reports = config.prefs.get_value('general.fol_reports')
+        # else:
+        #     fol_reports = config.prefs.get_value('general.fol_reports')
 
-        if not fol_reports or not os.path.exists(fol_reports):
-            fol_reports = str(config.app_path_folder)
-            # fol_reports = os.path.join(config.app_path_folder.parts)
+        # if not fol_reports or not os.path.exists(fol_reports):
+        #     fol_reports = str(config.app_path_folder)
+        #     # fol_reports = os.path.join(config.app_path_folder.parts)
 
         file_path = msg.open_file(default_dir=fol_reports, suffixes=[".sqlite"])
 
         if not file_path:
             msg.error(_("No file was selected."))
         else:
-            if os.path.isfile(file_path):
-                # try:
+            # if os.path.isfile(file_path):
+            try:
                 champ.load_dbs(file_path)
                 if not config.prefs['last_path_dbs']:
                     msg.error(_("The file is not a valid orcana dbs."))
-                # except:
-                    # msg.error(_("The file is not a valid orcana dbs."))
-                
+            except:
+                msg.error(_("The file is not a valid orcana dbs."))
 
     def show_main(self):
         self.pn_properties.Hide()
