@@ -92,6 +92,7 @@ class Event(object):
             style = _("STYLES")
         else:
             print(self.event_id[-1])
+            style = "??"
         event_desc = "{}.- {}m {} {} {}".format(self.order,
                                                 self.event_id[:-1],
                                                 style,
