@@ -295,14 +295,14 @@ class Interactor(object):
         self.presenter.set_zoom(action='fit')
         
     def on_homepage(self, event):
-        webbrowser.open('https://gitlab.com/damufo/encadra')
+        webbrowser.open('https://github.com/damufo/orcana')
         
     def on_report_bug(self, event):
-        webbrowser.open('https://gitlab.com/damufo/encadra/-/issues')
+        webbrowser.open('https://github.com/damufo/orcana/issues')
         
         
     def on_source(self, event):
-        webbrowser.open('https://gitlab.com/damufo/encadra/-/tree/master')
+        webbrowser.open('https://github.com/damufo/orcana')
         
     def on_about(self, event):
         self.presenter.about()
