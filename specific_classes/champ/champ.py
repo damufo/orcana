@@ -571,6 +571,11 @@ sum(points) desc;          '''
                             print(('issue', result.person.name, result.person.surname, result.issue_id))
                             continue
                         elif result.ind_rel == 'R':
+                            if result.issue_id in ('BAI', 'WDR', 'SICK'):
+                                print("non se exporta por ser baixa")
+                                print(('issue', result.relay.name, result.issue_id))
+                                continue
+
                             result.relay.relay_members.load_items_from_dbs()
                             num_members = result.relay.relay_members.num_members
                             num_splits = len(result.result_splits)
