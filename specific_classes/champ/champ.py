@@ -395,7 +395,7 @@ sum(points) desc;          '''
         print("fin")
 
     def export_results(self):
-        self.gen_lev()
+        # self.gen_lev()
         self.gen_results_lenex()
 
     def gen_lev(self):
