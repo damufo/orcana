@@ -209,9 +209,43 @@ VALUES(?, ?, ?, ?, ?, ?, ?) '''
             self.phase_id = self.config.dbs.last_row_id
 
     def delete(self):
-        self.phase_categories.delete_all_items()  
-        for heat in self.heats:
-            heat.delete()
+        # Neste caso o id da phase está redundado polo que podo facer isto directemente desde a phase
+        sql = ''' delete from phases_categories_results where phase_id={}'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        # Non fai falta limpar nada porque xa se limpa ó limpar phase_categories
+
+        # self.phase_categories.delete_all_items() 
+        sql = ''' delete from phases_categories where phase_id={}'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        self.phase_categories.clear()
+
+        # for heat in self.heats:
+        #     heat.delete()
+        sql = ''' delete from heats where phase_id={}'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        self.heats.clear()
+
+        # relays
+        sql = ''' delete from relays where relay_id in (select relay_id from inscriptions where phase_id={})'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        # results_splits
+        sql = ''' delete from results_splits where result_id in (select result_id from results where inscription_id in (select inscription_id from inscriptions where phase_id={}))'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        # results
+        sql = ''' delete from results where inscription_id in (select inscription_id from inscriptions where phase_id={})'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        # inscriptions
+        sql = ''' delete from inscriptions where phase_id={}'''
+        sql = sql.format(self.phase_id)
+        self.config.dbs.exec_sql(sql=sql)
+        self.inscriptions.clear()
+
         sql = ''' delete from phases where phase_id={}'''
         sql = sql.format(self.phase_id)
         self.config.dbs.exec_sql(sql=sql)

@@ -66,7 +66,7 @@ class Phases(list):
         # logo borra a phase
         phase = self[idx]
         phase.delete()
-        self.pop(idx)  # remove element from list
+        # self.pop(idx)  # remove element from list
 
     def load_items_from_dbs(self):
         dict_events = self.champ.events.dict
