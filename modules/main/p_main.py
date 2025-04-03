@@ -31,6 +31,8 @@ class Presenter(object):
         champ_name = None
         if self.model.champ.params and 'champ_name' in self.model.champ.params:
             champ_name = self.model.champ.params['champ_name']
+            if self.model.champ.params['champ_venue']:
+                champ_name = "{} | {}".format(champ_name, self.model.champ.params['champ_venue'])
             self.model.champ.has_champ = True
         self.main_frame.SetTitle(champ_name or 'Orcana')
         self.load_me()
@@ -43,6 +45,7 @@ class Presenter(object):
         interactor = Interactor()
         interactor.install(self, self.view)
         self.view.set_buttons(has_champ=self.model.champ.has_champ)
+        self.view.lbl_version.SetLabel("v.{}".format(self.model.champ.config.app_version))
 
     def check_current_version(self):
         config = self.model.champ.config
@@ -59,6 +62,8 @@ class Presenter(object):
         champ_name = ''
         if self.model.champ.has_champ:
             champ_name = self.model.champ.params['champ_name']
+            if self.model.champ.params['champ_venue']:
+                champ_name = "{} | {}".format(champ_name, self.model.champ.params['champ_venue'])
         self.main_frame.SetTitle(champ_name or 'Orcana')
         # self.main_frame.SetTitle(self.model.champ.config.prefs['last_path_dbs'] or 'Orcana')
 

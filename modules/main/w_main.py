@@ -28,8 +28,18 @@ class Main ( wx.Panel ):
 
 		bSizer11 = wx.BoxSizer( wx.HORIZONTAL )
 
+		bSizer91 = wx.BoxSizer( wx.VERTICAL )
+
 		self.btm_logo = wx.StaticBitmap( self, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 250,250 ), 0 )
-		bSizer11.Add( self.btm_logo, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, 20 )
+		bSizer91.Add( self.btm_logo, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL|wx.TOP|wx.RIGHT|wx.LEFT, 20 )
+
+		self.lbl_version = wx.StaticText( self, wx.ID_ANY, _(u"v.0.0.1"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.lbl_version.Wrap( -1 )
+
+		bSizer91.Add( self.lbl_version, 0, wx.ALIGN_CENTER_HORIZONTAL, 5 )
+
+
+		bSizer11.Add( bSizer91, 0, 0, 5 )
 
 		bSizer5 = wx.BoxSizer( wx.VERTICAL )
 
@@ -114,7 +124,6 @@ class Main ( wx.Panel ):
 		bSizer7.Add( self.btn_report_results, 0, wx.ALL, 5 )
 
 		self.btn_export_results = wx.Button( self, wx.ID_ANY, _(u"E&x. results"), wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.btn_export_results.Hide()
 		self.btn_export_results.SetToolTip( _(u"Export resulta to CSV") )
 
 		bSizer7.Add( self.btn_export_results, 0, wx.ALL, 5 )
