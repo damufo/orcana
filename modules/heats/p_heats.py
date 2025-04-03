@@ -127,7 +127,12 @@ class Presenter(object):
             phase = self.model.heats[pos].phase
             if phase.official:
                 # print('is official')
+                phase.champ.report_errors = ''
                 phase.gen_results_report()
+
+                if phase.champ.report_errors:
+                    self.view.msg.warning(
+                        message=phase.champ.report_errors)
             else:
                 self.view.msg.error(message=_("Heats must be in official status."))
 
