@@ -27,6 +27,10 @@ class Lenex(object):
             'B': 'BREAST',
             'L': 'FREE',
             'S': 'MEDLEY',
+            'G': 'BACK-BREAST',
+            'Z': 'FLY-BACK',
+            'H': 'BREAST-CRAWL',
+            'V': 'FLY-BACK-BREAST',
             }
 
         self.header = (
@@ -333,7 +337,7 @@ class Lenex(object):
                             open_relays = True
                         content += (
         """            <RELAY agemax="{}" agemin="{}" agetotalmax="{}" agetotalmin="{}" """
-        """gender="{}" number="{}">\n              <RESULTS>\n""").format(
+        """gender="{}" number="{}">\n""").format(
                             relay.category.to_age,
                             relay.category.from_age,
                             "-1",  #FIXME: for master competition
@@ -341,7 +345,7 @@ class Lenex(object):
                             relay.gender_id,
                             relay.relay_id,  #FIXME: relay number
                         )
-
+                        content += "              <RESULTS>\n"
                         if len(result.result_splits) == 1 and not relay.relay_members:
                             content += (
     """                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
@@ -390,8 +394,9 @@ class Lenex(object):
                                 )
                             content += """                  </RELAYPOSITIONS>\n"""
                             content += """                </RESULT>\n"""
-                    content += """              </RESULTS>\n"""
-                    content += """            </RELAY>\n""" 
+                        
+                        content += """              </RESULTS>\n"""
+                        content += """            </RELAY>\n""" 
             if open_relays:  # Close relays
                 content += """          </RELAYS>\n"""
             content += """        </CLUB>\n"""
