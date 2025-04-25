@@ -275,10 +275,17 @@ left join inscriptions i on i.inscription_id=r.inscription_id);
         values = []
         for i in tokens:
             if i[PERSON_ID]:
-                person = persons[i[PERSON_ID]]
-                relay = ''
+                if i[PERSON_ID] in persons:
+                    person = persons[i[PERSON_ID]]
+                    # relay = ''
+                else:
+                    continue
             elif i[RELAY_ID]:
-                person = relays[i[RELAY_ID]]
+                if i[RELAY_ID] in relays:
+                    person = relays[i[RELAY_ID]]
+                    
+                else:
+                    continue
             values.append(Token(
                     event=events[i[PHASE_ID]],
                     person=person,
