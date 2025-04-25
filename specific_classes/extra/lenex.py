@@ -200,7 +200,7 @@ class Lenex(object):
 """gender="{}" nation="{}" license="{}" athleteid="{}">\n""").format(
                                     person.name,
                                     person.surname,
-                                    person.birth_date,
+                                    "{}-01-01".format(person.year),
                                     person.gender_id,
                                     "",  # FIXME: engadir o campo nationality a person
                                     person.license,
@@ -312,11 +312,18 @@ class Lenex(object):
                             # SICK: athlete is sick. Está enfermo
                             # WDR: athlete/relay was withdrawn (on time). Retirouse
                             if result.issue_id in  ('SICK', 'WDR', 'BAI'):  #non exporta este tipo de resultados
-                                print("Non exporta a {} remuda {}".format(
+                                print("Non exporta a {} remuda {} coa incidencia {}".format(
+                                    result.event.code,
+                                    result.relay.name,
+                                    result.issue_id,
+                                    ))
+                                continue
+                            if not relay.relay_members:
+                                print("Non exporta a {} remuda {} sen membros".format(
                                     result.event.code,
                                     result.relay.name,
                                     ))
-                                continue
+
                             if result.issue_id not in ('DSQ', 'DNS', 'DNF', 'SICK', 'WDR'):
                                 print(result.issue_id)
                                 if result.issue_id == 'NPR':
@@ -346,7 +353,9 @@ class Lenex(object):
                             relay.relay_id,  #FIXME: relay number
                         )
                         content += "              <RESULTS>\n"
-                        if len(result.result_splits) == 1 and not relay.relay_members:
+                        open_result = False
+                        if len(result.result_splits) == 1 and not relay.relay_members:  # ISTO NUNCA DEBERIA PASAR
+                            assert "isto nunca debería pasar"
                             content += (
     """                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
     """heatid="{}" lane="{}" entrytime="{}" entrycourse="{}" />\n""").format(
@@ -361,6 +370,7 @@ class Lenex(object):
                             inscription.pool_length == 25 and "SCM" or "LCM",
                         )
                         else:  # Has more 1 split
+                            open_result = True
                             content += (
 """                <RESULT eventid="{}" {}points="{}" swimtime="{}" resultid="{}" """
 """heatid="{}" lane="{}" entrytime="{}" entrycourse="{}">\n""").format(
@@ -393,6 +403,7 @@ class Lenex(object):
                                     member.pos,
                                 )
                             content += """                  </RELAYPOSITIONS>\n"""
+                        if open_result:
                             content += """                </RESULT>\n"""
                         
                         content += """              </RESULTS>\n"""
