@@ -323,6 +323,7 @@ class Lenex(object):
                                     result.event.code,
                                     result.relay.name,
                                     ))
+                                continue
 
                             if result.issue_id not in ('DSQ', 'DNS', 'DNF', 'SICK', 'WDR'):
                                 print(result.issue_id)
