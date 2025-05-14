@@ -30,8 +30,8 @@ class Presenter(object):
         person = self.model.person
         inscription = self.model.inscription
         phase = self.model.phase
-        if inscription.result:
-            message = _("Is not possible edit a inscription with a result.")
+        if inscription.result and inscription.result.official:
+            message = _("Is not possible edit a inscription with a official result.")
             self.view.msg.warning(message=message)
         else:
             values = self.view.get_values()
@@ -63,6 +63,10 @@ class Presenter(object):
                 # If change phase move to new phase
                 if inscription.inscription_id and inscription.phase != phase:
                     inscription.inscriptions.remove(inscription)
+                    if inscription.result:
+                        inscription.delete_result()
+                        msg = _('The result was deleted.')
+                        self.view.msg.warning(msg)
                 inscription.inscriptions = phase.inscriptions
                 # inscription.phase = phase
                 # inscription.person = person
