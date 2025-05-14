@@ -271,19 +271,8 @@ class Inscription(object):
         # elif self.person:
         #     self.person.inscriptions.load()  # recalcula as inscricións da persoa
         # comentei o de arriba porque agora se xestiona automáticamente coas sobrecarga de remove da lista de inscricións
-
-        # delete result_splits
         if self.result:
-            self.result.result_splits.delete_all_items()
-            # sql =  ("delete from results_splits where result_id=(select result_id from results where inscription_id=?)")
-            # values = ((self.inscription_id, ), )
-            # self.config.dbs.exec_sql(sql=sql, values=values)
-    
-            # delete result
-            self.result.delete()
-            # sql =  ("delete from results where inscription_id=?")
-            # values = ((self.inscription_id, ), )
-            # self.config.dbs.exec_sql(sql=sql, values=values)
+            self.delete_result
 
         # delete inscription
         sql =  ("delete from inscriptions where inscription_id=?")
@@ -291,6 +280,19 @@ class Inscription(object):
         self.config.dbs.exec_sql(sql=sql, values=values)
         self.inscription_id = 0  # Isto non debería facer falta
         self.inscriptions.remove(self) #remove element from list
+
+    def delete_result(self):
+        # delete result_splits
+        self.result.result_splits.delete_all_items()
+        # sql =  ("delete from results_splits where result_id=(select result_id from results where inscription_id=?)")
+        # values = ((self.inscription_id, ), )
+        # self.config.dbs.exec_sql(sql=sql, values=values)
+
+        # delete result
+        self.result.delete()
+        # sql =  ("delete from results where inscription_id=?")
+        # values = ((self.inscription_id, ), )
+        # self.config.dbs.exec_sql(sql=sql, values=values)
 
     def is_inscript(self, person_id, phase_id):
         already_inscript = False
