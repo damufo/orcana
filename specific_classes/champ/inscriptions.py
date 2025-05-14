@@ -208,7 +208,6 @@ where inscription_id in (select inscription_id from inscriptions where phase_id=
                     equated_hundredth=i[EQUATED_HUNDREDTH],
                     )
             inscription.result = result
-            
 
     @property
     def list_fields(self):
