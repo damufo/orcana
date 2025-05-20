@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-14 13:53+0200\n"
-"PO-Revision-Date: 2025-05-14 13:58+0200\n"
+"PO-Revision-Date: 2025-05-15 13:09+0200\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
@@ -2207,25 +2207,23 @@ msgstr ""
 "\n"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:489
-#, fuzzy
 msgid ""
 "{} has imposible partials.\n"
 "Heat: {} | Lane: {} | Distance:{} | Time:{}\n"
 "\n"
 msgstr ""
 "{} posiblemente ten un parcial incorrecto.\n"
-"Posición: {}\n"
+"Serie: {} | Estaxe: {} | Distancia: {} | Tempo: {}\n"
 "\n"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:497
-#, fuzzy
 msgid ""
 "{} did a split of more than 2:00.00.\n"
 "Heat: {} | Lane: {} | Distance:{} | Time:{}\n"
 "\n"
 msgstr ""
 "{} ten un parcial de máis de 2:00.00.\n"
-"Posición: {}\n"
+"Serie: {} | Estaxe: {} | Distancia: {} | Tempo: {}\n"
 "\n"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/heats.py:128
