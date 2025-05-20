@@ -397,11 +397,22 @@ class Lenex(object):
 
                         if relay.relay_members:
                             content += """                  <RELAYPOSITIONS>\n"""
+                            distance_issue = None
+                            if result.issue_id:
+                                if len(result.result_splits) > 1:
+                                    distance_issue = result.result_splits[result.issue_split-1].distance
+                                else:
+                                    distance_issue = 0  ## all members are dsq=descualified
                             for member in relay.relay_members:
+                                if distance_issue is not None and (result.event.distance * member.pos) >= distance_issue:
+                                    status =  """status="DSQ" """
+                                else:
+                                    status = ""
                                 content += (
-    """                    <RELAYPOSITION athleteid="{}" number="{}" />\n""").format(
+    """                    <RELAYPOSITION athleteid="{}" number="{}" {}/>\n""").format(
                                     member.person_id,
                                     member.pos,
+                                    status,
                                 )
                             content += """                  </RELAYPOSITIONS>\n"""
                         if open_result:
