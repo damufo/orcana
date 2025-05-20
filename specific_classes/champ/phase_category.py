@@ -416,10 +416,24 @@ VALUES(?, ?, ?, ?) '''
                                     split_time = marks.hun2mark(j.mark_hundredth - last_mark_hundredth)
                                     split_hundredth = j.mark_hundredth - last_mark_hundredth
                                     last_mark_hundredth = j.mark_hundredth                                
-                                    if split_hundredth > 0 and split_hundredth < 22:
-                                        errors += _("{} has imposible partials.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
+                                    if split_hundredth < 22:  #  split_hundredth > 0 and
+                                        # errors += _("{} has imposible partials.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
+                                        errors += _("{} has imposible partials.\nHeat: {} | Lane: {} | Distance:{} | Time:{}\n\n").format(
+                                            self.phase.long_name,
+                                            str(i.heat.pos), 
+                                            str(i.lane),
+                                            str(j.distance),
+                                            str(j.mark_time),
+                                            )
                                     elif split_hundredth > 12000 * (last_split_blank + 1):
-                                        errors += _("{} did a split of more than 2:00.00.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
+                                        # errors += _("{} did a split of more than 2:00.00.\nPossition: {}\n\n").format(self.phase.long_name, str(position))
+                                        errors += _("{} did a split of more than 2:00.00.\nHeat: {} | Lane: {} | Distance:{} | Time:{}\n\n").format(
+                                            self.phase.long_name,
+                                            str(i.heat.pos),
+                                            str(i.lane),
+                                            str(j.distance),
+                                            str(j.mark_time),
+                                            )
                                     last_split_blank = 0
                                 else:
                                     split_time = ''
