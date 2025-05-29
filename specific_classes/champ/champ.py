@@ -1526,11 +1526,6 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
                                             mode="csv",
                                             compressed=False,
                                             encoding='utf-8-sig')
-        elif file_path._str[-4:].lower() == ".csv":
-            lines = get_file_content(file_path=file_path,
-                                            mode="ods",
-                                            compressed=False,
-                                            encoding='utf-8-sig')
         start_line = None
         if not lines:
             print(_("O ficheiro é incorrecto ou está baleiro!!"))
