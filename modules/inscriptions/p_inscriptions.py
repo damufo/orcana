@@ -69,7 +69,7 @@ class Presenter(object):
         fol_dbs = champ.folder_dbs
         file_path = self.view.msg.open_file(
             default_dir=fol_dbs,
-            suffixes=[".csv", ".ods"],
+            suffixes=[".csv"],
             )
         if not file_path:
             msg.error(_("No file was selected."))
