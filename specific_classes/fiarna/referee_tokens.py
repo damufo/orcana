@@ -274,6 +274,9 @@ left join inscriptions i on i.inscription_id=r.inscription_id);
          PHASE_ID, PERSON_ID, RELAY_ID, UNIT, LANE) = range(8)
         values = []
         for i in tokens:
+            if not i[PHASE_ID]:
+                print("AVISO! Hai resutlados sen inscricion")
+                continue
             if i[PERSON_ID]:
                 if i[PERSON_ID] in persons:
                     person = persons[i[PERSON_ID]]
