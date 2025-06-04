@@ -104,6 +104,16 @@ class Inscription(object):
         return ind_rel
 
     @property
+    def entity_id(self):
+        if self.person:
+          entity_id = self.person.entity_id
+        elif self.relay:
+            entity_id = self.relay.entity_id
+        else:
+            entity_id = None  # Isto non debería pasar nunca
+        return entity_id
+
+    @property
     def event(self):
         return self.phase.event
 

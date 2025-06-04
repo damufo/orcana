@@ -174,6 +174,19 @@ class Phase(object):
 #                     )
 #             inscription.result = result
 
+    def insc_entity(self, entity_id):
+        # count inscriptons by entity
+        insc_entity = 0
+        for i in self.inscriptions:
+            if i.entity_id == entity_id:
+                insc_entity += 1
+        return insc_entity
+
+    def check_max_insc_entity(self, entity_id):
+        max_insc_entity = False
+        if self.insc_entity >= phase.event.insc_max:
+            max_insc_entity = True
+        return max_insc_entity
 
     def already_exists(self, event_id, progression):
         exists = False

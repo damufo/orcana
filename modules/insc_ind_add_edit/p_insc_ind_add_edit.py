@@ -43,6 +43,8 @@ class Presenter(object):
             elif not phase:
                 msg = _('Set a phase.')
                 self.view.cho_phase_id.SetFocus()
+            elif phase.insc_entity(person.entity_id) >= phase.event.insc_max:
+                msg = _('This entity already has the maximum inscriptions in this phase.')  # Esta entidade xa ten o máximo de inscricións nesta fase.
             elif self.model.inscription.is_inscript(
                     person_id=person.person_id,
                     phase_id=phase.phase_id):
@@ -59,6 +61,7 @@ class Presenter(object):
             if msg:
                 self.view.msg.warning(msg)
             else:
+                phase.inscriptions
                 inscription.person = person
                 # If change phase move to new phase
                 if inscription.inscription_id and inscription.phase != phase:
