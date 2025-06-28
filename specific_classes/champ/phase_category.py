@@ -138,8 +138,10 @@ VALUES(?, ?, ?, ?) '''
             for pos, phase_category_result in enumerate(results):
                 result = phase_category_result.result
                 # Isto ten que facerse así porque license pode ser cadea valeira
-
-                if phase_category_result.result.issue_id:
+                if phase_category_result.pos == -1:  # No classify
+                    print('Non clasifica | Fora de concurso')
+                    continue
+                elif phase_category_result.result.issue_id:
                     print('Non é medallista')
                     continue
                 elif phase_category_result.pos > 3:
@@ -162,8 +164,12 @@ VALUES(?, ?, ?, ?) '''
                             result.mark_time, phase_category_result.points],]
                 last_result_category_pos = phase_category_result.pos
                 keep_with_next = True
-                if (pos + 1) == len(results):
-                    keep_with_next = False    
+                if (pos + 1) == len(results):  # Xa non hai máis medallistas
+                    keep_with_next = False
+                elif results[pos+1].result.issue_id:
+                    keep_with_next = False
+                elif results[pos+1].pos > 3:  # avalía se hai seguinte medallista
+                    keep_with_next = False
                 add_line_medal(lines=line_result, keep_with_next=keep_with_next)
  
             print('fin phase_category_medals')
