@@ -141,7 +141,7 @@ VALUES(?, ?, ?, ?) '''
 
                 if phase_category_result.result.issue_id:
                     print('Non é medallista')
-                    break
+                    continue
                 elif phase_category_result.pos > 3:
                     print('Non é medallista')
                     break
