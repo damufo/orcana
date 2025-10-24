@@ -108,6 +108,8 @@ class Lenex(object):
         current_session = None
         for phase in champ.phases:
             if not current_session or current_session.session_id != phase.session.session_id:
+                if current_session:  # close current events and session
+                    content += ("""          </EVENTS>\n        </SESSION>\n""")
                 current_session = phase.session
                 content += (
 """        <SESSION date="{0}" daytime="{1}" endtime="" number="{2}" """
