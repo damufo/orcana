@@ -106,64 +106,74 @@ class Presenter(object):
                         self.view.view_plus.stop()
                     else: # non fai nada xa que non quere mover
                         pass
-                else:  # non ten resultado é unha inscrición sen resultado
-                    # Pregunta se quere recuperar esta inscrición
-                    # Question if move
-                    if self.view.msg.question(
-                            _("This relay already exists in inscriptions (without result).\n"
-                            "Do you like move to this lane?")):                
-                        if current_result:  # hai resultado na actual estaxe
-                            # marka a inscrición como exchanged
-                            # borra o resultado previo
-                            current_result.inscription.exchanged = True
-                            current_result.inscription.save()
-                            current_result.inscription.result = None
-                            current_result.delete()
-                        match_inscription.exchanged = False
-                        match_inscription.rejected = False
-                        match_inscription.save()
-                        match_inscription.add_result(
-                                heat=current_heat, lane=current_lane)
-                        match_inscription.result.save()
-                        self.view.view_plus.stop()
+                else:  # non ten resultado, é unha inscrición sen resultado
+                    #comproba se ten as inscricións máximas
+                    if current_heat.phase.check_max_insc_entity(match_inscription.entity_id):
+                        self.view.msg.warning(_('This entity already has the maximum inscriptions in this phase.'))
                     else:
-                        # Non fai nada
-                        self.view.txt_relay_name.SetFocus()
+                        # Pregunta se quere recuperar esta inscrición
+                        # Question if move
+                        if self.view.msg.question(
+                                _("This relay already exists in inscriptions (without result).\n"
+                                "Do you like move to this lane?")):                
+                            if current_result:  # hai resultado na actual estaxe
+                                # marka a inscrición como exchanged
+                                # borra o resultado previo
+                                current_result.inscription.exchanged = True
+                                current_result.inscription.save()
+                                current_result.inscription.result = None
+                                current_result.delete()
+                            match_inscription.exchanged = False
+                            match_inscription.rejected = False
+                            match_inscription.save()
+                            match_inscription.add_result(
+                                    heat=current_heat, lane=current_lane)
+                            match_inscription.result.save()
+                            self.view.view_plus.stop()
+                        else:
+                            # Non fai nada
+                            self.view.txt_relay_name.SetFocus()
             else:  # non atopou inscrición ou é a mesma remuda
                 # se existe o resultado actualízao
                 if current_result:  # If exists result in current lane
-                    clear_relayers = False
-                    if current_result.inscription.relay.entity != relay_entity:
-                        current_result.inscription.relay.entity = relay_entity
-                        clear_relayers = True
-                    if current_result.inscription.relay.category != relay_category:
-                        current_result.inscription.relay.category = relay_category
-                        current_result.inscription.relay.gender_id = relay_category.gender_id
-                        clear_relayers = True
-                    if clear_relayers:
-                        current_result.inscription.relay.relay_members.delete_all_items()
-                    current_result.inscription.relay.name = relay_name
-                    # revisar que borra os remudistas se cambia de club
-                    current_result.inscription.relay.save()
-                    if current_result.inscription.relay not in current_result.inscription.relay.relays:
-                        current_result.inscription.relay.relays.append(current_result.inscription.relay)
-                    # current_result.inscription.save()
+                    if current_result.entity != relay_entity and current_heat.phase.check_max_insc_entity(relay_entity.entity_id):
+                        self.view.msg.warning(_('This entity already has the maximum inscriptions in this phase.'))
+                    else:
+                        clear_relayers = False
+                        if current_result.inscription.relay.entity != relay_entity:
+                            current_result.inscription.relay.entity = relay_entity
+                            clear_relayers = True
+                        if current_result.inscription.relay.category != relay_category:
+                            current_result.inscription.relay.category = relay_category
+                            current_result.inscription.relay.gender_id = relay_category.gender_id
+                            clear_relayers = True
+                        if clear_relayers:
+                            current_result.inscription.relay.relay_members.delete_all_items()
+                        current_result.inscription.relay.name = relay_name
+                        # revisar que borra os remudistas se cambia de club
+                        current_result.inscription.relay.save()
+                        if current_result.inscription.relay not in current_result.inscription.relay.relays:
+                            current_result.inscription.relay.relays.append(current_result.inscription.relay)
+                        # current_result.inscription.save()
                 # se non existe engade a inscrición e o resultado
                 else:  # Create inscription and result
-                    new_inscription = phase.inscriptions.item_blank
-                    new_inscription.relay.entity = relay_entity
-                    new_inscription.relay.category = relay_category
-                    new_inscription.relay.name = relay_name
-                    new_inscription.relay.gender_id = relay_category.gender_id
+                    if current_heat.phase.check_max_insc_entity(relay_entity.entity_id):
+                        self.view.msg.warning(_('This entity already has the maximum inscriptions in this phase.'))
+                    else:
+                        new_inscription = phase.inscriptions.item_blank
+                        new_inscription.relay.entity = relay_entity
+                        new_inscription.relay.category = relay_category
+                        new_inscription.relay.name = relay_name
+                        new_inscription.relay.gender_id = relay_category.gender_id
 
-                    new_inscription.relay.save()
-                    if new_inscription.relay not in new_inscription.relay.relays:
-                        new_inscription.relay.relays.append(new_inscription.relay)
-                    new_inscription.save()
-                    new_inscription.add_result(
-                            heat=current_heat, lane=current_lane)
-                    new_inscription.result.save()
-                    phase.inscriptions.append(new_inscription)
+                        new_inscription.relay.save()
+                        if new_inscription.relay not in new_inscription.relay.relays:
+                            new_inscription.relay.relays.append(new_inscription.relay)
+                        new_inscription.save()
+                        new_inscription.add_result(
+                                heat=current_heat, lane=current_lane)
+                        new_inscription.result.save()
+                        phase.inscriptions.append(new_inscription)
                 self.view.view_plus.stop()
 
     def entity_name(self):

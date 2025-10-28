@@ -111,10 +111,10 @@ class Presenter(object):
                     #     # Non fai nada
                     #     self.view.txt_person_full_name.SetFocus()
             else:  # Selected person not has inscription
-                if current_heat.phase.check_max_insc_entity:
-                    self.view.msg.warning(_('This entity already has the maximum inscriptions in this phase.'))
-                else:
-                    if current_result:  # If eself.model.person_full_name_changexists result in current lane
+                if current_result:  # If eself.model.person_full_name_changexists result in current lane
+                    if current_result.entity != new_person.entity and current_heat.phase.check_max_insc_entity(new_person.entity_id):
+                        self.view.msg.warning(_('This entity already has the maximum inscriptions in this phase.'))
+                    else:
                         # Question if replace
                         if self.view.msg.question(
                                 _("This lane has a result.\n"
@@ -135,17 +135,20 @@ class Presenter(object):
                             current_heat.phase.inscriptions.append(match_inscription)  # sobrecargado para que acutalice as inscricións da persoa
                             # new_person.inscriptions.load()  # actualiza as inscricións da persoa
                             self.view.view_plus.stop()
+                else:
+                    if current_heat.phase.check_max_insc_entity(new_person.entity_id):
+                        self.view.msg.warning(_('This entity already has the maximum inscriptions in this phase.'))
                     else:
-                            # Create inscription and result
-                            match_inscription = current_heat.phase.inscriptions.item_blank
-                            match_inscription.person = new_person
-                            match_inscription.save()
-                            match_inscription.add_result(
-                                    heat=current_heat, lane=current_lane)
-                            match_inscription.result.save()
-                            current_heat.phase.inscriptions.append(match_inscription)  # sobrecargado para que acutalice as inscricións da persoa
-                            # new_person.inscriptions.load()  # actualiza as inscricións da persoa
-                            self.view.view_plus.stop()
+                        # Create inscription and result
+                        match_inscription = current_heat.phase.inscriptions.item_blank
+                        match_inscription.person = new_person
+                        match_inscription.save()
+                        match_inscription.add_result(
+                                heat=current_heat, lane=current_lane)
+                        match_inscription.result.save()
+                        current_heat.phase.inscriptions.append(match_inscription)  # sobrecargado para que acutalice as inscricións da persoa
+                        # new_person.inscriptions.load()  # actualiza as inscricións da persoa
+                        self.view.view_plus.stop()
         elif new_person == current_person:  # Same person selected
             self.view.msg.warning(_("Same person is in current lane.\nPlease, select a distinct person."))
             self.view.txt_person_full_name.SetFocus()
