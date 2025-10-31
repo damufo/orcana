@@ -184,7 +184,7 @@ class Phase(object):
 
     def check_max_insc_entity(self, entity_id):
         max_insc_entity = False
-        if self.insc_entity >= phase.event.insc_max:
+        if self.insc_entity(entity_id) >= self.event.insc_max:
             max_insc_entity = True
         return max_insc_entity
 
