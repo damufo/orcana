@@ -47,9 +47,9 @@ except:
 
 APP_NAME = 'orcana'
 APP_TITLE = 'Orcana'
-APP_VERSION = "0.0.20beta"
+APP_VERSION = "0.0.21beta"
 DBS_VERSION = 5
-APP_VERSION_DATE = "2025-10-31"
+APP_VERSION_DATE = "2025-11-05"
 
 if getattr(sys, 'frozen', False): # Running as compiled
     running_dir = sys._MEIPASS + "/_internal/" # pylint: disable=no-member
