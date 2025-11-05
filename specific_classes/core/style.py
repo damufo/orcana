@@ -8,4 +8,6 @@ class Style(object):
         self.style_id = kwargs['style_id']
         self.short_name = kwargs['short_name']
         self.long_name = kwargs['long_name']
+        self.lenex_name = kwargs['lenex_name']
+        self.token_name = kwargs['lenex_name']
 

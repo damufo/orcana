@@ -13,24 +13,43 @@ class Styles(list):
         '''
         load values
         '''
-        del self[:] #borra os elementos que haxa
+        del self[:] #borra os elementos que haxa        
+        # style_id, short_name, long_name, lenex_name
+                # if self.event_id.endswith("L"):
+        #     style = _("FREE")
+        # elif self.event_id.endswith("M"):
+        #     style = _("BUTTERFLY")
+        # elif self.event_id.endswith("B"):
+        #     style = _("BREASTSTROKE")
+        # elif self.event_id.endswith("E"):
+        #     style = _("BACKSTSTROKE")
+        # elif self.event_id.endswith("S"):
+        #     style = _("STYLES")
+        # elif self.event_id.endswith("Z"):
+        #     style = _("BOL-COS")
+        # elif self.event_id.endswith("G"):
+        #     style = _("COS-BRA")
+        # elif self.event_id.endswith("H"):
+        #     style = _("BRA-CROL")
+        # elif self.event_id.endswith("V"):
+        #     style = _("BOL-COS-BRA")
         res = (
-            ('L',  _('Fr'), _('Free')), 
-            ('M',  _('Bu'), _('Butterfly')),
-            ('E',  _('Ba'), _('Backstroke')),
-            ('B',  _('Br'), _('Breastroque')),
-            ('S',  _('Me'), _('Medley')),               
-            ('G',  _('BaBr'), _('Backstroke-Breastroke')),
-            ('Z',  _('BuBa'), _('Butterfly-Backstroke')),
-            ('T',  _('BaBrCr'), _('Back-Brea-Crol')),
-            ('F',  _('FeCrAr'), _('Feet crol arrow')),
-            ('N',  _('FeBuAr'), _('Feet butterfly arrow')),
-            ('K',  _('FeBrAr'), _('Feet breastroke arrow')),
-            ('J',  _('FeBaAr'), _('Feet backstroke arrow')),
-            ('H',  _('BrCr'), _('Breastroke-Crol')),
-            ('P',  _('CrBa'), _('Crol-Backstroke')),
-            ('Q',  _('BrBu'), _('Breastroke-Butterfly')),
-            ('V',  _('BuBaBr'), _('Butterfly-Backstroke-Breastroke')),
+            ('L',  _('FREE'), _('Free'), 'FREE'), 
+            ('M',  _('FLY'), _('Fly'), 'FLY'),
+            ('E',  _('BACK'), _('Back'), 'BACK'),
+            ('B',  _('BREAST'), _('Breast'), 'BREAST'),
+            ('S',  _('MEDLEY'), _('Medley'), 'MEDLEY'),
+            ('G',  _('BA-BR'), _('Back-Breast'), 'BACK-BREAST'),
+            ('Z',  _('FL-BA'), _('Fly-Back'), 'FLY-BACK'),
+            ('T',  _('BA-BR-CR'), _('Back-Breast-Crawl'), 'BACK-BREAST-CRAWL'),
+            ('F',  _('FE CR AR'), _('Feet crawl arrow'), 'FEET CRAWL ARROW'),
+            ('N',  _('FE FL AR'), _('Feet fly arrow'), 'FEET FLY ARROW'),
+            ('K',  _('FE BR AR'), _('Feet breast arrow'), 'FEET BREAST ARROW'),
+            ('J',  _('FE BA AR'), _('Feet back arrow'), 'FEET BACK ARROW'),
+            ('H',  _('BR-CR'), _('Breast-Crawl'), 'BREAST-CRAWL'),
+            ('P',  _('CR-BA'), _('Crawl-Back'), 'CRAWL-BACK'),
+            ('Q',  _('BR-FL'), _('Breast-Fly'), 'BREAST-FLY'),
+            ('V',  _('FL-BA-BR'), _('Fly-Back-Breast'), 'FLY-BACK-BREAST'),
             )
         # sql = ("SELECT style_id, short_name, long_name "
         #        "from styles order by pos")
@@ -41,7 +60,9 @@ class Styles(list):
                     styles=self,
                     style_id = i[0],
                     short_name = i[1],
-                    long_name = i[2]))
+                    long_name = i[2],
+                    lenex_name = i[3],
+                    ))
         return self
 
     def get_style(self, style_id):

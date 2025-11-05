@@ -68,7 +68,7 @@ class Relay(object):
 
 class Event(object):
     def __init__(self, gender_id, event_id, category_id, phase_progression,
-                 phase_order, order, date):
+                 phase_order, order, date, style_name):
         self.gender_id = gender_id
         self.event_id = event_id
         self.category_id = category_id
@@ -76,26 +76,35 @@ class Event(object):
         self.phase_order = phase_order
         self.order = order
         self.date = date
+        self.style_name = style_name
 
     @property
     def event_desc(self):
+        # if self.event_id.endswith("L"):
+        #     style = _("FREE")
+        # elif self.event_id.endswith("M"):
+        #     style = _("BUTTERFLY")
+        # elif self.event_id.endswith("B"):
+        #     style = _("BREASTSTROKE")
+        # elif self.event_id.endswith("E"):
+        #     style = _("BACKSTSTROKE")
+        # elif self.event_id.endswith("S"):
+        #     style = _("STYLES")
+        # elif self.event_id.endswith("Z"):
+        #     style = _("BOL-COS")
+        # elif self.event_id.endswith("G"):
+        #     style = _("COS-BRA")
+        # elif self.event_id.endswith("H"):
+        #     style = _("BRA-CROL")
+        # elif self.event_id.endswith("V"):
+        #     style = _("BOL-COS-BRA")
+        # else:
+        #     print("Warning! {} style not found.".format(self.event_id[-1]))
+        #     style = "??"
 
-        if self.event_id.endswith("L"):
-            style = _("FREE")
-        elif self.event_id.endswith("M"):
-            style = _("BUTTERFLY")
-        elif self.event_id.endswith("B"):
-            style = _("BREASTSTROKE")
-        elif self.event_id.endswith("E"):
-            style = _("BACKSTSTROKE")
-        elif self.event_id.endswith("S"):
-            style = _("STYLES")
-        else:
-            print(self.event_id[-1])
-            style = "??"
         event_desc = "{}.- {}m {} {} {}".format(self.order,
                                                 self.event_id[:-1],
-                                                style,
+                                                self.style_name,
                                                 self.gender_desc,
                                                 self.category_id)
         return event_desc
@@ -251,6 +260,11 @@ sessions s on s.session_id=p.session_id order by s.date, s.time, p.pos;  """
         for i in res:
             # event_code = "{}.{}.{}.{}".format(i[GENDER_ID], i[EVENT_ID],
             #                                   i[CATEGORY_ID], i[PHASE_ID])
+            style = self.config.styles.get_style(style_id=i[EVENT_ID][-1])
+            if not style:
+                print("Warning! {} style not found.".format(self.event_id[-1]))
+                style = "??"
+
             events[i[PHASE_ID]] = Event(
                     gender_id=i[GENDER_ID],
                     event_id=i[EVENT_ID],
@@ -258,7 +272,9 @@ sessions s on s.session_id=p.session_id order by s.date, s.time, p.pos;  """
                     phase_progression=i[PHASE_PROGRESSION],
                     phase_order=int(i[PHASE_ORDER]),
                     order=int(i[ORDER]),
-                    date=i[DATE])
+                    date=i[DATE],
+                    style_name=style.short_name,
+                    )
 
 #         heats
         sql = """

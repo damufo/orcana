@@ -21,17 +21,17 @@ class Lenex(object):
         '''
         self.registration = 'Galicia'
         self.version = '11.80519'
-        self.stroke = {
-            'M': 'FLY',
-            'E': 'BACK',
-            'B': 'BREAST',
-            'L': 'FREE',
-            'S': 'MEDLEY',
-            'G': 'BACK-BREAST',
-            'Z': 'FLY-BACK',
-            'H': 'BREAST-CRAWL',
-            'V': 'FLY-BACK-BREAST',
-            }
+        # self.stroke = {
+        #     'M': 'FLY',
+        #     'E': 'BACK',
+        #     'B': 'BREAST',
+        #     'L': 'FREE',
+        #     'S': 'MEDLEY',
+        #     'G': 'BACK-BREAST',
+        #     'Z': 'FLY-BACK',
+        #     'H': 'BREAST-CRAWL',
+        #     'V': 'FLY-BACK-BREAST',
+        #     }
 
         self.header = (
 """<?xml version="1.0" encoding="UTF-8"?>\n<LENEX version="3.0">\n"""
@@ -77,6 +77,9 @@ class Lenex(object):
         """
         Generate file export lef format
         """
+        strokes = {}
+        for i in champ.config.styles:
+            strokes[i.style_id] = i.lenex_name
 
         pool_lanes_sort = champ.validade_pool_lanes_sort(champ.params["champ_pool_lanes_sort"],)
         pool_lanes = pool_lanes_sort.replace(' ', '')
@@ -131,7 +134,7 @@ class Lenex(object):
                     phase.parent and phase.parent.pahse_id or '-1',
                     phase.event.distance,
                     phase.event.num_members,
-                    self.stroke[phase.event.style_id],
+                    strokes[phase.event.style_id],
             )
             for phase_category in  phase.phase_categories:
                 content += (
