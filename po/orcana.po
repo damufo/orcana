@@ -8,85 +8,85 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 13:53+0200\n"
-"PO-Revision-Date: 2025-05-15 13:09+0200\n"
+"POT-Creation-Date: 2025-11-05 09:11+0100\n"
+"PO-Revision-Date: 2025-11-05 09:13+0100\n"
 "Last-Translator: Daniel Muñiz Fontoira <dani@damufo.com>\n"
 "Language-Team: Galician\n"
 "Language: gl_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.6\n"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:329
 #: /home/damufo/dev/orcana/specific_functions/dates.py:76
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "january"
 msgstr "xaneiro"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:330
 #: /home/damufo/dev/orcana/specific_functions/dates.py:77
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "february"
 msgstr "febreiro"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:331
 #: /home/damufo/dev/orcana/specific_functions/dates.py:78
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "march"
 msgstr "marzo"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:332
 #: /home/damufo/dev/orcana/specific_functions/dates.py:79
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "april"
 msgstr "abril"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:333
 #: /home/damufo/dev/orcana/specific_functions/dates.py:80
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "may"
 msgstr "maio"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:334
 #: /home/damufo/dev/orcana/specific_functions/dates.py:81
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "june"
 msgstr "xuño"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:335
 #: /home/damufo/dev/orcana/specific_functions/dates.py:82
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "july"
 msgstr "xullo"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:336
 #: /home/damufo/dev/orcana/specific_functions/dates.py:83
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "august"
 msgstr "agosto"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:337
 #: /home/damufo/dev/orcana/specific_functions/dates.py:84
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "september"
 msgstr "setembro"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:338
 #: /home/damufo/dev/orcana/specific_functions/dates.py:85
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:134
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:143
 msgid "october"
 msgstr "outubro"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:339
 #: /home/damufo/dev/orcana/specific_functions/dates.py:86
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:134
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:143
 msgid "november"
 msgstr "novembro"
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:340
 #: /home/damufo/dev/orcana/specific_functions/dates.py:87
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:134
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:143
 msgid "december"
 msgstr "decembro"
 
@@ -229,10 +229,10 @@ msgstr "Aceptar"
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/p_person_add_edit.py:80
 #: /home/damufo/dev/orcana/modules/person_add_edit/p_person_add_edit.py:81
-#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:184
-#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:185
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:118
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:119
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:194
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:195
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:121
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:122
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:123
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:124
 #: /home/damufo/dev/orcana/modules/entity_add_edit/p_entity_add_edit.py:72
@@ -708,6 +708,7 @@ msgstr "E&xportar"
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:136
 #: /home/damufo/dev/orcana/modules/relays_pode_borrarse/w_relays.py:84
 #: /home/damufo/dev/orcana/modules/phases/w_phases.py:120
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:39
 msgid "Back"
 msgstr "Atrás"
 
@@ -822,7 +823,16 @@ msgstr ""
 "Esta estaxe ten un resultado?\n"
 "Quere trocalos?"
 
-#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:113
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:112
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:140
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:161
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:47
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:116
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:140
+msgid "This entity already has the maximum inscriptions in this phase."
+msgstr "Esta entidade xa ten o máximo de inscricións nesta fase."
+
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:117
 msgid ""
 "This relay already exists in inscriptions (without result).\n"
 "Do you like move to this lane?"
@@ -1188,26 +1198,26 @@ msgstr "Especifica unha persoa."
 msgid "Set a phase."
 msgstr "Especifica unha fase."
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:49
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:51
 msgid "This person already inscript in this phase."
 msgstr "Esta persoa xa está inscrita nesta fase."
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:51
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:53
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:44
 msgid "Set a mark."
 msgstr "Especifica unha marca."
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:54
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:56
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:50
 msgid "Set a chrono type."
 msgstr "Especifica un tipo de cronómetro."
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:57
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:59
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:47
 msgid "Set a pool length."
 msgstr "Establece a lonxitude da piscina."
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:68
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:71
 msgid "The result was deleted."
 msgstr "O resultado foi eliminado."
 
@@ -1370,7 +1380,7 @@ msgstr ""
 "Esta persoa xa ten outro resultado.\n"
 "Queres movela a esta estaxe?"
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:117
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:120
 msgid ""
 "This lane has a result.\n"
 "Do you like replace?\n"
@@ -1380,7 +1390,7 @@ msgstr ""
 "Queres substituílo?\n"
 "Este resultado será borrado."
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:147
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:153
 msgid ""
 "Same person is in current lane.\n"
 "Please, select a distinct person."
@@ -1388,14 +1398,14 @@ msgstr ""
 "A mesma persoa xa está na actual estaxe.\n"
 "Selecciona unha persoa diferente."
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:150
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:156
 msgid "Please, select a person."
 msgstr "Especifica unha persoa."
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:170
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:171
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:176
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:177
 msgid "Select person"
-msgstr "selecciona unha persoa"
+msgstr "Selecciona unha persoa"
 
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:61
 msgid "This relay already exists."
@@ -1838,10 +1848,10 @@ msgstr "Estaxe"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category_results.py:99
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category_results.py:113
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:424
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:426
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:589
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:591
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:440
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:442
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:605
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:607
 msgid "Points"
 msgstr "Puntos"
 
@@ -2021,13 +2031,13 @@ msgstr "Oficial"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:266
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1392
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:403
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:416
 msgid "manual"
 msgstr "manual"
 
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:268
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1394
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:405
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:418
 msgid "electronic"
 msgstr "electrónica"
 
@@ -2128,7 +2138,7 @@ msgid "{}. Pool course {} m. Timing system {}."
 msgstr "{}. Piscina de {} m. Cronometraxe {}."
 
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1470
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:520
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:533
 msgid "Heat {} of {}"
 msgstr "Serie {} de {}"
 
@@ -2140,9 +2150,9 @@ msgstr "lista_saida_{}.pdf"
 msgid "start_list_full.pdf"
 msgstr "lista_saida_completa.pdf"
 
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1536
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1537
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1544
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1531
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1532
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1539
 msgid "O ficheiro é incorrecto ou está baleiro!!"
 msgstr ""
 
@@ -2182,31 +2192,12 @@ msgstr "Distancia"
 msgid "Event code"
 msgstr "Código da proba"
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:361
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:367
 msgid "NC"
 msgstr "NC"
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:420
-msgid ""
-"{} has imposible partials.\n"
-"Possition: {}\n"
-"\n"
-msgstr ""
-"{} posiblemente ten un parcial incorrecto.\n"
-"Posición: {}\n"
-"\n"
-
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:422
-msgid ""
-"{} did a split of more than 2:00.00.\n"
-"Possition: {}\n"
-"\n"
-msgstr ""
-"{} ten un parcial de máis de 2:00.00.\n"
-"Posición: {}\n"
-"\n"
-
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:489
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:427
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:509
 msgid ""
 "{} has imposible partials.\n"
 "Heat: {} | Lane: {} | Distance:{} | Time:{}\n"
@@ -2216,7 +2207,8 @@ msgstr ""
 "Serie: {} | Estaxe: {} | Distancia: {} | Tempo: {}\n"
 "\n"
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:497
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:436
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:517
 msgid ""
 "{} did a split of more than 2:00.00.\n"
 "Heat: {} | Lane: {} | Distance:{} | Time:{}\n"
@@ -2235,7 +2227,7 @@ msgstr "N. serie"
 msgid "Start time"
 msgstr "Hora de saída"
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:420
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:433
 msgid "start_list_{}_{}.pdf"
 msgstr "series_{}_{}.pdf"
 
@@ -2399,136 +2391,116 @@ msgstr "4x50 m Estilos"
 msgid "4x100 m Medley"
 msgstr "4x100 m Estilos"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:84
-msgid "FREE"
-msgstr "LIBRE"
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:86
-msgid "BUTTERFLY"
-msgstr "BOLBORETA"
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:88
-msgid "BREASTSTROKE"
-msgstr "BRAZA"
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:90
-msgid "BACKSTSTROKE"
-msgstr "COSTAS"
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:92
-msgid "STYLES"
-msgstr "ESTILOS"
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:107
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:116
 msgid "FINAL"
 msgstr "FINAL"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:109
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:118
 msgid "PRELIM"
 msgstr "PRELIM"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:116
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:125
 msgid "FEM"
 msgstr "FEM"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:118
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:127
 msgid "MAS"
 msgstr "MAS"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:120
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:129
 msgid "MIX"
 msgstr "MIX"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:319
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:493
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:335
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:509
 msgid "Referee's tokens"
 msgstr "Fichas arbitrais"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:349
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:352
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:365
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:368
 msgid "UNIT: {}"
 msgstr "SERIE: {}"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:350
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:353
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:366
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:369
 msgid "LANE: {}"
 msgstr "ESTAXE: {}"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:385
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:550
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:401
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:566
 msgid "SPLITS LOG"
 msgstr "REXISTRO DE PARCIAIS"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:396
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:397
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:561
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:562
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:412
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:413
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:577
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:578
 msgid "RECORDING END TIMES"
 msgstr "REXISTRO DE TEMPOS FINAIS"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:398
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:399
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:563
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:564
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:414
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:415
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:579
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:580
 msgid "CHRONO 1"
 msgstr "CRONO 1"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:398
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:399
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:563
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:564
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:414
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:415
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:579
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:580
 msgid "CHRONO 2"
 msgstr "CRONO 2"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:398
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:399
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:563
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:564
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:414
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:415
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:579
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:580
 msgid "CHRONO 3"
 msgstr "CRONO 3"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:423
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:425
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:588
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:590
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:439
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:441
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:604
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:606
 msgid "END TIME DEFINITIVE"
 msgstr "TEMPO FINAL DEFINITIVO"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:423
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:425
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:588
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:590
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:439
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:441
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:604
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:606
 msgid "Arrival"
 msgstr "Chegada"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:424
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:426
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:589
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:591
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:440
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:442
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:605
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:607
 msgid "Clasific."
 msgstr "Clasific."
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:439
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:445
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:455
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:461
 #, python-brace-format
 msgid "{venue} on {month} {day}, {year}"
 msgstr "{venue} a {day} de {month} de {year}"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:450
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:452
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:606
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:608
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:466
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:468
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:622
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:624
 msgid "Signature timekeeper"
 msgstr "Sinatura do cronometrador"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:451
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:453
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:607
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:609
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:467
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:469
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:623
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:625
 msgid "Sinature secretary desk"
 msgstr "Sinatura do secretario de mesa"
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:604
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:620
 msgid "_________________ a _____ de _____________ de ______"
 msgstr ""
 
@@ -2568,132 +2540,128 @@ msgstr "Masculino"
 msgid "Mixed"
 msgstr "Mixto"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:18
-msgid "Fr"
-msgstr "Li"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:37
+msgid "FREE"
+msgstr "LIBRE"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:18
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:37
 msgid "Free"
 msgstr "Libre"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:19
-msgid "Bu"
-msgstr "Bo"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:38
+msgid "FLY"
+msgstr "BOLBORETA"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:19
-msgid "Butterfly"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:38
+msgid "Fly"
 msgstr "Bolboreta"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:20
-msgid "Ba"
-msgstr "Bo"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:39
+msgid "BACK"
+msgstr "COSTAS"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:20
-msgid "Backstroke"
-msgstr "Costas"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:40
+msgid "BREAST"
+msgstr "BRAZA"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:21
-msgid "Br"
-msgstr "Br"
-
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:21
-msgid "Breastroque"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:40
+msgid "Breast"
 msgstr "Braza"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:22
-msgid "Me"
-msgstr "Es"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:41
+msgid "MEDLEY"
+msgstr "ESTILOS"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:22
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:41
 msgid "Medley"
 msgstr "Estilos"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:23
-msgid "BaBr"
-msgstr "BoBr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:42
+msgid "BA-BR"
+msgstr "COS-BRA"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:23
-msgid "Backstroke-Breastroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:42
+msgid "Back-Breast"
 msgstr "Costas-Braza"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:24
-msgid "BuBa"
-msgstr "BoCo"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:43
+msgid "FL-BA"
+msgstr "BOL-COS"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:24
-msgid "Butterfly-Backstroke"
-msgstr "Bolboreta-Costas"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:43
+msgid "Fly-Back"
+msgstr "Bol-Cos"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:25
-msgid "BaBrCr"
-msgstr "BoBrCr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:44
+msgid "BA-BR-CR"
+msgstr "COS-BRA-CRO"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:25
-msgid "Back-Brea-Crol"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:44
+msgid "Back-Breast-Crawl"
 msgstr "Costas-Braza-Crol"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:26
-msgid "FeCrAr"
-msgstr "PeCrFr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:45
+msgid "FE CR AR"
+msgstr "PES CRO FRE"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:26
-msgid "Feet crol arrow"
-msgstr "PeCrFr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:45
+msgid "Feet crawl arrow"
+msgstr "Pes Crol Frecha"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:27
-msgid "FeBuAr"
-msgstr "PeBoFr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:46
+msgid "FE FL AR"
+msgstr "PES BOL FRE"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:27
-msgid "Feet butterfly arrow"
-msgstr "PeBoFr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:46
+msgid "Feet fly arrow"
+msgstr "Pes Bolboreta Frecha"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:28
-msgid "FeBrAr"
-msgstr "PeBrFr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:47
+msgid "FE BR AR"
+msgstr "PES BRA FRE"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:28
-msgid "Feet breastroke arrow"
-msgstr "Pes braza frecha"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:47
+msgid "Feet breast arrow"
+msgstr "Pes Braza Frecha"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:29
-msgid "FeBaAr"
-msgstr "PeBoFr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:48
+msgid "FE BA AR"
+msgstr "PES COS FRE"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:29
-msgid "Feet backstroke arrow"
-msgstr "Pes costas frecha"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:48
+msgid "Feet back arrow"
+msgstr "Pes Costas Frecha"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:30
-msgid "BrCr"
-msgstr "BrCr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:49
+msgid "BR-CR"
+msgstr "BRA-CRO"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:30
-msgid "Breastroke-Crol"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:49
+msgid "Breast-Crawl"
 msgstr "Braza-Crol"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:31
-msgid "CrBa"
-msgstr "CrBo"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:50
+msgid "CR-BA"
+msgstr "CRO-COS"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:31
-msgid "Crol-Backstroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:50
+msgid "Crawl-Back"
 msgstr "Crol-Costas"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:32
-msgid "BrBu"
-msgstr "BrBo"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:51
+msgid "BR-FL"
+msgstr "BRA-BOL"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:32
-msgid "Breastroke-Butterfly"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:51
+msgid "Breast-Fly"
 msgstr "Braza-Bolboreta"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:33
-msgid "BuBaBr"
-msgstr "BoCoBr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:52
+msgid "FL-BA-BR"
+msgstr "BOL-COS-BRA"
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:33
-msgid "Butterfly-Backstroke-Breastroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:52
+msgid "Fly-Back-Breast"
 msgstr "Bolboreta-Costas-Braza"
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:35
@@ -2768,6 +2736,102 @@ msgstr "Examinar..."
 #: /home/damufo/dev/orcana/classes/wxp/messages.py:117
 msgid "Save as..."
 msgstr "Gardar como..."
+
+#~ msgid ""
+#~ "{} has imposible partials.\n"
+#~ "Possition: {}\n"
+#~ "\n"
+#~ msgstr ""
+#~ "{} posiblemente ten un parcial incorrecto.\n"
+#~ "Posición: {}\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "{} did a split of more than 2:00.00.\n"
+#~ "Possition: {}\n"
+#~ "\n"
+#~ msgstr ""
+#~ "{} ten un parcial de máis de 2:00.00.\n"
+#~ "Posición: {}\n"
+#~ "\n"
+
+#~ msgid "BUTTERFLY"
+#~ msgstr "BOLBORETA"
+
+#~ msgid "BACKSTSTROKE"
+#~ msgstr "COSTAS"
+
+#~ msgid "STYLES"
+#~ msgstr "ESTILOS"
+
+#~ msgid "Fr"
+#~ msgstr "Li"
+
+#~ msgid "Bu"
+#~ msgstr "Bo"
+
+#~ msgid "Butterfly"
+#~ msgstr "Bolboreta"
+
+#~ msgid "Ba"
+#~ msgstr "Bo"
+
+#~ msgid "Backstroke"
+#~ msgstr "Costas"
+
+#~ msgid "Br"
+#~ msgstr "Br"
+
+#~ msgid "Me"
+#~ msgstr "Es"
+
+#~ msgid "BaBr"
+#~ msgstr "BoBr"
+
+#~ msgid "Backstroke-Breastroke"
+#~ msgstr "Costas-Braza"
+
+#~ msgid "BuBa"
+#~ msgstr "BoCo"
+
+#~ msgid "Butterfly-Backstroke"
+#~ msgstr "Bolboreta-Costas"
+
+#~ msgid "BaBrCr"
+#~ msgstr "BoBrCr"
+
+#~ msgid "FeCrAr"
+#~ msgstr "PeCrFr"
+
+#~ msgid "FeBuAr"
+#~ msgstr "PeBoFr"
+
+#~ msgid "Feet butterfly arrow"
+#~ msgstr "PeBoFr"
+
+#~ msgid "FeBrAr"
+#~ msgstr "PeBrFr"
+
+#~ msgid "FeBaAr"
+#~ msgstr "PeBoFr"
+
+#~ msgid "BrCr"
+#~ msgstr "BrCr"
+
+#~ msgid "CrBa"
+#~ msgstr "CrBo"
+
+#~ msgid "BrBu"
+#~ msgstr "BrBo"
+
+#~ msgid "Breastroke-Butterfly"
+#~ msgstr "Braza-Bolboreta"
+
+#~ msgid "BuBaBr"
+#~ msgstr "BoCoBr"
+
+#~ msgid "Butterfly-Backstroke-Breastroke"
+#~ msgstr "Bolboreta-Costas-Braza"
 
 #~ msgid ""
 #~ "This person already exists in inscriptions (without result).\n"
@@ -3675,8 +3739,8 @@ msgstr "Gardar como..."
 #~ "state the exclusion of warranty; and each file should have at least\n"
 #~ "the \"copyright\" line and a pointer to where the full notice is found.\n"
 #~ "\n"
-#~ "    <one line to give the program's name and a brief idea of what it does."
-#~ ">\n"
+#~ "    <one line to give the program's name and a brief idea of what it "
+#~ "does.>\n"
 #~ "    Copyright (C) <year>  <name of author>\n"
 #~ "\n"
 #~ "    This program is free software: you can redistribute it and/or modify\n"
@@ -6670,8 +6734,8 @@ msgstr "Gardar como..."
 
 #~ msgid "Database document id is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
-#~ "O DNI/NIE/Pasaporte na base de datos e: «%(dbs)s», a do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O DNI/NIE/Pasaporte na base de datos e: «%(dbs)s», a do ficheiro é: «%"
+#~ "(fil)s»."
 
 #~ msgid "Database surname is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
@@ -6682,8 +6746,8 @@ msgstr "Gardar como..."
 
 #~ msgid "Database birth date is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
-#~ "A data de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "A data de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #~ msgid "Database gender is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr "O nome na base de datos é: «%(dbs)s», o do ficheiro é «%(fil)s»."
@@ -6702,8 +6766,8 @@ msgstr "Gardar como..."
 
 #~ msgid "Database email is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
-#~ "O correo electrónico na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O correo electrónico na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #~ msgid "Database nationality is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
@@ -6711,13 +6775,13 @@ msgstr "Gardar como..."
 
 #~ msgid "Database birth place is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
-#~ "O lugar de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O lugar de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #~ msgid "Database birth country is: \"%(dbs)s\". File is: \"%(fil)s\"."
 #~ msgstr ""
-#~ "O pais de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O pais de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #~ msgid "LEV validation is: \"{}\"."
 #~ msgstr "A data de validación LEV é: «{}»."
@@ -7168,8 +7232,8 @@ msgstr "Gardar como..."
 #, fuzzy
 #~ msgid "Data base email is: '%(dbs)s'. File is: %(fil)s"
 #~ msgstr ""
-#~ "O correo electrónico na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O correo electrónico na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #, fuzzy
 #~ msgid "Data base city is: '%(dbs)s'. File is: %(fil)s"
@@ -7188,14 +7252,14 @@ msgstr "Gardar como..."
 #, fuzzy
 #~ msgid "Data base birth place is: '%(dbs)s'. File is: %(fil)s"
 #~ msgstr ""
-#~ "O lugar de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O lugar de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #, fuzzy
 #~ msgid "Data base birth country is: '%(dbs)s'. File is: %(fil)s"
 #~ msgstr ""
-#~ "O pais de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: "
-#~ "«%(fil)s»."
+#~ "O pais de nacemento na base de datos e: «%(dbs)s», o do ficheiro é: «%"
+#~ "(fil)s»."
 
 #, fuzzy
 #~ msgid "LEV validation date is: '{}'."
@@ -7321,8 +7385,8 @@ msgstr "Gardar como..."
 #, fuzzy
 #~ msgid ""
 #~ "Person ID %(person_id)s | Name: %(name)s | Birth date: %(birth_date)s | "
-#~ "Club: %(club_desc)s (%(club_id)s) | Season: %(season_id)s | Estament: "
-#~ "%(estament_id)s | Validation: %(validation)s."
+#~ "Club: %(club_desc)s (%(club_id)s) | Season: %(season_id)s | Estament: %"
+#~ "(estament_id)s | Validation: %(validation)s."
 #~ msgstr ""
 #~ "Mesmos apelidos e nome na licenza %(person_id)s.\n"
 #~ "- Con data de nacemento: %(birth_date)s.\n"

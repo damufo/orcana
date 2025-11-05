@@ -1,5 +1,4 @@
-# Galician translations for PACKAGE package
-# Traducións en inglés do paquete PACKAGE.
+# Galician translations for PACKAGE package.
 # Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Automatically generated, 2025.
@@ -8,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 13:53+0200\n"
-"PO-Revision-Date: 2025-05-14 13:53+0200\n"
+"POT-Creation-Date: 2025-11-05 09:11+0100\n"
+"PO-Revision-Date: 2025-11-05 09:11+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: gl_ES\n"
@@ -19,73 +18,73 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:329
 #: /home/damufo/dev/orcana/specific_functions/dates.py:76
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "january"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:330
 #: /home/damufo/dev/orcana/specific_functions/dates.py:77
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "february"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:331
 #: /home/damufo/dev/orcana/specific_functions/dates.py:78
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "march"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:332
 #: /home/damufo/dev/orcana/specific_functions/dates.py:79
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:132
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:141
 msgid "april"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:333
 #: /home/damufo/dev/orcana/specific_functions/dates.py:80
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "may"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:334
 #: /home/damufo/dev/orcana/specific_functions/dates.py:81
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "june"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:335
 #: /home/damufo/dev/orcana/specific_functions/dates.py:82
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "july"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:336
 #: /home/damufo/dev/orcana/specific_functions/dates.py:83
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "august"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:337
 #: /home/damufo/dev/orcana/specific_functions/dates.py:84
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:133
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:142
 msgid "september"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:338
 #: /home/damufo/dev/orcana/specific_functions/dates.py:85
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:134
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:143
 msgid "october"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:339
 #: /home/damufo/dev/orcana/specific_functions/dates.py:86
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:134
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:143
 msgid "november"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_functions/datetimes.py:340
 #: /home/damufo/dev/orcana/specific_functions/dates.py:87
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:134
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:143
 msgid "december"
 msgstr ""
 
@@ -228,10 +227,10 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/modules/person_add_edit/p_person_add_edit.py:80
 #: /home/damufo/dev/orcana/modules/person_add_edit/p_person_add_edit.py:81
-#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:184
-#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:185
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:118
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:119
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:194
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:195
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:121
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:122
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:123
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:124
 #: /home/damufo/dev/orcana/modules/entity_add_edit/p_entity_add_edit.py:72
@@ -706,6 +705,7 @@ msgstr ""
 #: /home/damufo/dev/orcana/modules/persons/w_persons.py:136
 #: /home/damufo/dev/orcana/modules/relays_pode_borrarse/w_relays.py:84
 #: /home/damufo/dev/orcana/modules/phases/w_phases.py:120
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:39
 msgid "Back"
 msgstr ""
 
@@ -816,7 +816,16 @@ msgid ""
 "Do you like exchange?"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:113
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:112
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:140
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:161
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:47
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:116
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:140
+msgid "This entity already has the maximum inscriptions in this phase."
+msgstr ""
+
+#: /home/damufo/dev/orcana/modules/res_rel_add_edit/p_res_rel_add_edit.py:117
 msgid ""
 "This relay already exists in inscriptions (without result).\n"
 "Do you like move to this lane?"
@@ -1176,26 +1185,26 @@ msgstr ""
 msgid "Set a phase."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:49
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:51
 msgid "This person already inscript in this phase."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:51
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:53
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:44
 msgid "Set a mark."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:54
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:56
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:50
 msgid "Set a chrono type."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:57
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:59
 #: /home/damufo/dev/orcana/modules/insc_rel_add_edit/p_insc_rel_add_edit.py:47
 msgid "Set a pool length."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:68
+#: /home/damufo/dev/orcana/modules/insc_ind_add_edit/p_insc_ind_add_edit.py:71
 msgid "The result was deleted."
 msgstr ""
 
@@ -1347,25 +1356,25 @@ msgid ""
 "Do you like move to this lane?"
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:117
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:120
 msgid ""
 "This lane has a result.\n"
 "Do you like replace?\n"
 "This result will be deleted."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:147
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:153
 msgid ""
 "Same person is in current lane.\n"
 "Please, select a distinct person."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:150
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:156
 msgid "Please, select a person."
 msgstr ""
 
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:170
-#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:171
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:176
+#: /home/damufo/dev/orcana/modules/res_ind_add_edit/p_res_ind_add_edit.py:177
 msgid "Select person"
 msgstr ""
 
@@ -1803,10 +1812,10 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category_results.py:99
 #: /home/damufo/dev/orcana/specific_classes/champ/phase_category_results.py:113
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:424
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:426
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:589
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:591
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:440
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:442
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:605
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:607
 msgid "Points"
 msgstr ""
 
@@ -1986,13 +1995,13 @@ msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:266
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1392
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:403
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:416
 msgid "manual"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:268
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1394
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:405
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:418
 msgid "electronic"
 msgstr ""
 
@@ -2093,7 +2102,7 @@ msgid "{}. Pool course {} m. Timing system {}."
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1470
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:520
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:533
 msgid "Heat {} of {}"
 msgstr ""
 
@@ -2105,9 +2114,9 @@ msgstr ""
 msgid "start_list_full.pdf"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1536
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1537
-#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1544
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1531
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1532
+#: /home/damufo/dev/orcana/specific_classes/champ/champ.py:1539
 msgid "O ficheiro é incorrecto ou está baleiro!!"
 msgstr ""
 
@@ -2147,32 +2156,20 @@ msgstr ""
 msgid "Event code"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:361
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:367
 msgid "NC"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:420
-msgid ""
-"{} has imposible partials.\n"
-"Possition: {}\n"
-"\n"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:422
-msgid ""
-"{} did a split of more than 2:00.00.\n"
-"Possition: {}\n"
-"\n"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:489
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:427
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:509
 msgid ""
 "{} has imposible partials.\n"
 "Heat: {} | Lane: {} | Distance:{} | Time:{}\n"
 "\n"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:497
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:436
+#: /home/damufo/dev/orcana/specific_classes/champ/phase_category.py:517
 msgid ""
 "{} did a split of more than 2:00.00.\n"
 "Heat: {} | Lane: {} | Distance:{} | Time:{}\n"
@@ -2188,7 +2185,7 @@ msgstr ""
 msgid "Start time"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:420
+#: /home/damufo/dev/orcana/specific_classes/champ/phase.py:433
 msgid "start_list_{}_{}.pdf"
 msgstr ""
 
@@ -2338,136 +2335,116 @@ msgstr ""
 msgid "4x100 m Medley"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:84
-msgid "FREE"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:86
-msgid "BUTTERFLY"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:88
-msgid "BREASTSTROKE"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:90
-msgid "BACKSTSTROKE"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:92
-msgid "STYLES"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:107
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:116
 msgid "FINAL"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:109
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:118
 msgid "PRELIM"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:116
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:125
 msgid "FEM"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:118
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:127
 msgid "MAS"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:120
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:129
 msgid "MIX"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:319
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:493
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:335
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:509
 msgid "Referee's tokens"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:349
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:352
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:365
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:368
 msgid "UNIT: {}"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:350
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:353
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:366
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:369
 msgid "LANE: {}"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:385
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:550
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:401
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:566
 msgid "SPLITS LOG"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:396
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:397
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:561
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:562
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:412
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:413
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:577
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:578
 msgid "RECORDING END TIMES"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:398
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:399
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:563
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:564
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:414
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:415
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:579
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:580
 msgid "CHRONO 1"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:398
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:399
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:563
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:564
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:414
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:415
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:579
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:580
 msgid "CHRONO 2"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:398
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:399
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:563
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:564
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:414
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:415
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:579
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:580
 msgid "CHRONO 3"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:423
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:425
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:588
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:590
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:439
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:441
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:604
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:606
 msgid "END TIME DEFINITIVE"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:423
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:425
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:588
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:590
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:439
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:441
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:604
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:606
 msgid "Arrival"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:424
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:426
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:589
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:591
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:440
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:442
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:605
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:607
 msgid "Clasific."
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:439
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:445
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:455
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:461
 #, python-brace-format
 msgid "{venue} on {month} {day}, {year}"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:450
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:452
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:606
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:608
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:466
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:468
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:622
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:624
 msgid "Signature timekeeper"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:451
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:453
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:607
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:609
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:467
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:469
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:623
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:625
 msgid "Sinature secretary desk"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:604
+#: /home/damufo/dev/orcana/specific_classes/fiarna/referee_tokens.py:620
 msgid "_________________ a _____ de _____________ de ______"
 msgstr ""
 
@@ -2507,132 +2484,128 @@ msgstr ""
 msgid "Mixed"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:18
-msgid "Fr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:37
+msgid "FREE"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:18
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:37
 msgid "Free"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:19
-msgid "Bu"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:38
+msgid "FLY"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:19
-msgid "Butterfly"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:38
+msgid "Fly"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:20
-msgid "Ba"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:39
+msgid "BACK"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:20
-msgid "Backstroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:40
+msgid "BREAST"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:21
-msgid "Br"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:40
+msgid "Breast"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:21
-msgid "Breastroque"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:41
+msgid "MEDLEY"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:22
-msgid "Me"
-msgstr ""
-
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:22
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:41
 msgid "Medley"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:23
-msgid "BaBr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:42
+msgid "BA-BR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:23
-msgid "Backstroke-Breastroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:42
+msgid "Back-Breast"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:24
-msgid "BuBa"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:43
+msgid "FL-BA"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:24
-msgid "Butterfly-Backstroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:43
+msgid "Fly-Back"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:25
-msgid "BaBrCr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:44
+msgid "BA-BR-CR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:25
-msgid "Back-Brea-Crol"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:44
+msgid "Back-Breast-Crawl"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:26
-msgid "FeCrAr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:45
+msgid "FE CR AR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:26
-msgid "Feet crol arrow"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:45
+msgid "Feet crawl arrow"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:27
-msgid "FeBuAr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:46
+msgid "FE FL AR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:27
-msgid "Feet butterfly arrow"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:46
+msgid "Feet fly arrow"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:28
-msgid "FeBrAr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:47
+msgid "FE BR AR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:28
-msgid "Feet breastroke arrow"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:47
+msgid "Feet breast arrow"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:29
-msgid "FeBaAr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:48
+msgid "FE BA AR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:29
-msgid "Feet backstroke arrow"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:48
+msgid "Feet back arrow"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:30
-msgid "BrCr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:49
+msgid "BR-CR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:30
-msgid "Breastroke-Crol"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:49
+msgid "Breast-Crawl"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:31
-msgid "CrBa"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:50
+msgid "CR-BA"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:31
-msgid "Crol-Backstroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:50
+msgid "Crawl-Back"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:32
-msgid "BrBu"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:51
+msgid "BR-FL"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:32
-msgid "Breastroke-Butterfly"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:51
+msgid "Breast-Fly"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:33
-msgid "BuBaBr"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:52
+msgid "FL-BA-BR"
 msgstr ""
 
-#: /home/damufo/dev/orcana/specific_classes/core/styles.py:33
-msgid "Butterfly-Backstroke-Breastroke"
+#: /home/damufo/dev/orcana/specific_classes/core/styles.py:52
+msgid "Fly-Back-Breast"
 msgstr ""
 
 #: /home/damufo/dev/orcana/specific_classes/core/issues.py:35
