@@ -19,6 +19,14 @@ reportlab==3.6.9
 six==1.16.0
 wxPython==4.1.1```
 
+### Requiriments python 3.13 and windows 11 2026-01-27
+```requests
+wxpython
+reportlab
+legacy-cgi
+numpy
+```
+
 ### Empaquetado
 
 ```
