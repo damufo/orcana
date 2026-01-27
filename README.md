@@ -19,33 +19,22 @@ reportlab==3.6.9
 six==1.16.0
 wxPython==4.1.1```
 
-### Requiriments python 3.13 and windows 11 2026-01-27
-```requests
-wxpython
-reportlab
-legacy-cgi
-numpy
+### Requiriments python 3.13 (tested on windows 11 2026-01-27)
+```
+python -m pip install --upgrade pip
+python -m venv .venv
+.venv/Scripts/activate
+pip install requests
+pip install wxpython
+pip installreportlab
+pip installlegacy-cgi
+pip installnumpy
 ```
 
-### Empaquetado
-
+### Empaquetado windows
 ```
-(.venv) $ echo "wxPython==4.1.1" > requirements.in
-(.venv) $ echo "reportlab" >> requirements.in
-(.venv) $ python -m pip install pip-tools
-(.venv) $ python -m pip-compile
-(.venv) $ cat requirements.txt
-```
-Para actualizar unha dependencia á versión actual
-
-```
-(.venv) $ pip-compile -P wxPython
-```
-
-Pon o noso contorno ó día
-
-
-```
-(.venv) $ pip-sync
+.venv/Scripts/activate
+pip install pyinstaller
+pyinstaller orcana_pyinstaller_win_mac.spec --workpath=./build_win --distpath=./dist_win
 ```
 
