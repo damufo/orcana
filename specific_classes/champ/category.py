@@ -112,10 +112,18 @@ punctuation_id, show_report) VALUES(?, ?, ?, ?, ?, ?, ?) '''
 
     @property
     def is_in_use(self):
-        uses = 0
-        sql = '''
-select category_id from events_categories where category_id=?; '''
-        res = self.config.dbs.exec_sql(sql=sql, values=((self.category_id, ), ))
-        if res:
-            uses = len(res)
+        tables = [
+            "events_categories",
+            "categories",
+            "phases_categories",
+            "relays"
+        ]
+        uses = False
+        sql_base = '''select category_id from {} where category_id={}; '''
+        for table in tables:
+            sql = sql_base.format(table, self.category_id, )
+            res = self.config.dbs.exec_sql(sql=sql)
+            if res:
+                uses = True
+                break
         return uses
