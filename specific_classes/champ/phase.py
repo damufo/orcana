@@ -176,10 +176,17 @@ class Phase(object):
 
     def insc_entity(self, entity_id):
         # count inscriptons by entity
+        # IMPORTANT!! If the phase has series, only those participants with 
+        # an assigned lane will be counted.
         insc_entity = 0
-        for i in self.inscriptions:
-            if i.entity_id == entity_id:
-                insc_entity += 1
+        if self.heats:  # only check participants with assigned lane
+            for i in self.inscriptions:
+                if i.entity_id == entity_id and i.lane !=-1:  # lane is -1 when not has result
+                    insc_entity += 1
+        else:
+            for i in self.inscriptions:
+                if i.entity_id == entity_id:
+                    insc_entity += 1
         return insc_entity
 
     def check_max_insc_entity(self, entity_id):
