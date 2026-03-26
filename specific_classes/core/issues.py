@@ -33,7 +33,7 @@ class Issues(list):
         ISSUES = (
             # Issues lenex
             ('DSQ', 1, _('Athlete/Relay disqualified')),  # Descualificación (xenérica)
-            ('DNS', 2, _('Athlete/Relay did not start \(no reason given or to late withdrawl\)')),  # Non presentación
+            ('DNS', 2, _('Athlete/Relay did not start (no reason given or to late withdrawl)')),  # Non presentación
             ('DNF', 3, _('Athlete/Relay did not finish')),  # Retiramento (por non poder rematar o comezado)
             ('WDR', 5, _('Athlete/Relay was withdrawn (on time)')),  # Baixa 
             ('SICK', 4, _('Athlete is sick.')),  # Baixa por enfermidade
