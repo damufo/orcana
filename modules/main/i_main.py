@@ -25,6 +25,7 @@ class Interactor(object):
         view.btn_open_db.Bind(wx.EVT_BUTTON, self.on_open_db)
         view.btn_report_results.Bind(wx.EVT_BUTTON, self.on_report_results)
         view.btn_export_results.Bind(wx.EVT_BUTTON, self.on_export_results)
+        view.btn_export_results.Bind(wx.EVT_RIGHT_UP, self.on_export_results_menu)
 
         view.btn_properties.Bind(wx.EVT_BUTTON, self.show_properties)
         view.btn_entities.Bind(wx.EVT_BUTTON, self.show_entities)
@@ -138,6 +139,9 @@ class Interactor(object):
 
     def on_export_results(self, event):
         self.presenter.export_results()
+
+    def on_export_results_menu(self, event):
+        self.presenter.export_results(show_question=True)
 
     def show_properties(self, event):
         self.presenter.load_properties()

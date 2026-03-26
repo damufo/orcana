@@ -134,8 +134,8 @@ class Champ(object):
                 # Os resultados carganse despois de cargar as inscricións e asignanse a cada inscrición
                 self.config.prefs['last_path_dbs'] = str(dbs_path)
                 self.has_champ = True
-            except Exception as ex:  # Algo fallou durante a carga
-                print(ex.message)
+            except Exception as e:  # Algo fallou durante a carga
+                print(e.message)
                 self.config.prefs['last_path_dbs'] = ""
                 self.clear_champ
                 print('Algo fallou durante a carga da base de datos.')
@@ -394,9 +394,9 @@ sum(points) desc;          '''
         d.build_file()
         print("fin")
 
-    def export_results(self):
+    def export_results(self, omite_custom_styles=False):
         # self.gen_lev()
-        self.gen_results_lenex()
+        self.gen_results_lenex(omite_custom_styles=omite_custom_styles)
 
     def gen_lev(self):
         """
@@ -801,17 +801,21 @@ sum(points) desc;          '''
                                end_line="\n")
         print('Fin')
 
-    def gen_results_lenex(self):
+    def gen_results_lenex(self, omite_custom_styles=False):
         print("Generating results (lenex format)")
         from specific_classes.extra.lenex import Lenex
         lenex = Lenex()
-        content = lenex.gen_results(champ=self)
+        content = lenex.gen_results(champ=self, omite_custom_styles=omite_custom_styles)
         if content:
             file_name_lef = '{}.lef'.format(self.file_name)
             file_path_lef = os.path.join(
                 self.config.work_folder_path,
                 file_name_lef)
-            file_name_lxf = '{}.lxf'.format(self.file_name)
+            omite_custom_styles_txt = ''
+            if omite_custom_styles:
+                omite_custom_styles_txt = _('_omite_custom_styles')
+
+            file_name_lxf = '{}{}.lxf'.format(self.file_name, omite_custom_styles_txt)
             file_path_lxf = os.path.join(
                     self.config.work_folder_path,
                     file_name_lxf)

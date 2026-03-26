@@ -73,7 +73,7 @@ class Lenex(object):
         file_records.write(self.footer)
         file_records.close()
 
-    def gen_results(self, champ):
+    def gen_results(self, champ, omite_custom_styles=False):
         """
         Generate file export lef format
         """
@@ -109,7 +109,12 @@ class Lenex(object):
 )
         content += "      <SESSIONS>\n"
         current_session = None
+        result_events = []
         for phase in champ.phases:
+            if omite_custom_styles:
+                if phase.event.style_id not in ('L', 'E', 'B', 'M', 'S'):
+                    continue
+            result_events.append(phase.phase_id)
             if not current_session or current_session.session_id != phase.session.session_id:
                 if current_session:  # close current events and session
                     content += ("""          </EVENTS>\n        </SESSION>\n""")
@@ -214,6 +219,9 @@ class Lenex(object):
                     person_result = False
                     for inscription in person.inscriptions:
                         if inscription.result:
+                            if inscription.phase.phase_id not in result_events:
+                                print("result no in events")
+                                continue
                             if not inscription.phase.official:
                                 print("Phase is not official")
                                 continue

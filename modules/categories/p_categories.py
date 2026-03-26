@@ -63,11 +63,11 @@ class Presenter(object):
             if self.view.msg.question(message=message):
                 for i in idxs:
                     if self.model.categories[i].is_in_use:
-                        message = ('{} {} is in use.\nDelete first all '
-                            'events where it is being used.').format(
-                                self.model.categories[i].name,
-                                self.model.categories[i].code,
-                                )
+                        message = (
+                            '{} {} is in use, cannot be deleted.').format(
+                            self.model.categories[i].code,
+                            self.model.categories[i].gender_id,
+                            )
                         self.view.msg.warning(message=message)
                         break
                 else:

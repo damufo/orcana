@@ -85,11 +85,16 @@ class Presenter(object):
             message = _("The operation was successful!")
             self.view.msg.information(message=message)
 
-    def export_results(self):
+    def export_results(self, show_question=False):
         if not self.model.champ.all_is_official:
             message=_("Any phase is not official.")
             self.view.msg.warning(message=message)
-        self.model.champ.export_results()
+        omite_custom_styles = False
+        if show_question:
+            message = _("Omite custom styles?")
+            if self.view.msg.question(message=message):
+                omite_custom_styles = True
+        self.model.champ.export_results(omite_custom_styles=omite_custom_styles)
 
 
     def load_properties(self):
