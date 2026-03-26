@@ -6,6 +6,7 @@ A pool swimming championship management application.
 ## Actualizado de pip
 
 ```$ python -m pip install --upgrade pip```
+
 ## Contorno virtual
 
 ```$ python -m venv .venv
