@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+## Python code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -10,8 +10,8 @@
 import wx
 import wx.xrc
 
-# import gettext
-# _ = gettext.gettext
+import gettext
+_ = gettext.gettext
 
 ###########################################################################
 ## Class EventAddEdit
@@ -20,7 +20,7 @@ import wx.xrc
 class EventAddEdit ( wx.Dialog ):
 
 	def __init__( self, parent ):
-		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Event Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 633,328 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
+		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = _(u"Event Add Edit"), pos = wx.DefaultPosition, size = wx.Size( 644,347 ), style = wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -82,6 +82,22 @@ class EventAddEdit ( wx.Dialog ):
 
 
 		bSizer8.Add( bSizer103, 0, wx.EXPAND, 5 )
+
+		bSizer1031 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText321 = wx.StaticText( self.panel, wx.ID_ANY, _(u"Insc. max.:"), wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText321.Wrap( -1 )
+
+		bSizer1031.Add( self.m_staticText321, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.txt_insc_max = wx.TextCtrl( self.panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.txt_insc_max.SetMaxLength( 3 )
+		self.txt_insc_max.SetToolTip( _(u"Maximum inscriptions by entity") )
+
+		bSizer1031.Add( self.txt_insc_max, 2, wx.ALL, 5 )
+
+
+		bSizer8.Add( bSizer1031, 1, wx.EXPAND, 5 )
 
 
 		bSizer8.Add( ( 0, 0), 1, wx.EXPAND, 5 )

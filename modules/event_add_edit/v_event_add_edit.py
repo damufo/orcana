@@ -6,6 +6,7 @@ import wx
 from .w_event_add_edit import EventAddEdit
 from classes.wxp.view_plus import ViewPlus
 from classes.wxp.messages import Messages
+from classes.wxp.txt_integer import TxtInteger
 
 
 class View(EventAddEdit):
@@ -15,6 +16,7 @@ class View(EventAddEdit):
         self.parent = parent
         self.view_plus = ViewPlus(self)
         self.msg = Messages(self)
+        self.txt_insc_max_plus = TxtInteger(txt=self.txt_insc_max)
 
 
     def set_values(self, event):
@@ -25,6 +27,7 @@ class View(EventAddEdit):
                                 values=event.config.genders.choices(),
                                 default=event.gender_id)
         self.txt_name.SetValue(str(event.name))
+        self.txt_insc_max_plus.SetValue(event.insc_max)
         
         self.cho_code.SetFocus()
 
@@ -33,6 +36,7 @@ class View(EventAddEdit):
         values["code"] = self.view_plus.cho_get(choice=self.cho_code)
         values["gender_id"] = self.view_plus.cho_get(choice=self.cho_gender_id)
         values["name"] = self.txt_name.GetValue().strip()
+        values["insc_max"] = self.txt_insc_max_plus.GetValue()
         return values
 
     def generate_name(self, event):

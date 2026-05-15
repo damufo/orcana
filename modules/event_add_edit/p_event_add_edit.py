@@ -39,12 +39,16 @@ class Presenter(object):
         elif not values['name']:
             msg = 'Set a event name.'
             self.view.txt_name.SetFocus()
+        elif not values['insc_max']:
+            msg = 'Set a number for maximum inscriptions by entity.'
+            self.view.txt_insc_max.SetFocus()
         if msg:
             self.view.msg.warning(msg)
         else:
             event.code = values['code']
             event.gender_id = values['gender_id']
             event.name = values['name']
+            event.insc_max = values['insc_max']
             if not event in event.events:
                 event.events.append(event)
             event.save()

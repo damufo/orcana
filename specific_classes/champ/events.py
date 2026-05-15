@@ -76,7 +76,7 @@ class Events(list):
             code='',
             gender_id='',
             name='',
-            insc_max=0,
+            insc_max=0,  # maximum inscriptions by entity
             save_action='I')
 
     def load_items_from_dbs(self):
