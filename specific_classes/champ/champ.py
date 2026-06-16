@@ -38,7 +38,9 @@ class Champ(object):
         file_name = '{}_{}_{}'.format(
             date,
             self.params['champ_name'],
-            self.params['champ_venue'])
+            self.params['champ_venue'],
+            )
+        file_name = utils.normalize(file_name)
         return utils.get_valid_filename(file_name.lower())
 
     @property
