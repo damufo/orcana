@@ -42,7 +42,7 @@ class Phase(object):
     
     @property
     def long_name(self):
-        return '{}.- {} ({})'.format(self.event.pos, self.event.name, self.progression)
+        return '{}. {} ({})'.format(self.event.pos, self.event.name, self.progression)
 
     @property
     def champ(self):
@@ -1204,7 +1204,7 @@ values( ?, ?, ?, ?)'''
 #                 orde = i.heat.phase.event.pos
 #                 lines.append(['',])
 #                 lines_for_span_pos += 1 
-#                 lines.append(['%s.- %s' % (i.heat.phase.event.pos, i.heat.phase.event.name), ])
+#                 lines.append(['%s. %s' % (i.heat.phase.event.pos, i.heat.phase.event.name), ])
 #                 lines_for_span.append(('T', lines_for_span_pos)) # T: title event
 #                 lines_for_span_pos += 1 
 #                 lines.append(['',])

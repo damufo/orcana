@@ -1468,7 +1468,7 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
 
         for phase in phases:
             # FIXME: poñer isto na clase phase
-            phase_title = '{}.- {} ({})'.format(phase.event.pos, phase.event.name, phase.progression)
+            phase_title = '{}. {} ({})'.format(phase.event.pos, phase.event.name, phase.progression)
             add_phase_title([[phase_title], ])
             count_heats = len(phase.heats)
             inscriptions =  phase.inscriptions
@@ -1549,7 +1549,7 @@ body, table, td {font-family: Arial, helvetica; font-style:normal; font-size: 9p
             for line in lines[start_line:]:
                 event = self.events[int(line[EVENT_POS]) - 1]
                 if event.code != line[EVENT_CODE].upper():
-                    print("This event {}.- {} not exists.".format(line[EVENT_POS], line[EVENT_CODE]))
+                    print("This event {}. {} not exists.".format(line[EVENT_POS], line[EVENT_CODE]))
                 else:
                     phase =  None
                     for phase in self.phases:
