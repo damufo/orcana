@@ -102,7 +102,7 @@ class Event(object):
         #     print("Warning! {} style not found.".format(self.event_id[-1]))
         #     style = "??"
 
-        event_desc = "{}.- {}m {} {} {}".format(self.order,
+        event_desc = "{}. {}m {} {} {}".format(self.order,
                                                 self.event_id[:-1],
                                                 self.style_name,
                                                 self.gender_desc,

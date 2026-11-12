@@ -18,6 +18,8 @@ from PIL import Image
 import os
 import copy
 from datetime import datetime
+import io
+from reportlab.lib.utils import ImageReader
 
 
 class ReportBase(object):
@@ -40,31 +42,63 @@ class ReportBase(object):
             self.page_width = 29.7*cm
             pagesize = landscape(A4)
         self.app_path_folder = app_path_folder
-        images_path = '%s%s%s%s' % (self.app_path_folder, os.sep, 
-                                    'images', os.sep)
+
         self.app_version = app_version
         self.author = os.environ.get('USER', os.environ.get('USERNAME'))
         self.creator = 'Orcana {}'.format(self.app_version)
         self.title = title
         self.subtitle = subtitle
-        self.logo_left = Image.open('%s%s' % (images_path, 'logo_left.png'))
-        self.logo_right = Image.open('%s%s' % (images_path, 'logo_right.png'))
-        self.logo_foot = Image.open('%s%s' % (images_path, 'logo_foot.png'))
-        # Resize images
-        # width
-        img = self.logo_foot
-        max_width = 1072
-        if img.size[0] > max_width:
-            height_percent = (max_width / float(img.size[0]))
-            height_size = int((float(img.size[1]) * float(height_percent)))
-            img = img.resize((max_width, height_size), Image.Resampling.LANCZOS)
-        # height
-        max_height = 120
-        if img.size[1] > max_height:
-            width_percent = (max_height / float(img.size[1]))
-            width_size = int((float(img.size[0]) * float(width_percent)))
-            img = img.resize((width_size, max_height), Image.Resampling.LANCZOS)
-        self.logo_foot = img
+
+        path_champ = os.path.dirname(file_path)
+        
+        path_images = '%s%s%s%s' % (self.app_path_folder, os.sep, 
+                                    'images', os.sep)
+        logos =[
+            ('logo_left.png', 150, 94),
+            ('logo_right.png', 150,94),
+            ('logo_foot.png', 1072, 120)
+        ]
+        for logo, max_width, max_height in logos:
+            if os.path.isfile(os.path.join(path_champ, logo)):
+                setattr(self, logo.split('.')[0], Image.open(os.path.join(path_champ, logo)))
+            elif os.path.isfile(os.path.join(path_images, logo)):
+                setattr(self, logo.split('.')[0], Image.open(os.path.join(path_images, logo)))
+            else:
+                setattr(self, logo.split('.')[0], None)
+            img = getattr(self, logo.split('.')[0])
+            if img:
+                # Resize size
+                # width
+                if img.size[0] > max_width:
+                    height_percent = (max_width / float(img.size[0]))
+                    height_size = int((float(img.size[1]) * float(height_percent)))
+                    img = img.resize((max_width, height_size), Image.Resampling.LANCZOS)
+                # height
+                if img.size[1] > max_height:
+                    width_percent = (max_height / float(img.size[1]))
+                    width_size = int((float(img.size[0]) * float(width_percent)))
+                    img = img.resize((width_size, max_height), Image.Resampling.LANCZOS)
+
+                # Tamaño orixinal
+                size_original = os.path.getsize(os.path.join(path_champ, logo))
+
+                buffer = io.BytesIO()
+                img.convert('RGB').save(buffer, format='JPEG', quality=85)
+                buffer.seek(0)
+                img = ImageReader(buffer)
+                size_compressed = buffer.tell()
+
+                # Diferenza de tamaño
+                aforro = size_original - size_compressed
+                porcentaxe = (1 - size_compressed / size_original) * 100
+
+                print(f"Original: {size_original / 1024:.2f} KB")
+                print(f"Comprimido: {size_compressed / 1024:.2f} KB")
+
+                setattr(self, logo.split('.')[0], img)
+        
+
+            
 
 
         self.estiloencabezado = ParagraphStyle('',
@@ -322,19 +356,17 @@ class ReportBase(object):
     ##    Textos
         canvas.setFont('Open Sans Regular',7)
     ##    cabeceira
-        canvas.drawInlineImage(self.logo_left, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
-        canvas.drawInlineImage(self.logo_right, self.page_width-(4*cm), self.page_height-(2.2*cm), width = 75, height = 47)
-
-        # Centra o pe
-        foot_x_pos = ((self.page_width)/2)-(269.291338583)
-        # canvas.drawInlineImage(self.logo_foot, 1*cm, start_y_foot-(2.7*cm), width = 1072*0.5, height = 120*0.5)
-        if self.orientation == 'landscape':
-            print(self.page_width)
-            print('landscape')
-        else:
-            print(self.page_width)
-            print('portrait')
-        canvas.drawInlineImage(self.logo_foot, foot_x_pos, start_y_foot-(2.7*cm), width = 1072*0.5, height = 120*0.5)
+        if self.logo_left:
+            # canvas.drawInlineImage(self.logo_left, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
+            canvas.drawImage(self.logo_left, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
+        if self.logo_right:
+            # canvas.drawInlineImage(self.logo_right, self.page_width-(4*cm), self.page_height-(2.2*cm), width = 75, height = 47)
+            canvas.drawImage(self.logo_right, self.page_width-(4*cm), self.page_height-(2.2*cm), width = 75, height = 47)
+        if self.logo_foot:
+            # Centra o pe
+            foot_x_pos = ((self.page_width)/2)-(269.291338583)            # if self.orientation == 'landscape':
+            # canvas.drawInlineImage(self.logo_foot, foot_x_pos, start_y_foot-(2.7*cm), width = 1072*0.5, height = 120*0.5)
+            canvas.drawImage(self.logo_foot, foot_x_pos, start_y_foot-(2.7*cm), width = 1072*0.5, height = 120*0.5)
 
 #        titulo da cabeceira
         canvas.setFont('Open Sans Regular', 10)
@@ -395,7 +427,7 @@ class ReportBase(object):
     ##    Textos
         canvas.setFont('Open Sans Regular',7)
     ##    Cabecera
-        canvas.drawInlineImage(self.logo, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
+        canvas.drawImage(self.logo, 1*cm, self.page_height-(2.2*cm), width = 75, height = 47)
         canvas.setFont('Open Sans Bold', 8)
         canvas.setFillColorRGB(0,0.176,0.447) #azul escuro
         string_with_total = canvas.stringWidth('Federación Galega De Natación')

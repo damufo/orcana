@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+## Python code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO *NOT* EDIT THIS FILE!
@@ -131,6 +131,8 @@ class PhaseAddEdit ( wx.Dialog ):
 		bSizer102.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
 		self.btn_acept = wx.Button( self.panel, wx.ID_ANY, _(u"&Acept"), wx.DefaultPosition, wx.DefaultSize, 0 )
+
+		self.btn_acept.SetDefault()
 		self.btn_acept.SetToolTip( _(u"Acept") )
 
 		bSizer102.Add( self.btn_acept, 0, wx.ALL, 5 )
