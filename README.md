@@ -27,9 +27,9 @@ python -m venv .venv
 .venv/Scripts/activate
 pip install requests
 pip install wxpython
-pip installreportlab
-pip installlegacy-cgi
-pip installnumpy
+pip install reportlab
+pip install legacy-cgi
+pip install numpy
 ```
 
 ### Empaquetado windows
