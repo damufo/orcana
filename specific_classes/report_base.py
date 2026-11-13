@@ -67,39 +67,22 @@ class ReportBase(object):
                 setattr(self, logo.split('.')[0], None)
             img = getattr(self, logo.split('.')[0])
             if img:
-                # Resize size
-                # width
+                # Resize width
                 if img.size[0] > max_width:
                     height_percent = (max_width / float(img.size[0]))
                     height_size = int((float(img.size[1]) * float(height_percent)))
                     img = img.resize((max_width, height_size), Image.Resampling.LANCZOS)
-                # height
+                # Resize height
                 if img.size[1] > max_height:
                     width_percent = (max_height / float(img.size[1]))
                     width_size = int((float(img.size[0]) * float(width_percent)))
                     img = img.resize((width_size, max_height), Image.Resampling.LANCZOS)
-
-                # Tamaño orixinal
-                size_original = os.path.getsize(os.path.join(path_champ, logo))
-
+                # Compress image
                 buffer = io.BytesIO()
                 img.convert('RGB').save(buffer, format='JPEG', quality=85)
                 buffer.seek(0)
                 img = ImageReader(buffer)
-                size_compressed = buffer.tell()
-
-                # Diferenza de tamaño
-                aforro = size_original - size_compressed
-                porcentaxe = (1 - size_compressed / size_original) * 100
-
-                print(f"Original: {size_original / 1024:.2f} KB")
-                print(f"Comprimido: {size_compressed / 1024:.2f} KB")
-
                 setattr(self, logo.split('.')[0], img)
-        
-
-            
-
 
         self.estiloencabezado = ParagraphStyle('',
                                       fontName='Open Sans Bold',
